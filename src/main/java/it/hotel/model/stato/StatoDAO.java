@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class StatoDAO {
 
-    public static Stato doSelectByTipo(String statoStr) throws StatoNotFoundException {
+    public static Stato doSelectByStato(String statoStr) throws StatoNotFoundException {
         Stato stato;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
