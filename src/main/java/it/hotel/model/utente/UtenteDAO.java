@@ -157,15 +157,26 @@ public class UtenteDAO {
         }
     }
 
-    public Utente authenticate(String email, String password) {
-        Utente utente = null;
+    public Utente authenticate(String email, String password)
+            throws EmailNotFoundException, WrongPasswordException {
+        Utente utente;
         try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "SELECT * FROM Utente WHERE Email=?",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, email);
 
+            //verifico che esista l'email;
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE Email=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new EmailNotFoundException();
+            }
+
+            //verifico la password;
+            ps = con.prepareStatement("SELECT * FROM Utente WHERE Email=? AND Password=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, email);
+            ps.setString(2, password);
+            rs = ps.executeQuery();
             if (rs.next()) {
                 int idUtente = rs.getInt(1);
                 int ruolo = rs.getInt(2);
@@ -175,7 +186,10 @@ public class UtenteDAO {
                 Date dataNascita = rs.getDate(8);
                 String tokenAuth = rs.getString(9);
                 utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+            } else {
+                throw new WrongPasswordException();
             }
+
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
