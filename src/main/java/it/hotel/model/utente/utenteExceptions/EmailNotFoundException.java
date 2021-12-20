@@ -1,4 +1,4 @@
-package it.hotel.model.utente.UtenteExceptions;
+package it.hotel.model.utente.utenteExceptions;
 
 public class EmailNotFoundException extends Exception {
 

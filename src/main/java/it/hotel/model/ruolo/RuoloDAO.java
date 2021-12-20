@@ -1,24 +1,26 @@
 package it.hotel.model.ruolo;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import it.hotel.Utility.Connect;
+import it.hotel.model.ruolo.ruoloExceptions.*;
+import it.hotel.model.stato.Stato;
+import it.hotel.model.stato.statoExceptions.StatoNotFoundException;
+
+import java.sql.*;
 
 public class RuoloDAO {
 
-    public static Ruolo doSelectByTipo(String tipo) {
-        Ruolo ruolo = null;
-        Statement st;
-        ResultSet rs;
-        tipo = "\'" + tipo + "\';";
+    public static Ruolo doSelectByRuolo(String ruoloStr) throws RuoloNotFoundException {
+        Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM Ruolo WHERE Tipo=" + tipo);
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Ruolo WHERE tipo=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, ruoloStr);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                ruolo = new Ruolo();
-                ruolo.setIdRuolo(rs.getInt(1));
-                ruolo.setTipo(rs.getString(2));
+                ruolo = new Ruolo(rs.getInt(1), rs.getString(2));
+            } else {
+                throw new RuoloNotFoundException();
             }
         }
         catch (SQLException e) {
@@ -27,17 +29,18 @@ public class RuoloDAO {
         return ruolo;
     }
 
-    public static Ruolo doSelectById(int idRuolo) {
-        Ruolo ruolo = null;
-        Statement st;
-        ResultSet rs;
+    public static Ruolo doSelectById(int idRuolo) throws StatoNotFoundException {
+        Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM Ruolo WHERE idRuolo=" + idRuolo + ";");
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Ruolo WHERE idRuolo=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idRuolo);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                ruolo = new Ruolo();
-                ruolo.setIdRuolo(rs.getInt(1));
-                ruolo.setTipo(rs.getString(2));
+                ruolo = new Ruolo(rs.getInt(1), rs.getString(2));
+            } else {
+                throw new StatoNotFoundException();
             }
         }
         catch (SQLException e) {

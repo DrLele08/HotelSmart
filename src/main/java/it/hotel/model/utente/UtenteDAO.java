@@ -1,7 +1,7 @@
 package it.hotel.model.utente;
 
 import it.hotel.Utility.Connect;
-import it.hotel.model.utente.UtenteExceptions.*;
+import it.hotel.model.utente.utenteExceptions.*;
 
 import java.sql.*;
 

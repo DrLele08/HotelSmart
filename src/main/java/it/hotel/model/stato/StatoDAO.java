@@ -1,24 +1,24 @@
 package it.hotel.model.stato;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import it.hotel.Utility.Connect;
+import it.hotel.model.stato.statoExceptions.*;
+
+import java.sql.*;
 
 public class StatoDAO {
 
-    public static Stato doSelectByStato(String statoStr) {
-        Stato stato = null;
-        Statement st;
-        ResultSet rs;
-        statoStr = "\'" + statoStr + "\';";
+    public static Stato doSelectByTipo(String statoStr) throws StatoNotFoundException {
+        Stato stato;
         try (Connection con = Connect.getConnection()) {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM Stato WHERE Stato=" + statoStr);
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Stato WHERE Stato=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, statoStr);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                stato = new Stato();
-                stato.setIdStato(rs.getInt(1));
-                stato.setStato(rs.getString(2));
+                stato = new Stato(rs.getInt(1), rs.getString(2));
+            } else {
+                throw new StatoNotFoundException();
             }
         }
         catch (SQLException e) {
@@ -27,17 +27,18 @@ public class StatoDAO {
         return stato;
     }
 
-    public static Stato doSelectById(int idStato) {
-        Stato stato = null;
-        Statement st;
-        ResultSet rs;
+    public static Stato doSelectById(int idStato) throws StatoNotFoundException {
+        Stato stato;
         try (Connection con = Connect.getConnection()) {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM Stato WHERE idStato=" + idStato + ";");
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Stato WHERE idStato=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idStato);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                stato = new Stato();
-                stato.setIdStato(rs.getInt(1));
-                stato.setStato(rs.getString(2));
+                stato = new Stato(rs.getInt(1), rs.getString(2));
+            } else {
+                throw new StatoNotFoundException();
             }
         }
         catch (SQLException e) {
