@@ -7,10 +7,21 @@ import java.sql.*;
 
 public class UtenteDAO {
 
-    public void registrazione(Utente utente, String password) {
+    public void registrazione(Utente utente, String password) throws EmailAlreadyExistingException {
         try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO Utente (ksRuolo, CF, Nome, Cognome, Email, Password," +
+
+            //controllo che l'email non sia già presente;
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Utente WHERE Email=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                throw new EmailAlreadyExistingException();
+            }
+
+            //inserisco l'utente;
+            ps = con.prepareStatement
+                    ("INSERT INTO Utente (ksRuolo, CF, Nome, Cognome, Email, Password," +
                             " DataNascita, TokenAuth) VALUES(?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, utente.getRuolo());
@@ -22,10 +33,8 @@ public class UtenteDAO {
             ps.setDate(7, utente.getDataNascita());
             ps.setString(8, utente.getTokenAuth());
 
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             rs.next();
-        } catch (SQLIntegrityConstraintViolationException e) {
-            System.out.println(e.getMessage() + '\n' + e.getErrorCode());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
