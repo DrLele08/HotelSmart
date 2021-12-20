@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class RuoloDAO {
 
-    public static Ruolo doSelectByRuolo(String ruoloStr) throws RuoloNotFoundException {
+    public Ruolo doSelectByRuolo(String ruoloStr) throws RuoloNotFoundException {
         Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
@@ -27,7 +27,7 @@ public class RuoloDAO {
         return ruolo;
     }
 
-    public static Ruolo doSelectById(int idRuolo) throws RuoloNotFoundException {
+    public Ruolo doSelectById(int idRuolo) throws RuoloNotFoundException {
         Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
