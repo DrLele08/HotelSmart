@@ -110,7 +110,20 @@ public class UtenteDAO {
         return utenti;
     }
 
-    public void doUpdateUtentePasswordByEmail(String email, String oldPassword, String newPassword) {
+    public void doDeleteUtenteByEmail(String email) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("DELETE FROM Utente WHERE Email=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, email);
+            ps.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void changePassword(String email, String oldPassword, String newPassword) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("Update Utente SET Password=? WHERE Email=? AND Password=?",
@@ -125,16 +138,30 @@ public class UtenteDAO {
         }
     }
 
-    public void doDeleteUtenteByEmail(String email) {
+    public Utente authenticate(String email, String password) {
+        Utente utente = null;
         try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("DELETE FROM Utente WHERE Email=?",
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM Utente WHERE Email=?",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, email);
-            ps.executeQuery();
-        } catch (SQLException e) {
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int idUtente = rs.getInt(1);
+                int ruolo = rs.getInt(2);
+                String cf = rs.getString(3);
+                String nome = rs.getString(4);
+                String cognome = rs.getString(5);
+                Date dataNascita = rs.getDate(8);
+                String tokenAuth = rs.getString(9);
+                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+            }
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return utente;
     }
 
     /*
