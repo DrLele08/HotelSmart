@@ -39,15 +39,14 @@ public class UtenteDAO {
             st = con.createStatement();
             rs = st.executeQuery("SELECT * FROM Utente WHERE Email=" + email + ";");
             if (rs.next()) {
-                utente = new Utente();
-                utente.setIdUtente(rs.getInt(1));
-                utente.setRuolo(rs.getInt(2));
-                utente.setCf(rs.getString(3));
-                utente.setNome(rs.getString(4));
-                utente.setCognome(rs.getString(5));
-                utente.setEmail(rs.getString(6));
-                utente.setDataNascita(rs.getDate(8));
-                utente.setTokenAuth(rs.getString(9));
+                int idUtente = rs.getInt(1);
+                int ruolo = rs.getInt(2);
+                String cf = rs.getString(3);
+                String nome = rs.getString(4);
+                String cognome = rs.getString(5);
+                Date dataNascita = rs.getDate(8);
+                String tokenAuth = rs.getString(9);
+                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
             }
         }
         catch (SQLException e) {
