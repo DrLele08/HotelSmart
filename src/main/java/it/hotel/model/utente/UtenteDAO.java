@@ -1,6 +1,6 @@
 package it.hotel.model.utente;
-import it.hotel.Utility.Connect;
 
+import it.hotel.Utility.Connect;
 import java.sql.*;
 
 public class UtenteDAO {
