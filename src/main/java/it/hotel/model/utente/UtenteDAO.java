@@ -1,6 +1,9 @@
 package it.hotel.model.utente;
 
 import it.hotel.Utility.Connect;
+import it.hotel.model.utente.UtenteExceptions.EmailNotFoundException;
+import it.hotel.model.utente.UtenteExceptions.WrongPasswordException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,16 +126,32 @@ public class UtenteDAO {
     }
 
 
-    public void changePassword(String email, String oldPassword, String newPassword) {
+    public void changePassword(String email, String oldPassword, String newPassword)
+            throws EmailNotFoundException, WrongPasswordException {
         try (Connection con = Connect.getConnection()) {
+
+            //verifico che esista l'email;
             PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Utente WHERE Email=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new EmailNotFoundException();
+            }
+
+            //verifico la oldPassword e aggiorno con la newPassword;
+            ps = con.prepareStatement
                     ("Update Utente SET Password=? WHERE Email=? AND Password=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, newPassword);
             ps.setString(2, email);
             ps.setString(3, oldPassword);
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new WrongPasswordException();
+            }
 
-            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
