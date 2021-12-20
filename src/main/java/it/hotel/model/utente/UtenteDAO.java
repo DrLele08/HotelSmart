@@ -2,6 +2,8 @@ package it.hotel.model.utente;
 
 import it.hotel.Utility.Connect;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtenteDAO {
 
@@ -20,8 +22,7 @@ public class UtenteDAO {
             ps.setDate(7, utente.getDataNascita());
             ps.setString(8, utente.getTokenAuth());
 
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            ResultSet rs = ps.executeQuery();
             rs.next();
         } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println(e.getMessage() + '\n' + e.getErrorCode());
@@ -38,8 +39,7 @@ public class UtenteDAO {
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, email);
 
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int idUtente = rs.getInt(1);
                 int ruolo = rs.getInt(2);
@@ -57,6 +57,59 @@ public class UtenteDAO {
         return utente;
     }
 
+    public Utente doSelectById(int id) {
+        Utente utente = null;
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM Utente WHERE idUtente=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int idUtente = rs.getInt(1);
+                int ruolo = rs.getInt(2);
+                String cf = rs.getString(3);
+                String nome = rs.getString(4);
+                String cognome = rs.getString(5);
+                String email = rs.getString(6);
+                Date dataNascita = rs.getDate(8);
+                String tokenAuth = rs.getString(9);
+                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return utente;
+    }
+
+    public List<Utente> doSelectByRuolo(int ruolo) {
+        ArrayList<Utente> utenti = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM Utente WHERE ksRuolo=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, ruolo);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int idUtente = rs.getInt(1);
+                String cf = rs.getString(3);
+                String nome = rs.getString(4);
+                String cognome = rs.getString(5);
+                String email = rs.getString(6);
+                Date dataNascita = rs.getDate(8);
+                String tokenAuth = rs.getString(9);
+                utenti.add(new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return utenti;
+    }
+
     /*
         -1: Utente non ha permessi
         Altrimenti
@@ -64,15 +117,16 @@ public class UtenteDAO {
      */
     public int getRuoloUser(int idUtente,String tokenAuth)
     {
-        try(Connection con= Connect.getConnection())
+        try(Connection con = Connect.getConnection())
         {
-            PreparedStatement pS=con.prepareStatement("SELECT ksRuolo FROM Utente WHERE idUtente=? AND TokenAuth=?");
-            pS.setInt(1,idUtente);
-            pS.setString(2,tokenAuth);
-            ResultSet rS=pS.executeQuery();
-            if(rS.next())
+            PreparedStatement ps = con.prepareStatement("SELECT ksRuolo FROM Utente " +
+                    "WHERE idUtente=? AND TokenAuth=?");
+            ps.setInt(1,idUtente);
+            ps.setString(2,tokenAuth);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
             {
-                return rS.getInt("ksRuolo");
+                return rs.getInt("ksRuolo");
             }
             else
                 return -1;
@@ -82,9 +136,6 @@ public class UtenteDAO {
             throw new RuntimeException(e);
         }
     }
-//selectbyid
-    //selectbyruolo
-
 
     public void doUpdate(Utente utente, String password) {
         try (Connection con = Connect.getConnection()) {
@@ -105,10 +156,13 @@ public class UtenteDAO {
         }
     }
 
-    public void doDelete(String where) {
+    public void doDeleteByEmail(String email) {
         try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("DELETE FROM Utente " + where);
-            ps.executeUpdate();
+            PreparedStatement ps = con.prepareStatement(
+                    "DELETE FROM Utente WHERE Email=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, email);
+            ps.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
