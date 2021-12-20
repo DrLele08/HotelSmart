@@ -32,12 +32,14 @@ public class UtenteDAO {
 
     public Utente doSelectByEmail(String email) {
         Utente utente = null;
-        email = "\'" + email + "\'";
-        Statement st;
-        ResultSet rs;
         try (Connection con = Connect.getConnection()) {
-            st = con.createStatement();
-            rs = st.executeQuery("SELECT * FROM Utente WHERE Email=" + email + ";");
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM Utente WHERE Email=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, email);
+
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 int idUtente = rs.getInt(1);
                 int ruolo = rs.getInt(2);
@@ -54,6 +56,7 @@ public class UtenteDAO {
         }
         return utente;
     }
+
     /*
         -1: Utente non ha permessi
         Altrimenti
