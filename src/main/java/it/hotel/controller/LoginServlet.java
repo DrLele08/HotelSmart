@@ -1,7 +1,6 @@
 package it.hotel.controller;
 
 import it.hotel.model.utente.Utente;
-import it.hotel.model.utente.UtenteService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

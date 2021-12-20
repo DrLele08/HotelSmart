@@ -134,7 +134,7 @@ public class UtenteDAO {
         }
     }
 
-    public void setRuolo(int idUtente, int ksRuolo) {
+    public void changeRuolo(int idUtente, int ksRuolo) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("UPDATE Utente SET ksRuolo=? WHERE idUtente=?",
