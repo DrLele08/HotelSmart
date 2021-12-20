@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UtenteDAO {
 
-    public void doInsert(Utente utente, String password) {
+    public void doInsertUtente(Utente utente, String password) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO Utente (ksRuolo, CF, Nome, Cognome, Email, Password," +
@@ -31,7 +31,7 @@ public class UtenteDAO {
         }
     }
 
-    public Utente doSelectByEmail(String email) {
+    public Utente doSelectUtenteByEmail(String email) {
         Utente utente = null;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -57,7 +57,7 @@ public class UtenteDAO {
         return utente;
     }
 
-    public Utente doSelectById(int id) {
+    public Utente doSelectUtenteById(int id) {
         Utente utente = null;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -84,7 +84,7 @@ public class UtenteDAO {
         return utente;
     }
 
-    public List<Utente> doSelectByRuolo(int ruolo) {
+    public List<Utente> doSelectUtentiByRuolo(int ruolo) {
         ArrayList<Utente> utenti = new ArrayList<>();
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -108,6 +108,33 @@ public class UtenteDAO {
             throw new RuntimeException(e);
         }
         return utenti;
+    }
+
+    public void doUpdateUtentePasswordByEmail(String email, String oldPassword, String newPassword) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("Update Utente SET Password=? WHERE Email=? AND Password=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, newPassword);
+            ps.setString(2, email);
+            ps.setString(3, oldPassword);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void doDeleteUtenteByEmail(String email) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("DELETE FROM Utente WHERE Email=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, email);
+            ps.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /*
@@ -137,35 +164,5 @@ public class UtenteDAO {
         }
     }
 
-    public void doUpdate(Utente utente, String password) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("Update Utente SET ksRuolo=?, CF=?, Nome=?," +
-                    " Cognome=?, Email=?, Password=?, DataNascita=?, TokenAuth=? WHERE idUtente=?");
-            ps.setInt(1, utente.getRuolo());
-            ps.setString(2, utente.getCf());
-            ps.setString(3, utente.getNome());
-            ps.setString(4, utente.getCognome());
-            ps.setString(5, utente.getEmail());
-            ps.setString(6, password);
-            ps.setDate(7, utente.getDataNascita());
-            ps.setString(8, utente.getTokenAuth());
-            ps.setInt(9, utente.getIdUtente());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void doDeleteByEmail(String email) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "DELETE FROM Utente WHERE Email=?",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, email);
-            ps.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 }
