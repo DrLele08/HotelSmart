@@ -7,6 +7,20 @@ import java.sql.*;
 
 public class RuoloDAO {
 
+    public void doInsert(Ruolo ruolo) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("INSERT INTO Ruolo (Tipo) VALUES(?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, ruolo.getTipo());
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Ruolo doSelectByRuolo(String ruoloStr) throws RuoloNotFoundException {
         Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {

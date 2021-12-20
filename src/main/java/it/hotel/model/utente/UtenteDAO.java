@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class UtenteDAO {
 
-    public void registrazione(Utente utente, String password) throws EmailAlreadyExistingException {
+    public void doInsert(Utente utente, String password) throws EmailAlreadyExistingException {
         try (Connection con = Connect.getConnection()) {
 
             //controllo che l'email non sia già presente;
@@ -40,7 +40,7 @@ public class UtenteDAO {
         }
     }
 
-    public Utente login(String email, String password)
+    public Utente authenticate(String email, String password)
             throws EmailNotFoundException, PasswordNotValidException {
         Utente utente;
         try (Connection con = Connect.getConnection()) {
@@ -108,7 +108,7 @@ public class UtenteDAO {
         }
     }
 
-    public void deleteAccount(int idUtente)  {
+    public void doDeleteAccount(int idUtente)  {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("DELETE FROM Utente WHERE idUtente=?",

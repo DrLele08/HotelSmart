@@ -7,6 +7,20 @@ import java.sql.*;
 
 public class StatoDAO {
 
+    public void doInsert(Stato stato) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("INSERT INTO Stato (Stato) VALUES(?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, stato.getStato());
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Stato doSelectByStato(String statoStr) throws StatoNotFoundException {
         Stato stato;
         try (Connection con = Connect.getConnection()) {
