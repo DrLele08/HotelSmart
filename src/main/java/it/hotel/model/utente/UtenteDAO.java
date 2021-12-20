@@ -112,7 +112,7 @@ public class UtenteDAO {
         return utenti;
     }
 
-    public void doDeleteUtenteByEmail(String email) {
+    public void deleteAccount(String email) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("DELETE FROM Utente WHERE Email=?",
@@ -124,39 +124,7 @@ public class UtenteDAO {
         }
     }
 
-
-    public void changePassword(String email, String oldPassword, String newPassword)
-            throws EmailNotFoundException, PasswordNotValidException {
-        try (Connection con = Connect.getConnection()) {
-
-            //verifico che esista l'email;
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE Email=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new EmailNotFoundException();
-            }
-
-            //verifico la oldPassword e aggiorno con la newPassword;
-            ps = con.prepareStatement
-                    ("Update Utente SET Password=? WHERE Email=? AND Password=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, newPassword);
-            ps.setString(2, email);
-            ps.setString(3, oldPassword);
-            rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new PasswordNotValidException();
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Utente authenticate(String email, String password)
+    public Utente login(String email, String password)
             throws EmailNotFoundException, PasswordNotValidException {
         Utente utente;
         try (Connection con = Connect.getConnection()) {
@@ -194,6 +162,37 @@ public class UtenteDAO {
             throw new RuntimeException(e);
         }
         return utente;
+    }
+
+    public void changePassword(String tokenAuth, int idUtente, String oldPassword, String newPassword)
+            throws UtenteNotFoundException, PasswordNotValidException {
+        try (Connection con = Connect.getConnection()) {
+
+            //verifico che esista l'email;
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Utente WHERE idUtente=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idUtente);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new UtenteNotFoundException();
+            }
+
+            //verifico la oldPassword e aggiorno con la newPassword;
+            ps = con.prepareStatement
+                    ("Update Utente SET Password=? WHERE idUtente=? AND Password=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, newPassword);
+            ps.setInt(2, idUtente);
+            ps.setString(3, oldPassword);
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new PasswordNotValidException();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
