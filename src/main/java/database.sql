@@ -13,7 +13,7 @@ CREATE TABLE Utente
 (
 	idUtente INT NOT NULL AUTO_INCREMENT,
 	ksRuolo INT NOT NULL,
-	CF CHAR(16) NOT NULL,
+	cf CHAR(16) NOT NULL,
 	nome VARCHAR(65) NOT NULL,
 	cognome VARCHAR(65) NOT NULL,
 	email VARCHAR(65) NOT NULL UNIQUE,
@@ -28,10 +28,10 @@ CREATE TABLE PersonaAggiuntiva
 (
 	idPersona INT NOT NULL AUTO_INCREMENT,
 	ksUtente INT NOT NULL,
-	CF CHAR(16) NOT NULL,
-	Nome VARCHAR(65) NOT NULL,
-	Cognome VARCHAR(65) NOT NULL,
-	DataNascita DATE NOT NULL,
+	cf CHAR(16) NOT NULL,
+	nome VARCHAR(65) NOT NULL,
+	cognome VARCHAR(65) NOT NULL,
+	dataNascita DATE NOT NULL,
 	PRIMARY KEY (idPersona),
 	FOREIGN KEY (ksUtente) REFERENCES Utente(idUtente)
 );
@@ -39,12 +39,12 @@ CREATE TABLE PersonaAggiuntiva
 CREATE TABLE Stanza
 (
 	idStanza INT NOT NULL AUTO_INCREMENT,
-	AnimaleDom BOOLEAN NOT NULL,
-	Fumatore BOOLEAN NOT NULL,
-	LettiSingoli INT NOT NULL,
-	LettiMatrimoniali INT NOT NULL,
-	CostoNotte DOUBLE NOT NULL,
-	Sconto DOUBLE NOT NULL DEFAULT 0,
+	animaleDomestico BOOLEAN NOT NULL,
+	fumatore BOOLEAN NOT NULL,
+	lettiSingoli INT NOT NULL,
+	lettiMatrimoniali INT NOT NULL,
+	costoNotte DOUBLE NOT NULL,
+	sconto DOUBLE NOT NULL DEFAULT 0,
 	PRIMARY KEY (idStanza)
 );
 
@@ -52,7 +52,7 @@ CREATE TABLE Foto
 (
 	idFoto INT NOT NULL AUTO_INCREMENT,
 	ksStanza INT NOT NULL,
-	Percorso VARCHAR(128) NOT NULL,
+	percorso VARCHAR(128) NOT NULL,
 	PRIMARY KEY (idFoto),
 	FOREIGN KEY (ksStanza) REFERENCES Stanza(idStanza)
 );
@@ -60,7 +60,7 @@ CREATE TABLE Foto
 CREATE TABLE Stato
 (
 	idStato INT NOT NULL AUTO_INCREMENT,
-	Stato VARCHAR(45) NOT NULL,
+	stato VARCHAR(45) NOT NULL,
 	PRIMARY KEY (idStato)
 );
 
@@ -70,13 +70,13 @@ CREATE TABLE PrenotazioneStanza
 	ksUtente INT NOT NULL,
 	ksStanza INT NOT NULL,
 	ksStato INT NOT NULL,
-	DataInizio DATE NOT NULL,
-	DataFine DATE NOT NULL,
-	PrezzoFinale FLOAT NOT NULL,
-	TokenStripe VARCHAR(255),
-	TokenQR CHAR(48),
-	Commenti VARCHAR(255),
-	Valutazione INT DEFAULT -1,
+	dataInizio DATE NOT NULL,
+	dataFine DATE NOT NULL,
+	prezzoFinale FLOAT NOT NULL,
+	tokenStripe VARCHAR(255),
+	tokenQR CHAR(48),
+	commenti VARCHAR(255),
+	valutazione INT DEFAULT -1,
 	PRIMARY KEY (idPrenotazione),
 	FOREIGN KEY (ksUtente) REFERENCES Utente(idUtente),
 	FOREIGN KEY (ksStanza) REFERENCES Stanza(idStanza),
@@ -96,19 +96,19 @@ CREATE TABLE PersonePrenotazione
 CREATE TABLE Utility
 (
 	idUtility INT NOT NULL AUTO_INCREMENT,
-	Tipo VARCHAR(45) NOT NULL,
-	Valore INT NOT NULL,
+	tipo VARCHAR(45) NOT NULL,
+	valore INT NOT NULL,
 	PRIMARY KEY (idUtility)
 );
 
 CREATE TABLE Servizio
 (
 	idServizio INT NOT NULL AUTO_INCREMENT,
-	Nome VARCHAR(45) NOT NULL,
-	Descrizione VARCHAR(45) NOT NULL,
-	Foto VARCHAR(128) NOT NULL,
-	Costo FLOAT NOT NULL,
-	LimitePosti INT NOT NULL,
+	nome VARCHAR(45) NOT NULL,
+	descrizione VARCHAR(45) NOT NULL,
+	foto VARCHAR(128) NOT NULL,
+	costo FLOAT NOT NULL,
+	limitePosti INT NOT NULL,
 	PRIMARY KEY (idServizio)
 );
 
@@ -117,7 +117,7 @@ CREATE TABLE PrenotazioneServizio
 	idPrenotazioneServizio INT NOT NULL AUTO_INCREMENT,
 	ksPrenotazione INT NOT NULL,
 	ksServizio INT NOT NULL,
-	NumPersone INT NOT NULL,
+	numPersone INT NOT NULL,
 	PRIMARY KEY (idPrenotazioneServizio),
 	FOREIGN KEY (ksPrenotazione) REFERENCES PrenotazioneStanza(idPrenotazione),
 	FOREIGN KEY (ksServizio) REFERENCES Servizio(idServizio)
