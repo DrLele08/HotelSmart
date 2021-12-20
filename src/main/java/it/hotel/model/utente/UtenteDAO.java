@@ -1,8 +1,7 @@
 package it.hotel.model.utente;
 
 import it.hotel.Utility.Connect;
-import it.hotel.model.utente.UtenteExceptions.EmailNotFoundException;
-import it.hotel.model.utente.UtenteExceptions.WrongPasswordException;
+import it.hotel.model.utente.UtenteExceptions.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -127,7 +126,7 @@ public class UtenteDAO {
 
 
     public void changePassword(String email, String oldPassword, String newPassword)
-            throws EmailNotFoundException, WrongPasswordException {
+            throws EmailNotFoundException, PasswordNotValidException {
         try (Connection con = Connect.getConnection()) {
 
             //verifico che esista l'email;
@@ -149,7 +148,7 @@ public class UtenteDAO {
             ps.setString(3, oldPassword);
             rs = ps.executeQuery();
             if (!rs.next()) {
-                throw new WrongPasswordException();
+                throw new PasswordNotValidException();
             }
 
         } catch (SQLException e) {
@@ -158,7 +157,7 @@ public class UtenteDAO {
     }
 
     public Utente authenticate(String email, String password)
-            throws EmailNotFoundException, WrongPasswordException {
+            throws EmailNotFoundException, PasswordNotValidException {
         Utente utente;
         try (Connection con = Connect.getConnection()) {
 
@@ -187,7 +186,7 @@ public class UtenteDAO {
                 String tokenAuth = rs.getString(9);
                 utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
             } else {
-                throw new WrongPasswordException();
+                throw new PasswordNotValidException();
             }
 
         }
@@ -196,33 +195,5 @@ public class UtenteDAO {
         }
         return utente;
     }
-
-    /*
-        -1: Utente non ha permessi
-        Altrimenti
-        ris: Ruolo
-     */
-    public int getRuoloUser(int idUtente,String tokenAuth)
-    {
-        try(Connection con = Connect.getConnection())
-        {
-            PreparedStatement ps = con.prepareStatement("SELECT ksRuolo FROM Utente " +
-                    "WHERE idUtente=? AND TokenAuth=?");
-            ps.setInt(1,idUtente);
-            ps.setString(2,tokenAuth);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next())
-            {
-                return rs.getInt("ksRuolo");
-            }
-            else
-                return -1;
-        }
-        catch(Exception e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
 
 }
