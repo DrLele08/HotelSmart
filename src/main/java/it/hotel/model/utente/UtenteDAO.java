@@ -4,12 +4,10 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.utente.UtenteExceptions.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UtenteDAO {
 
-    public void doInsertUtente(Utente utente, String password) {
+    public void registrazione(Utente utente, String password) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO Utente (ksRuolo, CF, Nome, Cognome, Email, Password," +
@@ -28,97 +26,6 @@ public class UtenteDAO {
             rs.next();
         } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println(e.getMessage() + '\n' + e.getErrorCode());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Utente doSelectUtenteByEmail(String email) {
-        Utente utente = null;
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "SELECT * FROM Utente WHERE Email=?",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, email);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int idUtente = rs.getInt(1);
-                int ruolo = rs.getInt(2);
-                String cf = rs.getString(3);
-                String nome = rs.getString(4);
-                String cognome = rs.getString(5);
-                Date dataNascita = rs.getDate(8);
-                String tokenAuth = rs.getString(9);
-                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return utente;
-    }
-
-    public Utente doSelectUtenteById(int id) {
-        Utente utente = null;
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "SELECT * FROM Utente WHERE idUtente=?",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, id);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int idUtente = rs.getInt(1);
-                int ruolo = rs.getInt(2);
-                String cf = rs.getString(3);
-                String nome = rs.getString(4);
-                String cognome = rs.getString(5);
-                String email = rs.getString(6);
-                Date dataNascita = rs.getDate(8);
-                String tokenAuth = rs.getString(9);
-                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return utente;
-    }
-
-    public List<Utente> doSelectUtentiByRuolo(int ruolo) {
-        ArrayList<Utente> utenti = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "SELECT * FROM Utente WHERE ksRuolo=?",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, ruolo);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int idUtente = rs.getInt(1);
-                String cf = rs.getString(3);
-                String nome = rs.getString(4);
-                String cognome = rs.getString(5);
-                String email = rs.getString(6);
-                Date dataNascita = rs.getDate(8);
-                String tokenAuth = rs.getString(9);
-                utenti.add(new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return utenti;
-    }
-
-    public void deleteAccount(String email) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("DELETE FROM Utente WHERE Email=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, email);
-            ps.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -164,32 +71,55 @@ public class UtenteDAO {
         return utente;
     }
 
-    public void changePassword(String tokenAuth, int idUtente, String oldPassword, String newPassword)
-            throws UtenteNotFoundException, PasswordNotValidException {
+    public void changePassword(int idUtente, String oldPassword, String newPassword)
+            throws PasswordNotValidException {
         try (Connection con = Connect.getConnection()) {
 
-            //verifico che esista l'email;
+            //verifico la oldPassword;
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Utente WHERE idUtente=? AND Password=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idUtente);
+            ps.setString(2, oldPassword);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new PasswordNotValidException();
+            }
+
+            //aggiorno con la newPassword;
+            ps = con.prepareStatement
+                    ("Update Utente SET Password=? WHERE idUtente=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, newPassword);
+            ps.setInt(2, idUtente);
+            rs = ps.executeQuery();
+            rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteAccount(int idUtente)  {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("DELETE FROM Utente WHERE idUtente=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idUtente);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int getRuolo(int idUtente) {
+        try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("SELECT * FROM Utente WHERE idUtente=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new UtenteNotFoundException();
-            }
-
-            //verifico la oldPassword e aggiorno con la newPassword;
-            ps = con.prepareStatement
-                    ("Update Utente SET Password=? WHERE idUtente=? AND Password=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, newPassword);
-            ps.setInt(2, idUtente);
-            ps.setString(3, oldPassword);
-            rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new PasswordNotValidException();
-            }
-
+            return rs.getInt(2);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
