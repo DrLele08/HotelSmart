@@ -1,9 +1,11 @@
 package it.hotel.model.utente;
+import it.hotel.Utility.Connect;
+
 import java.sql.*;
 
 public class UtenteDAO {
 
-    public static void doInsert(Utente utente, String password) {
+    public void doInsert(Utente utente, String password) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO Utente (ksRuolo, CF, Nome, Cognome, Email, Password," +
@@ -28,7 +30,7 @@ public class UtenteDAO {
         }
     }
 
-    public static Utente doSelectByEmail(String email) {
+    public Utente doSelectByEmail(String email) {
         Utente utente = null;
         email = "\'" + email + "\'";
         Statement st;
@@ -82,7 +84,7 @@ public class UtenteDAO {
     //selectbyruolo
 
 
-    public static void doUpdate(Utente utente, String password) {
+    public void doUpdate(Utente utente, String password) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement("Update Utente SET ksRuolo=?, CF=?, Nome=?," +
                     " Cognome=?, Email=?, Password=?, DataNascita=?, TokenAuth=? WHERE idUtente=?");
@@ -101,7 +103,7 @@ public class UtenteDAO {
         }
     }
 
-    public static void doDelete(String where) {
+    public void doDelete(String where) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement("DELETE FROM Utente " + where);
             ps.executeUpdate();
