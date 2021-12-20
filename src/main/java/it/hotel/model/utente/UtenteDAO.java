@@ -97,7 +97,7 @@ public class UtenteDAO {
 
             //aggiorno con la newPassword;
             ps = con.prepareStatement
-                    ("Update Utente SET Password=? WHERE idUtente=?",
+                    ("UPDATE Utente SET Password=? WHERE idUtente=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, newPassword);
             ps.setInt(2, idUtente);
@@ -129,6 +129,33 @@ public class UtenteDAO {
             ps.setInt(1, idUtente);
             ResultSet rs = ps.executeQuery();
             return rs.getInt(2);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setRuolo(int idUtente, int ksRuolo) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("UPDATE Utente SET ksRuolo=? WHERE idUtente=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, ksRuolo);
+            ps.setInt(2, idUtente);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean checkTokenAuth(int idUtente, String tokenAuth) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Utente WHERE idUtente=? AND TokenAuth=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idUtente);
+            ps.setString(2, tokenAuth);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
