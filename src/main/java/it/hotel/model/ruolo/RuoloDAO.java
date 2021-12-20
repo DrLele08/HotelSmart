@@ -2,8 +2,6 @@ package it.hotel.model.ruolo;
 
 import it.hotel.Utility.Connect;
 import it.hotel.model.ruolo.ruoloExceptions.*;
-import it.hotel.model.stato.Stato;
-import it.hotel.model.stato.statoExceptions.StatoNotFoundException;
 
 import java.sql.*;
 
@@ -29,7 +27,7 @@ public class RuoloDAO {
         return ruolo;
     }
 
-    public static Ruolo doSelectById(int idRuolo) throws StatoNotFoundException {
+    public static Ruolo doSelectById(int idRuolo) throws RuoloNotFoundException {
         Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
@@ -40,7 +38,7 @@ public class RuoloDAO {
             if (rs.next()) {
                 ruolo = new Ruolo(rs.getInt(1), rs.getString(2));
             } else {
-                throw new StatoNotFoundException();
+                throw new RuoloNotFoundException();
             }
         }
         catch (SQLException e) {
