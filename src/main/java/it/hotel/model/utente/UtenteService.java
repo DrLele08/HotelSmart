@@ -13,6 +13,6 @@ public class UtenteService
     {
         if(email.trim().isEmpty() && pwd.trim().isEmpty())
             return null;
-        return dao.getUtenteByCredenziali("Tst","Test");
+        return null;
     }
 }

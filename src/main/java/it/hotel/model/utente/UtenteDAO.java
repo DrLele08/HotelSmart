@@ -60,7 +60,7 @@ public class UtenteDAO {
      */
     public int getRuoloUser(int idUtente,String tokenAuth)
     {
-        try(Connection con=Connect.getConnection())
+        try(Connection con= Connect.getConnection())
         {
             PreparedStatement pS=con.prepareStatement("SELECT ksRuolo FROM Utente WHERE idUtente=? AND TokenAuth=?");
             pS.setInt(1,idUtente);
