@@ -50,8 +50,9 @@ public class StanzaDAO {
         return stanza;
     }
 
-    public String search(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
-            Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo, Double sconto) {
+    public List<Stanza> search(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
+            Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
+                Double scontoMinimo, Double scontoMassimo) {
 
         ArrayList<String> parametri = new ArrayList<>();
 
@@ -70,17 +71,35 @@ public class StanzaDAO {
         if ((costoNotteMinimo != null) || (costoNotteMassimo != null)) {
             parametri.add(costoNotteStr(costoNotteMinimo ,costoNotteMassimo));
         }
-        if (sconto != null) {
-            parametri.add(scontoStr(sconto));
+        if ((scontoMinimo != null) || (scontoMassimo != null)) {
+            parametri.add(scontoStr(scontoMinimo, scontoMassimo));
         }
 
         String where = "";
+        where += "WHERE ";
         for (int i = 0; i < parametri.size() - 1; i++) {
             where += parametri.get(i) + " AND ";
         }
         where += parametri.get(parametri.size() - 1);
 
-        return where;
+        ArrayList<Stanza> stanze = new ArrayList<>();
+
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Stanza" + where,
+                            Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                stanze.add(new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
+                    rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7)));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return stanze;
 
     }
 
@@ -120,8 +139,16 @@ public class StanzaDAO {
         return "";
     }
 
-    private String scontoStr(Double sconto) {
-        return "sconto = " + sconto;
+    private String scontoStr(Double scontoMinimo, Double scontoMassimo) {
+        if ((scontoMinimo != null) && (scontoMassimo != null)) {
+            return "sconto >= " + scontoMinimo + " AND " +
+                    "sconto <= " + scontoMassimo;
+        } else if (scontoMinimo != null) {
+            return "sconto >= " + scontoMinimo;
+        } else if (scontoMassimo != null) {
+            return "sconto <= " + scontoMassimo;
+        }
+        return "";
     }
 
 }
