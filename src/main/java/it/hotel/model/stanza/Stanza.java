@@ -49,16 +49,4 @@ public class Stanza {
         return sconto;
     }
 
-    @Override
-    public String toString() {
-        return "Stanza{" +
-                "idStanza=" + idStanza +
-                ", animaleDomestico=" + animaleDomestico +
-                ", fumatore=" + fumatore +
-                ", lettiSingoli=" + lettiSingoli +
-                ", lettiMatrimoniali=" + lettiMatrimoniali +
-                ", costoNotte=" + costoNotte +
-                ", sconto=" + sconto +
-                '}';
-    }
 }

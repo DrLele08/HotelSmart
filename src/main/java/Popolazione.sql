@@ -28,15 +28,15 @@ VALUES(1,"","Raffaele","Sais","saisraffaele08@gmail.com",
 																							
 
 -- Popolazione Stanza
-INSERT INTO Stanza(animaleDom, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto) 
+INSERT INTO Stanza(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
 VALUES(0,1,0,2,9,0);
-INSERT INTO Stanza(animaleDom, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
+INSERT INTO Stanza(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
 VALUES(1,1,0,1,7,0);																						
-INSERT INTO Stanza(animaleDom, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
+INSERT INTO Stanza(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
 VALUES(1,0,2,2,18,3);																						
-INSERT INTO Stanza(animaleDom, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
+INSERT INTO Stanza(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
 VALUES(0,0,1,1,13,0);																						
-INSERT INTO Stanza(animaleDom, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
+INSERT INTO Stanza(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto)
 VALUES(0,1,2,0,10,0);
 
 -- Popolazione Servizi

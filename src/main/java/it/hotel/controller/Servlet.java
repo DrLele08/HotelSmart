@@ -16,13 +16,9 @@ public class Servlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         StanzaDAO stanzaDAO = new StanzaDAO();
-        List<Stanza> stanze = (new StanzaDAO()).doSearch(null, null, null,
+        List<Stanza> stanze = (new StanzaDAO()).doSearch(true, null, null,
                 null, null, null, null, null);
-        String test = "";
-        for (Stanza stanza : stanze) {
-            test += stanza.toString();
-        }
-        response.getOutputStream().println(test);
+        response.getOutputStream().println("test" + stanze.size());
     }
 
     @Override
