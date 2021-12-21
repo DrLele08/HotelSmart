@@ -72,7 +72,7 @@ CREATE TABLE PrenotazioneStanza
 	ksStato INT NOT NULL,
 	dataInizio DATE NOT NULL,
 	dataFine DATE NOT NULL,
-	prezzoFinale FLOAT NOT NULL,
+	prezzoFinale DOUBLE NOT NULL,
 	tokenStripe VARCHAR(255),
 	tokenQR CHAR(48),
 	commenti VARCHAR(255),
@@ -107,7 +107,7 @@ CREATE TABLE Servizio
 	nome VARCHAR(45) NOT NULL,
 	descrizione VARCHAR(45) NOT NULL,
 	foto VARCHAR(128) NOT NULL,
-	costo FLOAT NOT NULL,
+	costo DOUBLE NOT NULL,
 	limitePosti INT NOT NULL,
 	PRIMARY KEY (idServizio)
 );
