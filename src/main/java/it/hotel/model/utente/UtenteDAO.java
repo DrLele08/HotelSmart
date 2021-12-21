@@ -121,14 +121,19 @@ public class UtenteDAO {
         }
     }
 
-    public int getRuolo(int idUtente) {
+    public int getRuolo(int idUtente, String tokenAuth) throws TokenNotValidException {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE idUtente=?",
+                    ("SELECT * FROM Utente WHERE idUtente=? AND TokenAuth=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
+            ps.setString(2, tokenAuth);
             ResultSet rs = ps.executeQuery();
-            return rs.getInt(2);
+            if (rs.next()) {
+                return rs.getInt(2);
+            } else {
+                throw new TokenNotValidException();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
