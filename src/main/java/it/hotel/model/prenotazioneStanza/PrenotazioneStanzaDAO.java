@@ -4,6 +4,8 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrenotazioneStanzaDAO {
 
@@ -54,6 +56,48 @@ public class PrenotazioneStanzaDAO {
             throw new RuntimeException(e);
         }
         return prenotazioneStanza;
+    }
+
+    public List<PrenotazioneStanza> doSelectByUtente(int ksUtente) {
+        ArrayList<PrenotazioneStanza> prenotazioniStanza = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM PrenotazioneStanza WHERE ksUtente=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, ksUtente);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                prenotazioniStanza.add(new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+                        rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8),
+                        rs.getString(9), rs.getString(10), rs.getInt(11)));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return prenotazioniStanza;
+    }
+
+    public List<PrenotazioneStanza> doSelectByStanza(int ksStanza) {
+        ArrayList<PrenotazioneStanza> prenotazioniStanza = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM PrenotazioneStanza WHERE ksStanza=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, ksStanza);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                prenotazioniStanza.add(new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+                        rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8),
+                        rs.getString(9), rs.getString(10), rs.getInt(11)));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return prenotazioniStanza;
     }
 
 }
