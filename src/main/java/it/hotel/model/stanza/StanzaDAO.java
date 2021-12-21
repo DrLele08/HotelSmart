@@ -50,7 +50,7 @@ public class StanzaDAO {
         return stanza;
     }
 
-    public List<Stanza> search(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
+    public List<Stanza> doSearch(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
             Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
                 Double scontoMinimo, Double scontoMassimo) {
 
