@@ -1,18 +1,25 @@
 package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.Utility.Connect;
-import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fornisce l'accesso al database per {@link PrenotazioneStanza}.
+ */
 public class PrenotazioneStanzaDAO {
 
     public final static int UTENTE = 0;
     public final static int STANZA = 1;
     public final static int STATO = 2;
 
+    /**
+     * Inserisce un oggetto {@link PrenotazioneStanza} nel database.
+     * @param prenotazioneStanza È l'oggetto da inserire nel database
+     */
     public void doInsert(PrenotazioneStanza prenotazioneStanza) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
@@ -38,6 +45,11 @@ public class PrenotazioneStanzaDAO {
         }
     }
 
+    /**
+     * Recupera un oggetto {@link PrenotazioneStanza} dal database.
+     * @param idPrenotazioneStanza È l'identificativo dell'oggetto da recuperare dal database
+     * @return Ritorna l'oggetto recuperato dal database
+     */
     public PrenotazioneStanza doSelectById(int idPrenotazioneStanza)
             throws PrenotazioneStanzaNotFoundException {
         PrenotazioneStanza prenotazioneStanza;
@@ -60,6 +72,12 @@ public class PrenotazioneStanzaDAO {
         return prenotazioneStanza;
     }
 
+    /**
+     * Recupera oggetti {@link PrenotazioneStanza} dal database.
+     * @param value È il valore identificativo degli oggetti da recuperare dal database
+     * @param type È il tipo del valore identificativo
+     * @return Ritorna gli oggetti recuperati dal database
+     */
     public List<PrenotazioneStanza> doSelectBy(int value, int type) {
         ArrayList<PrenotazioneStanza> prenotazioniStanza = new ArrayList<>();
         String str = "";
