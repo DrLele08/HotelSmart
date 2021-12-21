@@ -4,6 +4,8 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.stanza.stanzaExceptions.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StanzaDAO {
 
@@ -46,6 +48,80 @@ public class StanzaDAO {
             throw new RuntimeException(e);
         }
         return stanza;
+    }
+
+    public String search(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
+            Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo, Double sconto) {
+
+        ArrayList<String> parametri = new ArrayList<>();
+
+        if (animaleDomestico != null) {
+            parametri.add(animaleDomesticoStr(animaleDomestico));
+        }
+        if (fumatore != null) {
+            parametri.add(fumatoreStr(fumatore));
+        }
+        if (lettiSingoli != null) {
+            parametri.add(lettiSingoliStr(lettiSingoli));
+        }
+        if (lettiMatrimoniali != null) {
+            parametri.add(lettiMatrimonialiStr(lettiMatrimoniali));
+        }
+        if ((costoNotteMinimo != null) || (costoNotteMassimo != null)) {
+            parametri.add(costoNotteStr(costoNotteMinimo ,costoNotteMassimo));
+        }
+        if (sconto != null) {
+            parametri.add(scontoStr(sconto));
+        }
+
+        String where = "";
+        for (int i = 0; i < parametri.size() - 1; i++) {
+            where += parametri.get(i) + " AND ";
+        }
+        where += parametri.get(parametri.size() - 1);
+
+        return where;
+
+    }
+
+    private String animaleDomesticoStr(Boolean animaleDomestico) {
+        if (animaleDomestico) {
+            return "animaleDomestico = TRUE";
+        } else {
+            return "animaleDomestico = FALSE";
+        }
+    }
+
+    private String fumatoreStr(Boolean fumatore) {
+        if (fumatore) {
+            return "fumatore = TRUE";
+        } else {
+            return "fumatore = FALSE";
+        }
+    }
+
+    private String lettiSingoliStr(Integer lettiSingoli) {
+        return "lettiSingoli = " + lettiSingoli;
+    }
+
+    private String lettiMatrimonialiStr(Integer lettiMatrimoniali) {
+        return "lettiMatrimoniali = " + lettiMatrimoniali;
+    }
+
+    private String costoNotteStr(Double costoNotteMinimo, Double costoNotteMassimo) {
+        if ((costoNotteMinimo != null) && (costoNotteMassimo != null)) {
+            return "costoNotte >= " + costoNotteMinimo + " AND " +
+                    "costoNotte <= " + costoNotteMassimo;
+        } else if (costoNotteMinimo != null) {
+            return "costoNotte >= " + costoNotteMinimo;
+        } else if (costoNotteMassimo != null) {
+            return "costoNotte <= " + costoNotteMassimo;
+        }
+        return "";
+    }
+
+    private String scontoStr(Double sconto) {
+        return "sconto = " + sconto;
     }
 
 }
