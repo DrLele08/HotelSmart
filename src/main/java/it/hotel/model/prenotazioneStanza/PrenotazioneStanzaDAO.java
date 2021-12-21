@@ -49,6 +49,8 @@ public class PrenotazioneStanzaDAO {
      * Recupera un oggetto {@link PrenotazioneStanza} dal database.
      * @param idPrenotazioneStanza È l'identificativo dell'oggetto da recuperare dal database
      * @return Ritorna l'oggetto recuperato dal database
+     * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @see PrenotazioneStanzaNotFoundException
      */
     public PrenotazioneStanza doSelectById(int idPrenotazioneStanza)
             throws PrenotazioneStanzaNotFoundException {
