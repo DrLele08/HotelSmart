@@ -1,6 +1,7 @@
 package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.Utility.Connect;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 
 import java.sql.*;
 
@@ -31,7 +32,8 @@ public class PrenotazioneStanzaDAO {
         }
     }
 
-    public PrenotazioneStanza doSelectById(int idPrenotazioneStanza) throws PrenotazioneStanzaNotFoundException {
+    public PrenotazioneStanza doSelectById(int idPrenotazioneStanza)
+            throws PrenotazioneStanzaNotFoundException {
         PrenotazioneStanza prenotazioneStanza;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
