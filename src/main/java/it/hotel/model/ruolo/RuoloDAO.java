@@ -4,6 +4,8 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.ruolo.ruoloExceptions.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RuoloDAO {
 
@@ -59,6 +61,24 @@ public class RuoloDAO {
             throw new RuntimeException(e);
         }
         return ruolo;
+    }
+
+    public List<Ruolo> doGetAll() {
+        ArrayList<Ruolo> ruoli = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Ruolo",
+                            Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ruoli.add(new Ruolo(rs.getInt(1), rs.getString(2)));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return ruoli;
     }
 
 }

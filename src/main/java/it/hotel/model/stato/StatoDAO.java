@@ -4,6 +4,8 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.stato.statoExceptions.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatoDAO {
 
@@ -59,6 +61,24 @@ public class StatoDAO {
             throw new RuntimeException(e);
         }
         return stato;
+    }
+
+    public List<Stato> doGetAll() {
+        ArrayList<Stato> ruoli = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Stato",
+                            Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ruoli.add(new Stato(rs.getInt(1), rs.getString(2)));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return ruoli;
     }
 
 }
