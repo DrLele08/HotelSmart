@@ -11,16 +11,12 @@ public class UtenteDAO {
         try (Connection con = Connect.getConnection()) {
 
             //controllo che l'email non sia già presente;
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE email=?",
-                    Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            if (isEmailInDatabase(con, utente.getEmail())) {
                 throw new EmailAlreadyExistingException();
             }
 
             //inserisco l'utente;
-            ps = con.prepareStatement
+            PreparedStatement ps = con.prepareStatement
                     ("INSERT INTO Utente (ksRuolo, cf, nome, cognome, email, password," +
                             " dataNascita, tokenAuth) VALUES(?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
@@ -33,7 +29,7 @@ public class UtenteDAO {
             ps.setDate(7, utente.getDataNascita());
             ps.setString(8, utente.getTokenAuth());
 
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             rs.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -46,20 +42,16 @@ public class UtenteDAO {
         try (Connection con = Connect.getConnection()) {
 
             //verifico che esista l'email;
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
+            if (!isEmailInDatabase(con, email)) {
                 throw new EmailNotFoundException();
             }
 
             //verifico la password;
-            ps = con.prepareStatement("SELECT * FROM Utente WHERE email=? AND password=?",
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=? AND password=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, email);
             ps.setString(2, password);
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int idUtente = rs.getInt(1);
                 int ruolo = rs.getInt(2);
@@ -150,6 +142,14 @@ public class UtenteDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean isEmailInDatabase(Connection con, String email) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=?",
+                Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+        return rs.next();
     }
 
 }
