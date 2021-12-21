@@ -76,11 +76,11 @@ public class StanzaDAO {
         }
 
         String where = "";
-        where += "WHERE ";
-        for (int i = 0; i < parametri.size() - 1; i++) {
-            where += parametri.get(i) + " AND ";
-        }
         if (parametri.size() > 0) {
+            where += " WHERE ";
+            for (int i = 0; i < parametri.size() - 1; i++) {
+                where += parametri.get(i) + " AND ";
+            }
             where += parametri.get(parametri.size() - 1);
         }
 
