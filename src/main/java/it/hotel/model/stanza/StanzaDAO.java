@@ -58,19 +58,10 @@ public class StanzaDAO {
 
         animaleDomesticoStr(parametri, animaleDomestico);
         fumatoreStr(parametri, fumatore);
-
-        if (lettiSingoli != null) {
-            parametri.add(lettiSingoliStr(lettiSingoli));
-        }
-        if (lettiMatrimoniali != null) {
-            parametri.add(lettiMatrimonialiStr(lettiMatrimoniali));
-        }
-        if ((costoNotteMinimo != null) || (costoNotteMassimo != null)) {
-            parametri.add(costoNotteStr(costoNotteMinimo ,costoNotteMassimo));
-        }
-        if ((scontoMinimo != null) || (scontoMassimo != null)) {
-            parametri.add(scontoStr(scontoMinimo, scontoMassimo));
-        }
+        lettiSingoliStr(parametri, lettiSingoli);
+        lettiMatrimonialiStr(parametri, lettiMatrimoniali);
+        costoNotteStr(parametri, costoNotteMinimo, costoNotteMassimo);
+        scontoStr(parametri, scontoMinimo, scontoMassimo);
 
         String where = "";
         if (parametri.size() > 0) {
@@ -122,36 +113,46 @@ public class StanzaDAO {
         }
     }
 
-    private String lettiSingoliStr(Integer lettiSingoli) {
-        return "lettiSingoli = " + lettiSingoli;
+    private void lettiSingoliStr(List<String> parametri, Integer lettiSingoli) {
+        if (lettiSingoli == null) {
+            return;
+        } else {
+            parametri.add("lettiSingoli = " + lettiSingoli);
+        }
     }
 
-    private String lettiMatrimonialiStr(Integer lettiMatrimoniali) {
-        return "lettiMatrimoniali = " + lettiMatrimoniali;
+    private void lettiMatrimonialiStr(List<String> parametri, Integer lettiMatrimoniali) {
+        if (lettiMatrimoniali == null) {
+            return;
+        } else {
+            parametri.add("lettiMatrimoniali = " + lettiMatrimoniali);
+        }
     }
 
-    private String costoNotteStr(Double costoNotteMinimo, Double costoNotteMassimo) {
-        if ((costoNotteMinimo != null) && (costoNotteMassimo != null)) {
-            return "costoNotte >= " + costoNotteMinimo + " AND " +
-                    "costoNotte <= " + costoNotteMassimo;
+    private void costoNotteStr(List<String> parametri, Double costoNotteMinimo, Double costoNotteMassimo) {
+        if ((costoNotteMinimo == null) && (costoNotteMassimo == null)) {
+            return;
+        } else if ((costoNotteMinimo != null) && (costoNotteMassimo != null)) {
+            parametri.add("costoNotte >= " + costoNotteMinimo + " AND " +
+                    "costoNotte <= " + costoNotteMassimo);
         } else if (costoNotteMinimo != null) {
-            return "costoNotte >= " + costoNotteMinimo;
+            parametri.add("costoNotte >= " + costoNotteMinimo);
         } else if (costoNotteMassimo != null) {
-            return "costoNotte <= " + costoNotteMassimo;
+            parametri.add("costoNotte <= " + costoNotteMassimo);
         }
-        return "";
     }
 
-    private String scontoStr(Double scontoMinimo, Double scontoMassimo) {
-        if ((scontoMinimo != null) && (scontoMassimo != null)) {
-            return "sconto >= " + scontoMinimo + " AND " +
-                    "sconto <= " + scontoMassimo;
+    private void scontoStr(List<String> parametri, Double scontoMinimo, Double scontoMassimo) {
+        if ((scontoMinimo == null) && (scontoMassimo == null)) {
+            return;
+        } else if ((scontoMinimo != null) && (scontoMassimo != null)) {
+            parametri.add("sconto >= " + scontoMinimo + " AND " +
+                    "sconto <= " + scontoMassimo);
         } else if (scontoMinimo != null) {
-            return "sconto >= " + scontoMinimo;
+            parametri.add("sconto >= " + scontoMinimo);
         } else if (scontoMassimo != null) {
-            return "sconto <= " + scontoMassimo;
+            parametri.add("sconto <= " + scontoMassimo);
         }
-        return "";
     }
 
 }
