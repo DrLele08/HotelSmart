@@ -108,7 +108,7 @@ public class UtenteDAO {
         }
     }
 
-    public void doDeleteAccount(int idUtente)  {
+    public void doDelete(int idUtente)  {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("DELETE FROM Utente WHERE idUtente=?",
@@ -147,20 +147,6 @@ public class UtenteDAO {
             ps.setInt(1, ksRuolo);
             ps.setInt(2, idUtente);
             ResultSet rs = ps.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public boolean checkTokenAuth(int idUtente, String tokenAuth) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idUtente);
-            ps.setString(2, tokenAuth);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
