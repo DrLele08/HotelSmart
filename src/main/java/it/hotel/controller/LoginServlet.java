@@ -1,6 +1,8 @@
 package it.hotel.controller;
 
 import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
+import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -12,7 +14,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("Login.jsp");
     }
 
     @Override
@@ -21,14 +23,21 @@ public class LoginServlet extends HttpServlet {
         String email=request.getParameter("textEmail");
         String pwd=request.getParameter("textPwd");
         UtenteService service=new UtenteService();
-        Utente user=service.doLogin(email,pwd);
-        if(user != null)
+        Utente user= null;
+        try
         {
-            //Non trovato
+            user = service.doLogin(email,pwd);
+        } catch (EmailNotFoundException e)
+        {
+            e.printStackTrace();
         }
-        else
+        catch (PasswordNotValidException e)
         {
-            //Trovato
+            e.printStackTrace();
+        }
+        catch (IllegalArgumentException e)
+        {
+            e.printStackTrace();
         }
     }
 }
