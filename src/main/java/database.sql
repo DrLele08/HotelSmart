@@ -87,10 +87,10 @@ CREATE TABLE PersonePrenotazione
 (
 	idPersonaPrenotazione INT NOT NULL AUTO_INCREMENT,
 	ksPersona INT NOT NULL,
-	ksPrenotazione INT NOT NULL,
+	ksPrenotazioneStanza INT NOT NULL,
 	PRIMARY KEY (idPersonaPrenotazione),
 	FOREIGN KEY (ksPersona) REFERENCES PersonaAggiuntiva(idPersona),
-	FOREIGN KEY (ksPrenotazione) REFERENCES PrenotazioneStanza(idPrenotazione)
+	FOREIGN KEY (ksPrenotazioneStanza) REFERENCES PrenotazioneStanza(idPrenotazioneStanza)
 );
 
 CREATE TABLE Utility
@@ -115,11 +115,11 @@ CREATE TABLE Servizio
 CREATE TABLE PrenotazioneServizio
 (
 	idPrenotazioneServizio INT NOT NULL AUTO_INCREMENT,
-	ksPrenotazione INT NOT NULL,
+	ksPrenotazioneStanza INT NOT NULL,
 	ksServizio INT NOT NULL,
 	numPersone INT NOT NULL,
 	PRIMARY KEY (idPrenotazioneServizio),
-	FOREIGN KEY (ksPrenotazione) REFERENCES PrenotazioneStanza(idPrenotazione),
+	FOREIGN KEY (ksPrenotazioneStanza) REFERENCES PrenotazioneStanza(idPrenotazioneStanza),
 	FOREIGN KEY (ksServizio) REFERENCES Servizio(idServizio)
 );
 
