@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Utility
 {
+    public static final int lenghtAuth=64;
     public static ArrayList<Ruolo> listRuoli=new ArrayList<>();
     public static ArrayList<Stato> listStato=new ArrayList<>();
 }
