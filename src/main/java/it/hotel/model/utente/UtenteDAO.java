@@ -40,7 +40,7 @@ public class UtenteDAO {
         }
     }
 
-    public Utente authenticate(String email, String password)
+    public Utente doAuthenticate(String email, String password)
             throws EmailNotFoundException, PasswordNotValidException {
         Utente utente;
         try (Connection con = Connect.getConnection()) {
@@ -80,7 +80,7 @@ public class UtenteDAO {
         return utente;
     }
 
-    public void changePassword(int idUtente, String oldPassword, String newPassword)
+    public void doChangePassword(int idUtente, String oldPassword, String newPassword)
             throws PasswordNotValidException {
         try (Connection con = Connect.getConnection()) {
 
@@ -121,7 +121,7 @@ public class UtenteDAO {
         }
     }
 
-    public int getRuolo(int idUtente, String tokenAuth) throws TokenNotValidException {
+    public int doGetRuolo(int idUtente, String tokenAuth) throws TokenNotValidException {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
@@ -139,7 +139,7 @@ public class UtenteDAO {
         }
     }
 
-    public void changeRuolo(int idUtente, int ksRuolo) {
+    public void doChangeRuolo(int idUtente, int ksRuolo) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("UPDATE Utente SET ksRuolo=? WHERE idUtente=?",
