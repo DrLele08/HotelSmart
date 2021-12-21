@@ -10,7 +10,7 @@ public class RuoloDAO {
     public void doInsert(Ruolo ruolo) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("INSERT INTO Ruolo (Tipo) VALUES(?)",
+                    ("INSERT INTO Ruolo (ruolo) VALUES(?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, ruolo.getTipo());
 
@@ -25,7 +25,7 @@ public class RuoloDAO {
         Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Ruolo WHERE tipo=?",
+                    ("SELECT * FROM Ruolo WHERE ruolo=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, ruoloStr);
             ResultSet rs = ps.executeQuery();

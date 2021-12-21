@@ -12,7 +12,7 @@ public class UtenteDAO {
 
             //controllo che l'email non sia già presente;
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE Email=?",
+                    ("SELECT * FROM Utente WHERE email=?",
                     Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -21,8 +21,8 @@ public class UtenteDAO {
 
             //inserisco l'utente;
             ps = con.prepareStatement
-                    ("INSERT INTO Utente (ksRuolo, CF, Nome, Cognome, Email, Password," +
-                            " DataNascita, TokenAuth) VALUES(?,?,?,?,?,?,?,?)",
+                    ("INSERT INTO Utente (ksRuolo, cf, nome, cognome, email, password," +
+                            " dataNascita, tokenAuth) VALUES(?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, utente.getRuolo());
             ps.setString(2, utente.getCf());
@@ -46,7 +46,7 @@ public class UtenteDAO {
         try (Connection con = Connect.getConnection()) {
 
             //verifico che esista l'email;
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE Email=?",
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -55,7 +55,7 @@ public class UtenteDAO {
             }
 
             //verifico la password;
-            ps = con.prepareStatement("SELECT * FROM Utente WHERE Email=? AND Password=?",
+            ps = con.prepareStatement("SELECT * FROM Utente WHERE email=? AND password=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, email);
             ps.setString(2, password);
@@ -86,7 +86,7 @@ public class UtenteDAO {
 
             //verifico la oldPassword;
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE idUtente=? AND Password=?",
+                    ("SELECT * FROM Utente WHERE idUtente=? AND password=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
             ps.setString(2, oldPassword);
@@ -97,7 +97,7 @@ public class UtenteDAO {
 
             //aggiorno con la newPassword;
             ps = con.prepareStatement
-                    ("UPDATE Utente SET Password=? WHERE idUtente=?",
+                    ("UPDATE Utente SET password=? WHERE idUtente=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, newPassword);
             ps.setInt(2, idUtente);
@@ -124,7 +124,7 @@ public class UtenteDAO {
     public int getRuolo(int idUtente, String tokenAuth) throws TokenNotValidException {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE idUtente=? AND TokenAuth=?",
+                    ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
             ps.setString(2, tokenAuth);
@@ -155,7 +155,7 @@ public class UtenteDAO {
     public boolean checkTokenAuth(int idUtente, String tokenAuth) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE idUtente=? AND TokenAuth=?",
+                    ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
             ps.setString(2, tokenAuth);

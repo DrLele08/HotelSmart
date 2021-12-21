@@ -10,7 +10,7 @@ public class StatoDAO {
     public void doInsert(Stato stato) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("INSERT INTO Stato (Stato) VALUES(?)",
+                    ("INSERT INTO Stato (stato) VALUES(?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, stato.getStato());
 
@@ -25,7 +25,7 @@ public class StatoDAO {
         Stato stato;
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stato WHERE Stato=?",
+                    ("SELECT * FROM Stato WHERE stato=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, statoStr);
             ResultSet rs = ps.executeQuery();
