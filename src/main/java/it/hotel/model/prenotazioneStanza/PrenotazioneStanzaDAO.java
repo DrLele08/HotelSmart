@@ -43,8 +43,9 @@ public class PrenotazioneStanzaDAO {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                prenotazioneStanza = new PrenotazioneStanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
-                        rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7));
+                prenotazioneStanza = new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+                        rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8),
+                        rs.getString(9), rs.getString(10), rs.getInt(11));
             } else {
                 throw new PrenotazioneStanzaNotFoundException();
             }
