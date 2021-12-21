@@ -74,7 +74,7 @@ CREATE TABLE PrenotazioneStanza
 	dataFine DATE NOT NULL,
 	prezzoFinale DOUBLE NOT NULL,
 	tokenStripe VARCHAR(255),
-	tokenQR CHAR(48),
+	tokenQr CHAR(48),
 	commenti VARCHAR(255),
 	valutazione INT DEFAULT -1,
 	PRIMARY KEY (idPrenotazione),
