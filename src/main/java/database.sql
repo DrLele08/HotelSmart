@@ -66,7 +66,7 @@ CREATE TABLE Stato
 
 CREATE TABLE PrenotazioneStanza
 (
-	idPrenotazione INT NOT NULL AUTO_INCREMENT,
+	idPrenotazioneStanza INT NOT NULL AUTO_INCREMENT,
 	ksUtente INT NOT NULL,
 	ksStanza INT NOT NULL,
 	ksStato INT NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE PrenotazioneStanza
 	tokenQr CHAR(48),
 	commenti VARCHAR(255),
 	valutazione INT DEFAULT -1,
-	PRIMARY KEY (idPrenotazione),
+	PRIMARY KEY (idPrenotazioneStanza),
 	FOREIGN KEY (ksUtente) REFERENCES Utente(idUtente),
 	FOREIGN KEY (ksStanza) REFERENCES Stanza(idStanza),
 	FOREIGN KEY (ksStato) REFERENCES Stato(idStato)

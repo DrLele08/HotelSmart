@@ -1,7 +1,6 @@
 package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.Utility.Connect;
-import it.hotel.model.stanza.Stanza;
 
 import java.sql.*;
 
@@ -30,6 +29,27 @@ public class PrenotazioneStanzaDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public PrenotazioneStanza doSelectById(int idPrenotazioneStanza) throws PrenotazioneStanzaNotFoundException {
+        PrenotazioneStanza prenotazioneStanza;
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Stanza WHERE idStanza=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idStanza);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                stanza = new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
+                        rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7));
+            } else {
+                throw new PrenotazioneStanzaNotFoundException();
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return stanza;
     }
 
 }

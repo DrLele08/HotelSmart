@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class PrenotazioneStanza {
 
-    private int idPrenotazione;
+    private int idPrenotazioneStanza;
     private int ksUtente;
     private int ksStanza;
     private int ksStato;
@@ -16,10 +16,10 @@ public class PrenotazioneStanza {
     private String commenti;
     private int valutazione;
 
-    public PrenotazioneStanza(int idPrenotazione, int ksUtente, int ksStanza, int ksStato,
+    public PrenotazioneStanza(int idPrenotazioneStanza, int ksUtente, int ksStanza, int ksStato,
                 Date dataInizio, Date dataFine, double prezzoFinale, String tokenStripe,
                         String tokenQr, String commenti, int valutazione) {
-        this.idPrenotazione = idPrenotazione;
+        this.idPrenotazioneStanza = idPrenotazioneStanza;
         this.ksUtente = ksUtente;
         this.ksStanza = ksStanza;
         this.ksStato = ksStato;
@@ -32,8 +32,8 @@ public class PrenotazioneStanza {
         this.valutazione = valutazione;
     }
 
-    public int getIdPrenotazione() {
-        return idPrenotazione;
+    public int getIdPrenotazioneStanza() {
+        return idPrenotazioneStanza;
     }
 
     public int getKsUtente() {
