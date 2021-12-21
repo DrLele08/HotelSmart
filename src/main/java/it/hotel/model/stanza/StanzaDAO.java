@@ -56,12 +56,9 @@ public class StanzaDAO {
 
         ArrayList<String> parametri = new ArrayList<>();
 
-        if (animaleDomestico != null) {
-            parametri.add(animaleDomesticoStr(animaleDomestico));
-        }
-        if (fumatore != null) {
-            parametri.add(fumatoreStr(fumatore));
-        }
+        animaleDomesticoStr(parametri, animaleDomestico);
+        fumatoreStr(parametri, fumatore);
+
         if (lettiSingoli != null) {
             parametri.add(lettiSingoliStr(lettiSingoli));
         }
@@ -105,19 +102,23 @@ public class StanzaDAO {
 
     }
 
-    private String animaleDomesticoStr(Boolean animaleDomestico) {
-        if (animaleDomestico) {
-            return "animaleDomestico = TRUE";
+    private void animaleDomesticoStr(List<String> parametri, Boolean animaleDomestico) {
+        if (animaleDomestico == null) {
+            return;
+        } else if (animaleDomestico) {
+            parametri.add("animaleDomestico = TRUE");
         } else {
-            return "animaleDomestico = FALSE";
+            parametri.add("animaleDomestico = FALSE");
         }
     }
 
-    private String fumatoreStr(Boolean fumatore) {
-        if (fumatore) {
-            return "fumatore = TRUE";
+    private void fumatoreStr(List<String> parametri, Boolean fumatore) {
+        if (fumatore == null) {
+            return;
+        } else if (fumatore) {
+            parametri.add("fumatore = TRUE");
         } else {
-            return "fumatore = FALSE";
+            parametri.add("fumatore = FALSE");
         }
     }
 
