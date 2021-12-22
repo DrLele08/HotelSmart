@@ -3,7 +3,7 @@ package it.hotel.model.stanza.stanzaExceptions;
 import it.hotel.model.stanza.Stanza;
 
 /**
- * Segnala che non è stato trovato un oggetto {@link Stanza} nel database.
+ * Segnala che l'oggetto {@link Stanza} cercato non è presente nel database.
  */
 public class StanzaNotFoundException extends Exception{
 
