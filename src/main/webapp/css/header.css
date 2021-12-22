@@ -1,0 +1,50 @@
+
+img {
+    display: block;
+    max-width: 100%;
+    width: 5rem;
+    height: 5rem;
+
+}
+
+.topbar {
+    background-color: #02172d;
+    height: 6rem;
+}
+
+.topbarButton {
+    background-color: whitesmoke;
+    color: #02172d;
+    outline: none;
+    border-style: none;
+}
+
+.dropdown-menu-right {
+    padding-left: 10px;
+}
+
+.topbarButton:hover {
+    background-color: #063970;
+    outline-color: black;
+}
+
+.topbarButton:active {
+    background-color: #1f4d7e;
+    outline-color: black;
+}
+
+.dropdownIcon {
+    background-color: whitesmoke;
+    outline: none;
+    border-style: none;
+}
+
+.dropdownItem:hover {
+    background-color: #063970;
+    color: whitesmoke;
+}
+
+.dropdownItem:active {
+    background-color: #1f4d7e;
+    color: whitesmoke;
+}
