@@ -22,7 +22,7 @@ public class Connect
             p.setDriverClassName("com.mysql.cj.jdbc.Driver");
             p.setUsername("root");
             p.setPassword("password");
-            p.setMaxActive(100);
+            p.setMaxActive(1000);
             p.setInitialSize(10);
             p.setMinIdle(10);
             p.setRemoveAbandonedTimeout(60);
