@@ -4,6 +4,7 @@ import it.hotel.Utility.Utility;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -55,11 +56,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute(Utility.SESSION_USER,us);
                     rd.forward(request, response);
                 }
-                catch (EmailNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (PasswordNotValidException e)
+                catch (UtenteNotFoundException e)
                 {
                     e.printStackTrace();
                 }

@@ -4,33 +4,36 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.utente.utenteExceptions.*;
 
 import java.sql.*;
-
+//TODO md5
 public class UtenteDAO {
 
-    public void doInsert(Utente utente, String password) throws EmailAlreadyExistingException {
+    public Utente doInsert(int ruolo, String cf, String nome, String cognome,
+                           String email, Date dataNascita, String tokenAuth, String password)
+            throws EmailAlreadyExistingException {
         try (Connection con = Connect.getConnection()) {
 
             //controllo che l'email non sia già presente;
-            if (isEmailInDatabase(con, utente.getEmail())) {
+            if (isEmailInDatabase(con, email)) {
                 throw new EmailAlreadyExistingException();
             }
 
             //inserisco l'utente;
             PreparedStatement ps = con.prepareStatement
                     ("INSERT INTO Utente (ksRuolo, cf, nome, cognome, email, password," +
-                            " dataNascita, tokenAuth) VALUES(?,?,?,?,?,?,?,?)",
+                            " dataNascita, tokenAuth) VALUES(?,?,?,?,?,MD5(?),?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, utente.getRuolo());
-            ps.setString(2, utente.getCf());
-            ps.setString(3, utente.getNome());
-            ps.setString(4, utente.getCognome());
-            ps.setString(5, utente.getEmail());
+            ps.setInt(1, ruolo);
+            ps.setString(2, cf);
+            ps.setString(3, nome);
+            ps.setString(4, cognome);
+            ps.setString(5, email);
             ps.setString(6, password);
-            ps.setDate(7, utente.getDataNascita());
-            ps.setString(8, utente.getTokenAuth());
-
+            ps.setDate(7, dataNascita);
+            ps.setString(8, tokenAuth);
             ResultSet rs = ps.executeQuery();
-            rs.next();
+
+            return new Utente(rs.getInt(1), ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -71,9 +74,9 @@ public class UtenteDAO {
         }
         return utente;
     }
-    //TODO Gestione Exception
+
     public Utente doAuthenticate(int idUtente, String tokenAuth)
-            throws EmailNotFoundException, PasswordNotValidException {
+            throws UtenteNotFoundException {
         Utente utente;
         try (Connection con = Connect.getConnection())
         {
@@ -93,7 +96,7 @@ public class UtenteDAO {
                 Date dataNascita = rs.getDate("dataNascita");
                 utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
             } else {
-                throw new PasswordNotValidException();
+                throw new UtenteNotFoundException();
             }
 
         }
@@ -103,7 +106,7 @@ public class UtenteDAO {
         return utente;
     }
 
-    public boolean doChangePassword(int idUtente, String oldPassword, String newPassword)
+    public void doChangePassword(int idUtente, String oldPassword, String newPassword)
             throws PasswordNotValidException
     {
         try (Connection con = Connect.getConnection())
@@ -111,7 +114,7 @@ public class UtenteDAO {
 
             //verifico la oldPassword;
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE idUtente=? AND password=?",
+                    ("SELECT * FROM Utente WHERE idUtente=? AND password=MD5(?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
             ps.setString(2, oldPassword);
@@ -123,11 +126,11 @@ public class UtenteDAO {
 
             //aggiorno con la newPassword;
             ps = con.prepareStatement
-                    ("UPDATE Utente SET password=? WHERE idUtente=?",
+                    ("UPDATE Utente SET password=MD5(?) WHERE idUtente=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, newPassword);
             ps.setInt(2, idUtente);
-            return ps.executeUpdate()>0;
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -146,7 +149,7 @@ public class UtenteDAO {
         }
     }
 
-    public int doGetRuolo(int idUtente, String tokenAuth) throws TokenNotValidException
+    public int doGetRuolo(int idUtente, String tokenAuth) throws UtenteNotFoundException
     {
         try (Connection con = Connect.getConnection())
         {
@@ -158,11 +161,11 @@ public class UtenteDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next())
             {
-                return rs.getInt(2);
+                return rs.getInt("ksRuolo");
             }
             else
             {
-                throw new TokenNotValidException();
+                throw new UtenteNotFoundException();
             }
         } catch (SQLException e)
         {
