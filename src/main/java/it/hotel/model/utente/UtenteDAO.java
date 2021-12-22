@@ -47,7 +47,7 @@ public class UtenteDAO {
             }
 
             //verifico la password;
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=? AND password=?",
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=? AND password=MD5(?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, email);
             ps.setString(2, password);
@@ -71,10 +71,43 @@ public class UtenteDAO {
         }
         return utente;
     }
+    //TODO Gestione Exception
+    public Utente doAuthenticate(int idUtente, String tokenAuth)
+            throws EmailNotFoundException, PasswordNotValidException {
+        Utente utente;
+        try (Connection con = Connect.getConnection())
+        {
 
-    public void doChangePassword(int idUtente, String oldPassword, String newPassword)
-            throws PasswordNotValidException {
-        try (Connection con = Connect.getConnection()) {
+            //verifico la password;
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idUtente);
+            ps.setString(2, tokenAuth);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int ruolo = rs.getInt("ksRuolo");
+                String email=rs.getString("email");
+                String cf = rs.getString("cf");
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                Date dataNascita = rs.getDate("dataNascita");
+                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+            } else {
+                throw new PasswordNotValidException();
+            }
+
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return utente;
+    }
+
+    public boolean doChangePassword(int idUtente, String oldPassword, String newPassword)
+            throws PasswordNotValidException
+    {
+        try (Connection con = Connect.getConnection())
+        {
 
             //verifico la oldPassword;
             PreparedStatement ps = con.prepareStatement
@@ -83,7 +116,8 @@ public class UtenteDAO {
             ps.setInt(1, idUtente);
             ps.setString(2, oldPassword);
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
+            if (!rs.next())
+            {
                 throw new PasswordNotValidException();
             }
 
@@ -93,8 +127,7 @@ public class UtenteDAO {
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, newPassword);
             ps.setInt(2, idUtente);
-            rs = ps.executeQuery();
-            rs.next();
+            return ps.executeUpdate()>0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -113,20 +146,26 @@ public class UtenteDAO {
         }
     }
 
-    public int doGetRuolo(int idUtente, String tokenAuth) throws TokenNotValidException {
-        try (Connection con = Connect.getConnection()) {
+    public int doGetRuolo(int idUtente, String tokenAuth) throws TokenNotValidException
+    {
+        try (Connection con = Connect.getConnection())
+        {
             PreparedStatement ps = con.prepareStatement
                     ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
             ps.setString(2, tokenAuth);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            if (rs.next())
+            {
                 return rs.getInt(2);
-            } else {
+            }
+            else
+            {
                 throw new TokenNotValidException();
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }

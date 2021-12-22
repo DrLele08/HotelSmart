@@ -30,7 +30,7 @@ public class UtenteService
      */
     public Utente doLogin(String email, String pwd) throws EmailNotFoundException, PasswordNotValidException
     {
-        if(email.trim().isEmpty() && pwd.trim().isEmpty())
+        if(!email.trim().isEmpty() && !pwd.trim().isEmpty())
         {
             return dao.doAuthenticate(email,pwd);
         }
@@ -46,16 +46,15 @@ public class UtenteService
      * @return Dati utente
      * @see Utente
      */
-    /*public Utente doLogin(int idUtente,String tokenAuth) throws EmailNotFoundException, PasswordNotValidException
+    public Utente doLogin(int idUtente,String tokenAuth) throws EmailNotFoundException, PasswordNotValidException
     {
-        if(tokenAuth.trim().isEmpty())
+        if(!tokenAuth.trim().isEmpty())
         {
-            //TODO DAO Login Per idUtente & TokenAuth
-            //return dao.doAuthenticate(idUtente,tokenAuth);
+            return dao.doAuthenticate(idUtente,tokenAuth);
         }
         else
             throw new IllegalArgumentException();
-    }*/
+    }
 
     /**
      * Effettua la registrazione di un nuovo utente standard
@@ -69,15 +68,14 @@ public class UtenteService
      * @return      Dati utente
      * @see         Utente
      */
-    /*public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException
+    public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException
     {
         boolean useLetters = true;
         boolean useNumbers = false;
         String generatedString = RandomStringUtils.random(Utility.lenghtAuth, useLetters, useNumbers);
-        Utente newUser=new Utente(-1,-1,cf,nome,cognome,email,data,generatedString);
-        //Chiedere a Giovanni
-        //return dao.doInsert(newUser,pwd);
-    }*/
+        Utente newUser=new Utente(-1,3,cf,nome,cognome,email,data,generatedString);
+        return dao.doInsert(newUser,pwd);
+    }
 
     /**
      * Effettua la modifica della password di un utente
@@ -88,16 +86,16 @@ public class UtenteService
      * @param newPwd Nuova password utente
      * @return Booleano che indica se la password è stata modificata o meno
      */
-    /*public boolean editPassword(int idUtente,String token,String oldPwd,String newPwd) throws PasswordNotValidException, TokenNotValidException
+    public boolean editPassword(int idUtente,String token,String oldPwd,String newPwd) throws PasswordNotValidException, TokenNotValidException
     {
         //TODO Controllare i campi
         //TODO Controllare Regex newPwd
-        //Chiedere a Giovanni Exception Ruolo
+        //TODO Chiedere a Giovanni Exception Ruolo
         if(dao.doGetRuolo(idUtente,token)>0)
         {
-            //Chiedere Giovanni Password Exception & Return Type
-            //return dao.doChangePassword(idUtente,oldPwd,newPwd);
+            //TODO MD5 Check
+            return dao.doChangePassword(idUtente,oldPwd,newPwd);
         }
         return false;
-    }*/
+    }
 }

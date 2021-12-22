@@ -1,4 +1,5 @@
 <%@ page import="it.hotel.model.utente.Utente" %>
+<%@ page import="it.hotel.Utility.Utility" %>
 <link rel="stylesheet" href="css/header.css">
 
 <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand" style="background-color: #02172d;">
@@ -27,10 +28,10 @@
         <ul class="dropdown-menu dropdown-menu-right" style="right: 0;left: auto;">
 
             <%
-                Utente u = (Utente) session.getAttribute("utente");
+                Utente u = (Utente) session.getAttribute(Utility.SESSION_USER);
                 if (u == null) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Login</a></li>
+            <li><a class="dropdown-item dropdownItem" href="Login">Login</a></li>
             <li><a class="dropdown-item dropdownItem" href="">Registrati</a></li>
             <%
             }
