@@ -113,7 +113,7 @@ public class UtenteDAO {
         }
     }
 
-    public int doGetRuolo(int idUtente, String tokenAuth) throws TokenNotValidException {
+    public int doGetRuolo(int idUtente, String tokenAuth) throws UtenteNotFoundException {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
@@ -124,7 +124,7 @@ public class UtenteDAO {
             if (rs.next()) {
                 return rs.getInt(2);
             } else {
-                throw new TokenNotValidException();
+                throw new UtenteNotFoundException();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
