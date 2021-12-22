@@ -8,17 +8,24 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 
 @WebServlet(name = "Login", value = "/Login")
 public class LoginServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        response.sendRedirect("Login.jsp");
+        HttpSession session = request.getSession(true);
+        Utente u = (Utente) session.getAttribute("utente");
+        if(u == null)
+            response.sendRedirect("Login.jsp");
+        else
+            response.sendRedirect("index.jsp");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         String email=request.getParameter("textEmail");
         String pwd=request.getParameter("textPwd");
@@ -27,6 +34,16 @@ public class LoginServlet extends HttpServlet {
         try
         {
             user = service.doLogin(email,pwd);
+            if(user!= null)
+            {
+                HttpSession session = request.getSession(true);
+                session.setAttribute("utente",user);
+                PrintWriter out = response.getWriter();
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out.print("true");
+                out.flush();
+            }
         } catch (EmailNotFoundException e)
         {
             e.printStackTrace();
