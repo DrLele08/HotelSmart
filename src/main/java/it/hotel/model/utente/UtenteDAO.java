@@ -149,7 +149,7 @@ public class UtenteDAO {
         }
     }
 
-    public int doGetRuolo(int idUtente, String tokenAuth) throws UtenteNotFoundException
+    public int doGetRuolo(int idUtente, String tokenAuth)
     {
         try (Connection con = Connect.getConnection())
         {
@@ -160,13 +160,9 @@ public class UtenteDAO {
             ps.setString(2, tokenAuth);
             ResultSet rs = ps.executeQuery();
             if (rs.next())
-            {
                 return rs.getInt("ksRuolo");
-            }
             else
-            {
-                throw new UtenteNotFoundException();
-            }
+                return -1;
         } catch (SQLException e)
         {
             throw new RuntimeException(e);

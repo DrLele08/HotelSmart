@@ -1,12 +1,14 @@
 package it.hotel.controller;
 
 import it.hotel.Utility.Utility;
+import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.UtenteDAO;
 import it.hotel.model.utente.utenteExceptions.*;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.sql.Date;
+import java.util.regex.Pattern;
 
 public class UtenteService
 {
@@ -63,13 +65,25 @@ public class UtenteService
      * @return      Dati utente
      * @see         Utente
      */
-    public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException
+    public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException,PasswordNotValidException
     {
-        boolean useLetters = true;
-        boolean useNumbers = false;
-        String generatedString = RandomStringUtils.random(Utility.lenghtAuth, useLetters, useNumbers);
-        //TODO check valori e regex
-        return dao.doInsert(3,cf,nome,cognome,email,data,generatedString,pwd);
+        if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !email.trim().isEmpty() && !pwd.trim().isEmpty())
+        {
+            Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
+            if(pattern.matcher(pwd).matches())
+            {
+                boolean useLetters = true;
+                boolean useNumbers = false;
+                String generatedString = RandomStringUtils.random(Utility.lenghtAuth, useLetters, useNumbers);
+                return dao.doInsert(Ruolo.getIdByNome(Utility.listRuoli,"UTENTE"),cf,nome,cognome,email,data,generatedString,pwd);
+            }
+            else
+            {
+                throw new PasswordNotValidException();
+            }
+        }
+        else
+            throw new IllegalArgumentException();
     }
 
     /**
@@ -81,12 +95,17 @@ public class UtenteService
      * @param newPwd Nuova password utente
      */
     public void editPassword(int idUtente,String token,String oldPwd,String newPwd)
-            throws PasswordNotValidException, UtenteNotFoundException
+            throws PasswordNotValidException, UtenteNotFoundException,PermissionDeniedException
     {
-        //TODO Controllare i campi
-        //TODO Controllare Regex newPwd
-        dao.doGetRuolo(idUtente, token);
-        dao.doChangePassword(idUtente,oldPwd,newPwd);
-
+        if(!token.trim().isEmpty() && !oldPwd.trim().isEmpty() && !newPwd.trim().isEmpty())
+        {
+            int tipoRuolo=dao.doGetRuolo(idUtente,token);
+            if(tipoRuolo==2 || tipoRuolo==1)
+                dao.doChangePassword(idUtente,oldPwd,newPwd);
+            else
+                throw new PermissionDeniedException();
+        }
+        else
+            throw new IllegalArgumentException();
     }
 }
