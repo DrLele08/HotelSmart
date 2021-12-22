@@ -4,7 +4,7 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.utente.utenteExceptions.*;
 
 import java.sql.*;
-//TODO md5
+
 public class UtenteDAO {
 
     public Utente doInsert(int ruolo, String cf, String nome, String cognome,
@@ -41,7 +41,6 @@ public class UtenteDAO {
 
     public Utente doAuthenticate(String email, String password)
             throws EmailNotFoundException, PasswordNotValidException {
-        Utente utente;
         try (Connection con = Connect.getConnection()) {
 
             //verifico che esista l'email;
@@ -56,23 +55,14 @@ public class UtenteDAO {
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int idUtente = rs.getInt(1);
-                int ruolo = rs.getInt(2);
-                String cf = rs.getString(3);
-                String nome = rs.getString(4);
-                String cognome = rs.getString(5);
-                Date dataNascita = rs.getDate(8);
-                String tokenAuth = rs.getString(9);
-                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+                return getUtente(rs);
             } else {
                 throw new PasswordNotValidException();
             }
-
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return utente;
     }
 
     public Utente doAuthenticate(int idUtente, String tokenAuth)
@@ -88,22 +78,14 @@ public class UtenteDAO {
             ps.setString(2, tokenAuth);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int ruolo = rs.getInt("ksRuolo");
-                String email=rs.getString("email");
-                String cf = rs.getString("cf");
-                String nome = rs.getString("nome");
-                String cognome = rs.getString("cognome");
-                Date dataNascita = rs.getDate("dataNascita");
-                utente = new Utente(idUtente, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+                return getUtente(rs);
             } else {
                 throw new UtenteNotFoundException();
             }
-
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return utente;
     }
 
     public void doChangePassword(int idUtente, String oldPassword, String newPassword)
@@ -188,6 +170,18 @@ public class UtenteDAO {
         ps.setString(1, email);
         ResultSet rs = ps.executeQuery();
         return rs.next();
+    }
+
+    private Utente getUtente(ResultSet rs) throws SQLException {
+        int idUtente = rs.getInt("idUtente");
+        int ksRuolo = rs.getInt("ksRuolo");
+        String cf = rs.getString("cf");
+        String nome = rs.getString("nome");
+        String cognome = rs.getString("cognome");
+        String email = rs.getString("email");
+        Date dataNascita = rs.getDate("dataNascita");
+        String tokenAuth = rs.getString("tokenAuth");
+        return new Utente(idUtente, ksRuolo, cf, nome, cognome, email, dataNascita, tokenAuth);
     }
 
 }

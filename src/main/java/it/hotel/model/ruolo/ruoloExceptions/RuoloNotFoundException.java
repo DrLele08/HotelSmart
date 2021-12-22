@@ -3,7 +3,7 @@ package it.hotel.model.ruolo.ruoloExceptions;
 import it.hotel.model.ruolo.Ruolo;
 
 /**
- * Segnala che non è stato trovato un oggetto {@link Ruolo} nel database.
+ * Segnala che l'oggetto {@link Ruolo} cercato non è presente nel database.
  */
 public class RuoloNotFoundException extends Exception{
 
