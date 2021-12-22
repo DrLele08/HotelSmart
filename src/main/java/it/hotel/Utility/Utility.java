@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class Utility
 {
+    public static final String PASSWORD_PATTERN =
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
     public static final int lenghtAuth=64;
     public static final String SESSION_USER="idUsSe";
     public static final String COOKIE_ID="idUsCo";
