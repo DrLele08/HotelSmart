@@ -4,7 +4,7 @@
 <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand" style="background-color: #02172d;">
     <a class="navbar-brand" href="#">
         <img class="rounded"
-             src="http://localhost:8080/HotelSmart_war_exploded/images/Logo.jpeg" alt="LogoHotelSmart">
+             src="images/Logo.jpeg" alt="LogoHotelSmart">
     </a>
     <div class="navbar-nav mr-auto">
         <a class="nav-item nav-link active" href="#">Home</a>
@@ -30,7 +30,7 @@
                 Utente u = (Utente) session.getAttribute("utente");
                 if (u == null) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Login</a></li>
+            <li><a class="dropdown-item dropdownItem" href="Login">Login</a></li>
             <li><a class="dropdown-item dropdownItem" href="">Registrati</a></li>
             <%
             }
