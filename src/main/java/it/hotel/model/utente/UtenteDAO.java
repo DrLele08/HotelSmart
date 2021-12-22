@@ -50,7 +50,7 @@ public class UtenteDAO {
             }
 
             //verifico la password;
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=? AND password=MD5(?)",
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=? AND password=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, email);
             ps.setString(2, password);

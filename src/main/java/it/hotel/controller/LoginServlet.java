@@ -85,7 +85,7 @@ public class LoginServlet extends HttpServlet {
             user = service.doLogin(email,pwd);
             HttpSession session=request.getSession();
             session.setAttribute(Utility.SESSION_USER,user);
-            response.getOutputStream().print("OK");
+            response.getOutputStream().print("true");
             //TODO Ricordami
             boolean ricordami=true;
             if(ricordami)
