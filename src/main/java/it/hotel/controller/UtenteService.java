@@ -28,7 +28,7 @@ public class UtenteService
      */
     public Utente doLogin(String email, String pwd) throws EmailNotFoundException, PasswordNotValidException
     {
-        if(!email.trim().isEmpty() )
+        if(!(email.trim().isEmpty() || pwd.trim().isEmpty()))
         {
             return dao.doAuthenticate(email,pwd);
         }
