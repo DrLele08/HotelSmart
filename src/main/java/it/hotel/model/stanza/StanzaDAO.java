@@ -51,8 +51,8 @@ public class StanzaDAO {
     }
 
     public List<Stanza> doSearch(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
-            Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
-                Double scontoMinimo, Double scontoMassimo) {
+                                 Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
+                                 Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) {
 
         ArrayList<String> parametri = new ArrayList<>();
 
@@ -63,6 +63,7 @@ public class StanzaDAO {
         costoNotteStr(parametri, costoNotteMinimo, costoNotteMassimo);
         scontoStr(parametri, scontoMinimo, scontoMassimo);
 
+        //where p1 AND p2 AND p3
         String where = "";
         if (parametri.size() > 0) {
             where += " WHERE ";
@@ -72,17 +73,29 @@ public class StanzaDAO {
             where += parametri.get(parametri.size() - 1);
         }
 
+        if ((dataIn != null) || (dataOut != null)) {
+            if (parametri.size() > 0) {
+                where += " AND ";
+            } else {
+                where += " WHERE ";
+            }
+            where += "NOT EXISTS ";
+            where = data(where, dataIn, dataOut);
+        }
+
+        System.out.println(where);
+
         ArrayList<Stanza> stanze = new ArrayList<>();
 
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stanza" + where,
+                    ("SELECT * FROM Stanza s" + where,
                             Statement.RETURN_GENERATED_KEYS);
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 stanze.add(new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
-                    rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7)));
+                        rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7)));
             }
         }
         catch (SQLException e) {
@@ -153,6 +166,28 @@ public class StanzaDAO {
         } else if (scontoMassimo != null) {
             parametri.add("sconto <= " + scontoMassimo);
         }
+    }
+
+    private String data(String where, Date dataIn, Date dataOut) {
+        where += "(SELECT 1 FROM PrenotazioneStanza rs WHERE (";
+        where += "rs.ksStanza = s.idStanza AND ";
+        String inizio = "";
+        String fine = "";
+        if (dataIn != null) {
+            inizio += "rs.dataFine >= " + "\'" + dataIn + "\'";
+        }
+        if (dataOut != null) {
+            fine += "rs.dataInizio <= " + "\'" + dataOut + "\'";
+        }
+
+        if ((!inizio.equals("")) && (!fine.equals(""))) {
+            where += inizio + " AND " + fine + "))";
+        } else if (inizio.equals("")) {
+            where += fine + "))";
+        } else {
+            where += inizio + "))";
+        }
+        return where;
     }
 
 }
