@@ -10,20 +10,20 @@ import java.util.ArrayList;
 public class Ruolo {
 
     private int idRuolo;
-    private String tipo;
+    private String ruolo;
 
     /**
-     * Costruisce un Ruolo con identificativo e tipo specificati.
+     * Costruisce un Ruolo con identificativo e ruolo specificati.
      * @param idRuolo Identificativo
-     * @param tipo Tipo
+     * @param ruolo Ruolo
      */
-    public Ruolo(int idRuolo, String tipo) {
+    public Ruolo(int idRuolo, String ruolo) {
         this.idRuolo = idRuolo;
-        this.tipo = tipo;
+        this.ruolo = ruolo;
     }
 
     /**
-     * Restituisce l'identificativo del Ruolo.
+     * Restituisce l'identificativo dell'oggetto Ruolo.
      * @return Identificativo
      */
     public int getIdRuolo() {
@@ -31,18 +31,18 @@ public class Ruolo {
     }
 
     /**
-     * Restituisce il tipo del Ruolo.
-     * @return Tipo
+     * Restituisce il ruolo che l'oggetto Ruolo rappresenta
+     * @return Ruolo
      */
-    public String getTipo() {
-        return tipo;
+    public String getRuolo() {
+        return ruolo;
     }
 
-    public static int getIdByNome(ArrayList<Ruolo> listRuoli,String tipo)
+    public static int getIdByNome(ArrayList<Ruolo> listRuoli,String ruolo)
     {
         for(Ruolo r:listRuoli)
         {
-            if(r.tipo.equalsIgnoreCase(tipo))
+            if(r.ruolo.equalsIgnoreCase(ruolo))
                 return r.idRuolo;
         }
         return -1;

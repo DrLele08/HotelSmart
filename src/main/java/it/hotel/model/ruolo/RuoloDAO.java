@@ -14,7 +14,7 @@ public class RuoloDAO {
             PreparedStatement ps = con.prepareStatement
                     ("INSERT INTO Ruolo (ruolo) VALUES(?)",
                             Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, ruolo.getTipo());
+            ps.setString(1, ruolo.getRuolo());
 
             ResultSet rs = ps.executeQuery();
             rs.next();
