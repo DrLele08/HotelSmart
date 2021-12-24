@@ -80,12 +80,14 @@ public class LoginServlet extends HttpServlet {
         String pwd=request.getParameter("textPwd");
         UtenteService service=new UtenteService();
         Utente user= null;
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try
         {
             user = service.doLogin(email,pwd);
             HttpSession session=request.getSession();
             session.setAttribute(Utility.SESSION_USER,user);
-            response.getOutputStream().print("true");
+            response.getOutputStream().print("{\"status\":true}");
             //TODO Ricordami
             boolean ricordami=true;
             if(ricordami)
@@ -97,17 +99,17 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (EmailNotFoundException e)
         {
-            response.getOutputStream().print("EMAIL PROBLEMA");
+            response.getOutputStream().print("{\"status\":false,\"data\":\"EMAIL PROBLEMA\"}");
 
         }
         catch (PasswordNotValidException e)
         {
-            response.getOutputStream().print("PWDPROBLEMA");
+            response.getOutputStream().print("{\"status\":false,\"data\":\"PWDPROBLEMA\"}");
 
         }
         catch (IllegalArgumentException e)
         {
-            response.getOutputStream().print("BO PROBLEMA"+pwd);
+            response.getOutputStream().print("{\"status\":false,\"data\":\"BO PROBLEMA\"}");
         }
     }
 }
