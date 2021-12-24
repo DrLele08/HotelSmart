@@ -197,13 +197,14 @@ public class StanzaDAO {
         }
 
         if ((!inizio.equals("")) && (!fine.equals(""))) {
-            NOT_EXISTS_prenotazioneStanza += inizio + " AND " + fine + "))";
+            NOT_EXISTS_prenotazioneStanza += inizio + " AND " + fine + ")";
         } else if (inizio.equals("")) {
-            NOT_EXISTS_prenotazioneStanza += fine + "))";
+            NOT_EXISTS_prenotazioneStanza += fine + ")";
         } else {
-            NOT_EXISTS_prenotazioneStanza += inizio + "))";
+            NOT_EXISTS_prenotazioneStanza += inizio + ")";
         }
-        return NOT_EXISTS_prenotazioneStanza;
+        String statoCheck = " AND rs.ksStato NOT IN (SELECT idStato FROM Stato st WHERE (st.stato = \"ANNULLATA\") OR (st.stato = \"ARCHIVIATA\") OR (st.stato = \"RIMBORSATA\")))";
+        return NOT_EXISTS_prenotazioneStanza + statoCheck;
     }
 
 }
