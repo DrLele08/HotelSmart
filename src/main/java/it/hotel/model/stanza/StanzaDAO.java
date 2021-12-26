@@ -185,7 +185,7 @@ public class StanzaDAO {
     }
 
     private String data(String NOT_EXISTS_prenotazioneStanza, Date dataIn, Date dataOut) {
-        NOT_EXISTS_prenotazioneStanza += "(SELECT 1 FROM PrenotazioneStanza rs WHERE (";
+        NOT_EXISTS_prenotazioneStanza += "(SELECT idPrenotazioneStanza FROM PrenotazioneStanza rs WHERE (";
         NOT_EXISTS_prenotazioneStanza += "rs.ksStanza = s.idStanza AND ";
         String inizio = "";
         String fine = "";

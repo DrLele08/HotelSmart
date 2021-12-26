@@ -20,7 +20,6 @@ public class PrenotazioneStanzaDAO {
      * Inserisce nel database e ritorna un oggetto {@link PrenotazioneStanza} secondo i valori specificati.
      * @param ksUtente
      * @param ksStanza
-     * @param ksStato
      * @param dataInizio
      * @param dataFine
      * @param prezzoFinale
@@ -28,17 +27,29 @@ public class PrenotazioneStanzaDAO {
      * @param tokenQr
      * @param commenti
      * @param valutazione
+     * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
      */
-    public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, int ksStato, Date dataInizio, Date dataFine,
+    public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, Date dataInizio, Date dataFine,
                                        double prezzoFinale, String tokenStripe, String tokenQr, String commenti, int valutazione)
             throws PrenotazioneStanzaInsertException {
         try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
+            PreparedStatement ps = con.prepareStatement("SELECT idStato FROM Stato st " +
+                    "WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\') LIMIT 1",
+                    Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = ps.executeQuery();
+            int ksStato;
+            if (rs.next()) {
+                ksStato = rs.getInt(1);
+            } else {
+                return null;
+            }
+
+            ps = con.prepareStatement
                     ("INSERT INTO PrenotazioneStanza (ksUtente, ksStanza," +
                                     " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
                                     " commenti, valutazione) SELECT ?,?,?,?,?,?,?,?,?,? FROM dual " +
-                                    "WHERE NOT EXISTS (SELECT * FROM PrenotazioneStanza WHERE ksUtente=? AND " +
-                                    "ksStato IN (SELECT idStato FROM Stato st WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\')))",
+                                    "WHERE NOT EXISTS (SELECT * FROM PrenotazioneStanza WHERE ksUtente = ? AND " +
+                                    "ksStato = ?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ksUtente);
             ps.setInt(2, ksStanza);
@@ -51,8 +62,9 @@ public class PrenotazioneStanzaDAO {
             ps.setString(9, commenti);
             ps.setInt(10, valutazione);
             ps.setInt(11, ksUtente);
+            ps.setInt(12, ksStato);
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            rs = ps.getGeneratedKeys();
             int id;
             if (rs.next()) {
                 id = rs.getInt(1);
