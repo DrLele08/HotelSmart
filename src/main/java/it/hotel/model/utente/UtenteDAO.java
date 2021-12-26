@@ -1,6 +1,8 @@
 package it.hotel.model.utente;
 
 import it.hotel.Utility.Connect;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.utente.utenteExceptions.*;
 
 import java.sql.*;
@@ -30,9 +32,16 @@ public class UtenteDAO {
             ps.setString(6, password);
             ps.setDate(7, dataNascita);
             ps.setString(8, tokenAuth);
-            ResultSet rs = ps.executeQuery();
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            int id;
+            if (rs.next()) {
+                id = rs.getInt(1);
+            } else {
+                return null;
+            }
 
-            return new Utente(rs.getInt(1), ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
+            return new Utente(id, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

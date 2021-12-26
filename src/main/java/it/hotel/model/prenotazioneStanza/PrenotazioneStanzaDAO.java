@@ -51,7 +51,7 @@ public class PrenotazioneStanzaDAO {
             ps.setString(9, commenti);
             ps.setInt(10, valutazione);
             ps.setInt(11, ksUtente);
-            int rows = ps.executeUpdate();
+            ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             int id;
             if (rs.next()) {
