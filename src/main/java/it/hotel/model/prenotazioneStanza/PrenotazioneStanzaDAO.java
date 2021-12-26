@@ -30,12 +30,15 @@ public class PrenotazioneStanzaDAO {
      * @param valutazione
      */
     public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, int ksStato, Date dataInizio, Date dataFine,
-            double prezzoFinale, String tokenStripe, String tokenQr, String commenti, int valutazione) {
+                                       double prezzoFinale, String tokenStripe, String tokenQr, String commenti, int valutazione)
+            throws PrenotazioneStanzaInsertException {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("INSERT INTO PrenotazioneStanza (ksUtente, ksStanza," +
-                            " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
-                                    " commenti, valutazione) VALUES(?,?,?,?,?,?,?,?,?,?)",
+                                    " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
+                                    " commenti, valutazione) SELECT ?,?,?,?,?,?,?,?,?,? FROM dual " +
+                                    "WHERE NOT EXISTS (SELECT * FROM PrenotazioneStanza WHERE ksUtente=? AND " +
+                                    "ksStato IN (SELECT idStato FROM Stato st WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\')))",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ksUtente);
             ps.setInt(2, ksStanza);
@@ -47,9 +50,17 @@ public class PrenotazioneStanzaDAO {
             ps.setString(8, tokenQr);
             ps.setString(9, commenti);
             ps.setInt(10, valutazione);
-            ResultSet rs = ps.executeQuery();
+            ps.setInt(11, ksUtente);
+            int rows = ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            int id;
+            if (rs.next()) {
+                id = rs.getInt(1);
+            } else {
+                throw new PrenotazioneStanzaInsertException();
+            }
 
-            return new PrenotazioneStanza(rs.getInt(1), ksUtente, ksStanza, ksStato, dataInizio, dataFine,
+            return new PrenotazioneStanza(id, ksUtente, ksStanza, ksStato, dataInizio, dataFine,
                     prezzoFinale, tokenStripe, tokenQr, commenti, valutazione);
 
         } catch (SQLException e) {
