@@ -17,7 +17,8 @@ public class PrenotazioneStanzaDAO {
     public final static int STATO = 2;
 
     /**
-     * Inserisce nel database e ritorna un oggetto {@link PrenotazioneStanza} secondo i valori specificati.
+     * Inserisce nel database e ritorna un oggetto {@link PrenotazioneStanza} secondo i valori specificati
+     * e con stato "IN ATTESA DI PAGAMENTO".
      * @param ksUtente
      * @param ksStanza
      * @param dataInizio
@@ -27,6 +28,7 @@ public class PrenotazioneStanzaDAO {
      * @param tokenQr
      * @param commenti
      * @param valutazione
+     * @return Ritorna l'oggetto inserito nel database
      * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
      */
     public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, Date dataInizio, Date dataFine,
@@ -85,7 +87,6 @@ public class PrenotazioneStanzaDAO {
      * @param idPrenotazioneStanza È l'identificativo dell'oggetto da recuperare dal database
      * @return Ritorna l'oggetto recuperato dal database
      * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
-     * @see PrenotazioneStanzaNotFoundException
      */
     public PrenotazioneStanza doSelectById(int idPrenotazioneStanza)
             throws PrenotazioneStanzaNotFoundException {

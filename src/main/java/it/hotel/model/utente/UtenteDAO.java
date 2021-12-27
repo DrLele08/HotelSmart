@@ -1,14 +1,28 @@
 package it.hotel.model.utente;
 
 import it.hotel.Utility.Connect;
-import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
-import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.utente.utenteExceptions.*;
 
 import java.sql.*;
 
+/**
+ * Fornisce l'accesso al database per {@link Utente}.
+ */
 public class UtenteDAO {
 
+    /**
+     * Inserisce nel database e ritorna un oggetto {@link Utente} secondo i valori specificati.
+     * @param ruolo
+     * @param cf
+     * @param nome
+     * @param cognome
+     * @param email
+     * @param dataNascita
+     * @param tokenAuth
+     * @param password
+     * @return Ritorna l'oggetto inserito nel database
+     * @throws EmailAlreadyExistingException Non è possibile effettuare l'inserimento nel database
+     */
     public Utente doInsert(int ruolo, String cf, String nome, String cognome,
                            String email, Date dataNascita, String tokenAuth, String password)
             throws EmailAlreadyExistingException {
@@ -48,6 +62,14 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Recupera un oggetto {@link Utente} dal database secondo email e password specificati.
+     * @param email L'email dell'oggetto Utente da recuperare
+     * @param password La password dell'oggetto Utente da recuperare
+     * @return Ritorna l'oggetto recuperato dal database
+     * @throws EmailNotFoundException L'email specificata non ha corrispondenza nel database
+     * @throws PasswordNotValidException La password specificata non è esatta
+     */
     public Utente doAuthenticate(String email, String password)
             throws EmailNotFoundException, PasswordNotValidException {
         try (Connection con = Connect.getConnection()) {
@@ -74,6 +96,13 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Recupera un oggetto {@link Utente} dal database secondo idUtente e tokenAuth specificati.
+     * @param idUtente L'idUtente dell'oggetto Utente da recuperare
+     * @param tokenAuth Il tokenAuth dell'oggetto Utente da recuperare
+     * @return Ritorna l'oggetto recuperato dal database
+     * @throws UtenteNotFoundException Nel database non è presente un oggetto Utente con i valori specificati
+     */
     public Utente doAuthenticate(int idUtente, String tokenAuth)
             throws UtenteNotFoundException {
         Utente utente;
@@ -97,6 +126,13 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Modifica la password di un oggetto Utente nel database.
+     * @param idUtente L'idUtente dell'oggetto Utente da modificare
+     * @param oldPassword La vecchia password dell'oggetto Utente da modificare
+     * @param newPassword La nuova password dell'oggetto Utente da modificare
+     * @throws PasswordNotValidException La oldPassword specificata non è esatta
+     */
     public void doChangePassword(int idUtente, String oldPassword, String newPassword)
             throws PasswordNotValidException
     {
@@ -127,6 +163,10 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Elimina un oggetto Utente dal database.
+     * @param idUtente L'idUtente dell'oggetto Utente da eliminare
+     */
     public void doDelete(int idUtente)  {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
@@ -140,6 +180,12 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Recupera il ruolo di un oggetto Utente nel database.
+     * @param idUtente L'idUtente dell'oggetto Utente da recuperare
+     * @param tokenAuth Il tokenAuth dell'oggetto Utente da recuperare
+     * @return Ritorna il ruolo dell'oggetto Utente recuperato
+     */
     public int doGetRuolo(int idUtente, String tokenAuth)
     {
         try (Connection con = Connect.getConnection())
@@ -160,6 +206,11 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Modifica il ruolo di un oggetto Utente nel database.
+     * @param idUtente L'idUtente dell'oggetto Utente da modificare
+     * @param ksRuolo Il nuovo ruolo dell'oggetto Utente da modificare
+     */
     public void doChangeRuolo(int idUtente, int ksRuolo) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
