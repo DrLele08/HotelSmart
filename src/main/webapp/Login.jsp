@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-outline mb-3">
                         <label for="password">Indirizzo email</label>
-                        <input type="password" class="form-control" id="password" pattern="^[a-zA-Z0-9]{4,20}$" required>
+                        <input type="password" class="form-control" id="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required>
                         <div class="invalid-feedback">
                             Inserisci una Password!
                         </div>
