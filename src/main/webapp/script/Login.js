@@ -16,13 +16,13 @@ function Login()
 
     if($('form').isValid()){
         $.ajax({
-            url: '/HotelSmart_war/Login',
+            url: 'Login',
             dataType: "json",
             type: "post",
             data: data,
             success: function (result) {
                 if(result.status)
-                    window.location.replace("Login");
+                    window.location.href="./";
                 if(!result.status)
                     Swal.fire({
                         icon: 'error',

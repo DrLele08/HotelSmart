@@ -23,7 +23,7 @@ function Registrazione()
 
     if($('form').isValid()){
         $.ajax({
-            url: '/HotelSmart_war/Registrazione',
+            url: 'Registrazione',
             dataType: "json",
             type: "post",
             data: data,

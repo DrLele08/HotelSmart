@@ -16,9 +16,9 @@
     <jsp:include page="WEB-INF/views/head.jsp">
         <jsp:param name="title" value="Anagrafica"/>
     </jsp:include>
-    <link rel="stylesheet" href="css/Anagrafica.css">
+    <link rel="stylesheet" href="../css/Anagrafica.css">
 
-    <script src="script/AreaPrivataSidebar.js"></script>
+    <script src="../script/AreaPrivataSidebar.js"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/header.jsp" %>

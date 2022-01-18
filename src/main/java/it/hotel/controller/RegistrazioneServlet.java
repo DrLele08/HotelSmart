@@ -4,6 +4,7 @@ import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
 import jdk.nashorn.internal.objects.Global;
+import org.json.JSONObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -44,7 +45,9 @@ public class RegistrazioneServlet extends HttpServlet {
             Date dataNascitaUtil = in.parse(dataNascitaString);
             java.sql.Date dataNascita = new java.sql.Date(dataNascitaUtil.getTime());
             service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail,dataNascita,password);
-            response.getOutputStream().print("{\"status\":true}");
+            JSONObject object=new JSONObject();
+            object.put("status",true);
+            response.getOutputStream().print(object.toString());
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (PasswordNotValidException e) {

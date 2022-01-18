@@ -17,20 +17,19 @@
 <head>
     <%
         Utente ul = (Utente) session.getAttribute(Utility.SESSION_USER);
-        PrenotazioneStanzaDAO dao = new PrenotazioneStanzaDAO();
-        List<PrenotazioneStanza> ps= dao.doSelectBy(ul.getIdUtente(),0);
     %>
 
-    <jsp:include page="WEB-INF/views/head.jsp">
+    <jsp:include page="views/head.jsp">
         <jsp:param name="title" value="Anagrafica"/>
     </jsp:include>
-    <link rel="stylesheet" href="css/Anagrafica.css">
+    <link rel="stylesheet" href="../css/Anagrafica.css">
     <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    <script src="script/AreaPrivataSidebar.js"></script>
+    <script src="../script/AreaPrivataSidebar.js"></script>
     <script>
         var data = [
            <%
+           List<PrenotazioneStanza> ps=(List<PrenotazioneStanza>) request.getAttribute("ListaPreno");
            for(PrenotazioneStanza p : ps){
            %>
             ["<%=p.getCommenti()%>",

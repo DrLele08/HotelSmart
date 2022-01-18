@@ -14,10 +14,15 @@ public class AnagraficaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session=request.getSession();
         Utente us=(Utente)session.getAttribute(Utility.SESSION_USER);
-        if(us==null) {
-            response.sendRedirect("index.jsp");
+        if(us==null)
+        {
+            response.sendRedirect("./");
         }
-        response.sendRedirect("Anagrafica.jsp");
+        else
+        {
+            RequestDispatcher requestDispatcher=request.getRequestDispatcher("WEB-INF/Anagrafica.jsp");
+            requestDispatcher.forward(request,response);
+        }
     }
 
     @Override
