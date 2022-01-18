@@ -5,6 +5,7 @@ import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.StanzaDAO;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class StanzaService
@@ -29,10 +30,10 @@ public class StanzaService
      * @return ListaStanze Ritorna un vettore di stanze disponibili @
      * @see Stanza
      */
-    public ArrayList<Stanza> searchByFilter(boolean animale,boolean fumo,int lettiS,int lettiM,double costoNotteMin,double costoNotteMax,double scontoMin,double scontoMax)
+    public ArrayList<Stanza> searchByFilter(boolean animale, boolean fumo, int lettiS, int lettiM, double costoNotteMin, double costoNotteMax, double scontoMin, double scontoMax, Date dataIn, Date dataOut)
     {
         if(lettiM>0 & lettiS>0 && costoNotteMin>0 && costoNotteMax>costoNotteMin && scontoMin>=0 && scontoMax>=scontoMin)
-            return (ArrayList<Stanza>)dao.doSearch(animale,fumo,lettiS,lettiM,costoNotteMin,costoNotteMax,scontoMin,scontoMax);
+            return (ArrayList<Stanza>)dao.doSearch(animale,fumo,lettiS,lettiM,costoNotteMin,costoNotteMax,scontoMin,scontoMax,dataIn,dataOut);
         else
             throw new IllegalArgumentException();
     }

@@ -3,6 +3,7 @@ package it.hotel.model.ruolo;
 import it.hotel.model.utente.Utente;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Rappresenta il Ruolo di un {@link Utente}.
@@ -40,7 +41,9 @@ public class Ruolo {
 
     public static int getIdByNome(ArrayList<Ruolo> listRuoli,String ruolo)
     {
-        for(Ruolo r:listRuoli)
+        RuoloDAO dao = new RuoloDAO();
+        List<Ruolo> RuoloProva = dao.doGetAll();
+        for(Ruolo r:RuoloProva)
         {
             if(r.ruolo.equalsIgnoreCase(ruolo))
                 return r.idRuolo;

@@ -37,21 +37,21 @@
             <li><a class="dropdown-item dropdownItem" href="Registrazione">Registrati</a></li>
             <%
             }
-            else if(u.getRuolo() == 1) {
+            else if(u.getRuolo() == 1 )  {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Area privata</a></li>
+            <li><a class="dropdown-item dropdownItem" href="Anagrafica">Area privata</a></li>
             <li><a class="dropdown-item dropdownItem" href="Logout">Logout</a></li>
             <%
             }
             else if(u.getRuolo() == 2) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Area privata</a></li>
+            <li><a class="dropdown-item dropdownItem" href="Anagrafica">Area privata</a></li>
             <li><a class="dropdown-item dropdownItem" href="Logout">Logout</a></li>
             <%
             }
             else if(u.getRuolo() == 3) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Area privata</a></li>
+            <li><a class="dropdown-item dropdownItem" href="Anagrafica">Area privata</a></li>
             <li><a class="dropdown-item dropdownItem" href="Logout">Logout</a></li>
             <%
                 }
