@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <jsp:include page="WEB-INF/views/partials/head.jsp">
+    <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Home"/>
         <jsp:param name="styles" value="header.css"/>
     </jsp:include>
@@ -24,7 +24,7 @@
 
 <body style="background-color: #cdd7e2">
 
-<%@include file="WEB-INF/views/partials/header.jsp"%>
+<%@include file="partials/header.jsp"%>
 
 <div class="mt-3 mx-3 jumbotron" style="background-color: whitesmoke">
     <div class="container">
@@ -48,19 +48,19 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="images/hotelroom6.jpg" alt="First slide">
+                <img src="./images/hotelroom6.jpg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h2>Le migliori stanze per tutte le necessità</h2>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="images/hotelroom7.jpg" alt="Second slide">
+                <img src="./images/hotelroom7.jpg" alt="Second slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h2>Scegli HotelSmart per un servizio di qualità</h2>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="images/hotelroom9.jpg" alt="Third slide">
+                <img src="./images/hotelroom9.jpg" alt="Third slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h2>Diocane</h2>
                 </div>
@@ -69,7 +69,7 @@
     </div>
 </div>
 
-<%@include file="WEB-INF/views/partials/footer.jsp"%>
+<%@include file="partials/footer.jsp"%>
 
 
 </body>
