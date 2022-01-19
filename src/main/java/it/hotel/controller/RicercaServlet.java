@@ -110,29 +110,16 @@ public class RicercaServlet extends HttpServlet {
 
                 try {
                     selected_stanza = service.doSelectById(stanzaId);
+                    String active_link = "ricerca";
+                    request.setAttribute("active", active_link);
+                    Integer num_persone = selected_stanza.getLettiMatrimoniali() + selected_stanza.getLettiSingoli();
+                    request.setAttribute("num_persone",num_persone);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/detailForm.jsp");
+                    dispatcher.forward(request,response);
                 } catch (StanzaNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                Integer num_persone = selected_stanza.getLettiMatrimoniali() + selected_stanza.getLettiSingoli();
-                request.setAttribute("num_persone",num_persone);
-
-                HttpSession session = request.getSession();
-                UtenteService service1 = new UtenteService();
-                Integer id = (Integer) session.getAttribute(Utility.SESSION_USER);
-                String tokenAuth = (String) session.getAttribute(Utility.COOKIE_TOKEN);
-                Utente user = null;
-                try {
-                    user = service1.doLogin(id,tokenAuth);
-                } catch (UtenteNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                request.setAttribute("user",user);
-                String active_link = "ricerca";
-                request.setAttribute("active", active_link);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/detailForm.jsp");
-                dispatcher.forward(request,response);
                 break;
             }
 

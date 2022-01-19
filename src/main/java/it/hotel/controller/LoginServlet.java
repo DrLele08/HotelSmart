@@ -10,11 +10,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @WebServlet(name = "Login", value = "/Login")
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet
+{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -69,7 +68,7 @@ public class LoginServlet extends HttpServlet {
         }
         else
         {
-            response.sendRedirect("ServiceNA.jsp");
+            response.sendRedirect("./ServiceNA.html");
         }
     }
 

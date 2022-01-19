@@ -9,7 +9,8 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet(name = "Logout", value = "/Logout")
-public class LogoutServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet
+{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(true);
@@ -20,7 +21,7 @@ public class LogoutServlet extends HttpServlet {
         c2.setMaxAge(0);
         response.addCookie(c1);
         response.addCookie(c2);
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("./");
     }
 
     @Override

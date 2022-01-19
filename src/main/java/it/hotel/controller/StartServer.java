@@ -15,7 +15,7 @@ public class StartServer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-       // Utility.listRuoli=new RuoloDAO().doGetAll();
-      //  Utility.listStato=new StatoDAO().doGetAll();
+       Utility.listRuoli=new RuoloDAO().doGetAll();
+       Utility.listStato=new StatoDAO().doGetAll();
     }
 }

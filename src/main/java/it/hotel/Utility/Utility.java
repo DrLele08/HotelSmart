@@ -4,6 +4,7 @@ import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.stato.Stato;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Utility
 {
@@ -14,8 +15,8 @@ public class Utility
     public static final String COOKIE_ID="idUsCo";
     public static final String COOKIE_TOKEN="toUsCo";
     public static final String CHECK_LOGIN="ACTIVE_LOGIN";
-    public static ArrayList<Ruolo> listRuoli=new ArrayList<>();
-    public static ArrayList<Stato> listStato=new ArrayList<>();
+    public static List<Ruolo> listRuoli=new ArrayList<>();
+    public static List<Stato> listStato=new ArrayList<>();
 
     public static boolean isActive(String s)
     {

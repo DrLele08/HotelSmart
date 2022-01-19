@@ -39,7 +39,7 @@ public class Ruolo {
         return ruolo;
     }
 
-    public static int getIdByNome(ArrayList<Ruolo> listRuoli,String ruolo)
+    public static int getIdByNome(List<Ruolo> listRuoli,String ruolo)
     {
         RuoloDAO dao = new RuoloDAO();
         List<Ruolo> RuoloProva = dao.doGetAll();

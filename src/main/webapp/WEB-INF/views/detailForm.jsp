@@ -41,7 +41,7 @@
 
 <%
     Integer num_persone = (Integer) request.getAttribute("num_persone");
-    Utente user = (Utente) request.getAttribute("user");
+    Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
 %>
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
@@ -74,7 +74,7 @@
             <div class="form-group">
                 <label for="dataNascita1">Data di nascita Cliente 1
                 </label><br>
-                <input type="date" id="dataNascita1" name="dataNascita1" <%=user.getDataNascita()%>>
+                <input type="date" id="dataNascita1" name="dataNascita1" value="<%=user.getDataNascita()%>">
             </div>
             <br><br>
 

@@ -11,7 +11,7 @@
         <h3><%=ut.getNome()%> <%=ut.getCognome()%></h3>
     </div>
     <ul class="list-unstyled">
-        <li><a href="Anagrafica">Anagrafica</a></li>
+        <li class="active"><a href="Anagrafica">Anagrafica</a></li>
         <li><a href="StoricoPrenotazioni">Storico prenotazioni</a></li>
         <li><a href="StoricoServizi">Storico Servizi</a></li>
     </ul>
