@@ -29,13 +29,13 @@ public class StanzaService
      * @return ListaStanze Ritorna un vettore di stanze disponibili @
      * @see Stanza
      */
-    public ArrayList<Stanza> searchByFilter(boolean animale,boolean fumo,int lettiS,int lettiM,double costoNotteMin,double costoNotteMax,double scontoMin,double scontoMax)
+    /*public ArrayList<Stanza> searchByFilter(boolean animale,boolean fumo,int lettiS,int lettiM,double costoNotteMin,double costoNotteMax,double scontoMin,double scontoMax)
     {
         if(lettiM>0 & lettiS>0 && costoNotteMin>0 && costoNotteMax>costoNotteMin && scontoMin>=0 && scontoMax>=scontoMin)
-            return (ArrayList<Stanza>)dao.doSearch(animale,fumo,lettiS,lettiM,costoNotteMin,costoNotteMax,scontoMin,scontoMax);
+            return (ArrayList<Stanza>)dao3.doSearch(animale,fumo,lettiS,lettiM,costoNotteMin,costoNotteMax,scontoMin,scontoMax);
         else
             throw new IllegalArgumentException();
-    }
+    }*/
     /**
      * Effettua la modifica della password di un utente
      *

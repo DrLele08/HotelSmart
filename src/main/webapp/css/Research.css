@@ -1,0 +1,17 @@
+.card {
+    width: 40rem;
+    margin-left: auto;
+    height: 35rem;
+    margin-top: 2rem;
+    background-color: #cdd7e2;
+}
+
+@media screen and (max-width: 1000px) {
+    .card {
+        width: 25rem;
+        margin-left: auto;
+        height: 20rem;
+        margin-top: 2rem;
+        background-color: #cdd7e2;
+    }
+}
