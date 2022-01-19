@@ -1,25 +1,21 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
 
 
-<link rel="stylesheet" href="css/Login.css">
-<script src="script/Login.js"></script>
+
+
 <!------ Include the above in your HEAD tag ---------->
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>My Awesome Login Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <jsp:include page="/WEB-INF/views/partials/head.jsp">
+        <jsp:param name="title" value="Login"/>
+        <jsp:param name="styles" value="Login.css"/>
+    </jsp:include>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/script/Login.js"></script>
 </head>
-<!--Coded with love by Mutiullah Samim-->
 <body>
 <section class="vh-100">
     <div class="container-fluid h-custom">
@@ -47,21 +43,6 @@
                             Inserisci una Password!
                         </div>
                     </div>
-                    <!-- Email input -->
-                    <!--
-                    <div class="form-outline mb-4">
-                        <input type="email" id="username" class="form-control form-control-lg"
-                               placeholder="Inserisci indirizzo email" required />
-                        <label class="form-label" for="username">Indirizzo email</label>
-                    </div>-->
-
-                    <!-- Password input -->
-                    <!--<div class="form-outline mb-3">
-                        <input type="password" id="password" class="form-control form-control-lg"
-                               placeholder="Inserisci password" required />
-                        <label class="form-label" for="password">Password</label>
-                    </div>-->
-
                     <div class="d-flex justify-content-between align-items-center">
                         <!-- Checkbox -->
                         <div class="form-check mb-0">
@@ -84,10 +65,8 @@
             </div>
         </div>
     </div>
-    <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
-        <h5 class="text-uppercase font-weight-bold">Team di sviluppo</h5>
-        <p>Pierpaolo Cammardella, Alessandro D'Esposito, Raffaele Sais, Giovanni De Pierro</p>
-    </div>
+
 </section>
+<%@include file="/WEB-INF/views/partials/footer.jsp" %>
 </body>
 </html>

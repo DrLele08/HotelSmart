@@ -5,20 +5,16 @@
 <html>
 
 <head>
-    <title>Registrazione Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <jsp:include page="/WEB-INF/views/partials/head.jsp">
+        <jsp:param name="title" value="Registrazione"/>
+        <jsp:param name="styles" value="Registrazione.css"/>
+    </jsp:include>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/Registrazione.css">
-    <script src="script/Registrazione.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<!--Coded with love by Mutiullah Samim-->
-<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
 
-<%@include file="WEB-INF/views/partials/header.jsp"%>
+</head>
+<body>
 
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
@@ -114,5 +110,7 @@
                 </div>
             </div>
         </div>
+
     </section>
+    <%@include file="/WEB-INF/views/partials/footer.jsp" %>
 </body>

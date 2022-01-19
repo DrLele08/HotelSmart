@@ -1,5 +1,6 @@
 package it.hotel.controller;
 
+import it.hotel.Utility.Utility;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
@@ -18,12 +19,14 @@ import java.util.Date;
 public class RegistrazioneServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher rd;
         HttpSession session = request.getSession(true);
         Utente u = (Utente) session.getAttribute("utente");
         if(u == null)
-            response.sendRedirect("Registrazione.jsp");
+            rd=request.getRequestDispatcher("/WEB-INF/views/Registrazione.jsp");
         else
-            response.sendRedirect("index.jsp");
+            rd=request.getRequestDispatcher("index.jsp");
+        rd.forward(request, response);
     }
 
     @Override

@@ -63,23 +63,23 @@
             <%
                 if (u == null) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="Login">Login</a></li>
-            <li><a class="dropdown-item dropdownItem" href="Registrazione">Registrati</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Login">Login</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Registrazione">Registrati</a></li>
             <%
             } else if (u.getRuolo() == 1) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Area privata</a></li>
-            <li><a class="dropdown-item dropdownItem" href="Logout">Logout</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Anagrafica">Area privata</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Logout">Logout</a></li>
             <%
             } else if (u.getRuolo() == 2) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Area privata</a></li>
-            <li><a class="dropdown-item dropdownItem" href="Logout">Logout</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Anagrafica">Area privata</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Logout">Logout</a></li>
             <%
             } else if (u.getRuolo() == 3) {
             %>
-            <li><a class="dropdown-item dropdownItem" href="">Area privata</a></li>
-            <li><a class="dropdown-item dropdownItem" href="Logout">Logout</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Anagrafica">Area privata</a></li>
+            <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Logout">Logout</a></li>
             <%
                 }
             %>

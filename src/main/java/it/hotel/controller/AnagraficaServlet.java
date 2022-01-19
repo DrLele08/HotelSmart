@@ -20,7 +20,7 @@ public class AnagraficaServlet extends HttpServlet {
         }
         else
         {
-            RequestDispatcher requestDispatcher=request.getRequestDispatcher("WEB-INF/Anagrafica.jsp");
+            RequestDispatcher requestDispatcher=request.getRequestDispatcher("/WEB-INF/views/Anagrafica.jsp");
             requestDispatcher.forward(request,response);
         }
     }

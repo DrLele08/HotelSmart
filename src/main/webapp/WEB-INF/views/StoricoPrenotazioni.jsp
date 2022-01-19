@@ -19,13 +19,13 @@
         Utente ul = (Utente) session.getAttribute(Utility.SESSION_USER);
     %>
 
-    <jsp:include page="views/head.jsp">
+    <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Anagrafica"/>
+        <jsp:param name="styles" value="header.css"/>
     </jsp:include>
-    <link rel="stylesheet" href="../css/Anagrafica.css">
     <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    <script src="../script/AreaPrivataSidebar.js"></script>
+    <script src="${pageContext.request.contextPath}/script/AreaPrivataSidebar.js"></script>
     <script>
         var data = [
            <%
@@ -41,7 +41,7 @@
         $(document).ready(function() {
             $('#StoricoPrenotazioniTable').DataTable( {
                 "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
                 },
                 data: data
             } );
@@ -50,9 +50,9 @@
 
 </head>
 <body>
-<%@ include file="/WEB-INF/views/header.jsp" %>
+<%@ include file="/WEB-INF/views/partials/header.jsp" %>
 <div class="wrapper">
-    <%@ include file="/WEB-INF/views/AreaPrivataSidebar.jsp" %>
+    <%@ include file="/WEB-INF/views/partials/AreaPrivataSidebar.jsp" %>
     <div id="content">
         <button type="button" id="sidebarCollapse" class="btn btn-dark d-md-none">
             <i class="fas fa-align-justify"></i>

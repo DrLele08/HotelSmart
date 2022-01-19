@@ -20,21 +20,22 @@ import java.util.List;
 public class StoricoPrenotazioniServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher rd;
         HttpSession session=request.getSession();
         Utente us=(Utente)session.getAttribute(Utility.SESSION_USER);
         if(us==null)
         {
-            response.sendRedirect("./");
+            rd = request.getRequestDispatcher("./");
         }
         else
         {
-            RequestDispatcher requestDispatcher=request.getRequestDispatcher("WEB-INF/StoricoPrenotazioni.jsp");
+            rd=request.getRequestDispatcher("/WEB-INF/views/StoricoPrenotazioni.jsp");
             //TODO Da modificare
             PrenotazioneStanzaDAO dao=new PrenotazioneStanzaDAO();
             List<PrenotazioneStanza> list=dao.doSelectBy(us.getIdUtente(),PrenotazioneStanzaDAO.UTENTE);
             request.setAttribute("ListaPreno",list);
-            requestDispatcher.forward(request,response);
-        }
+
+        }rd.forward(request,response);
     }
 
     @Override

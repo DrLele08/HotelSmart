@@ -13,7 +13,6 @@
     <ul class="list-unstyled">
         <li><a href="Anagrafica">Anagrafica</a></li>
         <li><a href="StoricoPrenotazioni">Storico prenotazioni</a></li>
-        <li><a href="PrenotazioniInCorso">Prenotazioni in corso</a></li>
         <li><a href="StoricoServizi">Storico Servizi</a></li>
     </ul>
 </nav>

@@ -13,17 +13,17 @@
 <head>
 
 
-    <jsp:include page="WEB-INF/views/head.jsp">
+    <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Anagrafica"/>
+        <jsp:param name="styles" value="Anagrafica.css"/>
     </jsp:include>
-    <link rel="stylesheet" href="css/Anagrafica.css">
 
-    <script src="script/AreaPrivataSidebar.js"></script>
+    <script src="${pageContext.request.contextPath}/script/AreaPrivataSidebar.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/header.jsp" %>
+<%@ include file="/WEB-INF/views/partials/header.jsp" %>
 <div class="wrapper">
-    <%@ include file="/WEB-INF/views/AreaPrivataSidebar.jsp" %>
+    <%@ include file="/WEB-INF/views/partials/AreaPrivataSidebar.jsp" %>
     <div id="content">
         <button type="button" id="sidebarCollapse" class="btn btn-dark d-md-none">
             <i class="fas fa-align-justify"></i>
