@@ -1,11 +1,13 @@
 package it.hotel.model.prenotazioneStanza;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * Rappresenta una PrenotazioneStanza e fornisce metodi per il recupero dello stato.
  */
-public class PrenotazioneStanza {
+public class PrenotazioneStanza implements Serializable
+{
 
     private int idPrenotazioneStanza;
     private int ksUtente;
