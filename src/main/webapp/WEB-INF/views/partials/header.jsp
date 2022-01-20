@@ -2,7 +2,7 @@
 <%@ page import="it.hotel.Utility.Utility" %>
 <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand" style="background-color: #02172d;">
 
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="${pageContext.request.contextPath}/">
         <img class="rounded"
              src="${pageContext.request.contextPath}/images/logo.jpeg" alt="LogoHotelSmart">
     </a>
