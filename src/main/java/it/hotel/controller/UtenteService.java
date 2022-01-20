@@ -1,6 +1,7 @@
 package it.hotel.controller;
 
 import it.hotel.Utility.Utility;
+import it.hotel.controller.exception.PermissionDeniedException;
 import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.UtenteDAO;
@@ -95,7 +96,7 @@ public class UtenteService
      * @param newPwd Nuova password utente
      */
     public void editPassword(int idUtente,String token,String oldPwd,String newPwd)
-            throws PasswordNotValidException, UtenteNotFoundException,PermissionDeniedException
+            throws PasswordNotValidException, UtenteNotFoundException, PermissionDeniedException
     {
         if(!token.trim().isEmpty() && !oldPwd.trim().isEmpty() && !newPwd.trim().isEmpty())
         {

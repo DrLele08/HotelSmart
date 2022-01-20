@@ -1,4 +1,4 @@
-package it.hotel.controller;
+package it.hotel.controller.exception;
 
 public class PermissionDeniedException extends Exception {
 

@@ -14,6 +14,6 @@
         </div>
     </div>
     <div class="footer-copyright text-center py-3">
-        <p><em>© 2021 Copyright: Tutti i diritti riservati.</em></p>
+        <p><em>&copy; 2021 Copyright: Tutti i diritti riservati.</em></p>
     </div>
 </footer>
