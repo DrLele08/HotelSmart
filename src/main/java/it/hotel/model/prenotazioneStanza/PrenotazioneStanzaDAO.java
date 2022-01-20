@@ -2,6 +2,7 @@ package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.Utility.Connect;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.*;
+import it.hotel.model.stato.Stato;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,15 +20,15 @@ public class PrenotazioneStanzaDAO {
     /**
      * Inserisce nel database e ritorna un oggetto {@link PrenotazioneStanza} secondo i valori specificati
      * e con stato "IN ATTESA DI PAGAMENTO".
-     * @param ksUtente
-     * @param ksStanza
-     * @param dataInizio
-     * @param dataFine
-     * @param prezzoFinale
-     * @param tokenStripe
-     * @param tokenQr
-     * @param commenti
-     * @param valutazione
+     * @param ksUtente Utente che effettua la prenotazione
+     * @param ksStanza Stanza prenotata
+     * @param dataInizio Data di entrata
+     * @param dataFine Data di uscita
+     * @param prezzoFinale Prezzo finale
+     * @param tokenStripe Token di Stripe
+     * @param tokenQr Token del codice qr
+     * @param commenti Commenti
+     * @param valutazione Valutazione
      * @return Ritorna l'oggetto inserito nel database
      * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
      */
@@ -144,6 +145,31 @@ public class PrenotazioneStanzaDAO {
             throw new RuntimeException(e);
         }
         return prenotazioniStanza;
+    }
+
+    /**
+     * Recupera tutti gli oggetti {@link PrenotazioneStanza} trovati nel database.
+     * @return Ritorna le prenotazioni stanza trovate nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public List<PrenotazioneStanza> doGetAll() {
+        ArrayList<PrenotazioneStanza> prenotazioni = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Prenotazionestanza",
+                            Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                prenotazioni.add(new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4),
+                        rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getInt(11)));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return prenotazioni;
     }
 
     private PrenotazioneStanza createPrenotazioneStanza(ResultSet rs) throws SQLException {
