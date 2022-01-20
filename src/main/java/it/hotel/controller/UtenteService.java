@@ -109,4 +109,24 @@ public class UtenteService
         else
             throw new IllegalArgumentException();
     }
+
+    /**
+     * Effettua la modifica dell'anagrafica di un utente
+     * @param nome Nome dell'utente
+     * @param cognome Cognome dell'utente
+     * @param cf Codice Fiscale dell'utente
+     * @param dataNascita Data di nascita dell'utente
+     * @param email Email dell'utente
+     */
+    public void editAnagrafica(int idUtente, String nome, String cognome, String cf, Date dataNascita, String email)
+            throws EmailAlreadyExistingException
+    {
+        if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !email.trim().isEmpty() && dataNascita!=null)
+        {
+            dao.doChangeAnagrafica(idUtente, nome, cognome, cf, dataNascita, email);
+        }
+        else
+            throw new IllegalArgumentException();
+    }
+
 }

@@ -1,10 +1,8 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
-import jdk.nashorn.internal.objects.Global;
 import org.json.JSONObject;
 
 import javax.servlet.*;

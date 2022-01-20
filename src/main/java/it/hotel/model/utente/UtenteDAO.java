@@ -230,6 +230,32 @@ public class UtenteDAO {
         }
     }
 
+    public void doChangeAnagrafica(int idUtente, String nome, String cognome, String cf, Date dataNascita, String email)
+            throws EmailAlreadyExistingException
+    {
+        try (Connection con = Connect.getConnection())
+        {
+            //controllo che la nuova email non sia presente nel database;
+            if (isEmailInDatabase(con, email)) {
+                throw new EmailAlreadyExistingException();
+            }
+
+            //aggiorno l'anagrafica;
+            PreparedStatement ps = con.prepareStatement
+                    ("UPDATE Utente SET nome=?, cognome=?, cf=?, dataNascita=?, email=? WHERE idUtente=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, nome);
+            ps.setString(2, cognome);
+            ps.setString(3, cf);
+            ps.setDate(4, dataNascita);
+            ps.setString(5, email);
+            ps.setInt(6, idUtente);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private boolean isEmailInDatabase(Connection con, String email) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=?",
                 Statement.RETURN_GENERATED_KEYS);

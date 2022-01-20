@@ -2,7 +2,6 @@ package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.Utility.Connect;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.*;
-import it.hotel.model.stato.Stato;
 
 import java.sql.*;
 import java.util.ArrayList;

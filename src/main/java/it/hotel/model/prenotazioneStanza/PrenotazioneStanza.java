@@ -23,17 +23,17 @@ public class PrenotazioneStanza implements Serializable
 
     /**
      * Costruisce un oggetto PrenotazioneStanza.
-     * @param idPrenotazioneStanza
-     * @param ksUtente
-     * @param ksStanza
-     * @param ksStato
-     * @param dataInizio
-     * @param dataFine
-     * @param prezzoFinale
-     * @param tokenStripe
-     * @param tokenQr
-     * @param commenti
-     * @param valutazione
+     * @param idPrenotazioneStanza Id della prenotazione
+     * @param ksUtente Utente che effettua la prenotazione
+     * @param ksStanza Stanza prenotata
+     * @param ksStato Stato della prenotazione
+     * @param dataInizio Data di entrata
+     * @param dataFine Data di uscita
+     * @param prezzoFinale Prezzo finale
+     * @param tokenStripe Token di Stripe
+     * @param tokenQr Token del codice qr
+     * @param commenti Commenti
+     * @param valutazione Valutazione
      */
     public PrenotazioneStanza(int idPrenotazioneStanza, int ksUtente, int ksStanza, int ksStato,
                 Date dataInizio, Date dataFine, double prezzoFinale, String tokenStripe,
@@ -52,77 +52,77 @@ public class PrenotazioneStanza implements Serializable
     }
 
     /**
-     * @return
+     * @return Id della prenotazione
      */
     public int getIdPrenotazioneStanza() {
         return idPrenotazioneStanza;
     }
 
     /**
-     * @return
+     * @return Utente che effettua la prenotazione
      */
     public int getKsUtente() {
         return ksUtente;
     }
 
     /**
-     * @return
+     * @return Stanza prenotata
      */
     public int getKsStanza() {
         return ksStanza;
     }
 
     /**
-     * @return
+     * @return Stato della prenotazione
      */
     public int getKsStato() {
         return ksStato;
     }
 
     /**
-     * @return
+     * @return Data di entrata
      */
     public Date getDataInizio() {
         return dataInizio;
     }
 
     /**
-     * @return
+     * @return Data di uscita
      */
     public Date getDataFine() {
         return dataFine;
     }
 
     /**
-     * @return
+     * @return Prezzo finale
      */
     public double getPrezzoFinale() {
         return prezzoFinale;
     }
 
     /**
-     * @return
+     * @return Token di Stripe
      */
     public String getTokenStripe() {
         return tokenStripe;
     }
 
     /**
-     * @return
+     * @return Token del codice qr
      */
     public String getTokenQr() {
         return tokenQr;
     }
 
     /**
-     * @return
+     * @return Commenti
      */
     public String getCommenti() {
         return commenti;
     }
 
     /**
-     * @return
+     * @return Valutazione
      */
     public int getValutazione() {
         return valutazione;
