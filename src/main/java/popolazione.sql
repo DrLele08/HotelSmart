@@ -9,7 +9,6 @@ INSERT INTO Utility (tipo, valore) VALUES("ACTIVE_SEARCH",1);
 INSERT INTO Ruolo(ruolo) VALUES("Admin");
 INSERT INTO Ruolo(ruolo) VALUES("Assistente");
 INSERT INTO Ruolo(ruolo) VALUES("Utente");
-INSERT INTO Ruolo(ruolo) VALUES("Bannato");
 
 -- Popolazione Stato Prenotazione
 INSERT INTO Stato(stato) VALUES("IN ATTESA DI PAGAMENTO");

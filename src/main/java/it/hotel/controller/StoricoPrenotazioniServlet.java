@@ -30,9 +30,16 @@ public class StoricoPrenotazioniServlet extends HttpServlet {
         else
         {
             rd=request.getRequestDispatcher("/WEB-INF/views/StoricoPrenotazioni.jsp");
-            //TODO Da modificare
             PrenotazioneStanzaDAO dao=new PrenotazioneStanzaDAO();
-            List<PrenotazioneStanza> list=dao.doSelectBy(us.getIdUtente(),PrenotazioneStanzaDAO.UTENTE);
+            List<PrenotazioneStanza> list = null;
+            if(us.getRuolo()==3)
+            {
+                list=dao.doSelectBy(us.getIdUtente(),PrenotazioneStanzaDAO.UTENTE);
+            }
+            else if(us.getRuolo()== 1 || us.getRuolo()==2)
+            {
+                list=dao.doGetAll();
+            }
             request.setAttribute("ListaPreno",list);
 
         }rd.forward(request,response);

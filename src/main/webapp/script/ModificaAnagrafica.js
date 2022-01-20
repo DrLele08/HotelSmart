@@ -22,7 +22,7 @@ function ModificaAnagrafica()
 
     if($('form').isValid()){
         $.ajax({
-            url: 'Registrazione',
+            url: 'api/ModificaAnagrafica',
             dataType: "json",
             type: "post",
             data: data,
@@ -48,13 +48,19 @@ function ModificaPassword()
 
     if($('form').isValid()){
         $.ajax({
-            url: 'Registrazione',
+            url: 'api/ModifcaPwd',
             dataType: "json",
             type: "post",
             data: data,
             success: function (result) {
-                if(result.status)
-                    window.location.replace("index.jsp");
+                if(result.Ris==1)
+                {
+                    alert("Modificata!!!")
+                }
+                else
+                {
+                    alert(result.Mess);
+                }
             }
         });
     }

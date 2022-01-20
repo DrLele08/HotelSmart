@@ -107,18 +107,50 @@
             </div>
 
          </form>
-
+        <form class = "needs-validation">
+        <div class="profile-head">
+            <h4>
+                Modifica Password
+            </h4>
+        </div>
         <div class = "needs-validation">
             <div class="row">
                 <div class="col-md-4 mb-4 pb-2">
 
                     <div class="form-outline">
-                        <label class="form-label" for="Password">Password</label>
+                        <label class="form-label" for="Password">Vecchia Password</label>
                         <input type="password" id="Password" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
                         <div class="invalid-feedback">
                             La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
                         </div>
                     </div>
+
+
+                </div>
+                <div class="col-md-4 mb-4 pb-2">
+
+                    <div class="form-outline">
+                        <label class="form-label" for="Password">Nuova Password</label>
+                        <input type="password" id="Password" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
+                        <div class="invalid-feedback">
+                            La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4 pb-2">
+
+                    <div class="form-outline">
+                        <label class="form-label" for="Password">Ripeti Password</label>
+                        <input type="password" id="Password" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
+                        <div class="invalid-feedback">
+                            La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
+                        </div>
+                    </div>
+
 
                 </div>
                 <div class="row">
@@ -129,7 +161,7 @@
                     </div>
                 </div>
             </div>
-        </form>>
+        </form>
     </div>
 </div>
 </body>

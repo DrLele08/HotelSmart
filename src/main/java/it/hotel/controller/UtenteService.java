@@ -101,7 +101,7 @@ public class UtenteService
         if(!token.trim().isEmpty() && !oldPwd.trim().isEmpty() && !newPwd.trim().isEmpty())
         {
             int tipoRuolo=dao.doGetRuolo(idUtente,token);
-            if(tipoRuolo==2 || tipoRuolo==1)
+            if(tipoRuolo==2 || tipoRuolo==1 || tipoRuolo==3)
                 dao.doChangePassword(idUtente,oldPwd,newPwd);
             else
                 throw new PermissionDeniedException();
