@@ -16,8 +16,10 @@
     <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Anagrafica"/>
     </jsp:include>
-
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/AreaPrivataSidebar.js"></script>
+
 </head>
 <body>
 <%@ include file="/WEB-INF/views/partials/header.jsp" %>
