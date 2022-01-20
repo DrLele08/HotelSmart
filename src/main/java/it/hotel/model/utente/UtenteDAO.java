@@ -12,16 +12,17 @@ public class UtenteDAO {
 
     /**
      * Inserisce nel database e ritorna un oggetto {@link Utente} secondo i valori specificati.
-     * @param ruolo
-     * @param cf
-     * @param nome
-     * @param cognome
-     * @param email
-     * @param dataNascita
-     * @param tokenAuth
-     * @param password
-     * @return Ritorna l'oggetto inserito nel database
+     * @param ruolo Ruolo
+     * @param cf Codice fiscale
+     * @param nome Nome
+     * @param cognome Cognome
+     * @param email Email
+     * @param dataNascita Data di nascita
+     * @param tokenAuth Token di autenticazione
+     * @param password Password
+     * @return Ritorna l'utente inserito nel database
      * @throws EmailAlreadyExistingException Non è possibile effettuare l'inserimento nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Utente doInsert(int ruolo, String cf, String nome, String cognome,
                            String email, Date dataNascita, String tokenAuth, String password)
@@ -64,11 +65,12 @@ public class UtenteDAO {
 
     /**
      * Recupera un oggetto {@link Utente} dal database secondo email e password specificati.
-     * @param email L'email dell'oggetto Utente da recuperare
-     * @param password La password dell'oggetto Utente da recuperare
-     * @return Ritorna l'oggetto recuperato dal database
+     * @param email L'email dell'uUtente da recuperare
+     * @param password La password dell'utente da recuperare
+     * @return Ritorna l'utente recuperato dal database
      * @throws EmailNotFoundException L'email specificata non ha corrispondenza nel database
      * @throws PasswordNotValidException La password specificata non è esatta
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Utente doAuthenticate(String email, String password)
             throws EmailNotFoundException, PasswordNotValidException {
@@ -98,14 +100,14 @@ public class UtenteDAO {
 
     /**
      * Recupera un oggetto {@link Utente} dal database secondo idUtente e tokenAuth specificati.
-     * @param idUtente L'idUtente dell'oggetto Utente da recuperare
-     * @param tokenAuth Il tokenAuth dell'oggetto Utente da recuperare
-     * @return Ritorna l'oggetto recuperato dal database
-     * @throws UtenteNotFoundException Nel database non è presente un oggetto Utente con i valori specificati
+     * @param idUtente L'idUtente dell'utente da recuperare
+     * @param tokenAuth Il tokenAuth dell'utente da recuperare
+     * @return Ritorna l'utente recuperato dal database
+     * @throws UtenteNotFoundException Nel database non è presente un utente con i valori specificati
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Utente doAuthenticate(int idUtente, String tokenAuth)
             throws UtenteNotFoundException {
-        Utente utente;
         try (Connection con = Connect.getConnection())
         {
 
@@ -128,10 +130,11 @@ public class UtenteDAO {
 
     /**
      * Modifica la password di un oggetto Utente nel database.
-     * @param idUtente L'idUtente dell'oggetto Utente da modificare
-     * @param oldPassword La vecchia password dell'oggetto Utente da modificare
-     * @param newPassword La nuova password dell'oggetto Utente da modificare
+     * @param idUtente L'idUtente dell'utente da modificare
+     * @param oldPassword La vecchia password dell'utente da modificare
+     * @param newPassword La nuova password dell'utente da modificare
      * @throws PasswordNotValidException La oldPassword specificata non è esatta
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public void doChangePassword(int idUtente, String oldPassword, String newPassword)
             throws PasswordNotValidException
@@ -165,7 +168,8 @@ public class UtenteDAO {
 
     /**
      * Elimina un oggetto Utente dal database.
-     * @param idUtente L'idUtente dell'oggetto Utente da eliminare
+     * @param idUtente L'idUtente dell'utente da eliminare
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public void doDelete(int idUtente)  {
         try (Connection con = Connect.getConnection()) {
@@ -182,9 +186,10 @@ public class UtenteDAO {
 
     /**
      * Recupera il ruolo di un oggetto Utente nel database.
-     * @param idUtente L'idUtente dell'oggetto Utente da recuperare
-     * @param tokenAuth Il tokenAuth dell'oggetto Utente da recuperare
-     * @return Ritorna il ruolo dell'oggetto Utente recuperato
+     * @param idUtente L'idUtente dell'utente da recuperare
+     * @param tokenAuth Il tokenAuth dell'utente da recuperare
+     * @return Ritorna il ruolo dell'utente recuperato
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public int doGetRuolo(int idUtente, String tokenAuth)
     {
@@ -208,8 +213,9 @@ public class UtenteDAO {
 
     /**
      * Modifica il ruolo di un oggetto Utente nel database.
-     * @param idUtente L'idUtente dell'oggetto Utente da modificare
-     * @param ksRuolo Il nuovo ruolo dell'oggetto Utente da modificare
+     * @param idUtente L'idUtente dell'utente da modificare
+     * @param ksRuolo Il nuovo ruolo dell'utente da modificare
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public void doChangeRuolo(int idUtente, int ksRuolo) {
         try (Connection con = Connect.getConnection()) {
@@ -218,7 +224,7 @@ public class UtenteDAO {
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ksRuolo);
             ps.setInt(2, idUtente);
-            ResultSet rs = ps.executeQuery();
+            ps.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

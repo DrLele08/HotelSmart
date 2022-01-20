@@ -7,8 +7,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fornisce l'accesso al database per {@link Stato}.
+ */
 public class StatoDAO {
 
+    /**
+     * Inserisce nel database l'oggetto {@link Stato} specificato.
+     * @param stato Stato da inserire nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public void doInsert(Stato stato) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
@@ -23,6 +31,13 @@ public class StatoDAO {
         }
     }
 
+    /**
+     * Recupera l'oggetto {@link Stato} trovato nel database secondo la stringa specificata.
+     * @param statoStr Stringa che identifica lo stato cercato
+     * @return Ritorna lo stato trovato nel database
+     * @throws StatoNotFoundException Lo stato cercato non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public Stato doSelectByStato(String statoStr) throws StatoNotFoundException {
         Stato stato;
         try (Connection con = Connect.getConnection()) {
@@ -43,6 +58,13 @@ public class StatoDAO {
         return stato;
     }
 
+    /**
+     * Recupera l'oggetto {@link Stato} trovato nel database secondo l'id specificato.
+     * @param idStato Id che identifica lo stato cercato
+     * @return Ritorna lo stato trovato nel database
+     * @throws StatoNotFoundException Lo stato cercato non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public Stato doSelectById(int idStato) throws StatoNotFoundException {
         Stato stato;
         try (Connection con = Connect.getConnection()) {
@@ -63,6 +85,11 @@ public class StatoDAO {
         return stato;
     }
 
+    /**
+     * Recupera tutti gli oggetti {@link Stato} trovati nel database.
+     * @return Ritorna gli stati trovati nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public List<Stato> doGetAll() {
         ArrayList<Stato> ruoli = new ArrayList<>();
         try (Connection con = Connect.getConnection()) {

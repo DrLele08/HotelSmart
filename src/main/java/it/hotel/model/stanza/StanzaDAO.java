@@ -7,8 +7,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fornisce l'accesso al database per {@link Stanza}.
+ */
 public class StanzaDAO {
 
+    /**
+     * Inserisce nel database l'oggetto {@link Stanza} specificato.
+     * @param stanza Stanza da inserire nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public void doInsert(Stanza stanza) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
@@ -29,6 +37,13 @@ public class StanzaDAO {
         }
     }
 
+    /**
+     * Recupera l'oggetto {@link Stanza} trovato nel database secondo l'id specificato.
+     * @param idStanza Id che identifica la stanza cercata
+     * @return Ritorna la stanza trovata nel database
+     * @throws StanzaNotFoundException La stanza cercata non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public Stanza doSelectById(int idStanza) throws StanzaNotFoundException {
         Stanza stanza;
         try (Connection con = Connect.getConnection()) {
@@ -50,6 +65,21 @@ public class StanzaDAO {
         return stanza;
     }
 
+    /**
+     * Recupera gli oggetti {@link Stanza} trovati nel database secondo i valori specificati.
+     * @param animaleDomestico Permesso animali domestici
+     * @param fumatore Permesso fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotteMinimo Costo minimo per notte
+     * @param costoNotteMassimo Costo massimo per notte
+     * @param scontoMinimo Sconto minimo
+     * @param scontoMassimo Sconto massimo
+     * @param dataIn Data di entrata
+     * @param dataOut Data di uscita
+     * @return Ritorna le stanze trovate nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public List<Stanza> doSearch(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
                                  Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
                                  Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) {
@@ -123,45 +153,39 @@ public class StanzaDAO {
     }
 
     private void animaleDomesticoStr(List<String> parametri, Boolean animaleDomestico) {
-        if (animaleDomestico == null) {
-            return;
-        } else if (animaleDomestico) {
-            parametri.add("animaleDomestico = TRUE");
-        } else {
-            parametri.add("animaleDomestico = FALSE");
+        if (animaleDomestico != null) {
+            if (animaleDomestico) {
+                parametri.add("animaleDomestico = TRUE");
+            } else {
+                parametri.add("animaleDomestico = FALSE");
+            }
         }
     }
 
     private void fumatoreStr(List<String> parametri, Boolean fumatore) {
-        if (fumatore == null) {
-            return;
-        } else if (fumatore) {
-            parametri.add("fumatore = TRUE");
-        } else {
-            parametri.add("fumatore = FALSE");
+        if (fumatore != null) {
+            if (fumatore) {
+                parametri.add("fumatore = TRUE");
+            } else {
+                parametri.add("fumatore = FALSE");
+            }
         }
     }
 
     private void lettiSingoliStr(List<String> parametri, Integer lettiSingoli) {
-        if (lettiSingoli == null) {
-            return;
-        } else {
+        if (lettiSingoli != null) {
             parametri.add("lettiSingoli = " + lettiSingoli);
         }
     }
 
     private void lettiMatrimonialiStr(List<String> parametri, Integer lettiMatrimoniali) {
-        if (lettiMatrimoniali == null) {
-            return;
-        } else {
+        if (lettiMatrimoniali != null) {
             parametri.add("lettiMatrimoniali = " + lettiMatrimoniali);
         }
     }
 
     private void costoNotteStr(List<String> parametri, Double costoNotteMinimo, Double costoNotteMassimo) {
-        if ((costoNotteMinimo == null) && (costoNotteMassimo == null)) {
-            return;
-        } else if ((costoNotteMinimo != null) && (costoNotteMassimo != null)) {
+        if ((costoNotteMinimo != null) && (costoNotteMassimo != null)) {
             parametri.add("costoNotte >= " + costoNotteMinimo + " AND " +
                     "costoNotte <= " + costoNotteMassimo);
         } else if (costoNotteMinimo != null) {
@@ -172,9 +196,7 @@ public class StanzaDAO {
     }
 
     private void scontoStr(List<String> parametri, Double scontoMinimo, Double scontoMassimo) {
-        if ((scontoMinimo == null) && (scontoMassimo == null)) {
-            return;
-        } else if ((scontoMinimo != null) && (scontoMassimo != null)) {
+        if ((scontoMinimo != null) && (scontoMassimo != null)) {
             parametri.add("sconto >= " + scontoMinimo + " AND " +
                     "sconto <= " + scontoMassimo);
         } else if (scontoMinimo != null) {
