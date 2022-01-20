@@ -1,4 +1,4 @@
-package it.hotel.controller;
+package it.hotel.controller.services;
 
 import it.hotel.Utility.Utility;
 import it.hotel.controller.exception.PermissionDeniedException;

@@ -1,12 +1,11 @@
 package it.hotel.controller.api;
 
-import it.hotel.controller.UtenteService;
+import it.hotel.controller.services.UtenteService;
 import it.hotel.controller.exception.PermissionDeniedException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.json.JSONObject;
 
-import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;

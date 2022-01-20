@@ -1,7 +1,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="it.hotel.model.stanza.Stanza" %>
 <%@ page import="it.hotel.model.utente.UtenteDAO" %>
-<%@ page import="it.hotel.controller.UtenteService" %>
+<%@ page import="it.hotel.controller.services.UtenteService" %>
 <%@ page import="it.hotel.model.utente.utenteExceptions.UtenteNotFoundException" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
