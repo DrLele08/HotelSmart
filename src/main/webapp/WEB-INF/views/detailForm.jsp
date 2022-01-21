@@ -11,7 +11,11 @@
     <jsp:include page="/WEB-INF/views/partials/head.jsp">
         <jsp:param name="title" value="ricerca"/>
         <jsp:param name="styles" value="header.css"/>
+        <jsp:param name="styles" value="Registrazione.css"/>
     </jsp:include>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
 
     <style>
 
@@ -42,39 +46,54 @@
 <%
     Integer num_persone = (Integer) request.getAttribute("num_persone");
     Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
+    Integer id_stanza = (Integer) session.getAttribute("stanzaid");
 %>
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container">
 
         <h1 class="display-4">Compila i dettagli della tua prenotazione</h1><br>
+        <p>I dati extra inseriti serviranno per registrarti alla piattaforma automaticamente</p><br>
 
         <%if (user != null) {%>
 
-        <form action="#" method="post">
+        <form action="#" method="post" class="needs-validation">
 
             <div class="form-group">
                 <label for="nome1">Nome Cliente 1
                 </label><br>
-                <input type="text" name="nome1" id="nome1" value="<%=user.getNome()%>">
+                <input type="text" class="form-control form-control-lg" name="nome1" id="nome1"
+                       pattern="[A-z  À-ù ‘-]{2,30}$" value="<%=user.getNome()%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un nome valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="cognome1">Cognome Cliente 1
                 </label><br>
-                <input type="text" name="cognome1" id="cognome1" value="<%=user.getCognome()%>">
+                <input type="text" class="form-control form-control-lg" name="cognome1" id="cognome1"
+                       pattern="[A-z  À-ù ‘-]{2,30}$" value="<%=user.getCognome()%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un cognome valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="codicef1">Codice fiscale Cliente 1
                 </label><br>
-                <input type="text" name="codicef1" id="codicef1" value="<%=user.getCf()%>">
+                <input type="text" class="form-control form-control-lg" name="codicef1" id="codicef1"
+                       pattern="[A-z 0-9]{16}$" value="<%=user.getCf()%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un codice fiscale valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="dataNascita1">Data di nascita Cliente 1
                 </label><br>
-                <input type="date" id="dataNascita1" name="dataNascita1" value="<%=user.getDataNascita()%>">
+                <input type="date" class="form-control form-control-lg" id="dataNascita1" name="dataNascita1"
+                       value="<%=user.getDataNascita()%>" required>
             </div>
             <br><br>
 
@@ -82,64 +101,151 @@
             <div class="form-group">
                 <label for="nome<%=i+1%>">Nome Cliente <%=i + 1%>
                 </label><br>
-                <input type="text" name="nome<%=i+1%>" id="nome<%=i+1%>">
+                <input type="text" class="form-control form-control-lg" name="nome<%=i+1%>"
+                       pattern="[A-z  À-ù ‘-]{2,30}$" id="nome<%=i+1%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un nome valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="cognome<%=i+1%>">Cognome Cliente <%=i + 1%>
                 </label><br>
-                <input type="text" name="cognome<%=i+1%>" id="cognome<%=i+1%>">
+                <input type="text" class="form-control form-control-lg" name="cognome<%=i+1%>"
+                       pattern="[A-z  À-ù ‘-]{2,30}$" id="cognome<%=i+1%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un cognome valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="codicef<%=i+1%>">Codice fiscale Cliente <%=i + 1%>
                 </label><br>
-                <input type="text" name="codicef<%=i+1%>" id="codicef<%=i+1%>">
+                <input type="text" class="form-control form-control-lg" name="codicef<%=i+1%>" pattern="[A-z 0-9]{16}$"
+                       id="codicef<%=i+1%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un codice fiscale valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="dataNascita<%=i+1%>">Data di nascita Cliente <%=i + 1%>
                 </label><br>
-                <input type="date" id="dataNascita<%=i+1%>" name="dataNascita<%=i+1%>">
+                <input type="date" class="form-control form-control-lg" id="dataNascita<%=i+1%>"
+                       name="dataNascita<%=i+1%>" required>
             </div>
             <br><br>
             <% } %>
             <input type="hidden" name="num_persone" value="<%=num_persone%>">
-            <input type="submit" class="btn btn-dark" value="Conferma prenotazione">
+            <input type="hidden" name="id_stanza" value="<%=id_stanza%>">
+            <Button onclick="Registrazione()" id="ButtonSub" class="btn btn-dark" type="button">Conferma</button>
         </form>
 
         <%} else { %>
 
         <form action="#" method="post">
 
-            <% for (int i = 0; i < num_persone; i++) { %>
+            <div class="form-group">
+                <label for="nome1_notLogged">Nome Cliente 1
+                </label><br>
+                <input type="text" class="form-control form-control-lg" pattern="[A-z  À-ù ‘-]{2,30}$" name="nome1"
+                       id="nome1_notLogged" required>
+                <div class="invalid-feedback">
+                    Inserisci un nome valido!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cognome1_notLogged">Cognome Cliente 1
+                </label><br>
+                <input type="text" class="form-control form-control-lg" pattern="[A-z  À-ù ‘-]{2,30}$" name="cognome1"
+                       id="cognome1_notLogged"
+                       required>
+                <div class="invalid-feedback">
+                    Inserisci un cognome valido!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="codicef1_notLogged">Codice fiscale Cliente 1
+                </label><br>
+                <input type="text" class="form-control form-control-lg" pattern="[A-z 0-9]{16}$" name="codicef1"
+                       id="codicef1_notLogged"
+                       required>
+                <div class="invalid-feedback">
+                    Inserisci un codice fiscale valido!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dataNascita1_notLogged">Data di nascita Cliente 1
+                </label><br>
+                <input type="date" class="form-control form-control-lg" id="dataNascita1_notLogged" name="dataNascita1"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="IndirizzoEmail">Indirizzo Email</label>
+                <input type="text" id="IndirizzoEmail" class="form-control form-control-lg"
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required/>
+                <div class="invalid-feedback">
+                    Inserisci una Email valida!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="Password">Password</label>
+                <input type="password" id="Password" class="form-control form-control-lg"
+                       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required/>
+                <div class="invalid-feedback">
+                    La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere
+                    speciale e deve essere da 8 a 20 caratteri
+                </div>
+            </div>
+            <br><br>
+
+            <% for (int i = 1; i < num_persone; i++) { %>
             <div class="form-group">
                 <label for="nome<%=i+1%>">Nome Cliente <%=i + 1%>
                 </label><br>
-                <input type="text" name="nome<%=i+1%>" id="nome<%=i+1%>">
+                <input type="text" class="form-control form-control-lg" name="nome<%=i+1%>"
+                       pattern="[A-z  À-ù ‘-]{2,30}$" id="nome<%=i+1%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un nome valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="cognome<%=i+1%>">Cognome Cliente <%=i + 1%>
                 </label><br>
-                <input type="text" name="cognome<%=i+1%>" id="cognome<%=i+1%>">
+                <input type="text" class="form-control form-control-lg" name="cognome<%=i+1%>"
+                       pattern="[A-z  À-ù ‘-]{2,30}$" id="cognome<%=i+1%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un cognome valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="codicef<%=i+1%>">Codice fiscale Cliente <%=i + 1%>
                 </label><br>
-                <input type="text" name="codicef<%=i+1%>" id="codicef<%=i+1%>">
+                <input type="text" class="form-control form-control-lg" name="codicef<%=i+1%>" pattern="[A-z 0-9]{16}$"
+                       id="codicef<%=i+1%>" required>
+                <div class="invalid-feedback">
+                    Inserisci un codice fiscale valido!
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="dataNascita<%=i+1%>">Data di nascita Cliente <%=i + 1%>
                 </label><br>
-                <input type="date" id="dataNascita<%=i+1%>" name="dataNascita<%=i+1%>">
+                <input type="date" class="form-control form-control-lg" id="dataNascita<%=i+1%>"
+                       name="dataNascita<%=i+1%>" required>
             </div>
             <br><br>
             <% } %>
             <input type="hidden" name="num_persone" value="<%=num_persone%>">
-            <input type="submit" class="btn btn-dark" value="Conferma prenotazione">
+            <input type="hidden" name="id_stanza" value="<%=id_stanza%>">
+            <Button onclick="Registrazione()" id="ButtonSub" class="btn btn-dark" type="button">Conferma</button>
         </form>
         <%}%>
     </div>

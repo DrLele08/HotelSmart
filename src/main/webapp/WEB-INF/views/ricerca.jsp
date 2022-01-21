@@ -1,3 +1,4 @@
+<%@ page import="java.util.ArrayList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -6,9 +7,18 @@
     <jsp:include page="/WEB-INF/views/partials/head.jsp">
         <jsp:param name="title" value="ricerca"/>
         <jsp:param name="styles" value="header.css"/>
+        <jsp:param name="styles" value="Registrazione.css"/>
     </jsp:include>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
+    <script src="${pageContext.request.contextPath}/script/Ricerca.js"></script>
 
     <style>
+
+        .invalid-feedback {
+            display: none;
+        }
 
         @media screen and (max-width: 1203px) {
            .card {
@@ -60,6 +70,12 @@
 
 <%@include file="/WEB-INF/views/partials/header.jsp" %>
 
+<%
+    Double max = (Double) request.getAttribute("max_price");
+    Double min = (Double) request.getAttribute("min_price");
+    ArrayList<Integer> Letti_s = (ArrayList<Integer>) request.getAttribute("Letti_s");
+    ArrayList<Integer> Letti_m = (ArrayList<Integer>) request.getAttribute("Letti_m");
+%>
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container">
 
@@ -76,42 +92,48 @@
                 <div class="form-group w-100">
                     <label for="dataPartenza">Data di partenza</label><br>
                     <input type="date" id="dataPartenza" name="dataPartenza">
+                    <div class="invalid-feedback" id="errore">
+                        Date non selezionate correttamente
+                    </div>
                 </div>
 
                 <div class="form-group w-100">
-                    <label for="prezzoMinimo">Prezzo minimo</label>
+                    <label for="prezzoMinimo">Prezzo Minimo</label>
                     <select class="form-control w-auto" name="prezzoMinimo" id="prezzoMinimo">
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
+                        <option><%=min%></option>
+                        <option><%=min+20.0%></option>
+                        <option><%=min+40.0%></option>
+                        <option><%=max-40.0%></option>
+                        <option><%=max%></option>
                     </select>
                 </div>
 
                 <div class="form-group w-100">
-                    <label for="prezzoMassimo">Prezzo massimo</label>
+                    <label for="prezzoMassimo">Prezzo Massimo</label>
                     <select class="form-control w-auto" name="prezzoMassimo" id="prezzoMassimo">
-                        <option>30</option>
-                        <option>50</option>
-                        <option>100</option>
+                        <option><%=min%></option>
+                        <option><%=min+20.0%></option>
+                        <option><%=min+40.0%></option>
+                        <option><%=max-40.0%></option>
+                        <option><%=max%></option>
                     </select>
                 </div>
 
                 <div class="form-group w-100">
                     <label for="letti_matrimoniali">Numero letti matrimoniali</label>
                     <select class="form-control w-auto" name="letti_matrimoniali" id="letti_matrimoniali">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
+                        <%for(Integer i: Letti_m){ %>
+                        <option><%=i%></option>
+                        <%}%>
                     </select>
                 </div>
 
                 <div class="form-group w-100">
                     <label for="letti_singoli">Numero letti singoli</label>
                     <select class="form-control w-auto" name="letti_singoli" id="letti_singoli">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
+                        <%for(Integer i: Letti_s){ %>
+                        <option><%=i%></option>
+                        <%}%>
                     </select>
                 </div>
 
@@ -132,7 +154,7 @@
                 <br>
 
                 <p style="font-size: smaller">I prezzi selezionati si riferiscono per camera</p><br>
-                <button type="submit" class="btn btn-dark">Cerca</button>
+                <button type="submit" onclick="return SearchValidate()" class="btn btn-dark">Cerca</button>
             </form>
 
             <div id="carouselResearch" class="carousel slide ml-auto" data-ride="carousel">

@@ -12,11 +12,13 @@
     <jsp:include page="/WEB-INF/views/partials/head.jsp">
         <jsp:param name="title" value="Login"/>
         <jsp:param name="styles" value="Login.css"/>
+        <jsp:param name="styles" value="header.css"/>
     </jsp:include>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/Login.js"></script>
 </head>
 <body>
+
 <section class="vh-100">
     <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">

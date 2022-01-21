@@ -8,6 +8,7 @@
     <jsp:include page="/WEB-INF/views/partials/head.jsp">
         <jsp:param name="title" value="Registrazione"/>
         <jsp:param name="styles" value="Registrazione.css"/>
+        <jsp:param name="styles" value="header.css"/>
     </jsp:include>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
