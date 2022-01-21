@@ -5,7 +5,9 @@ import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.StanzaDAO;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class StanzaService
 {
@@ -15,37 +17,52 @@ public class StanzaService
     {
         dao=new StanzaDAO();
     }
-    /**
-     * Effettua la ricerca delle camere in base ai filtri
-     *
-     * @param animale Se il cliente ha un animale (figli esclusi)
-     * @param fumo Se il cliente fuma
-     * @param lettiS Numero di letti singoli
-     * @param lettiM Numero di letti matrimoniali
-     * @param costoNotteMin Valore minimo di costo per notte
-     * @param costoNotteMax Valore massimo di costo per notte
-     * @param scontoMin Valore minimo di sconto
-     * @param scontoMax Valore massimo di sconto
-     * @return ListaStanze Ritorna un vettore di stanze disponibili @
-     * @see Stanza
-     */
-    /*public ArrayList<Stanza> searchByFilter(boolean animale,boolean fumo,int lettiS,int lettiM,double costoNotteMin,double costoNotteMax,double scontoMin,double scontoMax)
-    {
-        if(lettiM>0 & lettiS>0 && costoNotteMin>0 && costoNotteMax>costoNotteMin && scontoMin>=0 && scontoMax>=scontoMin)
-            return (ArrayList<Stanza>)dao3.doSearch(animale,fumo,lettiS,lettiM,costoNotteMin,costoNotteMax,scontoMin,scontoMax);
-        else
-            throw new IllegalArgumentException();
-    }*/
-    /**
-     * Effettua la modifica della password di un utente
-     *
-     * @param idStanza Identificatico della stanza
-     * @return Ritorna una stanza
-     * @see Stanza
-     */
-    public Stanza getDetailById(int idStanza) throws StanzaNotFoundException
-    {
-        return dao.doSelectById(idStanza);
+
+    public List<Stanza> getStanze() {
+        return dao.getStanze();
+    }
+
+    public double getMaxPrice(List<Stanza> stanze) {
+        double max_prezzo = stanze.get(0).getCostoNotte();
+        for(Stanza s: stanze){
+            if(s.getCostoNotte() > max_prezzo) max_prezzo = s.getCostoNotte();
+        }
+        return max_prezzo;
+    }
+
+    public double getMinPrice(List<Stanza> stanze) {
+        Double min_prezzo = stanze.get(0).getCostoNotte();
+        for(Stanza s: stanze){
+            if(s.getCostoNotte() < min_prezzo) min_prezzo = s.getCostoNotte();
+        }
+        return min_prezzo;
+    }
+
+    public int getMaxLetti_S(List<Stanza> stanze) {
+        int maxLetti_s = stanze.get(0).getLettiSingoli();
+        for(Stanza s: stanze){
+            if(s.getLettiSingoli() > maxLetti_s) maxLetti_s = s.getLettiSingoli();
+        }
+        return maxLetti_s;
+    }
+
+    public int getMaxLetti_M(List<Stanza> stanze) {
+        int maxLetti_m = stanze.get(0).getLettiMatrimoniali();
+        for(Stanza s: stanze){
+            if(s.getLettiMatrimoniali() > maxLetti_m) maxLetti_m = s.getLettiMatrimoniali();
+        }
+        return maxLetti_m;
+    }
+
+    public List<Stanza> search(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
+                                      Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
+                                      Double scontoMinimo, Double scontoMassimo, java.sql.Date dataIn, Date dataOut) {
+        return dao.doSearch(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali,
+                costoNotteMinimo, costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
+    }
+
+    public Stanza selectById(Integer stanzaId) throws StanzaNotFoundException {
+        return dao.doSelectById(stanzaId);
     }
 
 }
