@@ -15,7 +15,7 @@
 
     <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Anagrafica"/>
-        <jsp:param name="styles" value="Anagrafica.css"/>
+        <jsp:param name="styles" value="header.css"/>
     </jsp:include>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -79,7 +79,7 @@
 
                     <div class="form-outline w-100">
                         <label for="DataNascita" class="form-label">Data di nascita</label>
-                        <input id="DataNascita"  type="date" class="form-control form-control-lg" value="<%=ut.getDataNascita()%>" onfocusout="validateMaggiorenne()" required/>
+                        <input id="DataNascita"  type="date" class="form-control form-control-lg" value="<%=ut.getDataNascita()%>" required/>
                     </div>
 
                 </div>
@@ -132,7 +132,7 @@
 
                     <div class="form-outline">
                         <label class="form-label" for="RipetiPassword">Ripeti Password</label>
-                        <input type="password" id="RipetiPassword" class="form-control form-control-lg" onfocusout="validateRipetiPassw()" required  />
+                        <input type="password" id="RipetiPassword" class="form-control form-control-lg" required  />
                     </div>
 
 

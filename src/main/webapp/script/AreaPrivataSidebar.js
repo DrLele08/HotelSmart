@@ -8,4 +8,12 @@ $(document).ready(function () {
         $('#overlay').removeClass('active');
         $('#sidebar').removeClass('active');
     });
+
+    $('#gestioneUtenti').on('click', function () {
+        $('.active').removeClass('active');
+        $('#gestioneUtenti').toggleClass('active');
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 });

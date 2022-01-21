@@ -13,6 +13,7 @@
 
     <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Gestione utenti"/>
+        <jsp:param name="styles" value="header.css"/>
     </jsp:include>
     <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -60,7 +61,7 @@
                 <td>ProvaCodiceFiscale</td>
                 <td>2015-08-20</td>
                 <td>ProvaEmail</td>
-                <td><a class="fas fa-edit"></a></td>
+                <td><span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit"></a></span></td>
             </tr>
             </tbody>
             <tfoot>
