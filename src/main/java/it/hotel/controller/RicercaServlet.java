@@ -1,12 +1,8 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.StanzaService;
 import it.hotel.model.stanza.Stanza;
-import it.hotel.model.stanza.StanzaDAO;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
-import it.hotel.model.utente.Utente;
-import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
@@ -72,43 +68,20 @@ public class RicercaServlet extends HttpServlet {
     }
 
     public ArrayList<Double> getPrices(){
-        StanzaDAO service = new StanzaDAO();
+        StanzaService service = new StanzaService();
         ArrayList<Stanza> stanze = (ArrayList<Stanza>) service.getStanze();
-
-        Double max_prezzo = stanze.get(0).getCostoNotte();
-        Double min_prezzo = stanze.get(0).getCostoNotte();
-        for(Stanza s: stanze){
-            if(s.getCostoNotte() > max_prezzo) max_prezzo = s.getCostoNotte();
-            if(s.getCostoNotte() < min_prezzo) min_prezzo = s.getCostoNotte();
-        }
-
         ArrayList<Double> prezzi = new ArrayList<>();
-        prezzi.add(min_prezzo);
-        prezzi.add(max_prezzo);
-
+        prezzi.add(service.getMinPrice(stanze));
+        prezzi.add(service.getMaxPrice(stanze));
         return prezzi;
     }
 
     public ArrayList<Integer> getLetti(){
-
-        StanzaDAO service = new StanzaDAO();
+        StanzaService service = new StanzaService();
         ArrayList<Stanza> stanze = (ArrayList<Stanza>) service.getStanze();
-
-        Integer maxLetti_s = stanze.get(0).getLettiSingoli();
-        Integer maxLetti_m = stanze.get(0).getLettiMatrimoniali();
-
-        for(Stanza s: stanze){
-
-            if(s.getLettiSingoli() > maxLetti_s) maxLetti_s = s.getLettiSingoli();
-            if(s.getLettiMatrimoniali() > maxLetti_m) maxLetti_m = s.getLettiMatrimoniali();
-
-        }
-
         ArrayList<Integer> numLetti = new ArrayList<>();
-
-        numLetti.add(maxLetti_s);
-        numLetti.add(maxLetti_m);
-
+        numLetti.add(service.getMaxLetti_S(stanze));
+        numLetti.add(service.getMaxLetti_M(stanze));
         return numLetti;
     }
 
@@ -154,9 +127,8 @@ public class RicercaServlet extends HttpServlet {
                     return;
                 }
 
-                StanzaDAO service = new StanzaDAO();
-
-                ArrayList<Stanza> stanze = (ArrayList<Stanza>) service.doSearch(animale,fumatore, letti_singoli,letti_matrimoniali,
+                StanzaService service = new StanzaService();
+                ArrayList<Stanza> stanze = (ArrayList<Stanza>) service.search(animale,fumatore, letti_singoli,letti_matrimoniali,
                         prezzoMinimo,prezzoMassimo,null,null,dataArrivoSql,dataPartenzaSql);
 
                 request.setAttribute("stanze_result",stanze);
@@ -172,11 +144,11 @@ public class RicercaServlet extends HttpServlet {
                 String temp = request.getParameter("stanzaId");
                 Integer stanzaId = Integer.parseInt(temp);
 
-                StanzaDAO service = new StanzaDAO();
+                StanzaService service = new StanzaService();
                 Stanza selected_stanza = null;
 
                 try {
-                    selected_stanza = service.doSelectById(stanzaId);
+                    selected_stanza = service.selectById(stanzaId);
                     String active_link = "ricerca";
                     request.setAttribute("active", active_link);
                     request.setAttribute("stanzaid",stanzaId);
