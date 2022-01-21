@@ -26,15 +26,7 @@
     <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/AreaPrivataSidebar.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#StoricoPrenotazioniTable').DataTable( {
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
-                },
-            } );
-        } );
-    </script>
+    <script src="${pageContext.request.contextPath}/script/GestionePrenotazione.js"></script>
 
 </head>
 <body>
@@ -58,6 +50,7 @@
                 <th>Data fine</th>
                 <th>Prezzo finale</th>
                 <th>Stato</th>
+                <th>Azione</th>
             </tr>
             </thead>
             <tbody>
@@ -70,21 +63,23 @@
                         <td><%=p.convertDateToView(p.getDataInizio())%></td>
                         <td><%=p.convertDateToView(p.getDataFine())%></td>
                         <td><%=p.getPrezzoFinale()%></td>
+                        <td><%=p.getKsStato()%></td>
                         <td>
                             <%
                                 switch(p.getKsStato()){
                                 case 1:
-                                  %><a class="bi bi-credit-card" href="${pageContext.request.contextPath}/Pagamenti"></a>
-                                  <a class="bi bi-x-square-fill" href="${pageContext.request.contextPath}/AnnulareOrdine"></a>
+                            %><span data-toggle="tooltip" title="Effettuare pagamento"><a class="bi bi-credit-card" data-toggle="modal"  data-target="#modalPagamento"></a></span>
+                            <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" data-toggle="modal"  data-target="#modalAnnullaOrdine"></a>
                              <%   break;
                             case 2:
-                             %><a class="bi bi-x-square-fill" href="${pageContext.request.contextPath}/Rimborso"></a>
+                             %><span data-toggle="tooltip" title="Effettuare rimborso"> <a class="bi bi-cash" data-toggle="modal" data-target="#modalRimborso"></a>
                             <%   break;
                                 case 3:
-                            %><a class="bi bi-bag-plus" href="${pageContext.request.contextPath}/PrenotaServizi"></a>
+                            %><a class="bi bi-bag-plus" data-toggle="tooltip" title="Prenota servizi" href="${pageContext.request.contextPath}/servizi/goservizi"></a>
+                                    <span data-toggle="tooltip" title="Visualizza codice qr"><a class="fa fa-qrcode" data-toggle="modal" data-target="#modalCodiceQr"></a></span>
                             <%   break;
                                 case 4: case 5: case 6:
-                            %><a class="bi bi-archive"  ></a>
+                            %><a data-toggle="tooltip" title="Completata" class="bi bi-archive"></a>
                             <%   break;
                             }%>
                         </td>
@@ -98,11 +93,78 @@
                 <th>Data fine</th>
                 <th>Prezzo finale</th>
                 <th>Stato</th>
+                <th>Azione</th>
             </tr>
             </tfoot>
         </table>
     </div>
 </div>
-
+<div class="modal fade" id="modalPagamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalPagamento">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalAnnullaOrdine" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalAnnullaOrdine">Sei sicuro di voler annullare l'ordine?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary" onclick="annullaOrdine()">Conferma</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalRimborso" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalRimborso">Sei sicuro di voler effettuare il rimborso?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary" onclick="effettuaRimborso()">Conferma</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalCodiceQr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalCodiceQr">Sei sicuro di voler effettuare il rimborso?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary">Conferma</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
