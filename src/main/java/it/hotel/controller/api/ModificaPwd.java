@@ -10,8 +10,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "ModifcaPwd", value = "/api/ModifcaPwd")
-public class ModifcaPwd extends HttpServlet
+@WebServlet(name = "ModificaPwd", value = "/api/ModificaPwd")
+public class ModificaPwd extends HttpServlet
 {
 
     @Override

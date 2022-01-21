@@ -21,23 +21,31 @@ function Registrazione()
         textPwd : password
     };
 
-    if($('form').isValid()){
-        $.ajax({
-            url: 'Registrazione',
-            dataType: "json",
-            type: "post",
-            data: data,
-            success: function (result) {
-                if(result.status)
-                    window.location.replace("index.jsp");
-                if(result.data == "EMAIL PROBLEMA" )
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Errore registrazione...',
-                        text: 'Email esistente!',
-                    })
-            }
-        });
+
+    if(!this.validateMaggiorenne()){
+        Swal.fire({
+            icon : 'error',
+            title: 'utente minorenne',
+        })
+    }else {
+        if ($('form').isValid()) {
+            $.ajax({
+                url: 'Registrazione',
+                dataType: "json",
+                type: "post",
+                data: data,
+                success: function (result) {
+                    if (result.status)
+                        window.location.replace("./");
+                    if (result.data == "EMAIL PROBLEMA")
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Errore registrazione...',
+                            text: 'Email esistente!',
+                        })
+                }
+            });
+        }
     }
 }
 function initValidation() {
@@ -48,4 +56,39 @@ function initValidation() {
         var $this = event.data.$this;
         $this.form.addClass('was-validated');
     });
+}
+
+function validateMaggiorenne(){
+    //document.getElementById("DataNascita").val();
+    const dataNascita = $('#DataNascita').val();
+    const dataSplit = dataNascita.split("-");
+    let anno = Number(dataSplit[0]);
+    let mese = Number(dataSplit[1]);
+    let giorno = Number(dataSplit[2]);
+    const dataAttuale = new Date();
+    let annoAttuale = dataAttuale.getFullYear();
+    let meseAttuale = dataAttuale.getMonth()+1;
+    let giornoAttuale = dataAttuale.getDate();
+
+    if(annoAttuale - anno < 18){
+        swal.fire({
+            icon : 'error',
+            title: 'utente minorenne',
+        })
+        return false;
+    } else if((annoAttuale - anno == 18)&&(meseAttuale<mese)){
+        swal.fire({
+            icon : 'error',
+            title: 'utente minorenne',
+        })
+        return false;
+    }else if((annoAttuale - anno == 18)&&(meseAttuale==mese)&&(giornoAttuale<giorno)){
+        swal.fire({
+            icon : 'error',
+            title: 'utente minorenne',
+        })
+        return false;
+    }
+    return true;
+
 }

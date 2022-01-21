@@ -35,7 +35,7 @@
                     Dettagli anagrafica utente
                 </h4>
             </div>
-        <form class = "needs-validation">
+        <form id="formAnagr" class = "needs-validation">
 
             <div class="row">
                 <div class="col-md-4 mb-4">
@@ -79,7 +79,7 @@
 
                     <div class="form-outline w-100">
                         <label for="DataNascita" class="form-label">Data di nascita</label>
-                        <input id="DataNascita"  type="date" class="form-control form-control-lg" value="<%=ut.getDataNascita()%>" required/>
+                        <input id="DataNascita"  type="date" class="form-control form-control-lg" value="<%=ut.getDataNascita()%>" onfocusout="validateMaggiorenne()" required/>
                     </div>
 
                 </div>
@@ -98,6 +98,8 @@
 
                     </div>
                 </div>
+                <input type="hidden" id="idUtenteAna" value="<%=ut.getIdUtente()%>">
+                <input type="hidden" id="tokenUtenteAna" value="<%=ut.getTokenAuth()%>">
                 <div class="col-md-4 mb-4 pb-2">
                     <div class="mt-4 pt-2">
                         <Button onclick="ModificaAnagrafica()" id="ButtonSub" class="btn btn-primary btn-lg" type="button">Modifica</button>
@@ -107,19 +109,18 @@
             </div>
 
          </form>
-        <form class = "needs-validation">
+        <form id="formPass" class = "needs-validation">
         <div class="profile-head">
             <h4>
                 Modifica Password
             </h4>
         </div>
-        <div class = "needs-validation">
             <div class="row">
                 <div class="col-md-4 mb-4 pb-2">
 
                     <div class="form-outline">
-                        <label class="form-label" for="Password">Vecchia Password</label>
-                        <input type="password" id="Password" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
+                        <label class="form-label" for="NuovaPassword">Nuova Password</label>
+                        <input type="password" id="NuovaPassword" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
                         <div class="invalid-feedback">
                             La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
                         </div>
@@ -130,11 +131,8 @@
                 <div class="col-md-4 mb-4 pb-2">
 
                     <div class="form-outline">
-                        <label class="form-label" for="Password">Nuova Password</label>
-                        <input type="password" id="Password" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
-                        <div class="invalid-feedback">
-                            La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
-                        </div>
+                        <label class="form-label" for="RipetiPassword">Ripeti Password</label>
+                        <input type="password" id="RipetiPassword" class="form-control form-control-lg" onfocusout="validateRipetiPassw()" required  />
                     </div>
 
 
@@ -144,8 +142,8 @@
                 <div class="col-md-4 mb-4 pb-2">
 
                     <div class="form-outline">
-                        <label class="form-label" for="Password">Ripeti Password</label>
-                        <input type="password" id="Password" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
+                        <label class="form-label" for="VecchiaPassword">Vecchia Password</label>
+                        <input type="password" id="VecchiaPassword" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
                         <div class="invalid-feedback">
                             La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
                         </div>
@@ -153,6 +151,8 @@
 
 
                 </div>
+                <input type="hidden" id="idUtentePsw" value="<%=ut.getIdUtente()%>">
+                <input type="hidden" id="tokenUtente" value="<%=ut.getTokenAuth()%>">
                 <div class="row">
                     <div class="col-md-4 mb-4 pb-2">
                         <div class="mt-4 pt-2">

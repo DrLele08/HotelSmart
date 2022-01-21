@@ -68,7 +68,10 @@
 
                                         <div class="form-outline w-100">
                                             <label for="DataNascita" class="form-label">Data di nascita</label>
-                                            <input id="DataNascita" type="date" class="form-control form-control-lg" required/>
+                                            <input id="DataNascita" type="date" class="form-control form-control-lg" onfocusout="validateMaggiorenne()" required/>
+                                            <div class="invalid-feedback">
+                                                Inserisci una Email valida!
+                                            </div>
                                         </div>
 
                                     </div>

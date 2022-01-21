@@ -2,6 +2,8 @@ package it.hotel.model.prenotazioneStanza;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Rappresenta una PrenotazioneStanza e fornisce metodi per il recupero dello stato.
@@ -126,6 +128,17 @@ public class PrenotazioneStanza implements Serializable
      */
     public int getValutazione() {
         return valutazione;
+    }
+
+    /**
+     * restituisce una data formattata in standard italiano
+     * @param date data non formattata YYYY-mm-dd
+     * @return date formattato
+     */
+    public String convertDateToView(Date date){
+        final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        return formatter.format(date);
+
     }
 
 }
