@@ -55,7 +55,7 @@ function ModificaPassword()
     var vecchiaPassword = $("#VecchiaPassword").val();
     var nuovaPassword = $("#NuovaPassword").val();
     var ripetiPassword = $("#RipetiPassword").val();
-    var token = $("#tokenUtentePsw").val();
+    var token = $("#tokenUtente").val();
     var id = $("#idUtentePsw").val();
     var data = {
         textToken : token,
@@ -82,7 +82,9 @@ function ModificaPassword()
                             icon: 'success',
                             title: 'Modifica password avvenuta',
                         })
-
+                        $("#VecchiaPassword").val("");
+                        $("#NuovaPassword").val("");
+                        $("#RipetiPassword").val("");
                     } else {
                         Swal.fire({
                             icon: 'error',
