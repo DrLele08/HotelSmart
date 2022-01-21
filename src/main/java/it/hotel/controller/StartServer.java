@@ -1,6 +1,8 @@
 package it.hotel.controller;
 
 import it.hotel.Utility.Utility;
+import it.hotel.controller.services.RuoloService;
+import it.hotel.controller.services.StatoService;
 import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.ruolo.RuoloDAO;
 import it.hotel.model.stato.StatoDAO;
@@ -15,7 +17,7 @@ public class StartServer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-       Utility.listRuoli=new RuoloDAO().doGetAll();
-       Utility.listStato=new StatoDAO().doGetAll();
+       Utility.listRuoli=new RuoloService().getAll();
+       Utility.listStato=new StatoService().getAll();
     }
 }

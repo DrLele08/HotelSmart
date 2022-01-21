@@ -1,10 +1,12 @@
 package it.hotel.controller.services;
 
 import it.hotel.controller.exception.PagamentoInAttesaException;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 
 import java.sql.Date;
+import java.util.List;
 
 public class PrenotazioneStanzaService {
 
@@ -23,4 +25,11 @@ public class PrenotazioneStanzaService {
         }
     }
 
+    public List<PrenotazioneStanza> selectBy(int value, int type) {
+        return dao.doSelectBy(value, type);
+    }
+
+    public List<PrenotazioneStanza> getAll() {
+        return dao.doGetAll();
+    }
 }

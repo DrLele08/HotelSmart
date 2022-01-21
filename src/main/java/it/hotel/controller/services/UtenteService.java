@@ -98,14 +98,19 @@ public class UtenteService
     public void editPassword(int idUtente,String token,String oldPwd,String newPwd)
             throws PasswordNotValidException, UtenteNotFoundException, PermissionDeniedException
     {
-        //TODO Giovanni controlla Regex PWD
         if(!token.trim().isEmpty() && !oldPwd.trim().isEmpty() && !newPwd.trim().isEmpty())
         {
-            int tipoRuolo=dao.doGetRuolo(idUtente,token);
-            if(tipoRuolo==2 || tipoRuolo==1 || tipoRuolo==3)
-                dao.doChangePassword(idUtente,oldPwd,newPwd);
+            Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
+            if (pattern.matcher(newPwd).matches())
+            {
+                int tipoRuolo = dao.doGetRuolo(idUtente, token);
+                if (tipoRuolo == 2 || tipoRuolo == 1 || tipoRuolo == 3)
+                    dao.doChangePassword(idUtente, oldPwd, newPwd);
+                else
+                    throw new PermissionDeniedException();
+            }
             else
-                throw new PermissionDeniedException();
+                throw new PasswordNotValidException();
         }
         else
             throw new IllegalArgumentException();
