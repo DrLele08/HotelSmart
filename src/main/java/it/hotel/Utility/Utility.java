@@ -3,6 +3,9 @@ package it.hotel.Utility;
 import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.stato.Stato;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,5 +24,12 @@ public class Utility
     public static boolean isActive(String s)
     {
         return UtilityDAO.isActive(s);
+    }
+
+    public static Date dataConverter(String dataStr) throws ParseException {
+        SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date dataUtil = in.parse(dataStr);
+        Date data = new Date(dataUtil.getTime());
+        return data;
     }
 }

@@ -9,8 +9,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.GregorianCalendar;
+import java.text.ParseException;
+
 
 @WebServlet(name = "ModificaAnagrafica", value = "/api/ModificaAnagrafica")
 public class ModificaAnagrafica extends CheckServlet
@@ -34,9 +34,7 @@ public class ModificaAnagrafica extends CheckServlet
             UtenteService service = new UtenteService();
             try
             {
-                //TODO DATA NASCITA GESTIRE DAL SERVICE
-                //TODO SERVE ANCHE TOKEN AUTH
-                service.editAnagrafica(idUtente,tokenAuth, textNome, textCognome, textCodiceFiscale, textDataNascita, textEmail);
+                service.editAnagrafica(idUtente, tokenAuth, textNome, textCognome, textCodiceFiscale, textDataNascita, textEmail);
                 obj.put("Ris",1);
                 obj.put("Mess","Fatto");
             }
@@ -49,6 +47,8 @@ public class ModificaAnagrafica extends CheckServlet
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Id utente non valido");
+            } catch (ParseException e) {
+                //TODO data non valida
             }
         }
         else

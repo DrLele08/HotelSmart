@@ -9,6 +9,7 @@ import it.hotel.model.utente.utenteExceptions.*;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.regex.Pattern;
 
 public class UtenteService
@@ -119,17 +120,17 @@ public class UtenteService
     /**
      * Effettua la modifica dell'anagrafica di un utente
      * @param nome Nome dell'utente
+     * @param tokenAuth Token di autenticazione dell'utente
      * @param cognome Cognome dell'utente
      * @param cf Codice Fiscale dell'utente
-     * @param dataNascita Data di nascita dell'utente
+     * @param dataNascitaStr Data di nascita dell'utente
      * @param email Email dell'utente
      */
-    public void editAnagrafica(int idUtente, String nome, String cognome, String cf, Date dataNascita, String email)
-            throws EmailAlreadyExistingException
-    {
-        if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !email.trim().isEmpty() && dataNascita!=null)
+    public void editAnagrafica(int idUtente, String tokenAuth, String nome, String cognome, String cf, String dataNascitaStr, String email)
+            throws EmailAlreadyExistingException, ParseException {
+        if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !dataNascitaStr.trim().isEmpty() && !email.trim().isEmpty())
         {
-            dao.doChangeAnagrafica(idUtente, nome, cognome, cf, dataNascita, email);
+            dao.doChangeAnagrafica(idUtente, tokenAuth, nome, cognome, cf, Utility.dataConverter(dataNascitaStr), email);
         }
         else
             throw new IllegalArgumentException();

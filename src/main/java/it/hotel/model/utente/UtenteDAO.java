@@ -230,7 +230,7 @@ public class UtenteDAO {
         }
     }
 
-    public void doChangeAnagrafica(int idUtente, String nome, String cognome, String cf, Date dataNascita, String email)
+    public void doChangeAnagrafica(int idUtente, String tokenAuth, String nome, String cognome, String cf, Date dataNascita, String email)
             throws EmailAlreadyExistingException
     {
         try (Connection con = Connect.getConnection())
@@ -242,14 +242,15 @@ public class UtenteDAO {
 
             //aggiorno l'anagrafica;
             PreparedStatement ps = con.prepareStatement
-                    ("UPDATE Utente SET nome=?, cognome=?, cf=?, dataNascita=?, email=? WHERE idUtente=?",
+                    ("UPDATE Utente SET nome=?, tokenAuth=?, cognome=?, cf=?, dataNascita=?, email=? WHERE idUtente=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, nome);
-            ps.setString(2, cognome);
-            ps.setString(3, cf);
-            ps.setDate(4, dataNascita);
-            ps.setString(5, email);
-            ps.setInt(6, idUtente);
+            ps.setString(2, tokenAuth);
+            ps.setString(3, cognome);
+            ps.setString(4, cf);
+            ps.setDate(5, dataNascita);
+            ps.setString(6, email);
+            ps.setInt(7, idUtente);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

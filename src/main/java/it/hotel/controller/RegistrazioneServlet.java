@@ -1,5 +1,6 @@
 package it.hotel.controller;
 
+import it.hotel.Utility.Utility;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
@@ -11,8 +12,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 @WebServlet(name = "Registrazione", value = "/Registrazione")
 public class RegistrazioneServlet extends HttpServlet {
@@ -32,22 +32,17 @@ public class RegistrazioneServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
-        String dataNascitaString = request.getParameter("textDataNascita");
+        String dataNascita = request.getParameter("textDataNascita");
         String nome = request.getParameter("textNome");
         String cognome = request.getParameter("textCognome");
         String codiceFiscale = request.getParameter("textCodiceFiscale");
         String indirizzoEmail = request.getParameter("textEmail");
         String password = request.getParameter("textPwd");
 
-
-
         UtenteService service = new UtenteService();
         try
         {
-            Date dataNascitaUtil = in.parse(dataNascitaString);
-            java.sql.Date dataNascita = new java.sql.Date(dataNascitaUtil.getTime());
-            service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail,dataNascita,password);
+            service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail,Utility.dataConverter(dataNascita),password);
             JSONObject object=new JSONObject();
             object.put("status",true);
             response.getOutputStream().print(object.toString());
