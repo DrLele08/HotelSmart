@@ -105,14 +105,12 @@ public class RicercaServlet extends HttpServlet {
                 Integer letti_matrimoniali = Integer.parseInt(temp2);
                 Integer letti_singoli = Integer.parseInt(temp3);
 
-                boolean animale = false;
-                if(request.getParameter("animaleDom") != null) animale = true;
+                boolean animale = request.getParameter("animaleDom") != null;
 
-                boolean fumatore = false;
-                if(request.getParameter("fumatore") != null) fumatore = true;
+                boolean fumatore = request.getParameter("fumatore") != null;
 
-                java.sql.Date dataArrivoSql = null;
-                java.sql.Date dataPartenzaSql = null;
+                java.sql.Date dataArrivoSql;
+                java.sql.Date dataPartenzaSql;
 
                 try {
 

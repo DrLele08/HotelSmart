@@ -4,13 +4,17 @@ import it.hotel.Utility.Utility;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
-import jdk.nashorn.internal.runtime.options.Option;
 
 import javax.servlet.http.*;
 import java.util.Optional;
 
 public class CheckServlet extends HttpServlet
 {
+    public boolean contieneParametro(HttpServletRequest request,String nome)
+    {
+        return request.getParameterMap().containsKey(nome);
+    }
+
     public Optional<Utente> getUtente(HttpServletRequest request, HttpServletResponse response)
     {
         int idUtente=-1;

@@ -9,9 +9,11 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet(name = "GestioneUtenti", value = "/GestioneUtenti")
-public class GestioneUtentiServlet extends HttpServlet {
+public class GestioneUtentiServlet extends HttpServlet
+{
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
         HttpSession session=request.getSession();
         Utente us=(Utente)session.getAttribute(Utility.SESSION_USER);
         if(us==null)
@@ -21,6 +23,7 @@ public class GestioneUtentiServlet extends HttpServlet {
         else
         {
             RequestDispatcher requestDispatcher=request.getRequestDispatcher("/WEB-INF/views/GestioneUtenti.jsp");
+            request.setAttribute("Tipo",2);
             requestDispatcher.forward(request,response);
         }
     }
