@@ -9,9 +9,11 @@ function Login()
 {
     var username = $("#username").val();
     var password = $("#password").val();
+    var ricordami = $("#ricordami").is(":checked");
     var data = {
         textEmail : username,
-        textPwd : password
+        textPwd : password,
+        textRicordami : ricordami
     };
 
     if($('form').isValid()){

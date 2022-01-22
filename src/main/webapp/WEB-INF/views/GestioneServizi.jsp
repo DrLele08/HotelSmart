@@ -48,7 +48,7 @@
                 <th>Nome</th>
                 <th>Costo</th>
                 <th>Limite posti</th>
-                <th></th>
+                <th>Azione</th>
             </tr>
             </thead>
             <tbody>
@@ -66,7 +66,7 @@
                 <th>Nome</th>
                 <th>Costo</th>
                 <th>Limite posti</th>
-                <th></th>
+                <th>Azione</th>
             </tr>
             </tfoot>
         </table>

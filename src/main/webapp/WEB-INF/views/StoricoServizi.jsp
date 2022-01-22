@@ -14,7 +14,7 @@
 
 
     <jsp:include page="partials/head.jsp">
-        <jsp:param name="title" value="Anagrafica"/>
+        <jsp:param name="title" value="Storico servizi"/>
         <jsp:param name="styles" value="header.css"/>
     </jsp:include>
     <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">

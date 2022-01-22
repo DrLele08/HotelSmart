@@ -69,10 +69,10 @@
                                 switch(p.getKsStato()){
                                 case 1:
                             %><span data-toggle="tooltip" title="Effettuare pagamento"><a class="bi bi-credit-card" data-toggle="modal"  data-target="#modalPagamento"></a></span>
-                            <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" data-toggle="modal"  data-target="#modalAnnullaOrdine"></a>
+                            <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id="iconAnnullaOrdine" data-prenotazione-id="<%=p.getIdPrenotazioneStanza()%>" data-toggle="modal"  data-target="#modalAnnullaOrdine"></a>
                              <%   break;
                             case 2:
-                             %><span data-toggle="tooltip" title="Effettuare rimborso"> <a class="bi bi-cash" data-toggle="modal" data-target="#modalRimborso"></a>
+                             %><span data-toggle="tooltip" title="Effettuare rimborso"> <a class="bi bi-cash" id="iconRichiediRimborso" data-toggle="modal" data-prenotazione-id="<%=p.getIdPrenotazioneStanza()%>" data-target="#modalRimborso"></a>
                             <%   break;
                                 case 3:
                             %><a class="bi bi-bag-plus" data-toggle="tooltip" title="Prenota servizi" href="${pageContext.request.contextPath}/servizi/goservizi"></a>
@@ -127,6 +127,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+                <input type="hidden" id="idPrenotazioneAO" value="">
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 <button type="button" class="btn btn-primary" onclick="annullaOrdine()">Conferma</button>
@@ -143,6 +144,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+                <input type="hidden" id="idPrenotazioneRR" value="">
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 <button type="button" class="btn btn-primary" onclick="effettuaRimborso()">Conferma</button>

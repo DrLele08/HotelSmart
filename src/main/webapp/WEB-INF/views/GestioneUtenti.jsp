@@ -18,15 +18,7 @@
     <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/AreaPrivataSidebar.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#GestioneUtentiTable').DataTable( {
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
-                },
-            } );
-        } );
-    </script>
+    <script src="${pageContext.request.contextPath}/script/GestioneUtenti.js"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/partials/header.jsp" %>
@@ -49,7 +41,8 @@
                 <th>Codice fiscale</th>
                 <th>Data di nascita</th>
                 <th>Email</th>
-                <th></th>
+                <th>Ruolo</th>
+                <th>Azione</th>
 
             </tr>
             </thead>
@@ -61,7 +54,8 @@
                 <td>ProvaCodiceFiscale</td>
                 <td>2015-08-20</td>
                 <td>ProvaEmail</td>
-                <td><span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit"></a></span></td>
+                <td>Ruolo</td>
+                <td><span data-toggle="tooltip" title="Modifica permessi"><a class="bi bi-x-square-fill" id="iconModificaPermessi" data-toggle="modal" data-utente-id="1" data-target="#modalModificaPermessi"></a></span></td>
             </tr>
             </tbody>
             <tfoot>
@@ -71,10 +65,39 @@
                 <th>Codice fiscale</th>
                 <th>Data di nascita</th>
                 <th>Email</th>
-                <th></th>
+                <th>Ruolo</th>
+                <th>Azione</th>
             </tr>
             </tfoot>
         </table>
+    </div>
+</div>
+<div class="modal fade" id="modalModificaPermessi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalModificaPermessi">Modifica permessi utente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="select">Permessi</label>
+                        <select class="form-control" id="select">
+                            <option value="1">Admin</option>
+                            <option value="2">Assistente</option>
+                            <option selected value="3">Utente</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="idUtenteInput" value="">
+                </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary" onclick="ModificaPermessi()">Conferma</button>
+            </div>
+        </div>
     </div>
 </div>
 </body>
