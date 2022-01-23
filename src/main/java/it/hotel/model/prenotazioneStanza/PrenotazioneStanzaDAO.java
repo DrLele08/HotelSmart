@@ -17,7 +17,7 @@ public class PrenotazioneStanzaDAO {
     public final static int STATO = 2;
 
     /**
-     * Inserisce nel database e ritorna un oggetto {@link PrenotazioneStanza} secondo i valori specificati
+     * Inserisce nel database e ritorna un oggetto PrenotazioneStanza secondo i valori specificati
      * e con stato "IN ATTESA DI PAGAMENTO".
      * @param ksUtente Utente che effettua la prenotazione
      * @param ksStanza Stanza prenotata
@@ -28,8 +28,9 @@ public class PrenotazioneStanzaDAO {
      * @param tokenQr Token del codice qr
      * @param commenti Commenti
      * @param valutazione Valutazione
-     * @return Ritorna l'oggetto inserito nel database
+     * @return L'oggetto inserito nel database
      * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, Date dataInizio, Date dataFine,
                                        double prezzoFinale, String tokenStripe, String tokenQr, String commenti, int valutazione)
@@ -83,10 +84,11 @@ public class PrenotazioneStanzaDAO {
     }
 
     /**
-     * Recupera un oggetto {@link PrenotazioneStanza} dal database.
-     * @param idPrenotazioneStanza È l'identificativo dell'oggetto da recuperare dal database
-     * @return Ritorna l'oggetto recuperato dal database
+     * Recupera l'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato.
+     * @param idPrenotazioneStanza L'identificativo dell'oggetto da recuperare dal database
+     * @return L'oggetto trovato nel database
      * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public PrenotazioneStanza doSelectById(int idPrenotazioneStanza)
             throws PrenotazioneStanzaNotFoundException {
@@ -111,10 +113,11 @@ public class PrenotazioneStanzaDAO {
     }
 
     /**
-     * Recupera oggetti {@link PrenotazioneStanza} dal database.
-     * @param value È il valore identificativo degli oggetti da recuperare dal database
-     * @param type È il tipo del valore identificativo
-     * @return Ritorna gli oggetti recuperati dal database
+     * Recupera gli oggetti PrenotazioneStanza trovati nel database secondo i valori specificati.
+     * @param value Il valore identificativo degli oggetti da recuperare dal database
+     * @param type Il tipo del valore identificativo
+     * @return Gli oggetti trovati nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<PrenotazioneStanza> doSelectBy(int value, int type) {
         ArrayList<PrenotazioneStanza> prenotazioniStanza = new ArrayList<>();
@@ -147,8 +150,8 @@ public class PrenotazioneStanzaDAO {
     }
 
     /**
-     * Recupera tutti gli oggetti {@link PrenotazioneStanza} trovati nel database.
-     * @return Ritorna le prenotazioni stanza trovate nel database
+     * Recupera tutti gli oggetti PrenotazioneStanza presenti nel database.
+     * @return Le prenotazioni stanza presenti nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<PrenotazioneStanza> doGetAll() {

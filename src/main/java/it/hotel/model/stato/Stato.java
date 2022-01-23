@@ -12,8 +12,8 @@ public class Stato {
 
     /**
      * Costruisce uno Stato con identificativo e stato specificati.
-     * @param idStato
-     * @param stato
+     * @param idStato Identificativo stato
+     * @param stato Stringa rappresentativa dello stato
      */
     public Stato(int idStato, String stato) {
         this.idStato = idStato;
@@ -22,7 +22,7 @@ public class Stato {
 
     /**
      * Restituisce l'identificativo dell'oggetto Stato
-     * @return
+     * @return Identificativo
      */
     public int getIdStato() {
         return idStato;
@@ -30,7 +30,7 @@ public class Stato {
 
     /**
      * Restituisce lo stato che l'oggetto Stato rappresenta
-     * @return
+     * @return Stato
      */
     public String getStato() {
         return stato;

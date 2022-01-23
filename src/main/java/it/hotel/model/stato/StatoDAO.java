@@ -13,7 +13,7 @@ import java.util.List;
 public class StatoDAO {
 
     /**
-     * Inserisce nel database l'oggetto {@link Stato} specificato.
+     * Inserisce nel database l'oggetto Stato specificato.
      * @param stato Stato da inserire nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
@@ -32,10 +32,10 @@ public class StatoDAO {
     }
 
     /**
-     * Recupera l'oggetto {@link Stato} trovato nel database secondo la stringa specificata.
+     * Recupera l'oggetto Stato trovato nel database secondo la stringa specificata.
      * @param statoStr Stringa che identifica lo stato cercato
-     * @return Ritorna lo stato trovato nel database
-     * @throws StatoNotFoundException Lo stato cercato non è presente nel database
+     * @return Lo stato trovato nel database
+     * @throws StatoNotFoundException Lo stato specificato non è presente nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Stato doSelectByStato(String statoStr) throws StatoNotFoundException {
@@ -59,10 +59,10 @@ public class StatoDAO {
     }
 
     /**
-     * Recupera l'oggetto {@link Stato} trovato nel database secondo l'id specificato.
+     * Recupera l'oggetto Stato trovato nel database secondo l'id specificato.
      * @param idStato Id che identifica lo stato cercato
-     * @return Ritorna lo stato trovato nel database
-     * @throws StatoNotFoundException Lo stato cercato non è presente nel database
+     * @return Lo stato trovato nel database
+     * @throws StatoNotFoundException Lo stato specificato non è presente nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Stato doSelectById(int idStato) throws StatoNotFoundException {
@@ -86,8 +86,8 @@ public class StatoDAO {
     }
 
     /**
-     * Recupera tutti gli oggetti {@link Stato} trovati nel database.
-     * @return Ritorna gli stati trovati nel database
+     * Recupera tutti gli oggetti Stato trovati nel database.
+     * @return Gli stati trovati nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<Stato> doGetAll()

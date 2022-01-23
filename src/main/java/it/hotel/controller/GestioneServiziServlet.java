@@ -1,11 +1,14 @@
 package it.hotel.controller;
 
+import it.hotel.controller.services.ServizioService;
+import it.hotel.model.servizio.Servizio;
 import it.hotel.model.utente.Utente;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @WebServlet(name = "GestioneServizi", value = "/GestioneServizi")
@@ -22,9 +25,8 @@ public class GestioneServiziServlet extends CheckServlet
         else
         {
             Utente user=us.get();
-            //TODO Manca Gestione Servizi
-            ServiziService service=new ServiziService();
-            List<Servizi> listServizi;
+            ServizioService service=new ServizioService();
+            List<Servizio> listServizi;
             if(user.getRuolo()==3)
                 listServizi=service.getByUser(user.getIdUtente());
             else

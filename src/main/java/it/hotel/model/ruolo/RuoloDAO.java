@@ -7,8 +7,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fornisce l'accesso al database per {@link Ruolo}.
+ */
 public class RuoloDAO {
 
+    /**
+     * Inserisce nel database l'oggetto Ruolo specificato.
+     * @param ruolo Ruolo da inserire nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public void doInsert(Ruolo ruolo) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
@@ -23,6 +31,13 @@ public class RuoloDAO {
         }
     }
 
+    /**
+     * Recupera l'oggetto Ruolo trovato nel database secondo il valore specificato.
+     * @param ruoloStr Stringa che identifica il ruolo cercato
+     * @return Il ruolo trovato nel database
+     * @throws RuoloNotFoundException Il ruolo cercato non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public Ruolo doSelectByRuolo(String ruoloStr) throws RuoloNotFoundException {
         Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
@@ -43,6 +58,13 @@ public class RuoloDAO {
         return ruolo;
     }
 
+    /**
+     * Recupera l'oggetto Ruolo trovato nel database secondo il valore specificato.
+     * @param idRuolo Id che identifica il ruolo cercato
+     * @return Il ruolo trovato nel database
+     * @throws RuoloNotFoundException Il ruolo cercato non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public Ruolo doSelectById(int idRuolo) throws RuoloNotFoundException {
         Ruolo ruolo;
         try (Connection con = Connect.getConnection()) {
@@ -63,6 +85,11 @@ public class RuoloDAO {
         return ruolo;
     }
 
+    /**
+     * Recupera tutti gli oggetti Ruolo presenti nel database.
+     * @return I ruoli presenti nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public List<Ruolo> doGetAll() {
         ArrayList<Ruolo> ruoli = new ArrayList<>();
         try (Connection con = Connect.getConnection()) {

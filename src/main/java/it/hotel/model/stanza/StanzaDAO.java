@@ -13,7 +13,7 @@ import java.util.List;
 public class StanzaDAO {
 
     /**
-     * Inserisce nel database l'oggetto {@link Stanza} specificato.
+     * Inserisce nel database l'oggetto Stanza specificato.
      * @param stanza Stanza da inserire nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
@@ -38,13 +38,12 @@ public class StanzaDAO {
     }
 
     /**
-     * Recupera l'oggetto {@link Stanza} trovato nel database secondo l'id specificato.
+     * Recupera l'oggetto Stanza trovato nel database secondo il valore specificato.
      * @param idStanza Id che identifica la stanza cercata
-     * @return Ritorna la stanza trovata nel database
+     * @return La stanza trovata nel database
      * @throws StanzaNotFoundException La stanza cercata non è presente nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-
     public Stanza doSelectById(int idStanza) throws StanzaNotFoundException {
         Stanza stanza;
         try (Connection con = Connect.getConnection()) {
@@ -66,6 +65,11 @@ public class StanzaDAO {
         return stanza;
     }
 
+    /**
+     * Recupera tutti gli oggetti Stanza presenti nel database.
+     * @return Le stanze presenti nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
     public List<Stanza> getStanze(){
         ArrayList<Stanza> stanze = new ArrayList<>();
         try (Connection con = Connect.getConnection()) {
@@ -85,7 +89,7 @@ public class StanzaDAO {
     }
 
     /**
-     * Recupera gli oggetti {@link Stanza} trovati nel database secondo i valori specificati.
+     * Recupera gli oggetti Stanza trovati nel database secondo i valori specificati.
      * @param animaleDomestico Permesso animali domestici
      * @param fumatore Permesso fumatori
      * @param lettiSingoli Quantità letti singoli
@@ -96,7 +100,7 @@ public class StanzaDAO {
      * @param scontoMassimo Sconto massimo
      * @param dataIn Data di entrata
      * @param dataOut Data di uscita
-     * @return Ritorna le stanze trovate nel database
+     * @return Le stanze trovate nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<Stanza> doSearch(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,

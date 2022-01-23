@@ -15,13 +15,13 @@ public class Stanza {
 
     /**
      * Costruisce una Stanza con i parametri specificati.
-     * @param idStanza
-     * @param animaleDomestico
-     * @param fumatore
-     * @param lettiSingoli
-     * @param lettiMatrimoniali
-     * @param costoNotte
-     * @param sconto
+     * @param idStanza Identificativo
+     * @param animaleDomestico Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
      */
     public Stanza(int idStanza, boolean animaleDomestico, boolean fumatore, int lettiSingoli,
             int lettiMatrimoniali, double costoNotte, double sconto) {

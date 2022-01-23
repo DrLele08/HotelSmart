@@ -11,7 +11,7 @@ import java.sql.*;
 public class UtenteDAO {
 
     /**
-     * Inserisce nel database e ritorna un oggetto {@link Utente} secondo i valori specificati.
+     * Inserisce nel database e ritorna un oggetto Utente secondo i valori specificati.
      * @param ruolo Ruolo
      * @param cf Codice fiscale
      * @param nome Nome
@@ -20,8 +20,8 @@ public class UtenteDAO {
      * @param dataNascita Data di nascita
      * @param tokenAuth Token di autenticazione
      * @param password Password
-     * @return Ritorna l'utente inserito nel database
-     * @throws EmailAlreadyExistingException Non è possibile effettuare l'inserimento nel database
+     * @return L'utente inserito nel database
+     * @throws EmailAlreadyExistingException L'email specificata è già presente nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Utente doInsert(int ruolo, String cf, String nome, String cognome,
@@ -64,10 +64,10 @@ public class UtenteDAO {
     }
 
     /**
-     * Recupera un oggetto {@link Utente} dal database secondo email e password specificati.
+     * Recupera un oggetto Utente dal database secondo email e password specificati.
      * @param email L'email dell'uUtente da recuperare
      * @param password La password dell'utente da recuperare
-     * @return Ritorna l'utente recuperato dal database
+     * @return L'utente recuperato dal database
      * @throws EmailNotFoundException L'email specificata non ha corrispondenza nel database
      * @throws PasswordNotValidException La password specificata non è esatta
      * @throws RuntimeException Errore nella comunicazione con il database
@@ -99,10 +99,10 @@ public class UtenteDAO {
     }
 
     /**
-     * Recupera un oggetto {@link Utente} dal database secondo idUtente e tokenAuth specificati.
+     * Recupera un oggetto Utente dal database secondo idUtente e tokenAuth specificati.
      * @param idUtente L'idUtente dell'utente da recuperare
      * @param tokenAuth Il tokenAuth dell'utente da recuperare
-     * @return Ritorna l'utente recuperato dal database
+     * @return L'utente recuperato dal database
      * @throws UtenteNotFoundException Nel database non è presente un utente con i valori specificati
      * @throws RuntimeException Errore nella comunicazione con il database
      */
@@ -188,7 +188,7 @@ public class UtenteDAO {
      * Recupera il ruolo di un oggetto Utente nel database.
      * @param idUtente L'idUtente dell'utente da recuperare
      * @param tokenAuth Il tokenAuth dell'utente da recuperare
-     * @return Ritorna il ruolo dell'utente recuperato
+     * @return Il ruolo dell'utente recuperato
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public int doGetRuolo(int idUtente, String tokenAuth)
@@ -230,6 +230,17 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Modifica l'anagrafica di un oggetto Utente nel database
+     * @param idUtente L'idUtente dell'utente da modificare
+     * @param tokenAuth Il token di autenticazione dell'utente da modificare
+     * @param nome Il nome da inserire nell'oggetto Utente
+     * @param cognome Il cognome da inserire nell'oggetto Utente
+     * @param cf Il codice fiscale da inserire nell'oggetto Utente
+     * @param dataNascita La data di nascita da inserire nell'oggetto Utente
+     * @param email L'indirizzo email da inserire nell'oggetto Utente
+     * @throws EmailAlreadyExistingException L'email specificata è già presente nel database
+     */
     public void doChangeAnagrafica(int idUtente, String tokenAuth, String nome, String cognome, String cf, Date dataNascita, String email)
             throws EmailAlreadyExistingException
     {

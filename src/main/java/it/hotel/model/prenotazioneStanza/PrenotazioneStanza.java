@@ -9,7 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
- * Rappresenta una PrenotazioneStanza e fornisce metodi per il recupero dello stato.
+ * Rappresenta una PrenotazioneStanza e fornisce metodi per il recupero dello {@link Stato}.
  */
 public class PrenotazioneStanza implements Serializable
 {
