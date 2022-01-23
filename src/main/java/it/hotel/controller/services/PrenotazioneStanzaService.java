@@ -4,6 +4,7 @@ import it.hotel.controller.exception.PagamentoInAttesaException;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 
 import java.sql.Date;
 import java.util.List;
@@ -31,5 +32,9 @@ public class PrenotazioneStanzaService {
 
     public List<PrenotazioneStanza> getAll() {
         return dao.doGetAll();
+    }
+
+    public void editStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
+        dao.doChangeStato(idPrenotazioneStanza, stato);
     }
 }

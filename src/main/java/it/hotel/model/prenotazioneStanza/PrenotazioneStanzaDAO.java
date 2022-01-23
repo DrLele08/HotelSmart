@@ -174,6 +174,30 @@ public class PrenotazioneStanzaDAO {
         return prenotazioni;
     }
 
+    /**
+     * Modifica lo stato dell'oggetto PrenotazioneStanza trovato nel database secondo i valori specificati.
+     * @param idPrenotazioneStanza Identificativo della prenotazione stanza da modificare
+     * @param stato Stato da inserire nell'oggetto trovato
+     * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public void doChangeStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("UPDATE PrenotazioneStanza SET ksStato=? WHERE idPrenotazioneStanza=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, stato);
+            ps.setInt(2, idPrenotazioneStanza);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new PrenotazioneStanzaNotFoundException();
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private PrenotazioneStanza createPrenotazioneStanza(ResultSet rs) throws SQLException {
         return new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3),
                 rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8),

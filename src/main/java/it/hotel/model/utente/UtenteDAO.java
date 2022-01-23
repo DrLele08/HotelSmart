@@ -4,6 +4,8 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.utente.utenteExceptions.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fornisce l'accesso al database per {@link Utente}.
@@ -267,6 +269,32 @@ public class UtenteDAO {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Recupera tutti gli oggetti Utente presenti nel database.
+     * @return Gli utenti presenti nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public List<Utente> getUtenti() {
+        ArrayList<Utente> utenti = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Utente",
+                            Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                utenti.add(new Utente(rs.getInt(1), rs.getInt(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getDate(7),
+                        rs.getString(8)));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return utenti;
+    }
+
+
 
     private boolean isEmailInDatabase(Connection con, String email) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=?",

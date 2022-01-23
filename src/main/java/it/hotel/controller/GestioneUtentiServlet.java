@@ -21,7 +21,6 @@ public class GestioneUtentiServlet extends CheckServlet
         if(us.isPresent() && (us.get().getRuolo()==1 || us.get().getRuolo()==2))
         {
             UtenteService service=new UtenteService();
-            //TODO Giovanni
             List<Utente> listUser=service.getAll();
             request.setAttribute("Utenti",listUser);
             RequestDispatcher requestDispatcher=request.getRequestDispatcher("/WEB-INF/views/GestioneUtenti.jsp");

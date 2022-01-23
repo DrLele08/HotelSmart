@@ -10,6 +10,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class UtenteService
@@ -41,7 +42,7 @@ public class UtenteService
     /**
      * Effettua il login dell'utente data un indirizzo email e una password
      *
-     * @param idUtente Identificatico dell'utente
+     * @param idUtente Identificativo dell'utente
      * @param tokenAuth Token dell'utente
      * @return Dati utente
      * @see Utente
@@ -136,4 +137,11 @@ public class UtenteService
             throw new IllegalArgumentException();
     }
 
+    /**
+     * Recupera tutti gli utenti presenti nel database
+     * @return Lista contenente gli utenti
+     */
+    public List<Utente> getAll() {
+        return dao.getUtenti();
+    }
 }
