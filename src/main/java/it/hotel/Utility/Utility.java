@@ -4,6 +4,7 @@ import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.stato.Stato;
 
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +30,16 @@ public class Utility
     public static Date dataConverter(String dataStr) throws ParseException {
         SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date dataUtil = in.parse(dataStr);
-        Date data = new Date(dataUtil.getTime());
-        return data;
+        return new Date(dataUtil.getTime());
+    }
+
+    /**
+     * restituisce una data formattata in standard italiano
+     * @param date data non formattata YYYY-mm-dd
+     * @return date formattato
+     */
+    public static String convertDateToView(Date date){
+        final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        return formatter.format(date);
     }
 }

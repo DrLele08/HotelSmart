@@ -90,22 +90,24 @@ public class StatoDAO {
      * @return Ritorna gli stati trovati nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-    public List<Stato> doGetAll() {
+    public List<Stato> doGetAll()
+    {
         ArrayList<Stato> ruoli = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = Connect.getConnection())
+        {
             PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stato",
-                            Statement.RETURN_GENERATED_KEYS);
-
+                    ("SELECT * FROM Stato");
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            while (rs.next())
+            {
                 ruoli.add(new Stato(rs.getInt(1), rs.getString(2)));
             }
+            return ruoli;
         }
-        catch (SQLException e) {
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
-        return ruoli;
     }
 
 }

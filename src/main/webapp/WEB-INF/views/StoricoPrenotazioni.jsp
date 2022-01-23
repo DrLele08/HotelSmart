@@ -60,10 +60,10 @@
                 %>
                     <tr>
                         <td><%=p.getKsStanza()%></td>
-                        <td><%=p.convertDateToView(p.getDataInizio())%></td>
-                        <td><%=p.convertDateToView(p.getDataFine())%></td>
+                        <td><%=Utility.convertDateToView(p.getDataInizio())%></td>
+                        <td><%=Utility.convertDateToView(p.getDataFine())%></td>
                         <td><%=p.getPrezzoFinale()%></td>
-                        <td><%=p.getKsStato()%></td>
+                        <td><%=p.getStatoName()%></td>
                         <td>
                             <%
                                 switch(p.getKsStato()){

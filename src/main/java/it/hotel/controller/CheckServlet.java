@@ -27,16 +27,19 @@ public class CheckServlet extends HttpServlet
         }
         else
         {
-            Cookie[] cookies=request.getCookies();
-            for(Cookie c:cookies)
+            if(request.getCookies()!=null)
             {
-                if(c.getName().equals(Utility.COOKIE_ID))
+                Cookie[] cookies=request.getCookies();
+                for(Cookie c:cookies)
                 {
-                    idUtente=Integer.parseInt(c.getValue());
-                }
-                if(c.getName().equals(Utility.COOKIE_TOKEN))
-                {
-                    tokenAuth=c.getValue();
+                    if(c.getName().equals(Utility.COOKIE_ID))
+                    {
+                        idUtente=Integer.parseInt(c.getValue());
+                    }
+                    if(c.getName().equals(Utility.COOKIE_TOKEN))
+                    {
+                        tokenAuth=c.getValue();
+                    }
                 }
             }
         }

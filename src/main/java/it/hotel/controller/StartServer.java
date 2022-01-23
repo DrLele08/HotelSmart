@@ -7,14 +7,15 @@ import it.hotel.controller.services.StatoService;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.IOException;
 
 @WebServlet(name = "Servlet", value = "/Servlet",loadOnStartup = 1)
-public class StartServer extends HttpServlet {
+public class StartServer extends HttpServlet
+{
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void init() throws ServletException
     {
-       Utility.listRuoli=new RuoloService().getAll();
-       Utility.listStato=new StatoService().getAll();
+        super.init();
+        Utility.listRuoli=new RuoloService().getAll();
+        Utility.listStato=new StatoService().getAll();
     }
 }
