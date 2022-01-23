@@ -31,7 +31,7 @@ public class StanzaService
     }
 
     public double getMinPrice(List<Stanza> stanze) {
-        Double min_prezzo = stanze.get(0).getCostoNotte();
+        double min_prezzo = stanze.get(0).getCostoNotte();
         for(Stanza s: stanze){
             if(s.getCostoNotte() < min_prezzo) min_prezzo = s.getCostoNotte();
         }

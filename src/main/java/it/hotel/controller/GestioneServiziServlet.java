@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.model.utente.Utente;
 
 import javax.servlet.*;
@@ -22,6 +21,15 @@ public class GestioneServiziServlet extends CheckServlet
         }
         else
         {
+            Utente user=us.get();
+            //TODO Manca Gestione Servizi
+            ServiziService service=new ServiziService();
+            List<Servizi> listServizi;
+            if(user.getRuolo()==3)
+                listServizi=service.getByUser(user.getIdUtente());
+            else
+                listServizi=service.getAll();
+            request.setAttribute("Servizi",listServizi);
             RequestDispatcher requestDispatcher=request.getRequestDispatcher("/WEB-INF/views/GestioneServizi.jsp");
             request.setAttribute("Tipo",6);
             requestDispatcher.forward(request,response);
