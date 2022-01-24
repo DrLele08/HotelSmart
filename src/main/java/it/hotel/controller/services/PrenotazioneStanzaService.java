@@ -5,7 +5,6 @@ import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
-import it.hotel.model.servizio.Servizio;
 
 import java.sql.Date;
 import java.util.List;
@@ -17,10 +16,26 @@ public class PrenotazioneStanzaService {
 
     private final PrenotazioneStanzaDAO dao;
 
+    /**
+     * Costruisce un oggetto PrenotazioneStanzaService.
+     */
     public PrenotazioneStanzaService() {
         this.dao = new PrenotazioneStanzaDAO();
     }
 
+    /**
+     * Inserisce una prenotazione stanza secondo i valori specificati.
+     * @param ksUtente Identificativo utente
+     * @param ksStanza Identificativo stanza
+     * @param dataInizio Data d'inizio
+     * @param dataFine Data di fine
+     * @param prezzoFinale Prezzo finale
+     * @param tokenStripe Token di Stripe
+     * @param tokenQr Token del QR code
+     * @param commenti Commenti
+     * @param valutazione Valutazione
+     * @throws PagamentoInAttesaException Un altro pagamento è in attesa di essere completato
+     */
     public void inserisciPrenotazione(int ksUtente, int ksStanza, Date dataInizio, Date dataFine, double prezzoFinale,
             String tokenStripe, String tokenQr, String commenti, int valutazione) throws PagamentoInAttesaException {
         try {
@@ -30,14 +45,30 @@ public class PrenotazioneStanzaService {
         }
     }
 
+    /**
+     * Recupera le prenotazioni stanza presenti nel database secondo i valori specificati.
+     * @param value Valore secondo il quale effettuare la ricerca
+     * @param type Tipo del valore
+     * @return Prenotazioni stanza trovate
+     */
     public List<PrenotazioneStanza> selectBy(int value, int type) {
         return dao.doSelectBy(value, type);
     }
 
+    /**
+     * Recupera tutte le prenotazioni stanza presenti nel database.
+     * @return Lista contenente le prenotazioni stanza trovate
+     */
     public List<PrenotazioneStanza> getAll() {
         return dao.doGetAll();
     }
 
+    /**
+     * Modifica lo stato della prenotazione stanza specificata.
+     * @param idPrenotazioneStanza Identificativo della prenotazione stanza
+     * @param stato Stato da inserire
+     * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza non è stata trovata
+     */
     public void editStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
         dao.doChangeStato(idPrenotazioneStanza, stato);
     }
