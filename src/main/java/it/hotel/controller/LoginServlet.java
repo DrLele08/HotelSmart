@@ -78,7 +78,7 @@ public class LoginServlet extends HttpServlet
     {
         String email=request.getParameter("textEmail");
         String pwd=request.getParameter("textPwd");
-        Boolean ricordami = Boolean.parseBoolean(request.getParameter("textRicordami"));
+        boolean ricordami = Boolean.parseBoolean(request.getParameter("textRicordami"));
         UtenteService service=new UtenteService();
         Utente user= null;
         response.setContentType("application/json");
@@ -89,7 +89,6 @@ public class LoginServlet extends HttpServlet
             HttpSession session=request.getSession();
             session.setAttribute(Utility.SESSION_USER,user);
             response.getOutputStream().print("{\"status\":true}");
-            //TODO Ricordami
             if(ricordami)
             {
                 Cookie c1 = new Cookie(Utility.COOKIE_ID,user.getIdUtente()+"");

@@ -47,8 +47,11 @@ public class ModificaAnagrafica extends CheckServlet
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Id utente non valido");
-            } catch (ParseException e) {
-                //TODO data non valida
+            }
+            catch (ParseException e)
+            {
+                obj.put("Ris",0);
+                obj.put("Mess","Data non valida");
             }
         }
         else

@@ -9,7 +9,6 @@ function SearchValidate(){
 
     var flag1 = false;
     if(dataA.getTime() < currentDate.getTime() || dataP < currentDate.getTime()) flag1 = true;
-
     if(dataA == "" || dataA == null || dataP == "" || dataP == null || flag || flag1){
         document.getElementById("errore").style.display = "block";
         return false;
