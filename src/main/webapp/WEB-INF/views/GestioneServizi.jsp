@@ -1,4 +1,5 @@
-<%--
+<%@ page import="it.hotel.model.servizio.Servizio" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: aless
   Date: 21/01/2022
@@ -52,14 +53,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>NomeProva</td>
-                <td>20</td>
-                <td>150</td>
-                <td><span data-toggle="tooltip" title="Elimina"><a class="bi bi-trash"></a></span>
-                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit"></a></span>
-                </td>
-            </tr>
+                <tr>
+                        <%
+                        List<Servizio> servizi=(List<Servizio>) request.getAttribute("Servizi");
+                        for(Servizio s : servizi){
+                    %>
+                <tr>
+                    <td><%=s.getNome()%></td>
+                    <td><%=s.getCosto()%></td>
+                    <td><%=s.getLimitePosti()%></td>
+                    <td><span data-toggle="tooltip" title="Elimina"><a class="bi bi-trash"></a></span>
+                        <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit"></a></span>
+                    </td>
+                </tr>
+            <%}%>
             </tbody>
             <tfoot>
             <tr>

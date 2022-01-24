@@ -34,7 +34,7 @@ public class ModificaStato extends CheckServlet
                 if(user.getRuolo()==1 || user.getRuolo()==2)
                 {
                     PrenotazioneStanzaService serviceStanza=new PrenotazioneStanzaService();
-                    serviceStanza.editStato(idPreno,newStato);
+                   // serviceStanza.editStato(idPreno,newStato);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");
                     response.getOutputStream().print(obj.toString());
