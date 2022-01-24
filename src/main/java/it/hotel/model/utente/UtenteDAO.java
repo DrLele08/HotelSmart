@@ -90,7 +90,7 @@ public class UtenteDAO {
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return getUtente(rs);
+                return createUtente(rs);
             } else {
                 throw new PasswordNotValidException();
             }
@@ -120,7 +120,7 @@ public class UtenteDAO {
             ps.setString(2, tokenAuth);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return getUtente(rs);
+                return createUtente(rs);
             } else {
                 throw new UtenteNotFoundException();
             }
@@ -283,7 +283,7 @@ public class UtenteDAO {
                             Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                utenti.add(getUtente(rs));
+                utenti.add(createUtente(rs));
             }
         }
         catch (SQLException e) {
@@ -302,7 +302,7 @@ public class UtenteDAO {
         return rs.next();
     }
 
-    private Utente getUtente(ResultSet rs) throws SQLException {
+    private Utente createUtente(ResultSet rs) throws SQLException {
         int idUtente = rs.getInt("idUtente");
         int ksRuolo = rs.getInt("ksRuolo");
         String cf = rs.getString("cf");

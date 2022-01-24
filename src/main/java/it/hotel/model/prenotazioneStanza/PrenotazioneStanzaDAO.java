@@ -163,9 +163,7 @@ public class PrenotazioneStanzaDAO {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                prenotazioni.add(new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4),
-                        rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8), rs.getString(9),
-                        rs.getString(10), rs.getInt(11)));
+                prenotazioni.add(createPrenotazioneStanza(rs));
             }
         }
         catch (SQLException e) {
