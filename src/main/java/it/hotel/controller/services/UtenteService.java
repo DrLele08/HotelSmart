@@ -13,20 +13,28 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * Fornisce metodi di utilizzo del database per {@link Utente}.
+ */
 public class UtenteService
 {
     private final UtenteDAO dao;
 
+    /**
+     * Costruisce un oggetto UtenteService.
+     */
     public UtenteService()
     {
         dao=new UtenteDAO();
     }
+
     /**
-     * Effettua il login dell'utente data un indirizzo email e una password
-     *
+     * Effettua il login dell'utente secondo indirizzo email e password specificati.
      * @param email  Email inserita dall'utente
      * @param pwd Password inserita dall'utente
-     * @return Dati utente
+     * @return Utente trovato
+     * @throws  EmailNotFoundException L'email specificata non è stata trovata
+     * @throws PasswordNotValidException La password specificata non è valida
      * @see Utente
      */
     public Utente doLogin(String email, String pwd) throws EmailNotFoundException, PasswordNotValidException
@@ -40,11 +48,11 @@ public class UtenteService
     }
 
     /**
-     * Effettua il login dell'utente data un indirizzo email e una password
-     *
+     * Effettua il login dell'utente secondo identificativo e token specificati.
      * @param idUtente Identificativo dell'utente
      * @param tokenAuth Token dell'utente
-     * @return Dati utente
+     * @return Utente trovato
+     * @throws UtenteNotFoundException L'utente cercato non è stato trovato
      * @see Utente
      */
     public Utente doLogin(int idUtente,String tokenAuth) throws UtenteNotFoundException {
@@ -57,16 +65,17 @@ public class UtenteService
     }
 
     /**
-     * Effettua la registrazione di un nuovo utente standard
-     *
+     * Effettua la registrazione di un nuovo utente secondo i valori specificati.
      * @param cf Codice Fiscale utente
      * @param nome Nome utente
      * @param cognome Cognome utente
      * @param email  Email utente
      * @param data Data nascita utente
      * @param pwd Password utente
-     * @return      Dati utente
-     * @see         Utente
+     * @return Utente registrato
+     * @throws EmailAlreadyExistingException L'email specificata è già presente
+     * @throws PasswordNotValidException La password specificata non è valida
+     * @see Utente
      */
     public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException,PasswordNotValidException
     {
@@ -90,12 +99,14 @@ public class UtenteService
     }
 
     /**
-     * Effettua la modifica della password di un utente
-     *
+     * Effettua la modifica della password di un utente con la nuova password specificata.
      * @param idUtente Identificativo dell'utente
      * @param token Token di autenticazione utente
      * @param oldPwd Vecchia password dell'utente
      * @param newPwd Nuova password utente
+     * @throws PasswordNotValidException La password specificata non è valida
+     * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     * @throws PermissionDeniedException Non si dispone dei privilegi necessari
      */
     public void editPassword(int idUtente,String token,String oldPwd,String newPwd)
             throws PasswordNotValidException, UtenteNotFoundException, PermissionDeniedException
@@ -119,13 +130,15 @@ public class UtenteService
     }
 
     /**
-     * Effettua la modifica dell'anagrafica di un utente
+     * Effettua la modifica dell'anagrafica di un utente secondo i valori specificati.
      * @param nome Nome dell'utente
      * @param tokenAuth Token di autenticazione dell'utente
      * @param cognome Cognome dell'utente
      * @param cf Codice Fiscale dell'utente
      * @param dataNascitaStr Data di nascita dell'utente
      * @param email Email dell'utente
+     * @throws EmailAlreadyExistingException L'email specificata è già presente
+     * @throws ParseException La data di nascita non è in un formato comprensibile
      */
     public void editAnagrafica(int idUtente, String tokenAuth, String nome, String cognome, String cf, String dataNascitaStr, String email)
             throws EmailAlreadyExistingException, ParseException {
@@ -138,8 +151,8 @@ public class UtenteService
     }
 
     /**
-     * Recupera tutti gli utenti presenti nel database
-     * @return Lista contenente gli utenti
+     * Recupera tutti gli utenti presenti nel database.
+     * @return Lista contenente gli utenti trovati
      */
     public List<Utente> getAll() {
         return dao.getUtenti();

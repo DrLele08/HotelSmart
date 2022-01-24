@@ -9,15 +9,26 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fornisce metodi di utilizzo del database per {@link Stanza}.
+ */
 public class StanzaService
 {
+
     private final StanzaDAO dao;
 
+    /**
+     * Costruisce un oggetto StanzaService.
+     */
     public StanzaService()
     {
         dao=new StanzaDAO();
     }
 
+    /**
+     * Recupera tutte le stanze presenti nel database.
+     * @return Lista contenente le stanze trovate
+     */
     public List<Stanza> getStanze() {
         return dao.getStanze();
     }
