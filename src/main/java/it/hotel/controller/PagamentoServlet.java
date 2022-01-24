@@ -1,5 +1,6 @@
 package it.hotel.controller;
 
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -15,18 +16,19 @@ public class PagamentoServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        Stripe.apiKey = "sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP";
         String domain=request.getContextPath();
         SessionCreateParams params =
                 SessionCreateParams.builder()
                         .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setSuccessUrl(domain+"/success.html")
-                        .setCancelUrl(domain+"/cancel.html")
+                        .setSuccessUrl("https://www.google.it")
+                        .setCancelUrl("https://www.google.it")
                         .addLineItem(
                                 SessionCreateParams.LineItem.builder()
                                         .setQuantity(1L)
                                         .setCurrency("EUR")
                                         .setAmount(124L)
-                                        .setName("Pagamento prenotazion #123")
+                                        .setName("Pagamento prenotazione #123")
                                         .build())
                         .build();
         Session session;

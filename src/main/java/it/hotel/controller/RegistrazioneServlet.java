@@ -15,7 +15,8 @@ import java.text.ParseException;
 
 
 @WebServlet(name = "Registrazione", value = "/Registrazione")
-public class RegistrazioneServlet extends HttpServlet {
+public class RegistrazioneServlet extends HttpServlet
+{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

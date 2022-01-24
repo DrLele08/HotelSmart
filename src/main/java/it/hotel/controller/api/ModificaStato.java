@@ -3,6 +3,7 @@ package it.hotel.controller.api;
 import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.UtenteService;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
@@ -46,7 +47,7 @@ public class ModificaStato extends CheckServlet
                     response.getOutputStream().print(obj.toString());
                 }
             }
-            catch(NumberFormatException e)
+            catch(NumberFormatException | PrenotazioneStanzaNotFoundException e)
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Inserisci i parametri correttamente");

@@ -43,14 +43,13 @@ public class RicercaServlet extends HttpServlet {
                 Integer maxLetti_s = numletti.get(0);
                 Integer maxLetti_m = numletti.get(1);
 
-                for(int i = maxLetti_s; i >= 0; i--){
+                for(int i = 0; i <= maxLetti_s; i++){
                     Letti_s.add(i);
                 }
 
-                for(int i = maxLetti_m; i >= 0; i--){
+                for(int i = 0; i <= maxLetti_m; i++){
                     Letti_m.add(i);
                 }
-
                 request.setAttribute("min_price",prezzi.get(0));
                 request.setAttribute("max_price",prezzi.get(1));
 
