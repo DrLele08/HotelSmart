@@ -34,55 +34,19 @@ public class StanzaService
     }
 
     /**
-     * Restituisce il prezzo più alto tra i prezzi delle stanze specificate.
-     * @param stanze Le stanze tra cui effettuare la ricerca
-     * @return Il prezzo più alto
+     * Restituisce il più basso e il più alto tra i prezzi tra tutte le stanze.
+     * @return Lista contenente il prezzo più basso e il prezzo più alto
      */
-    public double getMaxPrice(List<Stanza> stanze) {
-        double max_prezzo = stanze.get(0).getCostoNotte();
-        for(Stanza s: stanze){
-            if(s.getCostoNotte() > max_prezzo) max_prezzo = s.getCostoNotte();
-        }
-        return max_prezzo;
+    public List<Double> get_Min_And_Max_Prices() {
+        return dao.doSelect_Min_And_Max_Prices();
     }
 
     /**
-     * Restituisce il prezzo più basso tra i prezzi delle stanze specificate.
-     * @param stanze Le stanze tra cui effettuare la ricerca
-     * @return Il prezzo più basso
+     * Restituisce le quantità maggiori di letti singoli e matrimoniali tra tutte le stanze.
+     * @return Lista contenente le quantità maggiori di letti singoli e matrimoniali
      */
-    public double getMinPrice(List<Stanza> stanze) {
-        double min_prezzo = stanze.get(0).getCostoNotte();
-        for(Stanza s: stanze){
-            if(s.getCostoNotte() < min_prezzo) min_prezzo = s.getCostoNotte();
-        }
-        return min_prezzo;
-    }
-
-    /**
-     * Restituisce la quantità maggiore di letti singoli trovata tra le stanze specificate.
-     * @param stanze Le stanze tra cui effettuare la ricerca
-     * @return La quantità maggiore di letti singoli
-     */
-    public int getMaxLetti_S(List<Stanza> stanze) {
-        int maxLetti_s = stanze.get(0).getLettiSingoli();
-        for(Stanza s: stanze){
-            if(s.getLettiSingoli() > maxLetti_s) maxLetti_s = s.getLettiSingoli();
-        }
-        return maxLetti_s;
-    }
-
-    /**
-     * Restituisce la quantità maggiore di letti matrimoniali trovata tra le stanze specificate.
-     * @param stanze Le stanze tra cui effettuare la ricerca
-     * @return La quantità maggiore di letti matrimoniali
-     */
-    public int getMaxLetti_M(List<Stanza> stanze) {
-        int maxLetti_m = stanze.get(0).getLettiMatrimoniali();
-        for(Stanza s: stanze){
-            if(s.getLettiMatrimoniali() > maxLetti_m) maxLetti_m = s.getLettiMatrimoniali();
-        }
-        return maxLetti_m;
+    public List<Integer> get_S_And_M_Letti() {
+        return dao.doSelect_S_And_M_Letti();
     }
 
     /**

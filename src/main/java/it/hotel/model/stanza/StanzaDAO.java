@@ -87,6 +87,50 @@ public class StanzaDAO {
     }
 
     /**
+     * Recupera il prezzo più basso e il prezzo più alto tra tutti gli oggetti Stanza presenti nel database.
+     * @return Lista contenente il prezzo più basso e il prezzo più alto
+     */
+    public List<Double> doSelect_Min_And_Max_Prices() {
+        ArrayList<Double> prezzi = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT MIN(costoNotte), MAX(costoNotte) FROM Stanza",
+                            Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                prezzi.add(rs.getDouble(1));
+                prezzi.add(rs.getDouble(2));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return prezzi;
+    }
+
+    /**
+     * Recupera le quantità maggiori di letti singoli e matrimoniali tra tutti gli oggetti Stanza presenti nel database.
+     * @return Lista contenente le quantità maggiori di letti singoli e matrimoniali
+     */
+    public List<Integer> doSelect_S_And_M_Letti() {
+        ArrayList<Integer> numLetti = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT MAX(lettiSingoli), MAX(lettiMatrimoniali) FROM Stanza",
+                            Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                numLetti.add(rs.getInt(1));
+                numLetti.add(rs.getInt(2));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return numLetti;
+    }
+
+    /**
      * Recupera gli oggetti Stanza trovati nel database secondo i valori specificati.
      * @param animaleDomestico Permesso animali domestici
      * @param fumatore Permesso fumatori
