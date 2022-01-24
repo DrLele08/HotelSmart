@@ -47,7 +47,7 @@ public class RuoloDAO {
             ps.setString(1, ruoloStr);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                ruolo = new Ruolo(rs.getInt(1), rs.getString(2));
+                ruolo = createRuolo(rs);
             } else {
                 throw new RuoloNotFoundException();
             }
@@ -74,7 +74,7 @@ public class RuoloDAO {
             ps.setInt(1, idRuolo);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                ruolo = new Ruolo(rs.getInt(1), rs.getString(2));
+                ruolo = createRuolo(rs);
             } else {
                 throw new RuoloNotFoundException();
             }
@@ -99,13 +99,17 @@ public class RuoloDAO {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ruoli.add(new Ruolo(rs.getInt(1), rs.getString(2)));
+                ruoli.add(createRuolo(rs));
             }
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return ruoli;
+    }
+
+    private Ruolo createRuolo(ResultSet rs) throws SQLException {
+        return new Ruolo(rs.getInt(1), rs.getString(2));
     }
 
 }

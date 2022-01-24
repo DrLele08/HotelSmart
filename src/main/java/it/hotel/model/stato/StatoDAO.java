@@ -47,7 +47,7 @@ public class StatoDAO {
             ps.setString(1, statoStr);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                stato = new Stato(rs.getInt(1), rs.getString(2));
+                stato = createStato(rs);
             } else {
                 throw new StatoNotFoundException();
             }
@@ -74,7 +74,7 @@ public class StatoDAO {
             ps.setInt(1, idStato);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                stato = new Stato(rs.getInt(1), rs.getString(2));
+                stato = createStato(rs);
             } else {
                 throw new StatoNotFoundException();
             }
@@ -100,7 +100,7 @@ public class StatoDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
-                ruoli.add(new Stato(rs.getInt(1), rs.getString(2)));
+                ruoli.add(createStato(rs));
             }
             return ruoli;
         }
@@ -108,6 +108,10 @@ public class StatoDAO {
         {
             throw new RuntimeException(e);
         }
+    }
+
+    private Stato createStato (ResultSet rs) throws SQLException {
+        return new Stato(rs.getInt(1), rs.getString(2));
     }
 
 }

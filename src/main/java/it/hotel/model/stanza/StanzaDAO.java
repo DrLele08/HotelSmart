@@ -53,8 +53,7 @@ public class StanzaDAO {
             ps.setInt(1, idStanza);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                stanza = new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
-                        rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7));
+                stanza = createStanza(rs);
             } else {
                 throw new StanzaNotFoundException();
             }
@@ -78,8 +77,7 @@ public class StanzaDAO {
                             Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                stanze.add(new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
-                        rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7)));
+                stanze.add(createStanza(rs));
             }
         }
         catch (SQLException e) {
@@ -118,8 +116,7 @@ public class StanzaDAO {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                stanze.add(new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
-                        rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7)));
+                stanze.add(createStanza(rs));
             }
         }
         catch (SQLException e) {
@@ -250,6 +247,11 @@ public class StanzaDAO {
         }
         String statoCheck = " AND rs.ksStato NOT IN (SELECT idStato FROM Stato st WHERE (st.stato = \"ANNULLATA\") OR (st.stato = \"ARCHIVIATA\") OR (st.stato = \"RIMBORSATA\")))";
         return NOT_EXISTS_prenotazioneStanza + statoCheck;
+    }
+
+    private Stanza createStanza(ResultSet rs) throws SQLException {
+        return new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),
+                rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7));
     }
 
 }

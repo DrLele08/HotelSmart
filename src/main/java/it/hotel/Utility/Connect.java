@@ -21,7 +21,7 @@ public class Connect
             p.setUrl("jdbc:mysql://localhost:3306/HotelSmart?serverTimezone=" + TimeZone.getDefault().getID());
             p.setDriverClassName("com.mysql.cj.jdbc.Driver");
             p.setUsername("root");
-            p.setPassword("password");
+            p.setPassword("Qwerty6296");
             p.setMaxActive(1000);
             p.setInitialSize(10);
             p.setMinIdle(10);

@@ -15,9 +15,6 @@
 <html>
 
 <head>
-    <%
-        Utente ul = (Utente) session.getAttribute(Utility.SESSION_USER);
-    %>
 
     <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Gestione prenotazioni"/>
@@ -69,14 +66,14 @@
                                 switch(p.getKsStato()){
                                 case 1:
                             %><span data-toggle="tooltip" title="Effettuare pagamento"><a class="bi bi-credit-card" data-toggle="modal"  data-target="#modalPagamento"></a></span>
-                            <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id="iconAnnullaOrdine" data-prenotazione-id="<%=p.getIdPrenotazioneStanza()%>" data-toggle="modal"  data-target="#modalAnnullaOrdine"></a>
+                            <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id="iconAnnullaOrdine" onclick='iconAnnullaOrdine(<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a>
                              <%   break;
                             case 2:
-                             %><span data-toggle="tooltip" title="Effettuare rimborso"> <a class="bi bi-cash" id="iconRichiediRimborso" data-toggle="modal" data-prenotazione-id="<%=p.getIdPrenotazioneStanza()%>" data-target="#modalRimborso"></a>
+                             %><span data-toggle="tooltip" title="Effettuare rimborso"> <a class="bi bi-cash" id="iconRichiediRimborso" onclick='iconRichiediRimborso(<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a>
                             <%   break;
                                 case 3:
                             %><a class="bi bi-bag-plus" data-toggle="tooltip" title="Prenota servizi" href="${pageContext.request.contextPath}/servizi/goservizi"></a>
-                                    <span data-toggle="tooltip" title="Visualizza codice qr"><a class="fa fa-qrcode" data-toggle="modal" data-target="#modalCodiceQr"></a></span>
+                                    <span data-toggle="tooltip" title="Visualizza codice qr"><a class="fa fa-qrcode" onclick='iconTokenQr("<%=p.getTokenQr()%>")' data-toggle="modal" data-target="#modalCodiceQr"></a></span>
                             <%   break;
                                 case 4: case 5: case 6:
                             %><a data-toggle="tooltip" title="Completata" class="bi bi-archive"></a>
@@ -122,12 +119,14 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titleModalAnnullaOrdine">Sei sicuro di voler annullare l'ordine?</h5>
+                <h5 class="modal-title" id="titleModalAnnullaOrdine">Sei sicuro di voler annullare l"ordine?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
                 <input type="hidden" id="idPrenotazioneAO" value="">
+                <input type="hidden" id="tokeUtenteAO" value="">
+                <input type="hidden" id="idUtenteAO" value="">
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 <button type="button" class="btn btn-primary" onclick="annullaOrdine()">Conferma</button>
@@ -145,6 +144,8 @@
                 </button>
             </div>
                 <input type="hidden" id="idPrenotazioneRR" value="">
+                <input type="hidden" id="tokeUtenteRR" value="">
+                <input type="hidden" id="idUtenteRR" value="">
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 <button type="button" class="btn btn-primary" onclick="effettuaRimborso()">Conferma</button>
@@ -156,10 +157,14 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titleModalCodiceQr">Sei sicuro di voler effettuare il rimborso?</h5>
+                <h5 class="modal-title" id="titleModalCodiceQr">Qr code</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <div class="modal-body">
+
+                    <input type="hidden" id="tokenQr" value="">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
