@@ -5,10 +5,14 @@ import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
+import it.hotel.model.servizio.Servizio;
 
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * Fornisce metodi di utilizzo del database per {@link PrenotazioneStanza}.
+ */
 public class PrenotazioneStanzaService {
 
     private final PrenotazioneStanzaDAO dao;
