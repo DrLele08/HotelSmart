@@ -39,9 +39,8 @@ public class CreateStanza extends CheckServlet
                     int lettiMatri=Integer.parseInt(request.getParameter("LettiM"));
                     double costoNotte=Double.parseDouble(request.getParameter("Costo"));
                     double sconto=Double.parseDouble(request.getParameter("Sconto"));
-                    //ToDo Giovanni
                     StanzaService service=new StanzaService();
-                    service.createStanza(animale,fumatore,lettiSingoli,lettiMatri,costoNotte,sconto);
+                    service.insertStanza(animale,fumatore,lettiSingoli,lettiMatri,costoNotte,sconto);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");
                     response.getOutputStream().print(obj.toString());

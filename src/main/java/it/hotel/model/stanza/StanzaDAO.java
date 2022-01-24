@@ -13,22 +13,28 @@ import java.util.List;
 public class StanzaDAO {
 
     /**
-     * Inserisce nel database l'oggetto Stanza specificato.
-     * @param stanza Stanza da inserire nel database
+     * Inserisce nel database un oggetto Stanza secondo i valori specificati.
+     * @param animaleDomestico Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-    public void doInsert(Stanza stanza) {
+    public void doInsert(boolean animaleDomestico, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
+                         double costoNotte, double sconto) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("INSERT INTO Stanza (animaleDomestico, fumatore, lettiSingoli," +
                                     " lettiMatrimoniali, costoNotte, sconto) VALUES(?,?,?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS);
-            ps.setBoolean(1, stanza.getAnimaleDomestico());
-            ps.setBoolean(2, stanza.getFumatore());
-            ps.setInt(3, stanza.getLettiSingoli());
-            ps.setInt(4, stanza.getLettiMatrimoniali());
-            ps.setDouble(5, stanza.getCostoNotte());
-            ps.setDouble(6, stanza.getSconto());
+            ps.setBoolean(1, animaleDomestico);
+            ps.setBoolean(2, fumatore);
+            ps.setInt(3, lettiSingoli);
+            ps.setInt(4, lettiMatrimoniali);
+            ps.setDouble(5, costoNotte);
+            ps.setDouble(6, sconto);
 
             ResultSet rs = ps.executeQuery();
             rs.next();

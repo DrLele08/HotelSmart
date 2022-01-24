@@ -80,4 +80,17 @@ public class StanzaService
         return dao.doSelectById(stanzaId);
     }
 
+    /**
+     * Inserisce una stanza secondo i valori specificati.
+     * @param animale Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
+     */
+    public void insertStanza(boolean animale, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
+                             double costoNotte, double sconto) {
+        dao.doInsert(animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);
+    }
 }

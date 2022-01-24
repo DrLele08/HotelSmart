@@ -157,4 +157,13 @@ public class UtenteService
     public List<Utente> getAll() {
         return dao.getUtenti();
     }
+
+    /**
+     * Modifica il ruolo di un utente secondo i valori specificati.
+     * @param idUtente Identificativo dell'utente
+     * @param ruolo Ruolo da inserire
+     */
+    public void editRuoloById(int idUtente, int ruolo) {
+        dao.doChangeRuolo(idUtente, ruolo);
+    }
 }

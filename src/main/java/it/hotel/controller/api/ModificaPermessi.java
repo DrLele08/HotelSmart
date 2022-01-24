@@ -31,8 +31,7 @@ public class ModificaPermessi extends CheckServlet
                 Utente user=userService.doLogin(idUtente,tokenAuth);
                 if(user.getRuolo()==1)
                 {
-                    //TODO Giovanni
-                    userService.editRuoloByUser(idUtenteCambio,newRuolo);
+                    userService.editRuoloById(idUtenteCambio,newRuolo);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");
                     response.getOutputStream().print(obj.toString());

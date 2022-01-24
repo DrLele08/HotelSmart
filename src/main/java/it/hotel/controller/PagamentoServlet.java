@@ -6,6 +6,7 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -24,8 +25,8 @@ public class PagamentoServlet extends CheckServlet
             {
                 int idPreno=Integer.parseInt(request.getParameter("idPreno"));
                 PrenotazioneStanzaService prenoService=new PrenotazioneStanzaService();
-                //ToDo Giovanni
-                PrenotazioneStanza preno=prenoService.getPrenoById(idPreno);
+                //TODO service lancia PrenotazioneStanzaNotFoundException se interessa gestirla a parte
+                PrenotazioneStanza preno=prenoService.getPrenotazioneById(idPreno);
                 Stripe.apiKey = "sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP";
                 String domain=request.getContextPath();
                 SessionCreateParams params =

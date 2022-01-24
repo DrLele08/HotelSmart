@@ -72,4 +72,14 @@ public class PrenotazioneStanzaService {
     public void editStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
         dao.doChangeStato(idPrenotazioneStanza, stato);
     }
+
+    /**
+     * Recupera una prenotazione stanza secondo il valore specificato.
+     * @param idPrenotazione Identificativo della prenotazione stanza cercata
+     * @return La prenotazione stanza trovata
+     * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza cercata non è stata trovata
+     */
+    public PrenotazioneStanza getPrenotazioneById(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
+        return dao.doSelectById(idPrenotazione);
+    }
 }
