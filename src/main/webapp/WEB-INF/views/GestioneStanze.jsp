@@ -1,4 +1,5 @@
-<%--
+<%@ page import="it.hotel.model.stanza.Stanza" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: aless
   Date: 21/01/2022
@@ -49,19 +50,31 @@
             </tr>
             </thead>
             <tbody>
+                <%
+                    List<Stanza> stanze=(List<Stanza>) request.getAttribute("Stanze");
+                    for(Stanza s : stanze){
+                %>
+                <tr>
+                    <td><%=s.getIdStanza()%></td>
+                    <td><%=s.getLettiSingoli()%></td>
+                    <td><%=s.getLettiMatrimoniali()%></td>
+                    <td><%=s.getCostoNotte()%></td>
+                    <td><%if(s.getAnimaleDomestico() == true){%>
+                        <i class="bi bi-check-square"><%}else{%>
+                        <i class="bi bi-x-square">  <%}%>
 
-            <tr>
-                <td>4</td>
-                <td>2</td>
-                <td>1</td>
-                <td>35</td>
-                <td><i class="bi bi-check-square"></i></td>
-                <td><i class="bi bi-x-square"></i></td>
-                <td>2</td>
-                <td><span data-toggle="tooltip" title="Elimina"><a class="bi bi-trash"></a></span>
-                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit"></a></span>
-                </td>
-            </tr>
+                    </td>
+                    <td><%if(s.getFumatore() == true){%>
+                        <i class="bi bi-check-square"><%}else{%>
+                            <i class="bi bi-x-square">  <%}%>
+                    </td>
+                    <td><%=s.getSconto()%></td>
+                    <td><span data-toggle="tooltip" title="Elimina"><a class="bi bi-trash"></a></span>
+                        <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit"></a></span>
+                    </td>
+                </tr>
+            <%}%>
+
             </tbody>
             <tfoot>
             <tr>
@@ -79,63 +92,64 @@
     </div>
 </div>
 <div class="modal fade" id="modalCreazioneStanza" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="titleModalRimborso">Creazione stanza</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form class = "needs-validation">
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="lettiSingoli">Letti singoli</label>
-                            <input type="number" id="lettiSingoli" class="form-control form-control-lg" required/>
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalCreazioneStanze">Creazione stanza</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="lettiSingoli">Letti singoli</label>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="lettiSingoli" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="lettiMatrimoniali">Letti matrimoniali</label>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="lettiMatrimoniali" class="form-control form-control-lg" required/>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="lettiMatrimoniali">Letti matrimoniali</label>
-                            <input type="number"id="lettiMatrimoniali" class="form-control form-control-lg" required/>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="costoNotte">Costo notte</label>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}" id="costoNotte" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="sconto">Sconto</label>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}" id="sconto" class="form-control form-control-lg" required/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="costoNotte">Costo notte</label>
-                            <input type="number" id="costoNotte" class="form-control form-control-lg" required/>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="checkAnimDom">
+                                <label class="form-check-label" for="checkAnimDom">Animale domestico</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="checkFumatore">
+                                <label class="form-check-label" for="checkFumatore">fumatore</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="sconto">Sconto</label>
-                            <input type="number" id="sconto" class="form-control form-control-lg" required/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="checkAnimDom">
-                            <label class="form-check-label" for="checkAnimDom">Animale domestico</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="checkFumatore">
-                            <label class="form-check-label" for="checkFumatore">fumatore</label>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            <button type="button" class="btn btn-primary" onclick="CreazioneStanza()">Conferma</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary" onclick="CreazioneStanza()">Conferma</button>
+            </div>
         </div>
     </div>
 </div>
