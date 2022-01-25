@@ -55,6 +55,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.6.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: com.stripe:stripe-java:20.95.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.code.gson:gson:2.8.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jdbc:10.1.0-M8" level="project" />

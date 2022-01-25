@@ -34,7 +34,7 @@ public class StanzaService
     }
 
     /**
-     * Recupera tutte le stanze con sconto maggiore di zero nel database.
+     * Recupera tutte le stanze con sconto maggiore di ZERO.
      * @return Lista contenente le stanze trovate
      */
     public List<Stanza> getOfferte() { return dao.getOfferte(); }

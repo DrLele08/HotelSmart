@@ -46,8 +46,7 @@ public class ModificaStato extends CheckServlet
                 {
                     if(newStato==5 && prenotazione.getKsStato()==2)
                     {
-                        //TODO GIOVANNI
-                        if(serviceStanza.canRimborsare(idPreno))
+                        if(serviceStanza.isRimborsabile(idPreno))
                         {
                             serviceStanza.editStato(idPreno,5);
                             obj.put("Ris",1);

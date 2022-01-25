@@ -75,11 +75,21 @@ public class PrenotazioneStanzaService {
 
     /**
      * Recupera una prenotazione stanza secondo il valore specificato.
-     * @param idPrenotazione Identificativo della prenotazione stanza cercata
+     * @param idPrenotazione Identificativo della prenotazione stanza
      * @return La prenotazione stanza trovata
      * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza cercata non è stata trovata
      */
     public PrenotazioneStanza getPrenotazioneById(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
         return dao.doSelectById(idPrenotazione);
     }
+
+    /**
+     * Informa se la prenotazione stanza specificata è rimborsabile.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @return Rimborsabilità della prenotazione
+     */
+    public boolean isRimborsabile(int idPrenotazione) {
+        return dao.isRimborsabile(idPrenotazione);
+    }
+
 }

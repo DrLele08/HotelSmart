@@ -196,6 +196,42 @@ public class PrenotazioneStanzaDAO {
         }
     }
 
+    /**
+     * Restituisce un informazione sulla rimborsabilità dell'oggetto PrenotazioneStanza specificato.
+     * @param idPrenotazione Identificativo della prenotazione stanza cercata
+     * @return Rimborsabilità della prenotazione
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public boolean isRimborsabile(int idPrenotazione) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT idStato FROM Stato s " +
+                            "WHERE (s.stato = \'CONFERMATA\') LIMIT 1",
+                    Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = ps.executeQuery();
+            int ksStato;
+            if (rs.next()) {
+                ksStato = rs.getInt(1);
+            } else {
+                return false;
+            }
+
+            ps = con.prepareStatement
+                    ("SELECT count(*) FROM Prenotazionestanza WHERE idPrenotazioneStanza=? AND ksStato=? " +
+                                    "AND dataInizio >= (CURDATE() + INTERVAL 14 DAY)",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idPrenotazione);
+            ps.setInt(2, ksStato);
+            rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1)==1) {
+                return true;
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     private PrenotazioneStanza createPrenotazioneStanza(ResultSet rs) throws SQLException {
         return new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3),
                 rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8),

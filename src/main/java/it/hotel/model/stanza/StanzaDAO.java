@@ -93,10 +93,10 @@ public class StanzaDAO {
     }
 
     /**
-     * Recupera le stanze che hanno un campo sconto maggiore di 0.
-     * @return Lista contenente le sole stanze con uno sconto maggiore di 0.
+     * Recupera gli oggetti Stanza presenti nel database che hanno uno sconto maggiore di ZERO.
+     * @return Lista contenente le stanze con uno sconto maggiore di ZERO.
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
-
     public List<Stanza> getOfferte(){
         ArrayList<Stanza> stanze = new ArrayList<>();
         try (Connection con = Connect.getConnection()) {
@@ -117,6 +117,7 @@ public class StanzaDAO {
     /**
      * Recupera il prezzo più basso e il prezzo più alto tra tutti gli oggetti Stanza presenti nel database.
      * @return Lista contenente il prezzo più basso e il prezzo più alto
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<Double> doSelect_Min_And_Max_Prices() {
         ArrayList<Double> prezzi = new ArrayList<>();
@@ -139,6 +140,7 @@ public class StanzaDAO {
     /**
      * Recupera le quantità maggiori di letti singoli e matrimoniali tra tutti gli oggetti Stanza presenti nel database.
      * @return Lista contenente le quantità maggiori di letti singoli e matrimoniali
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<Integer> doSelect_S_And_M_Letti() {
         ArrayList<Integer> numLetti = new ArrayList<>();

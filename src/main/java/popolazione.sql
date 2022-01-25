@@ -40,7 +40,17 @@ VALUES(0,1,2,0,10,0);
 
 -- Popolazione PrenotazioneStanza
 INSERT INTO PrenotazioneStanza(ksUtente, ksStanza, ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr, commenti, valutazione)
-VALUES(1, 1, 2, '2018-01-01', '2021-01-01', 100, 'aaa', 'aaa', 'aaa', 0);
+VALUES(1, 1, 1, '2022-05-04', '2022-09-08', 100, 'aaa', 'aaa', 'aaa', 0);
+INSERT INTO PrenotazioneStanza(ksUtente, ksStanza, ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr, commenti, valutazione)
+VALUES(1, 1, 2, '2022-05-04', '2022-09-08', 100, 'aaa', 'aaa', 'aaa', 0);
+INSERT INTO PrenotazioneStanza(ksUtente, ksStanza, ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr, commenti, valutazione)
+VALUES(1, 1, 3, '2022-05-04', '2022-09-08', 100, 'aaa', 'aaa', 'aaa', 0);
+INSERT INTO PrenotazioneStanza(ksUtente, ksStanza, ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr, commenti, valutazione)
+VALUES(1, 1, 4, '2022-05-04', '2022-09-08', 100, 'aaa', 'aaa', 'aaa', 0);
+INSERT INTO PrenotazioneStanza(ksUtente, ksStanza, ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr, commenti, valutazione)
+VALUES(1, 1, 5, '2022-05-04', '2022-09-08', 100, 'aaa', 'aaa', 'aaa', 0);
+INSERT INTO PrenotazioneStanza(ksUtente, ksStanza, ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr, commenti, valutazione)
+VALUES(1, 1, 6, '2022-05-04', '2022-09-08', 100, 'aaa', 'aaa', 'aaa', 0);
 
 -- Popolazione Servizi
 INSERT INTO Servizio(nome, descrizione, foto, costo, limitePosti) 
