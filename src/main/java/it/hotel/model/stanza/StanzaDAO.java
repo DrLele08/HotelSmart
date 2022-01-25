@@ -93,6 +93,28 @@ public class StanzaDAO {
     }
 
     /**
+     * Recupera le stanze che hanno un campo sconto maggiore di 0.
+     * @return Lista contenente le sole stanze con uno sconto maggiore di 0.
+     */
+
+    public List<Stanza> getOfferte(){
+        ArrayList<Stanza> stanze = new ArrayList<>();
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT * FROM Stanza WHERE Stanza.sconto > 0",
+                            Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                stanze.add(createStanza(rs));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return stanze;
+    }
+
+    /**
      * Recupera il prezzo più basso e il prezzo più alto tra tutti gli oggetti Stanza presenti nel database.
      * @return Lista contenente il prezzo più basso e il prezzo più alto
      */

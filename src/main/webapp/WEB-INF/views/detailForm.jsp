@@ -19,6 +19,14 @@
 
     <style>
 
+        .custom-container {
+            text-align: center;
+        }
+
+        .custom-elem {
+            display: inline-block;
+        }
+
         input {
             width: 700px;
         }
@@ -46,24 +54,51 @@
 <%
     Integer num_persone = (Integer) request.getAttribute("num_persone");
     Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
-    Integer id_stanza = (Integer) session.getAttribute("stanzaid");
+    Stanza selected_stanza = (Stanza) request.getAttribute("selected_stanza");
+    Integer id_stanza = selected_stanza.getIdStanza();
+
+    String fumatore = "Non permessso";
+    String animale_domestico = "Non permesso";
+    if(selected_stanza.getFumatore()) fumatore = "Permesso";
+    if(selected_stanza.getAnimaleDomestico()) animale_domestico = "Permesso";
 %>
+
+<div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
+    <div class="container custom-container">
+        <h1 class="display-4">Conferma la tua prenotazione</h1><br>
+        <div class="card mb-3 custom-elem" style="width: 75vw;">
+            <img class="card-img-top" src="${pageContext.request.contextPath}/images/hotelroom6.jpg" alt="Room image">
+            <div class="card-body" style="background-color: #cdd7e2; text-align: left">
+                <ul>
+                    <h5 class="card-title">Riepilogo dettagli stanza selezionata</h5>
+                    <li class="card-text">Letti matrimoniali: <%=selected_stanza.getLettiMatrimoniali()%></li>
+                    <li class="card-text">Letti singoli: <%=selected_stanza.getLettiSingoli()%></li>
+                    <li class="card-text">Fumatore: <%=fumatore%></li>
+                    <li class="card-text">Animale domestico: <%=animale_domestico%></li>
+                    <li class="card-text">Costo per notte: <%=selected_stanza.getCostoNotte()%></li>
+                    <li class="card-text">Sconto applicato (per notte): <%=selected_stanza.getSconto()%>%</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container">
 
         <h1 class="display-4">Compila i dettagli della tua prenotazione</h1><br>
-        <p>I dati extra inseriti serviranno per registrarti alla piattaforma automaticamente</p><br>
 
         <%if (user != null) {%>
 
         <form action="#" method="post" class="needs-validation">
 
+            <p>Dati personali del cliente a cui sarà assegnata la prenotazione</p><br>
+
             <div class="form-group">
                 <label for="nome1">Nome Cliente 1
                 </label><br>
                 <input type="text" class="form-control form-control-lg" name="nome1" id="nome1"
-                       pattern="[A-z  À-ù ‘-]{2,30}$" value="<%=user.getNome()%>" required>
+                       pattern="[A-z  À-ù ‘-]{2,30}$" value="<%=user.getNome()%>" required readonly>
                 <div class="invalid-feedback">
                     Inserisci un nome valido!
                 </div>
@@ -73,7 +108,7 @@
                 <label for="cognome1">Cognome Cliente 1
                 </label><br>
                 <input type="text" class="form-control form-control-lg" name="cognome1" id="cognome1"
-                       pattern="[A-z  À-ù ‘-]{2,30}$" value="<%=user.getCognome()%>" required>
+                       pattern="[A-z  À-ù ‘-]{2,30}$" value="<%=user.getCognome()%>" required readonly>
                 <div class="invalid-feedback">
                     Inserisci un cognome valido!
                 </div>
@@ -83,7 +118,7 @@
                 <label for="codicef1">Codice fiscale Cliente 1
                 </label><br>
                 <input type="text" class="form-control form-control-lg" name="codicef1" id="codicef1"
-                       pattern="[A-z 0-9]{16}$" value="<%=user.getCf()%>" required>
+                       pattern="[A-z 0-9]{16}$" value="<%=user.getCf()%>" required readonly>
                 <div class="invalid-feedback">
                     Inserisci un codice fiscale valido!
                 </div>
@@ -93,9 +128,11 @@
                 <label for="dataNascita1">Data di nascita Cliente 1
                 </label><br>
                 <input type="date" class="form-control form-control-lg" id="dataNascita1" name="dataNascita1"
-                       value="<%=user.getDataNascita()%>" required>
+                       value="<%=user.getDataNascita()%>" required readonly>
             </div>
             <br><br>
+
+            <p>Dati degli altri ospiti</p><br>
 
             <% for (int i = 1; i < num_persone; i++) { %>
             <div class="form-group">
@@ -143,6 +180,8 @@
 
         <%} else { %>
 
+        <p>I dati extra inseriti serviranno per registrarti alla piattaforma automaticamente</p><br>
+
         <form action="#" method="post">
 
             <div class="form-group">
@@ -182,7 +221,9 @@
                 </label><br>
                 <input type="date" class="form-control form-control-lg" id="dataNascita1_notLogged" name="dataNascita1"
                        required>
-            </div>
+            </div><br>
+
+            <p>Dati extra per cliente che sarà registrato alla piattaforma e a cui sarà assegnata la prenotazione</p>
 
             <div class="form-group">
                 <label class="form-label" for="IndirizzoEmail">Indirizzo Email</label>
@@ -203,6 +244,8 @@
                 </div>
             </div>
             <br><br>
+
+            <p>Dati degli altri ospiti</p><br>
 
             <% for (int i = 1; i < num_persone; i++) { %>
             <div class="form-group">

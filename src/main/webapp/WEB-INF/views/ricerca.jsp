@@ -1,4 +1,5 @@
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="it.hotel.model.stanza.Stanza" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -75,6 +76,8 @@
     Double min = (Double) request.getAttribute("min_price");
     ArrayList<Integer> Letti_s = (ArrayList<Integer>) request.getAttribute("Letti_s");
     ArrayList<Integer> Letti_m = (ArrayList<Integer>) request.getAttribute("Letti_m");
+
+    ArrayList<Stanza> stanze_offerta = (ArrayList<Stanza>) request.getAttribute("stanze_offerta");
 %>
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container">
@@ -137,6 +140,14 @@
                     </select>
                 </div>
 
+                <div class="form-group w-100">
+                    <label for="numero_ospiti">Numero ospiti</label><br>
+                    <input type="number" name="numero_ospiti" id="numero_ospiti" min="1">
+                    <div class="invalid-feedback" id="errore_ospiti">
+                        Numero ospiti non valido o<br>maggiore dei posti letto selezionati
+                    </div>
+                </div>
+
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="animaleDom" value="animaleDom"
                            id="animaleDom">
@@ -173,8 +184,11 @@
                                 <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
                                 <p class="card-text">Suite matrimoniale con balcone e possibilità di animale domestico a
                                     partire da
-                                    150€ a notte.</p>
-                                <a href="#" class="btn btn-dark">Prenota ora</a>
+                                    <%=stanze_offerta.get(0).getCostoNotte()%>€ a notte.</p>
+                                <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
+                                    <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(0).getIdStanza()%>">
+                                    <input type="submit" class="btn btn-dark" value="Prenota ora">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -185,10 +199,13 @@
                                  alt="Card image cap">
                             <div class="card-body" style="background-color: #cdd7e2;">
                                 <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
-                                <p class="card-text">Suite matrimoniale con balcone e possibilità di animale domestico a
+                                <p class="card-text">Camera con due letti singoli e un matrimoniale a
                                     partire da
-                                    150€ a notte.</p>
-                                <a href="#" class="btn btn-dark">Prenota ora</a>
+                                    <%=stanze_offerta.get(1).getCostoNotte()%> a notte.</p>
+                                <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
+                                    <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(1).getIdStanza()%>">
+                                    <input type="submit" class="btn btn-dark" value="Prenota ora">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -199,10 +216,13 @@
                                  alt="Card image cap">
                             <div class="card-body" style="background-color: #cdd7e2;">
                                 <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
-                                <p class="card-text">Suite matrimoniale con balcone e possibilità di animale domestico a
+                                <p class="card-text">Suite matrimoniale con balcone e possibilità di fumatore a
                                     partire da
-                                    150€ a notte.</p>
-                                <a href="#" class="btn btn-dark">Prenota ora</a>
+                                    <%=stanze_offerta.get(2).getCostoNotte()%>€ a notte.</p>
+                                <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
+                                    <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(2).getIdStanza()%>">
+                                    <input type="submit" class="btn btn-dark" value="Prenota ora">
+                                </form>
                             </div>
                         </div>
                     </div>

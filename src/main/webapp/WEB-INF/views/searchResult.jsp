@@ -17,6 +17,7 @@
 
 <%
     ArrayList<Stanza> stanze = (ArrayList<Stanza>) request.getAttribute("stanze_result");
+    Integer numero_ospiti = (Integer) request.getAttribute("numero_ospiti");
 %>
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
@@ -25,6 +26,7 @@
         <% for (Stanza s : stanze) { %>
         <jsp:include page="/WEB-INF/views/partials/stanzaCard.jsp">
             <jsp:param name="id" value="<%=s.getIdStanza()%>"/>
+            <jsp:param name="numOspiti" value="<%=numero_ospiti%>"/>
         </jsp:include>
         <% } %>
         <%} else {%>

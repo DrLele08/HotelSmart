@@ -3,8 +3,7 @@
         <div class="row">
             <div class="col-md-6 mt-md-0 mt-3">
                 <h5 class="text-uppercase font-weight-bold">About us</h5>
-                <p>I can say categorically that no one in the White House staff, no one in this Administration,
-                    presently employed, was involved in the copy pasting of this footer template. </p>
+                <p>Siamo un gruppo di studenti che sperano di laurearsi in informatica. </p>
             </div>
             <hr class="clearfix w-100 d-md-none pb-3">
             <div class="col-md-6 mb-md-0 mb-3">

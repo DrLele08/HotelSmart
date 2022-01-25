@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 @WebServlet(name = "Ricerca", value = "/ricerca/*")
 
@@ -34,6 +35,9 @@ public class RicercaServlet extends HttpServlet {
 
                 String active_link = "ricerca";
                 request.setAttribute("active", active_link);
+
+                //Prendo 3 stanze a caso tra quelle in offerta
+                ArrayList<Stanza> stanze_offerta = getStanzeOfferte();
 
                 ArrayList<Integer> numletti = getLetti();
                 ArrayList<Double> prezzi = getPrices();
@@ -56,11 +60,13 @@ public class RicercaServlet extends HttpServlet {
                 request.setAttribute("Letti_s",Letti_s);
                 request.setAttribute("Letti_m",Letti_m);
 
+                request.setAttribute("stanze_offerta",stanze_offerta);
 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ricerca.jsp");
                 dispatcher.forward(request, response);
                 break;
             }
+
 
         }
 
@@ -78,6 +84,28 @@ public class RicercaServlet extends HttpServlet {
         return numLetti;
     }
 
+    public ArrayList<Stanza> getStanzeOfferte(){
+
+        StanzaService service = new StanzaService();
+        ArrayList<Stanza> stanze_offerte = (ArrayList<Stanza>) service.getOfferte();
+
+        if(stanze_offerte.size() < 3) return stanze_offerte;
+
+        else {
+
+            Random rand = new Random();
+            ArrayList<Stanza> stanze_temp = new ArrayList<>();
+
+            for(int i = 0; i < 3; i++){
+
+                stanze_temp.add(stanze_offerte.get(rand.nextInt(stanze_offerte.size())));
+            }
+
+            return stanze_temp;
+        }
+
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -92,11 +120,13 @@ public class RicercaServlet extends HttpServlet {
                 String temp1 = request.getParameter("prezzoMassimo");
                 String temp2 = request.getParameter("letti_matrimoniali");
                 String temp3 = request.getParameter("letti_singoli");
+                String temp4 = request.getParameter("numero_ospiti");
 
                 Double prezzoMinimo = Double.parseDouble(temp);
                 Double prezzoMassimo = Double.parseDouble(temp1);
                 Integer letti_matrimoniali = Integer.parseInt(temp2);
                 Integer letti_singoli = Integer.parseInt(temp3);
+                Integer numero_ospiti = Integer.parseInt(temp4);
 
                 boolean animale = request.getParameter("animaleDom") != null;
 
@@ -123,6 +153,7 @@ public class RicercaServlet extends HttpServlet {
                         prezzoMinimo,prezzoMassimo,null,null,dataArrivoSql,dataPartenzaSql);
 
                 request.setAttribute("stanze_result",stanze);
+                request.setAttribute("numero_ospiti",numero_ospiti);
                 String active_link = "ricerca";
                 request.setAttribute("active", active_link);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/searchResult.jsp");
@@ -133,7 +164,9 @@ public class RicercaServlet extends HttpServlet {
             case "/goDetailForm" : {
 
                 String temp = request.getParameter("stanzaId");
+                String temp1 = request.getParameter("numero_ospiti");
                 Integer stanzaId = Integer.parseInt(temp);
+                Integer num_persone = Integer.parseInt(temp1);
 
                 StanzaService service = new StanzaService();
                 Stanza selected_stanza = null;
@@ -142,8 +175,7 @@ public class RicercaServlet extends HttpServlet {
                     selected_stanza = service.selectById(stanzaId);
                     String active_link = "ricerca";
                     request.setAttribute("active", active_link);
-                    request.setAttribute("stanzaid",stanzaId);
-                    Integer num_persone = selected_stanza.getLettiMatrimoniali() + selected_stanza.getLettiSingoli();
+                    request.setAttribute("selected_stanza",selected_stanza);
                     request.setAttribute("num_persone",num_persone);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/detailForm.jsp");
                     dispatcher.forward(request,response);

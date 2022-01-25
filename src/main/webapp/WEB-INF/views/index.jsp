@@ -28,13 +28,23 @@
 
 <div class="mt-3 mx-3 jumbotron" style="background-color: whitesmoke">
     <div class="container">
+        <%if(u == null){%>
         <h1 class="display-4">Benvenuto su HotelSmart</h1>
         <p class="lead">HotelSmart è la piattafroma giusta per soddisfare tutte le necessità di gestione di alberghi</p>
         <hr class="my-4">
         <p>Scopri tutti i servizi di HotelSmart registrandoti.</p>
         <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button" style="background-color: #02172d">Registrati</a>
+            <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/Registrazione" role="button" style="background-color: #02172d">Registrati</a>
         </p>
+        <%}else{%>
+        <h1 class="display-4">Bentornato su HotelSmart</h1>
+        <p class="lead">HotelSmart è la piattafroma giusta per soddisfare tutte le necessità di gestione di alberghi</p>
+        <hr class="my-4">
+        <p>Scopri subito tutte le nostre stanze e offerte migliori.</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/ricerca/gosearch" role="button" style="background-color: #02172d">Scopri</a>
+        </p>
+        <%}%>
     </div>
 </div>
 
@@ -62,7 +72,7 @@
             <div class="carousel-item">
                 <img src="./images/hotelroom9.jpg" alt="Third slide">
                 <div class="carousel-caption d-none d-md-block">
-                    <h2>Diocane</h2>
+                    <h2>Scegli la convenienza e la qualità del nostro servizio</h2>
                 </div>
             </div>
         </div>

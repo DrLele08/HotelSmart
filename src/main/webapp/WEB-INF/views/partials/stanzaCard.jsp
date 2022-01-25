@@ -9,6 +9,7 @@
                     <h5 class="card-title">Stanza${param.id}</h5>
                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     <input type="hidden" name="stanzaId" value="${param.id}">
+                    <input type="hidden" name="numero_ospiti" value="${param.numOspiti}">
                     <input type="submit" class="btn btn-dark">
                 </div>
             </div>
