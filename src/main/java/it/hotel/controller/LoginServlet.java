@@ -6,6 +6,7 @@ import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
+import org.json.JSONObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -80,15 +81,17 @@ public class LoginServlet extends HttpServlet
         String pwd=request.getParameter("textPwd");
         boolean ricordami = Boolean.parseBoolean(request.getParameter("textRicordami"));
         UtenteService service=new UtenteService();
-        Utente user= null;
+        Utente user;
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        JSONObject obj=new JSONObject();
         try
         {
             user = service.doLogin(email,pwd);
             HttpSession session=request.getSession();
             session.setAttribute(Utility.SESSION_USER,user);
-            response.getOutputStream().print("{\"status\":true}");
+            obj.put("status",true);
+            response.getOutputStream().print(obj.toString());
             if(ricordami)
             {
                 Cookie c1 = new Cookie(Utility.COOKIE_ID,user.getIdUtente()+"");
@@ -96,19 +99,24 @@ public class LoginServlet extends HttpServlet
                 response.addCookie(c1);
                 response.addCookie(c2);
             }
-        } catch (EmailNotFoundException e)
+        }
+        catch (EmailNotFoundException e)
         {
-            response.getOutputStream().print("{\"status\":false,\"data\":\"EMAIL PROBLEMA\"}");
-
+            obj.put("status",false);
+            obj.put("data","EMAIL PROBLEMA");
+            response.getOutputStream().print(obj.toString());
         }
         catch (PasswordNotValidException e)
         {
-            response.getOutputStream().print("{\"status\":false,\"data\":\"PWDPROBLEMA\"}");
-
+            obj.put("status",false);
+            obj.put("data","PWDPROBLEMA");
+            response.getOutputStream().print(obj.toString());
         }
         catch (IllegalArgumentException e)
         {
-            response.getOutputStream().print("{\"status\":false,\"data\":\"BO PROBLEMA\"}");
+            obj.put("status",false);
+            obj.put("data","BO PROBLEMA");
+            response.getOutputStream().print(obj.toString());
         }
     }
 }

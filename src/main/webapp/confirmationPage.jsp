@@ -33,7 +33,7 @@
 
 <%
     //Passare un booleano success
-    boolean success = (boolean) request.getAttribute("success");
+    boolean success = Boolean.parseBoolean(request.getParameter("success"));
 %>
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<%@include file="partials/footer.jsp" %>
+<%@include file="WEB-INF/views/partials/footer.jsp" %>
 
 </body>
 </html>

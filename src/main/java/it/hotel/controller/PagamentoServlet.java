@@ -25,26 +25,34 @@ public class PagamentoServlet extends CheckServlet
             {
                 int idPreno=Integer.parseInt(request.getParameter("idPreno"));
                 PrenotazioneStanzaService prenoService=new PrenotazioneStanzaService();
-                //TODO service lancia PrenotazioneStanzaNotFoundException se interessa gestirla a parte
                 PrenotazioneStanza preno=prenoService.getPrenotazioneById(idPreno);
-                Stripe.apiKey = "sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP";
                 String domain=request.getContextPath();
-                SessionCreateParams params =
-                        SessionCreateParams.builder()
-                                .setMode(SessionCreateParams.Mode.PAYMENT)
-                                .setSuccessUrl("https://www.google.it")
-                                .setCancelUrl("https://www.google.it")
-                                .addLineItem(
-                                        SessionCreateParams.LineItem.builder()
-                                                .setQuantity(1L)
-                                                .setCurrency("EUR")
-                                                .setAmount(Double.doubleToLongBits(preno.getPrezzoFinale())*100)
-                                                .setName("Pagamento prenotazione #"+preno.getIdPrenotazioneStanza())
-                                                .build())
-                                .build();
-                Session session;
-                session=Session.create(params);
-                response.sendRedirect(session.getUrl());
+                String link="http://localhost:8080"+domain+"/confirmationPage.jsp?success=";
+                if(preno.getKsStato()==1)
+                {
+                    Stripe.apiKey = "sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP";
+                    Long price=((Double)preno.getPrezzoFinale()).longValue()*100;
+                    SessionCreateParams params =
+                            SessionCreateParams.builder()
+                                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                                    .setSuccessUrl(link+"true")
+                                    .setCancelUrl(link+"false")
+                                    .addLineItem(
+                                            SessionCreateParams.LineItem.builder()
+                                                    .setQuantity(1L)
+                                                    .setCurrency("EUR")
+                                                    .setAmount(price)
+                                                    .setName("Pagamento prenotazione #"+preno.getIdPrenotazioneStanza())
+                                                    .build())
+                                    .build();
+                    Session session;
+                    session=Session.create(params);
+                    response.sendRedirect(session.getUrl());
+                }
+                else
+                {
+                    response.sendRedirect(link+"false");
+                }
             }
             catch (Exception e)
             {

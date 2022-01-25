@@ -39,26 +39,31 @@ public class RegistrazioneServlet extends HttpServlet
         String codiceFiscale = request.getParameter("textCodiceFiscale");
         String indirizzoEmail = request.getParameter("textEmail");
         String password = request.getParameter("textPwd");
-
+        JSONObject object=new JSONObject();
         UtenteService service = new UtenteService();
         try
         {
             service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail,Utility.dataConverter(dataNascita),password);
-            JSONObject object=new JSONObject();
             object.put("status",true);
             response.getOutputStream().print(object.toString());
         }
         catch (ParseException e)
         {
-            response.getOutputStream().print("{\"status\":false,\"data\":\"BOPROBLEMA\"}");
+            object.put("status",false);
+            object.put("data","BOPROBLEMA");
+            response.getOutputStream().print(object.toString());
         }
         catch (PasswordNotValidException e)
         {
-            response.getOutputStream().print("{\"status\":false,\"data\":\"PWDPROBLEMA\"}");
+            object.put("status",false);
+            object.put("data","PWDPROBLEMA");
+            response.getOutputStream().print(object.toString());
         }
         catch (EmailAlreadyExistingException e)
         {
-            response.getOutputStream().print("{\"status\":false,\"data\":\"EMAIL PROBLEMA\"}");
+            object.put("status",false);
+            object.put("data","EMAIL PROBLEMA");
+            response.getOutputStream().print(object.toString());
         }
 
     }
