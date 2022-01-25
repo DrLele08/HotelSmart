@@ -47,6 +47,9 @@ public class PagamentoServlet extends CheckServlet
                                     .build();
                     Session session;
                     session=Session.create(params);
+                    String idPagamento=session.getId();
+                    //ToDo Giovanni
+                    prenoService.addTokenStripe(idPreno,idPagamento);
                     response.sendRedirect(session.getUrl());
                 }
                 else
