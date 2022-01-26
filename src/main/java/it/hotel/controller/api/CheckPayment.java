@@ -5,8 +5,10 @@ import com.stripe.model.PaymentIntent;
 import it.hotel.Utility.Email;
 import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.PrenotazioneStanzaService;
+import it.hotel.controller.services.UtenteService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
+import it.hotel.model.utente.Utente;
 import org.json.JSONObject;
 
 import javax.mail.MessagingException;
@@ -31,8 +33,26 @@ public class CheckPayment extends CheckServlet
                 PrenotazioneStanza preno=stanzaService.getPrenotazioneById(idPreno);
                 String tokenStripe=preno.getTokenStripe();
                 PaymentIntent paymentIntent=PaymentIntent.retrieve(tokenStripe);
-                String textHtml="Il pagamento per la prenotazione #<NUMERO> è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
-                Email.sendAsHtml("saisraffaele08@gmail.com","[HotelSmart] Pagamento confermato ordine #1",textHtml);
+                UtenteService utenteService=new UtenteService();
+                //ToDo Giovanni
+                Utente user=utenteService.getUtenteByPrenotazione(idPreno);
+                if(paymentIntent.getStatus().equals("succeeded"))
+                {
+                    stanzaService.editStato(idPreno,2);
+                    String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #<NUMERO> è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
+                    Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #1",textHtml);
+                    object.put("Ris",1);
+                    object.put("Mess","Fatto");
+                    response.getOutputStream().print(object.toString());
+                }
+                else
+                {
+                    String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #<NUMERO> non è stato ricevuto!<br>Puo contattarci 24/24 alla mail: info@hotelsmart.it, HotelSmart!";
+                    Email.sendAsHtml(user.getEmail(),"[HotelSmart] Errore pagamento ordine #1",textHtml);
+                    object.put("Ris",0);
+                    object.put("Mess","Errore durante il pagamento");
+                    response.getOutputStream().print(object.toString());
+                }
             }
             catch(MessagingException e)
             {
@@ -51,7 +71,8 @@ public class CheckPayment extends CheckServlet
                 object.put("Ris",0);
                 object.put("Mess","Prenotazione non trovata");
                 response.getOutputStream().print(object.toString());
-            } catch (StripeException e)
+            }
+            catch (StripeException e)
             {
                 object.put("Ris",0);
                 object.put("Mess","Pagamento non trovato");

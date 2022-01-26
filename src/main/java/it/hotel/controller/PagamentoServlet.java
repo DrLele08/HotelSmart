@@ -35,7 +35,7 @@ public class PagamentoServlet extends CheckServlet
                     SessionCreateParams params =
                             SessionCreateParams.builder()
                                     .setMode(SessionCreateParams.Mode.PAYMENT)
-                                    .setSuccessUrl(link+"true")
+                                    .setSuccessUrl(link+"true&id="+preno.getIdPrenotazioneStanza())
                                     .setCancelUrl(link+"false")
                                     .addLineItem(
                                             SessionCreateParams.LineItem.builder()
@@ -47,7 +47,7 @@ public class PagamentoServlet extends CheckServlet
                                     .build();
                     Session session;
                     session=Session.create(params);
-                    String idPagamento=session.getId();
+                    String idPagamento=session.getPaymentIntent();
                     prenoService.addTokenStripe(idPreno,idPagamento);
                     response.sendRedirect(session.getUrl());
                 }

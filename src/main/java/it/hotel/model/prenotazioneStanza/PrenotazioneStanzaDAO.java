@@ -97,8 +97,8 @@ public class PrenotazioneStanzaDAO {
             ps.setString(1, tokenStripe);
             ps.setInt(2, idPrenotazioneStanza);
 
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
+            int rs = ps.executeUpdate();
+            if (rs==0) {
                 throw new PrenotazioneStanzaNotFoundException();
             }
         }
