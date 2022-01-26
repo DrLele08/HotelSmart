@@ -13,6 +13,63 @@ import java.util.List;
 public class ServizioDAO {
 
     /**
+     * Inserisce nel database un oggetto Servizio secondo i valori specificati.
+     * @param nome Nome
+     * @param descrizione Descrizione
+     * @param foto Percorso foto
+     * @param costo Costo
+     * @param limitePosti Posti disponibili
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public void doInsert(String nome, String descrizione, String foto, double costo, int limitePosti) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("INSERT INTO Servizio (nome, descrizione, foto, costo, limitePosti) VALUES(?,?,?,?,?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, nome);
+            ps.setString(2, descrizione);
+            ps.setString(3, foto);
+            ps.setDouble(4, costo);
+            ps.setInt(5, limitePosti);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Aggiorna un oggetto Servizio nel database secondo i valori specificati.
+     * @param idServizio Identificativo
+     * @param nome Nome
+     * @param descrizione Descrizione
+     * @param foto Percorso foto
+     * @param costo Costo
+     * @param limitePosti Posti disponibili
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public void doUpdate(int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("UPDATE Servizio SET nome=?, descrizione=?, foto=?, costo=?, " +
+                                    "limitePosti=? WHERE idServizio=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, nome);
+            ps.setString(2, descrizione);
+            ps.setString(3, foto);
+            ps.setDouble(4, costo);
+            ps.setInt(5, limitePosti);
+            ps.setInt(6, idServizio);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Recupera tutti gli oggetti Servizio presenti nel database.
      * @return I servizi presenti nel database
      * @throws RuntimeException Errore nella comunicazione con il database

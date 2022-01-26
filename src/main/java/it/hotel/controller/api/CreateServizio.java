@@ -37,7 +37,6 @@ public class CreateServizio extends CheckServlet
                     double prezzo=Double.parseDouble(request.getParameter("Prezzo"));
                     int posti=Integer.parseInt(request.getParameter("Posti"));
                     ServizioService servizioService=new ServizioService();
-                    //ToDo Giovanni
                     servizioService.createServizio(nome,descrizione,foto,prezzo,posti);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");

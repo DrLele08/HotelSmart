@@ -24,7 +24,6 @@ public class PrenotazioneStanzaDAO {
      * @param dataInizio Data di entrata
      * @param dataFine Data di uscita
      * @param prezzoFinale Prezzo finale
-     * @param tokenStripe Token di Stripe
      * @param tokenQr Token del codice qr
      * @param commenti Commenti
      * @param valutazione Valutazione
@@ -33,7 +32,7 @@ public class PrenotazioneStanzaDAO {
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, Date dataInizio, Date dataFine,
-                                       double prezzoFinale, String tokenStripe, String tokenQr, String commenti, int valutazione)
+                                       double prezzoFinale, String tokenQr, String commenti, int valutazione)
             throws PrenotazioneStanzaInsertException {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT idStato FROM Stato st " +
@@ -60,7 +59,7 @@ public class PrenotazioneStanzaDAO {
             ps.setDate(4, dataInizio);
             ps.setDate(5, dataFine);
             ps.setDouble(6, prezzoFinale);
-            ps.setString(7, tokenStripe);
+            ps.setString(7, null);
             ps.setString(8, tokenQr);
             ps.setString(9, commenti);
             ps.setInt(10, valutazione);
@@ -76,9 +75,34 @@ public class PrenotazioneStanzaDAO {
             }
 
             return new PrenotazioneStanza(id, ksUtente, ksStanza, ksStato, dataInizio, dataFine,
-                    prezzoFinale, tokenStripe, tokenQr, commenti, valutazione);
+                    prezzoFinale, null, tokenQr, commenti, valutazione);
 
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Inserisce nell'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato il relativo Token Stripe.
+     * @param idPrenotazioneStanza L'identificativo dell'oggetto da trovare nel database
+     * @param tokenStripe Il Token Stripe da inserire nell'oggetto
+     * @throws PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public void insertTokenStripe(int idPrenotazioneStanza, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("UPDATE PrenotazioneStanza SET tokenStripe=? WHERE idPrenotazioneStanza=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, tokenStripe);
+            ps.setInt(2, idPrenotazioneStanza);
+
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new PrenotazioneStanzaNotFoundException();
+            }
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

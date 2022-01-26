@@ -41,7 +41,6 @@ public class UpdateStanza extends CheckServlet
                     double costoNotte=Double.parseDouble(request.getParameter("Costo"));
                     double sconto=Double.parseDouble(request.getParameter("Sconto"));
                     StanzaService service=new StanzaService();
-                    //ToDo Giovanni
                     service.updateStanza(idStanza,animale,fumatore,lettiSingoli,lettiMatri,costoNotte,sconto);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");

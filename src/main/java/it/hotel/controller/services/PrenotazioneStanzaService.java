@@ -30,16 +30,16 @@ public class PrenotazioneStanzaService {
      * @param dataInizio Data d'inizio
      * @param dataFine Data di fine
      * @param prezzoFinale Prezzo finale
-     * @param tokenStripe Token di Stripe
      * @param tokenQr Token del QR code
      * @param commenti Commenti
      * @param valutazione Valutazione
+     * @return Prenotazione stanza inserita
      * @throws PagamentoInAttesaException Un altro pagamento è in attesa di essere completato
      */
-    public void inserisciPrenotazione(int ksUtente, int ksStanza, Date dataInizio, Date dataFine, double prezzoFinale,
-            String tokenStripe, String tokenQr, String commenti, int valutazione) throws PagamentoInAttesaException {
+    public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, Date dataInizio, Date dataFine, double prezzoFinale,
+            String tokenQr, String commenti, int valutazione) throws PagamentoInAttesaException {
         try {
-            dao.doInsert(ksUtente, ksStanza, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr, commenti, valutazione);
+            return dao.doInsert(ksUtente, ksStanza, dataInizio, dataFine, prezzoFinale, tokenQr, commenti, valutazione);
         } catch (PrenotazioneStanzaInsertException e) {
             throw new PagamentoInAttesaException();
         }
@@ -92,4 +92,12 @@ public class PrenotazioneStanzaService {
         return dao.isRimborsabile(idPrenotazione);
     }
 
+    /**
+     * Inserisce nella prenotazione stanza specificata il Token Stripe relativo al pagamento effettuato.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @param tokenStripe Token da inserire
+     */
+    public void addTokenStripe(int idPrenotazione, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
+        dao.insertTokenStripe(idPrenotazione, tokenStripe);
+    }
 }

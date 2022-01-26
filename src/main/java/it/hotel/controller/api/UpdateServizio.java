@@ -39,7 +39,6 @@ public class UpdateServizio extends CheckServlet
                     double prezzo=Double.parseDouble(request.getParameter("Prezzo"));
                     int posti=Integer.parseInt(request.getParameter("Posti"));
                     ServizioService servizioService=new ServizioService();
-                    //ToDo Giovanni
                     servizioService.updateServizio(idServizio,nome,descrizione,foto,prezzo,posti);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");

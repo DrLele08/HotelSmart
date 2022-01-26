@@ -44,6 +44,38 @@ public class StanzaDAO {
     }
 
     /**
+     * Aggiorna un oggetto Stanza nel database secondo i valori specificati.
+     * @param animaleDomestico Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public void doUpdate(int idStanza, boolean animaleDomestico, boolean fumatore, int lettiSingoli,
+                         int lettiMatrimoniali, double costoNotte, double sconto) {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("UPDATE Stanza SET animaleDomestico=?, fumatore=?, lettiSingoli=?, lettiMatrimoniali=?, " +
+                                    "costoNotte=?, sconto=? WHERE idStanza=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setBoolean(1, animaleDomestico);
+            ps.setBoolean(2, fumatore);
+            ps.setInt(3, lettiSingoli);
+            ps.setInt(4, lettiMatrimoniali);
+            ps.setDouble(5, costoNotte);
+            ps.setDouble(6, sconto);
+            ps.setInt(7, idStanza);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Recupera l'oggetto Stanza trovato nel database secondo il valore specificato.
      * @param idStanza Id che identifica la stanza cercata
      * @return La stanza trovata nel database
