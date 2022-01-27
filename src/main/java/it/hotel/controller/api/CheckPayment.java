@@ -34,8 +34,7 @@ public class CheckPayment extends CheckServlet
                 String tokenStripe=preno.getTokenStripe();
                 PaymentIntent paymentIntent=PaymentIntent.retrieve(tokenStripe);
                 UtenteService utenteService=new UtenteService();
-                //ToDo Giovanni
-                Utente user=utenteService.getUtenteByPrenotazione(idPreno);
+                Utente user=utenteService.getUtenteByPrenotazioneStanza(idPreno);
                 if(paymentIntent.getStatus().equals("succeeded"))
                 {
                     stanzaService.editStato(idPreno,2);

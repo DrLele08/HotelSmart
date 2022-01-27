@@ -151,6 +151,16 @@ public class UtenteService
     }
 
     /**
+     * Recupera l'utente che ha effettuato la prenotazione stanza specificata.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @return Utente trovato
+     * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     */
+    public Utente getUtenteByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
+        return dao.doSelectByPrenotazioneStanza(idPrenotazione);
+    }
+
+    /**
      * Recupera tutti gli utenti presenti nel database.
      * @return Lista contenente gli utenti trovati
      */
@@ -166,4 +176,5 @@ public class UtenteService
     public void editRuoloById(int idUtente, int ruolo) {
         dao.doChangeRuolo(idUtente, ruolo);
     }
+
 }

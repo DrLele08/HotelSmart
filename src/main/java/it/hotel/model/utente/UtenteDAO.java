@@ -67,7 +67,7 @@ public class UtenteDAO {
 
     /**
      * Recupera un oggetto Utente dal database secondo email e password specificati.
-     * @param email L'email dell'uUtente da recuperare
+     * @param email L'email dell'utente da recuperare
      * @param password La password dell'utente da recuperare
      * @return L'utente recuperato dal database
      * @throws EmailNotFoundException L'email specificata non ha corrispondenza nel database
@@ -102,8 +102,8 @@ public class UtenteDAO {
 
     /**
      * Recupera un oggetto Utente dal database secondo idUtente e tokenAuth specificati.
-     * @param idUtente L'idUtente dell'utente da recuperare
-     * @param tokenAuth Il tokenAuth dell'utente da recuperare
+     * @param idUtente L'identificativo dell'utente da recuperare
+     * @param tokenAuth Il token di autenticazione dell'utente da recuperare
      * @return L'utente recuperato dal database
      * @throws UtenteNotFoundException Nel database non è presente un utente con i valori specificati
      * @throws RuntimeException Errore nella comunicazione con il database
@@ -132,7 +132,7 @@ public class UtenteDAO {
 
     /**
      * Modifica la password di un oggetto Utente nel database.
-     * @param idUtente L'idUtente dell'utente da modificare
+     * @param idUtente L'identificativo dell'utente da modificare
      * @param oldPassword La vecchia password dell'utente da modificare
      * @param newPassword La nuova password dell'utente da modificare
      * @throws PasswordNotValidException La oldPassword specificata non è esatta
@@ -170,7 +170,7 @@ public class UtenteDAO {
 
     /**
      * Elimina un oggetto Utente dal database.
-     * @param idUtente L'idUtente dell'utente da eliminare
+     * @param idUtente L'identificativo dell'utente da eliminare
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public void doDelete(int idUtente)  {
@@ -188,8 +188,8 @@ public class UtenteDAO {
 
     /**
      * Recupera il ruolo di un oggetto Utente nel database.
-     * @param idUtente L'idUtente dell'utente da recuperare
-     * @param tokenAuth Il tokenAuth dell'utente da recuperare
+     * @param idUtente L'identificativo dell'utente da recuperare
+     * @param tokenAuth Il token di autenticazione dell'utente da recuperare
      * @return Il ruolo dell'utente recuperato
      * @throws RuntimeException Errore nella comunicazione con il database
      */
@@ -215,7 +215,7 @@ public class UtenteDAO {
 
     /**
      * Modifica il ruolo di un oggetto Utente nel database.
-     * @param idUtente L'idUtente dell'utente da modificare
+     * @param idUtente L'identificativo dell'utente da modificare
      * @param ksRuolo Il nuovo ruolo dell'utente da modificare
      * @throws RuntimeException Errore nella comunicazione con il database
      */
@@ -234,7 +234,7 @@ public class UtenteDAO {
 
     /**
      * Modifica l'anagrafica di un oggetto Utente nel database
-     * @param idUtente L'idUtente dell'utente da modificare
+     * @param idUtente L'identificativo dell'utente da modificare
      * @param tokenAuth Il token di autenticazione dell'utente da modificare
      * @param nome Il nome da inserire nell'oggetto Utente
      * @param cognome Il cognome da inserire nell'oggetto Utente
@@ -266,6 +266,31 @@ public class UtenteDAO {
             ps.setInt(7, idUtente);
             ps.executeUpdate();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Recupera dal database l'oggetto utente a cui corrisponde la prenotazione stanza specificata.
+     * @param idPrenotazione L'identificativo della prenotazione stanza
+     * @return L'utente trovato nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     */
+    public Utente doSelectByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT Utente.* FROM Utente, PrenotazioneStanza WHERE idPrenotazioneStanza=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idPrenotazione);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return createUtente(rs);
+            } else {
+                throw new UtenteNotFoundException();
+            }
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
