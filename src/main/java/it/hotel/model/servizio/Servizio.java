@@ -13,7 +13,7 @@ public class Servizio {
     private int limitePosti;
 
     /**
-     * Costruisce un Servizio con i parametri specificati.
+     * Costruisce un Servizio con i valori specificati.
      * @param idServizio Identificativo
      * @param nome Nome
      * @param descrizione Descrizione

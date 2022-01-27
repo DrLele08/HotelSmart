@@ -15,13 +15,13 @@ public class PersonaAggiuntiva {
     private Date dataNascita;
 
     /**
-     * Costruisce un oggetto PersonaAggiuntiva.
-     * @param idPersona
-     * @param ksUtente
-     * @param cf
-     * @param nome
-     * @param cognome
-     * @param dataNascita
+     * Costruisce una PersonaAggiuntiva con i valori specificati.
+     * @param idPersona Identificativo della persona
+     * @param ksUtente Identificativo dell'utente
+     * @param cf Codice fiscale
+     * @param nome Nome
+     * @param cognome Cognome
+     * @param dataNascita Data di nascita
      */
     public PersonaAggiuntiva(int idPersona, int ksUtente, String cf,
             String nome, String cognome, Date dataNascita) {

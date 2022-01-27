@@ -27,8 +27,8 @@ public class PrenotazioneStanza implements Serializable
     private int valutazione;
 
     /**
-     * Costruisce un oggetto PrenotazioneStanza.
-     * @param idPrenotazioneStanza Id della prenotazione
+     * Costruisce una PrenotazioneStanza con i valori specificati.
+     * @param idPrenotazioneStanza Identificativo della prenotazione
      * @param ksUtente Utente che effettua la prenotazione
      * @param ksStanza Stanza prenotata
      * @param ksStato Stato della prenotazione

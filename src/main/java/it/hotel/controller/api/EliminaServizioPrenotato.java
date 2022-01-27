@@ -1,6 +1,7 @@
 package it.hotel.controller.api;
 
 import it.hotel.controller.CheckServlet;
+import it.hotel.controller.services.PrenotazioneServizioService;
 import it.hotel.controller.services.ServizioService;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
@@ -30,9 +31,8 @@ public class EliminaServizioPrenotato extends CheckServlet
                 Utente user=utenteService.doLogin(idUtente,token);
                 if(user.getRuolo()==1 || user.getRuolo()==2)
                 {
-                    ServizioService servizioService=new ServizioService();
-                    //ToDo Giovanni
-                    servizioService.deletePrenotazioneById(idPrenoServizio);
+                    PrenotazioneServizioService prenoServizioService=new PrenotazioneServizioService();
+                    prenoServizioService.deletePrenotazioneById(idPrenoServizio);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");
                     response.getOutputStream().print(obj.toString());

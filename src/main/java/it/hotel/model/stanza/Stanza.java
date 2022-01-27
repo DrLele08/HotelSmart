@@ -14,7 +14,7 @@ public class Stanza {
     private double sconto;
 
     /**
-     * Costruisce una Stanza con i parametri specificati.
+     * Costruisce una Stanza con i valori specificati.
      * @param idStanza Identificativo
      * @param animaleDomestico Idoneità per animali domestici
      * @param fumatore Idoneità per fumatori
