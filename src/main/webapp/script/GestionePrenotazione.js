@@ -4,34 +4,32 @@ $(document).ready(function() {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
         },
     } );
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
 } );
 
-function iconAnnullaOrdine(idPrenotazione,tokenUtente,idUtente) {
-    $("#idPrenotazioneAO").val(idPrenotazione);
-    $("#tokeUtenteAO").val(tokenUtente);
-    $("#idUtenteAO").val(idUtente);
-}
-function iconRichiediRimborso(idPrenotazione,tokenUtente,idUtente) {
-    $("#idPrenotazioneRR").val(idPrenotazione);
-    $("#tokeUtenteRR").val(tokenUtente);
-    $("#idUtenteRR").val(idUtente);
-}
-function iconTokenQr(tokeQr) {
-    $("#tokenQr").val(tokeQr);
+function iconFillData(stato,idPrenotazione,tokenUtente,idUtente) {
+    $(".stato").val(stato);
+    $(".idPrenotazione").val(idPrenotazione);
+    $(".tokeUtente").val(tokenUtente);
+    $(".idUtente").val(idUtente);
 }
 
-function annullaOrdine(){
-    let idPrenotazione = $("#idPrenotazioneAO").val();
-    let tokenUtente = $("#tokeUtenteAO").val();
-    let idUtente = $("#idUtenteAO").val();
+function cambiaStato(){
+    let stato = $(".stato").val();
+    let idPrenotazione = $(".idPrenotazione").val();
+    let tokenUtente = $(".tokeUtente").val();
+    let idUtente = $(".idUtente").val();
     var data = {
-        textId : idPrenotazione,
-        textTokenUs : tokenUtente,
-        textIdUs : idUtente
+        Stato : stato,
+        idPreno : idPrenotazione,
+        Token : tokenUtente,
+        idUtente : idUtente
     }
     $.ajax({
-        url: 'Login',
+        url: 'api/ModificaStato',
         dataType: "json",
         type: "post",
         data: data,
@@ -39,46 +37,34 @@ function annullaOrdine(){
             if (result.Ris == 1) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Ordine annullato',
+                    title: result.Mess,
                 })
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Errore annullamento ordine',
-                    text: 'Ci sono stati dei problemi',
+                    title: 'Errore',
+                    text: result.Mess,
                 })
             }
         }
     });
 }
-function effettuaRimborso(){
-    let idPrenotazione = $("#idPrenotazioneRR").val();
-    let tokenUtente = $("#tokeUtenteRR").val();
-    let idUtente = $("#idUtenteRR").val();
-    var data = {
-        textId : idPrenotazione,
-        textTokenUs : tokenUtente,
-        textIdUs : idUtente
-    }
-    $.ajax({
-        url: 'Login',
-        dataType: "json",
-        type: "post",
-        data : data,
-        success: function (result) {
-            if (result.Ris == 1) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Rimborso effettuato',
-                })
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Errore rimborso',
-                    text: 'Ci sono stati dei problemi',
-                })
-            }
-        }
-    });
+
+function iconTokenQr(tokeQr) {
+    const divQr = document.getElementById('tokenQr');
+    divQr.innerHTML = '';
+    $("#tokenQr").val(tokeQr);
+    // input
+    console.log(tokeQr);
+    let qrcode = new QRCode("tokenQr");
+    qrcode.clear();
+    qrcode.makeCode(tokeQr);
+
 }
+
+function cleanQr(){
+    const divQr = document.getElementById('tokenQr');
+    divQr.innerHTML = '';
+}
+
 

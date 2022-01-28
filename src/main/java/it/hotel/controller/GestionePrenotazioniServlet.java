@@ -15,8 +15,8 @@ import java.util.Optional;
 
 import static it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO.UTENTE;
 
-@WebServlet(name = "StoricoPrenotazioni", value = "/StoricoPrenotazioni")
-public class StoricoPrenotazioniServlet extends CheckServlet
+@WebServlet(name = "GestionePrenotazioni", value = "/GestionePrenotazioni")
+public class GestionePrenotazioniServlet extends CheckServlet
 {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -29,7 +29,7 @@ public class StoricoPrenotazioniServlet extends CheckServlet
         }
         else
         {
-            rd=request.getRequestDispatcher("/WEB-INF/views/StoricoPrenotazioni.jsp");
+            rd=request.getRequestDispatcher("/WEB-INF/views/GestionePrenotazioni.jsp");
             PrenotazioneStanzaService service = new PrenotazioneStanzaService();
             request.setAttribute("Tipo",3);
             List<PrenotazioneStanza> list = null;
@@ -42,6 +42,7 @@ public class StoricoPrenotazioniServlet extends CheckServlet
                 list=service.getAll();
             }
             request.setAttribute("ListaPreno",list);
+            request.setAttribute("Utente",us);
 
         }
         rd.forward(request,response);

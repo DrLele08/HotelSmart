@@ -24,7 +24,11 @@
 <body>
 <%@ include file="/WEB-INF/views/partials/header.jsp" %>
 <div class="wrapper">
+
+    <!-- Side Bar -->
     <%@ include file="/WEB-INF/views/partials/AreaPrivataSidebar.jsp" %>
+
+
     <div id="content">
         <button type="button" id="sidebarCollapse" class="btn btn-dark d-md-none">
             <i class="fas fa-align-justify"></i>
@@ -34,7 +38,10 @@
                 Gestione stanze
             </h4>
         </div>
-        <button type="button" id="buttonCreazione" class="btn btn-success" data-toggle="modal"  data-target="#modalCreazioneStanza">Nuova stanza</button>
+
+        <button type="button" id="buttonCreazione" class="btn btn-success" onclick='createStanza("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCreazioneStanza">Nuova stanza</button>
+
+        <!-- Table gestione stanza -->
         <table id="GestioneStanzeTable" class="display" style="width:100%">
             <thead>
             <tr>
@@ -46,36 +53,38 @@
                 <th>Fumatore</th>
                 <th>Sconto</th>
                 <th>Azione</th>
-
             </tr>
             </thead>
+
             <tbody>
-                <%
-                    List<Stanza> stanze=(List<Stanza>) request.getAttribute("Stanze");
-                    for(Stanza s : stanze){
-                %>
-                <tr>
-                    <td><%=s.getIdStanza()%></td>
-                    <td><%=s.getLettiSingoli()%></td>
-                    <td><%=s.getLettiMatrimoniali()%></td>
-                    <td><%=s.getCostoNotte()%></td>
-                    <td><%if(s.getAnimaleDomestico() == true){%>
-                        <i class="bi bi-check-square"><%}else{%>
+            <%
+                List<Stanza> stanze=(List<Stanza>) request.getAttribute("Stanze");
+                for(Stanza s : stanze){
+            %>
+            <tr>
+                <td><%=s.getIdStanza()%></td>
+                <td><%=s.getLettiSingoli()%></td>
+                <td><%=s.getLettiMatrimoniali()%></td>
+                <td><%=s.getCostoNotte()%></td>
+                <td><%if(s.getAnimaleDomestico() == true){%>
+                    <i class="bi bi-check-square"><%}else{%>
                         <i class="bi bi-x-square">  <%}%>
 
-                    </td>
-                    <td><%if(s.getFumatore() == true){%>
-                        <i class="bi bi-check-square"><%}else{%>
-                            <i class="bi bi-x-square">  <%}%>
-                    </td>
-                    <td><%=s.getSconto()%></td>
-                    <td><span data-toggle="tooltip" title="Elimina"><a class="bi bi-trash"></a></span>
-                        <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit"></a></span>
-                    </td>
-                </tr>
+                </td>
+                <td><%if(s.getFumatore() == true){%>
+                    <i class="bi bi-check-square"><%}else{%>
+                        <i class="bi bi-x-square">  <%}%>
+                </td>
+                <td><%=s.getSconto()%></td>
+                <td>
+                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit" data-toggle="modal" data-target="#modalEditStanza" onclick='editStanza(<%=s.getLettiSingoli()%>, <%=s.getLettiMatrimoniali()%>, <%=s.getCostoNotte()%>, <%=s.getAnimaleDomestico()%>, <%=s.getFumatore()%>, <%=s.getSconto()%>, "<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'></a></span>
+
+                </td>
+            </tr>
             <%}%>
 
             </tbody>
+
             <tfoot>
             <tr>
                 <th>Numero stanza</th>
@@ -88,9 +97,16 @@
                 <th>Azione</th>
             </tr>
             </tfoot>
+
         </table>
+
+        <!-- Fine content -->
     </div>
+    <!-- Fine wrapper -->
 </div>
+
+<!-- Modal Creazione Stanza -->
+
 <div class="modal fade" id="modalCreazioneStanza" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -144,6 +160,9 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" id="tokenUtente" value="">
+                    <input type="hidden" id="idUtente" value="">
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -153,6 +172,76 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Edit Stanza -->
+<div class="modal fade" id="modalEditStanza" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalEditStanze">Modifica stanza</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="lettiSingoliEdit">Letti singoli</label>
+                                <input type="number" min="0" value="" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="lettiSingoliEdit" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="lettiMatrimonialiEdit">Letti matrimoniali</label>
+                                <input type="number" min="0" value="" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="lettiMatrimonialiEdit" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="costoNotteEdit">Costo notte</label>
+                                <input type="number" min="0" value="" onchange="if(!(this.value>0)){this.value= 0}" id="costoNotteEdit" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label class="form-label" for="scontoEdit">Sconto</label>
+                                <input type="number" min="0" value="" onchange="if(!(this.value>0)){this.value= 0}" id="scontoEdit" class="form-control form-control-lg" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-check">
+
+                                <input type="checkbox" class="form-check-input" id="checkAnimDomEdit">
+                                <label className="form-check-label" htmlFor="checkAnimDomEdit">Animale domestico</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" className="form-check-input" id="checkFumatoreEdit">
+
+                                <label class="form-check-label" for="checkFumatoreEdit">fumatore</label>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="tokenUtenteEdit" value="">
+                    <input type="hidden" id="idUtenteEdit" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary" onclick="updateStanza()">Conferma</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 </body>
 </html>

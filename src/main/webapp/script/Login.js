@@ -28,8 +28,8 @@ function Login()
                 if(!result.status)
                     Swal.fire({
                         icon: 'error',
-                        title: 'Errore login...',
-                        text: 'Username e/o password errate!',
+                        title: 'Errore',
+                        text: result.Mess,
                     })
             }
         });

@@ -40,7 +40,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="form-outline">
                         <label class="form-label" for="Nome">Nome</label>
-                        <input type="text" id="Nome" value="<%=ut.getNome()%>" class="form-control form-control-lg" pattern="[A-z  À-ù ‘-]{2,30}$" required/>
+                        <input type="text" id="Nome" value="<%=ut.getNome()%>" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
                         <div class="invalid-feedback">
                             Inserisci un nome valido!
                         </div>
@@ -49,7 +49,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="form-outline">
                         <label class="form-label" for="Cognome">Cognome</label>
-                        <input type="text"id="Cognome" value="<%=ut.getCognome()%>" class="form-control form-control-lg" pattern="[A-z  À-ù ‘-]{2,30}$" required/>
+                        <input type="text"id="Cognome" value="<%=ut.getCognome()%>" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
                         <div class="invalid-feedback">
                             Inserisci un cognome valido!
                         </div>
