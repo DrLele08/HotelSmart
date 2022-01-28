@@ -20,8 +20,8 @@ public class ServiziServlet extends HttpServlet {
             case "/":
                 break;
 
-            case "/goservizi": {
-
+            case "/goservizi":
+            {
                 String active_link = "servizi";
                 request.setAttribute("active", active_link);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/servizi.jsp");

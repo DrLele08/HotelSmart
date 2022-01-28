@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="css/AreaPrivataSidebar.css">
 <%
     Utente ut = (Utente) session.getAttribute(Utility.SESSION_USER);
-    Integer tipoChiamata = (Integer) request.getAttribute("Tipo");
+    int tipoChiamata = (Integer) request.getAttribute("Tipo");
 %>
 
     <!-- Sidebar  -->

@@ -210,8 +210,8 @@ public class PrenotazioneStanzaDAO {
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, stato);
             ps.setInt(2, idPrenotazioneStanza);
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
+            int n=ps.executeUpdate();
+            if (n==0) {
                 throw new PrenotazioneStanzaNotFoundException();
             }
         }

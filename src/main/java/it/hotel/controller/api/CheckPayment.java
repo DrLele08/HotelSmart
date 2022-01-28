@@ -9,6 +9,7 @@ import it.hotel.controller.services.UtenteService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.json.JSONObject;
 
 import javax.mail.MessagingException;
@@ -75,6 +76,12 @@ public class CheckPayment extends CheckServlet
             {
                 object.put("Ris",0);
                 object.put("Mess","Pagamento non trovato");
+                response.getOutputStream().print(object.toString());
+            }
+            catch (UtenteNotFoundException e)
+            {
+                object.put("Ris",0);
+                object.put("Mess","Utente non trovato");
                 response.getOutputStream().print(object.toString());
             }
         }

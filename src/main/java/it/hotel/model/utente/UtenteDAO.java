@@ -226,7 +226,7 @@ public class UtenteDAO {
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ksRuolo);
             ps.setInt(2, idUtente);
-            ps.executeQuery();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

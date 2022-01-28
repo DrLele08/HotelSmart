@@ -36,8 +36,7 @@ public class StanzaDAO {
             ps.setDouble(5, costoNotte);
             ps.setDouble(6, sconto);
 
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -68,8 +67,7 @@ public class StanzaDAO {
             ps.setDouble(6, sconto);
             ps.setInt(7, idStanza);
 
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

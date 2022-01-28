@@ -8,6 +8,7 @@ import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.Prenotazion
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.json.JSONObject;
 
 import javax.servlet.*;
@@ -27,7 +28,7 @@ public class ModificaStato extends CheckServlet
         {
             try
             {
-                String idUtente=request.getParameter("idUtente");
+                int idUtente=Integer.parseInt(request.getParameter("idUtente"));
                 String tokenAuth=request.getParameter("Token");
                 int idPreno=Integer.parseInt(request.getParameter("idPreno"));
                 int newStato=Integer.parseInt(request.getParameter("Stato"));
@@ -81,7 +82,7 @@ public class ModificaStato extends CheckServlet
                 obj.put("Mess","Inserisci i parametri correttamente");
                 response.getOutputStream().print(obj.toString());
             }
-            catch (EmailNotFoundException | PasswordNotValidException e)
+            catch (UtenteNotFoundException e)
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Utente non valido");

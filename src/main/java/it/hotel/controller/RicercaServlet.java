@@ -72,19 +72,20 @@ public class RicercaServlet extends HttpServlet {
 
     }
 
-    public ArrayList<Double> getPrices(){
+    public ArrayList<Double> getPrices()
+    {
         StanzaService service = new StanzaService();
-        ArrayList<Double> prezzi = (ArrayList<Double>) service.get_Min_And_Max_Prices();
-        return prezzi;
+        return (ArrayList<Double>) service.get_Min_And_Max_Prices();
     }
 
-    public ArrayList<Integer> getLetti(){
+    public ArrayList<Integer> getLetti()
+    {
         StanzaService service = new StanzaService();
-        ArrayList<Integer> numLetti = (ArrayList<Integer>) service.get_S_And_M_Letti();
-        return numLetti;
+        return (ArrayList<Integer>) service.get_S_And_M_Letti();
     }
 
-    public ArrayList<Stanza> getStanzeOfferte(){
+    public ArrayList<Stanza> getStanzeOfferte()
+    {
 
         StanzaService service = new StanzaService();
         ArrayList<Stanza> stanze_offerte = (ArrayList<Stanza>) service.getOfferte();

@@ -175,57 +175,26 @@
                     <li data-target="carouselHome" data-slide-to="2"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="card"
-                             style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
-                            <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/images/hotelroom6.jpg"
-                                 alt="Card image cap">
-                            <div class="card-body" style="background-color: #cdd7e2;">
-                                <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
-                                <p class="card-text">Suite matrimoniale con balcone e possibilità di animale domestico a
-                                    partire da
-                                    <%=stanze_offerta.get(0).getCostoNotte()%>€ a notte.</p>
-                                <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
-                                    <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(0).getIdStanza()%>">
-                                    <input type="submit" class="btn btn-dark" value="Prenota ora">
-                                </form>
+                    <c:forEach var="item" items="${stanze_offerta}">
+
+                        <div class="carousel-item active">
+                            <div class="card"
+                                 style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
+                                <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/images/hotelroom6.jpg"
+                                     alt="Card image cap">
+                                <div class="card-body" style="background-color: #cdd7e2;">
+                                    <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
+                                    <p class="card-text">Suite matrimoniale con balcone e possibilità di animale domestico a
+                                        partire da
+                                        <%=stanze_offerta.get(0).getCostoNotte()%>€ a notte.</p>
+                                    <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
+                                        <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(0).getIdStanza()%>">
+                                        <input type="submit" class="btn btn-dark" value="Prenota ora">
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card"
-                             style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
-                            <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/images/hotelroom7.jpg"
-                                 alt="Card image cap">
-                            <div class="card-body" style="background-color: #cdd7e2;">
-                                <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
-                                <p class="card-text">Camera con due letti singoli e un matrimoniale a
-                                    partire da
-                                    <%=stanze_offerta.get(1).getCostoNotte()%> a notte.</p>
-                                <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
-                                    <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(1).getIdStanza()%>">
-                                    <input type="submit" class="btn btn-dark" value="Prenota ora">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card"
-                             style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
-                            <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/images/hotelroom9.jpg"
-                                 alt="Card image cap">
-                            <div class="card-body" style="background-color: #cdd7e2;">
-                                <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
-                                <p class="card-text">Suite matrimoniale con balcone e possibilità di fumatore a
-                                    partire da
-                                    <%=stanze_offerta.get(2).getCostoNotte()%>€ a notte.</p>
-                                <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
-                                    <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(2).getIdStanza()%>">
-                                    <input type="submit" class="btn btn-dark" value="Prenota ora">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>
