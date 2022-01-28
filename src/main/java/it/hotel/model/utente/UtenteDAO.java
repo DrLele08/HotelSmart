@@ -57,7 +57,6 @@ public class UtenteDAO {
             } else {
                 return null;
             }
-
             return new Utente(id, ruolo, cf, nome, cognome, email, dataNascita, tokenAuth);
 
         } catch (SQLException e) {
@@ -179,8 +178,7 @@ public class UtenteDAO {
                     ("DELETE FROM Utente WHERE idUtente=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUtente);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

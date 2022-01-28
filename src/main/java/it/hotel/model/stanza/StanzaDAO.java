@@ -35,7 +35,6 @@ public class StanzaDAO {
             ps.setInt(4, lettiMatrimoniali);
             ps.setDouble(5, costoNotte);
             ps.setDouble(6, sconto);
-
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -66,7 +65,6 @@ public class StanzaDAO {
             ps.setDouble(5, costoNotte);
             ps.setDouble(6, sconto);
             ps.setInt(7, idStanza);
-
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

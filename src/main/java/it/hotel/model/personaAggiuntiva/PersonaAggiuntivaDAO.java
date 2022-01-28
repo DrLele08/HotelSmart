@@ -29,9 +29,15 @@ public class PersonaAggiuntivaDAO {
             ps.setString(3, nome);
             ps.setString(4, cognome);
             ps.setDate(5, dataNascita);
-            ResultSet rs = ps.executeQuery();
-
-            return new PersonaAggiuntiva(rs.getInt(1), ksUtente, cf, nome, cognome, dataNascita);
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            int id;
+            if (rs.next()) {
+                id = rs.getInt(1);
+            } else {
+                return null;
+            }
+            return new PersonaAggiuntiva(id, ksUtente, cf, nome, cognome, dataNascita);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

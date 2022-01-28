@@ -24,9 +24,9 @@ public class PrenotazioneServizioDAO {
             ps.setInt(1, ksPrenotazioneStanza);
             ps.setInt(2, ksServizio);
             ps.setInt(3, numPersone);
-
+            ps.executeUpdate();
             int id;
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
             } else {
@@ -49,8 +49,7 @@ public class PrenotazioneServizioDAO {
                     ("DELETE FROM PrenotazioneServizio WHERE idPrenotazioneServizio=?",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idPrenotazione);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

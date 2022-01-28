@@ -23,9 +23,7 @@ public class StatoDAO {
                     ("INSERT INTO Stato (stato) VALUES(?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, stato.getStato());
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

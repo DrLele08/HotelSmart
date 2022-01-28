@@ -31,9 +31,7 @@ public class ServizioDAO {
             ps.setString(3, foto);
             ps.setDouble(4, costo);
             ps.setInt(5, limitePosti);
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -61,9 +59,7 @@ public class ServizioDAO {
             ps.setDouble(4, costo);
             ps.setInt(5, limitePosti);
             ps.setInt(6, idServizio);
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

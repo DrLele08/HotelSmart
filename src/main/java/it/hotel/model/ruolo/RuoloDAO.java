@@ -23,9 +23,7 @@ public class RuoloDAO {
                     ("INSERT INTO Ruolo (ruolo) VALUES(?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, ruolo.getRuolo());
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,7 +94,6 @@ public class RuoloDAO {
             PreparedStatement ps = con.prepareStatement
                     ("SELECT * FROM Ruolo",
                             Statement.RETURN_GENERATED_KEYS);
-
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ruoli.add(createRuolo(rs));
