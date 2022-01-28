@@ -1,3 +1,5 @@
+<%@ page import="it.hotel.model.utente.Utente" %>
+<%@ page import="java.util.List" %>
 <%--
   Created by IntelliJ IDEA.
   User: aless
@@ -9,8 +11,6 @@
 <html>
 
 <head>
-
-
     <jsp:include page="partials/head.jsp">
         <jsp:param name="title" value="Gestione utenti"/>
         <jsp:param name="styles" value="header.css"/>
@@ -48,15 +48,21 @@
             </thead>
             <tbody>
 
+            <%
+                List<Utente> utenti=(List<Utente>) request.getAttribute("Utenti");
+                for(Utente s : utenti){
+            %>
             <tr>
-                <td>ProvaNome</td>
-                <td>ProvaCognome</td>
-                <td>ProvaCodiceFiscale</td>
-                <td>2015-08-20</td>
-                <td>ProvaEmail</td>
-                <td>Ruolo</td>
-                <td><span data-toggle="tooltip" title="Modifica permessi"><a class="bi bi-x-square-fill" id="iconModificaPermessi" data-toggle="modal" data-utente-id="1" data-target="#modalModificaPermessi"></a></span></td>
+                <td><%=s.getNome()%></td>
+                <td><%=s.getCognome()%></td>
+                <td><%=s.getCf()%></td>
+                <td><%=s.getDataNascita()%></td>
+                <td><%=s.getEmail()%></td>
+                <td><%=s.getRuolo()%></td>
+                <td><span data-toggle="tooltip" title="Modifica permessi"><a class="bi bi-x-square-fill" id="iconModificaPermessi" onclick='iconModificaPermessi(<%=s.getIdUtente()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal" data-target="#modalModificaPermessi"></a></span></td>
             </tr>
+            <%}%>
+
             </tbody>
             <tfoot>
             <tr>
@@ -72,6 +78,8 @@
         </table>
     </div>
 </div>
+
+<!-- Modal modifica permessi -->
 <div class="modal fade" id="modalModificaPermessi" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -81,17 +89,19 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="select">Permessi</label>
-                        <select class="form-control" id="select">
-                            <option value="1">Admin</option>
-                            <option value="2">Assistente</option>
-                            <option selected value="3">Utente</option>
-                        </select>
-                    </div>
-                    <input type="hidden" id="idUtenteInput" value="">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="select">Permessi</label>
+                    <select class="form-control" id="select">
+                        <option value="1">Admin</option>
+                        <option value="2">Assistente</option>
+                        <option selected value="3">Utente</option>
+                    </select>
                 </div>
+                <input type="hidden" id="idUtenteLoggato" value="">
+                <input type="hidden" id="tokenUtenteLoggato" value="">
+                <input type="hidden" id="idUtenteInput" value="">
+            </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>

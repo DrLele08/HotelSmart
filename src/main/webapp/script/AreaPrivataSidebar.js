@@ -13,7 +13,5 @@ $(document).ready(function () {
         $('.active').removeClass('active');
         $('#gestioneUtenti').toggleClass('active');
     });
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+
 });

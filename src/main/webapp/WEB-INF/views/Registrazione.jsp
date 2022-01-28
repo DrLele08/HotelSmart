@@ -31,7 +31,7 @@
 
                                         <div class="form-outline">
                                             <label class="form-label" for="Nome">Nome</label>
-                                            <input type="text" id="Nome" class="form-control form-control-lg" pattern="[A-z  À-ù ‘-]{2,30}$" required/>
+                                            <input type="text" id="Nome" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
                                             <div class="invalid-feedback">
                                                 Inserisci un nome valido!
                                             </div>
@@ -42,7 +42,7 @@
 
                                         <div class="form-outline">
                                             <label class="form-label" for="Cognome">Cognome</label>
-                                            <input type="text"id="Cognome" class="form-control form-control-lg" pattern="[A-z  À-ù ‘-]{2,30}$" required/>
+                                            <input type="text"id="Cognome" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
                                             <div class="invalid-feedback">
                                                 Inserisci un cognome valido!
                                             </div>
@@ -56,7 +56,7 @@
 
                                         <div class="form-outline">
                                             <label class="form-label" for="CodiceFiscale">Codice fiscale</label>
-                                            <input type="text" id="CodiceFiscale" class="form-control form-control-lg" pattern="[A-z 0-9]{16}$" required/>
+                                            <input type="text" id="CodiceFiscale" class="form-control form-control-lg" pattern="[A-z0-9]{16}$" required/>
                                             <div class="invalid-feedback">
                                                 Inserisci un codice fiscale valido!
                                             </div>

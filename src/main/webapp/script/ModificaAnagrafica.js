@@ -37,14 +37,18 @@ function ModificaAnagrafica()
                 type: "post",
                 data: data,
                 success: function (result) {
-                    if (result.status)
-                        window.location.replace("index.jsp");
-                    if (result.data == "EMAIL PROBLEMA")
+                    if (result.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.Mess,
+                        })
+                    } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Errore registrazione...',
-                            text: 'Email esistente!',
+                            title: 'Errore',
+                            text: result.Mess,
                         })
+                    }
                 }
             });
         }
@@ -80,7 +84,7 @@ function ModificaPassword()
                     if (result.Ris == 1) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Modifica password avvenuta',
+                            title: result.Mess,
                         })
                         $("#VecchiaPassword").val("");
                         $("#NuovaPassword").val("");
@@ -88,7 +92,8 @@ function ModificaPassword()
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Errore modifica password',
+                            title: 'Errore',
+                            text: result.Mess,
                         })
                     }
                 }

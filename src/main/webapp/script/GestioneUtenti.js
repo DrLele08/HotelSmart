@@ -4,20 +4,31 @@ $(document).ready(function() {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
         },
     } );
-    $('#iconModificaPermessi').on("click", function () {
-        var idUtente = $(this).data('utente-id');
-        $("#idUtenteInput").val(idUtente);
-    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
 } );
+
+function iconModificaPermessi(idUtente,tokenUtenteLoggato,idUtenteLoggato) {
+    $("#idUtenteLoggato").val(idUtenteLoggato);
+    $("#tokenUtenteLoggato").val(tokenUtenteLoggato);
+    $("#idUtenteInput").val(idUtente);
+}
+
 function ModificaPermessi(){
+    let idUtenteLoggato = $("#idUtenteLoggato").val();
+    let tokenUtenteLoggato = $("#tokenUtenteLoggato").val();
     let idUtente = $("#idUtenteInput").val();
     let tipoPersmessi = $("#select").val();
     var data = {
-        textId : idUtente,
-        textTipoPermessi : tipoPersmessi
+        idUtente : idUtenteLoggato,
+        Token : tokenUtenteLoggato,
+        idUtenteCambio : idUtente,
+        idRuolo : tipoPersmessi
     }
     $.ajax({
-        url: 'Login',
+        url: 'api/ModificaPermessi',
         dataType: "json",
         type: "post",
         data: data,
@@ -25,13 +36,13 @@ function ModificaPermessi(){
             if (result.Ris == 1) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Ordine annullato',
+                    title: result.Mess,
                 })
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Errore annullamento ordine',
-                    text: 'Ci sono stati dei problemi',
+                    title: 'Errore',
+                    text: result.Mess,
                 })
             }
         }

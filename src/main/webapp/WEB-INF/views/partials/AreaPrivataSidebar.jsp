@@ -22,7 +22,7 @@
         <%}%>
         <li <% if(tipoChiamata == 3){%>
                 class="active"
-                <%}%>><a  href="StoricoPrenotazioni">Gestione prenotazioni</a></li>
+                <%}%>><a  href="GestionePrenotazioni">Gestione prenotazioni</a></li>
         <% if(ut.getRuolo()==3){ %>
         <li <% if(tipoChiamata == 4){%>
                 class="active"

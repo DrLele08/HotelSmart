@@ -40,8 +40,8 @@ function Registrazione()
                     if (result.data == "EMAIL PROBLEMA")
                         Swal.fire({
                             icon: 'error',
-                            title: 'Errore registrazione...',
-                            text: 'Email esistente!',
+                            title: 'Errore',
+                            text: result.Mess,
                         })
                 }
             });
