@@ -27,11 +27,10 @@ public class RicercaServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
-        switch (path) {
-            case "/":
-                break;
-
-            case "/gosearch": {
+        switch (path)
+        {
+            case "/gosearch":
+            {
 
                 String active_link = "ricerca";
                 request.setAttribute("active", active_link);
@@ -66,7 +65,11 @@ public class RicercaServlet extends HttpServlet {
                 dispatcher.forward(request, response);
                 break;
             }
-
+            default:
+            {
+                response.sendRedirect(request.getContextPath());
+                break;
+            }
 
         }
 
