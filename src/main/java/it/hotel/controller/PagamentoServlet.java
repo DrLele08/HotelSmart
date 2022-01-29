@@ -4,6 +4,7 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import it.hotel.Utility.Utility;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
@@ -30,7 +31,7 @@ public class PagamentoServlet extends CheckServlet
                 String link="http://localhost:8080"+domain+"/confirmationPage.jsp?success=";
                 if(preno.getKsStato()==1)
                 {
-                    Stripe.apiKey = "sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP";
+                    Stripe.apiKey = Utility.stripeKey;
                     Long price=((Double)preno.getPrezzoFinale()).longValue()*100;
                     SessionCreateParams params =
                             SessionCreateParams.builder()

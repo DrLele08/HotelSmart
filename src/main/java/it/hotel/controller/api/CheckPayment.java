@@ -1,8 +1,10 @@
 package it.hotel.controller.api;
 
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import it.hotel.Utility.Email;
+import it.hotel.Utility.Utility;
 import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.UtenteService;
@@ -32,25 +34,37 @@ public class CheckPayment extends CheckServlet
                 int idPreno=Integer.parseInt(request.getParameter("idPreno"));
                 PrenotazioneStanzaService stanzaService=new PrenotazioneStanzaService();
                 PrenotazioneStanza preno=stanzaService.getPrenotazioneById(idPreno);
-                String tokenStripe=preno.getTokenStripe();
-                PaymentIntent paymentIntent=PaymentIntent.retrieve(tokenStripe);
-                UtenteService utenteService=new UtenteService();
-                Utente user=utenteService.getUtenteByPrenotazioneStanza(idPreno);
-                if(paymentIntent.getStatus().equals("succeeded"))
+                if(preno.getKsStato()==1)
                 {
-                    stanzaService.editStato(idPreno,2);
-                    String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #<NUMERO> è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
-                    Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #1",textHtml);
-                    object.put("Ris",1);
-                    object.put("Mess","Fatto");
-                    response.getOutputStream().print(object.toString());
+                    String tokenStripe=preno.getTokenStripe();
+                    Stripe.apiKey = Utility.stripeKey;
+                    PaymentIntent paymentIntent=PaymentIntent.retrieve(tokenStripe);
+                    UtenteService utenteService=new UtenteService();
+                    Utente user=utenteService.getUtenteByPrenotazioneStanza(idPreno);
+                    if(paymentIntent.getStatus().equals("succeeded"))
+                    {
+                        stanzaService.editStato(idPreno,2);
+                        //ToDo Giovanni Generare Stringa random (64 char) per il campo tokenQR
+                        stanzaService.generateQrCode(idPreno);
+                        String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #"+preno.getIdPrenotazioneStanza()+" è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
+                        Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #"+preno.getIdPrenotazioneStanza(),textHtml);
+                        object.put("Ris",1);
+                        object.put("Mess","Fatto");
+                        response.getOutputStream().print(object.toString());
+                    }
+                    else
+                    {
+                        String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #<NUMERO> non è stato ricevuto!<br>Puo contattarci 24/24 alla mail: info@hotelsmart.it, HotelSmart!";
+                        Email.sendAsHtml(user.getEmail(),"[HotelSmart] Errore pagamento ordine #"+preno.getIdPrenotazioneStanza(),textHtml);
+                        object.put("Ris",0);
+                        object.put("Mess","Errore durante il pagamento");
+                        response.getOutputStream().print(object.toString());
+                    }
                 }
                 else
                 {
-                    String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #<NUMERO> non è stato ricevuto!<br>Puo contattarci 24/24 alla mail: info@hotelsmart.it, HotelSmart!";
-                    Email.sendAsHtml(user.getEmail(),"[HotelSmart] Errore pagamento ordine #1",textHtml);
                     object.put("Ris",0);
-                    object.put("Mess","Errore durante il pagamento");
+                    object.put("Mess","Operazione non possibile");
                     response.getOutputStream().print(object.toString());
                 }
             }

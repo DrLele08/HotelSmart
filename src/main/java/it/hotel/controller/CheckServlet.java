@@ -15,7 +15,7 @@ public class CheckServlet extends HttpServlet
         return request.getParameterMap().containsKey(nome);
     }
 
-    public Optional<Utente> getUtente(HttpServletRequest request, HttpServletResponse response)
+    public Optional<Utente> getUtente(HttpServletRequest request)
     {
         int idUtente=-1;
         String tokenAuth="";

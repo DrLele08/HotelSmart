@@ -1,5 +1,6 @@
 package it.hotel.Utility;
 
+import com.stripe.Stripe;
 import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.stato.Stato;
 
@@ -15,6 +16,7 @@ public class Utility
     public static final String PASSWORD_PATTERN =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
     public static final int lenghtAuth=64;
+    public static final String stripeKey="sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP";
     public static final String SESSION_USER="idUsSe";
     public static final String COOKIE_ID="idUsCo";
     public static final String COOKIE_TOKEN="toUsCo";

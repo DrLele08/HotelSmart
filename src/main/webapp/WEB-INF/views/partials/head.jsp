@@ -14,7 +14,8 @@ come numeri di telefono -->
 
 <!-- Tag per la corretta visualizzazione du Android -->
 <meta name="theme-color" content="#000000"> <!-- Colore del sito -->
-
+<link rel="shortcut icon" href="${context}/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="${context}/images/favicon.ico" type="image/x-icon">
 <!-- Contenuti di default -->
 <meta charset="UTF-8">
 <title> ${param.title} </title>
