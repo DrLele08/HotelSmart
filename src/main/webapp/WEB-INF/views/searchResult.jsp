@@ -6,9 +6,15 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/views/partials/head.jsp">
-        <jsp:param name="title" value="ricerca"/>
+        <jsp:param name="title" value="Risultati"/>
         <jsp:param name="styles" value="header.css"/>
     </jsp:include>
+
+    <style>
+        .card-text {
+            font-size: x-small;
+        }
+    </style>
 </head>
 
 <body style="background-color: #cdd7e2">
@@ -27,6 +33,10 @@
         <jsp:include page="/WEB-INF/views/partials/stanzaCard.jsp">
             <jsp:param name="id" value="<%=s.getIdStanza()%>"/>
             <jsp:param name="numOspiti" value="<%=numero_ospiti%>"/>
+            <jsp:param name="numLetti_M" value="<%=s.getLettiMatrimoniali()%>"/>
+            <jsp:param name="numLetti_S" value="<%=s.getLettiSingoli()%>"/>
+            <jsp:param name="costoNotte" value="<%=s.getCostoNotte()%>"/>
+            <jsp:param name="sconto" value="<%=s.getSconto()%>"/>
         </jsp:include>
         <% } %>
         <%} else {%>

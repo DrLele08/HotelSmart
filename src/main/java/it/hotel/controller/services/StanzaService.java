@@ -59,8 +59,7 @@ public class StanzaService
      * Restituisce le stanze trovate secondo i valori specificati.
      * @param animaleDomestico Idoneità per animali domestici
      * @param fumatore Idoneità per fumatori
-     * @param lettiSingoli Quantità letti singoli
-     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param numeroOspiti Numero di ospiti
      * @param costoNotteMinimo Costo per notte minimo
      * @param costoNotteMassimo Costo per notte massimo
      * @param scontoMinimo Sconto applicabile minimo
@@ -69,10 +68,9 @@ public class StanzaService
      * @param dataOut Data di uscita
      * @return Le stanze trovate
      */
-    public List<Stanza> search(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
-                                      Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
+    public List<Stanza> search(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti, Double costoNotteMinimo, Double costoNotteMassimo,
                                       Double scontoMinimo, Double scontoMassimo, java.sql.Date dataIn, Date dataOut) {
-        return dao.doSearch(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali,
+        return dao.doSearch(animaleDomestico, fumatore, numeroOspiti,
                 costoNotteMinimo, costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
     }
 

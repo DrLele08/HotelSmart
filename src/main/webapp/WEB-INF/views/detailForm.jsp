@@ -9,7 +9,7 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/views/partials/head.jsp">
-        <jsp:param name="title" value="ricerca"/>
+        <jsp:param name="title" value="Dettagli"/>
         <jsp:param name="styles" value="header.css"/>
         <jsp:param name="styles" value="Registrazione.css"/>
     </jsp:include>
@@ -67,7 +67,7 @@
     <div class="container custom-container">
         <h1 class="display-4">Conferma la tua prenotazione</h1><br>
         <div class="card mb-3 custom-elem" style="width: 75vw;">
-            <img class="card-img-top" src="${pageContext.request.contextPath}/images/hotelroom6.jpg" alt="Room image">
+            <img class="card-img-top" src="${pageContext.request.contextPath}/images/hotelroom0.jpg" alt="Room image">
             <div class="card-body" style="background-color: #cdd7e2; text-align: left">
                 <ul>
                     <h5 class="card-title">Riepilogo dettagli stanza selezionata</h5>

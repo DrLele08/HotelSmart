@@ -6,7 +6,7 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/views/partials/head.jsp">
-        <jsp:param name="title" value="ricerca"/>
+        <jsp:param name="title" value="Ricerca"/>
         <jsp:param name="styles" value="header.css"/>
         <jsp:param name="styles" value="Registrazione.css"/>
     </jsp:include>
@@ -21,23 +21,29 @@
             display: none;
         }
 
+        .card-text {
+            font-size: small;
+        }
         @media screen and (max-width: 1203px) {
-           .card {
-               width: 30rem;
-               height: 30rem;
-           }
-           .card-body {
-               width: 30rem;
-               height: 30rem;
-           }
-           .card-img-top {
-               width: 30rem;
-               height: 30rem;
-           }
-           .carousel-item {
-               width: 30rem;
-               height: 30rem;
-           }
+            .card {
+                width: 30rem;
+                height: 30rem;
+            }
+
+            .card-body {
+                width: 30rem;
+                height: 30rem;
+            }
+
+            .card-img-top {
+                width: 30rem;
+                height: 30rem;
+            }
+
+            .carousel-item {
+                width: 30rem;
+                height: 30rem;
+            }
         }
 
         @media screen and (max-width: 1000px) {
@@ -45,14 +51,17 @@
                 width: 20rem;
                 height: 30rem;
             }
+
             .card-body {
                 width: 20rem;
                 height: 30rem;
             }
+
             .card-img-top {
                 width: 20rem;
                 height: 30rem;
             }
+
             .carousel-item {
                 width: 20rem;
                 height: 30rem;
@@ -74,8 +83,6 @@
 <%
     Double max = (Double) request.getAttribute("max_price");
     Double min = (Double) request.getAttribute("min_price");
-    ArrayList<Integer> Letti_s = (ArrayList<Integer>) request.getAttribute("Letti_s");
-    ArrayList<Integer> Letti_m = (ArrayList<Integer>) request.getAttribute("Letti_m");
 
     ArrayList<Stanza> stanze_offerta = (ArrayList<Stanza>) request.getAttribute("stanze_offerta");
 %>
@@ -95,48 +102,40 @@
                 <div class="form-group w-100">
                     <label for="dataPartenza">Data di partenza</label><br>
                     <input type="date" id="dataPartenza" name="dataPartenza">
-                    <div class="invalid-feedback" id="errore">
-                        Date non selezionate correttamente
+                    <div class="invalid-feedback" id="date_error">
+                        Date inserite non valide
                     </div>
                 </div>
 
                 <div class="form-group w-100">
                     <label for="prezzoMinimo">Prezzo Minimo</label>
                     <select class="form-control w-auto" name="prezzoMinimo" id="prezzoMinimo">
-                        <option><%=min%></option>
-                        <option><%=min+20.0%></option>
-                        <option><%=min+40.0%></option>
-                        <option><%=max-40.0%></option>
-                        <option><%=max%></option>
+                        <option><%=min%>
+                        </option>
+                        <option><%=min + 20.0%>
+                        </option>
+                        <option><%=min + 40.0%>
+                        </option>
+                        <option><%=max - 40.0%>
+                        </option>
+                        <option><%=max%>
+                        </option>
                     </select>
                 </div>
 
                 <div class="form-group w-100">
                     <label for="prezzoMassimo">Prezzo Massimo</label>
                     <select class="form-control w-auto" name="prezzoMassimo" id="prezzoMassimo">
-                        <option><%=min%></option>
-                        <option><%=min+20.0%></option>
-                        <option><%=min+40.0%></option>
-                        <option><%=max-40.0%></option>
-                        <option><%=max%></option>
-                    </select>
-                </div>
-
-                <div class="form-group w-100">
-                    <label for="letti_matrimoniali">Numero letti matrimoniali</label>
-                    <select class="form-control w-auto" name="letti_matrimoniali" id="letti_matrimoniali">
-                        <%for(Integer i: Letti_m){ %>
-                        <option><%=i%></option>
-                        <%}%>
-                    </select>
-                </div>
-
-                <div class="form-group w-100">
-                    <label for="letti_singoli">Numero letti singoli</label>
-                    <select class="form-control w-auto" name="letti_singoli" id="letti_singoli">
-                        <%for(Integer i: Letti_s){ %>
-                        <option><%=i%></option>
-                        <%}%>
+                        <option><%=max%>
+                        </option>
+                        <option><%=max - 40.0%>
+                        </option>
+                        <option><%=min + 40.0%>
+                        </option>
+                        <option><%=min + 20.0%>
+                        </option>
+                        <option><%=min%>
+                        </option>
                     </select>
                 </div>
 
@@ -144,7 +143,7 @@
                     <label for="numero_ospiti">Numero ospiti</label><br>
                     <input type="number" name="numero_ospiti" id="numero_ospiti" min="1">
                     <div class="invalid-feedback" id="errore_ospiti">
-                        Numero ospiti non valido o<br>maggiore dei posti letto selezionati
+                        Numero ospiti non valido
                     </div>
                 </div>
 
@@ -175,26 +174,47 @@
                     <li data-target="carouselHome" data-slide-to="2"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <c:forEach var="item" items="${stanze_offerta}">
-
-                        <div class="carousel-item active">
-                            <div class="card"
-                                 style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
-                                <img class="card-img-top img-fluid" src="${pageContext.request.contextPath}/images/hotelroom6.jpg"
-                                     alt="Card image cap">
-                                <div class="card-body" style="background-color: #cdd7e2;">
-                                    <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
-                                    <p class="card-text">Suite matrimoniale con balcone e possibilità di animale domestico a
-                                        partire da
-                                        <%=stanze_offerta.get(0).getCostoNotte()%>€ a notte.</p>
-                                    <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
-                                        <input type="hidden" name="stanzaId" value="<%=stanze_offerta.get(0).getIdStanza()%>">
-                                        <input type="submit" class="btn btn-dark" value="Prenota ora">
-                                    </form>
+                    <%boolean active_set = false;
+                    for (int i = 0; i < stanze_offerta.size(); i++) {
+                        if (!active_set){%>
+                            <div class="carousel-item active">
+                                <div class="card"
+                                    style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
+                                    <img class="card-img-top img-fluid"
+                                        src="${pageContext.request.contextPath}/images/hotelroom<%=i%>.jpg"
+                                        alt="Card image cap">
+                                    <div class="card-body" style="background-color: #cdd7e2;">
+                                        <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
+                                        <ul>
+                                            <li class="card-text">Letti matrimoniali: <%=stanze_offerta.get(i).getLettiMatrimoniali()%></li>
+                                            <li class="card-text">Letti singoli: <%=stanze_offerta.get(i).getLettiSingoli()%></li>
+                                            <li class="card-text">Costo per notte: <%=stanze_offerta.get(i).getCostoNotte()%></li>
+                                            <li class="card-text">Sconto applicato (per notte): <%=stanze_offerta.get(i).getSconto()%>%</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </c:forEach>
+                    <%      active_set = true;
+                        } else {%>
+                            <div class="carousel-item">
+                                <div class="card"
+                                style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
+                                    <img class="card-img-top img-fluid"
+                                        src="${pageContext.request.contextPath}/images/hotelroom<%=i%>.jpg"
+                                        alt="Card image cap">
+                                    <div class="card-body" style="background-color: #cdd7e2;">
+                                        <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
+                                        <ul>
+                                            <li class="card-text">Letti matrimoniali: <%=stanze_offerta.get(i).getLettiMatrimoniali()%></li>
+                                            <li class="card-text">Letti singoli: <%=stanze_offerta.get(i).getLettiSingoli()%></li>
+                                            <li class="card-text">Costo per notte: <%=stanze_offerta.get(i).getCostoNotte()%></li>
+                                            <li class="card-text">Sconto applicato (per notte): <%=stanze_offerta.get(i).getSconto()%>%</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                    <%}%>
+                    <%}%>
                 </div>
             </div>
         </div>

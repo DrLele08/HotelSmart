@@ -31,34 +31,15 @@ public class RicercaServlet extends HttpServlet {
         {
             case "/gosearch":
             {
+                StanzaService service = new StanzaService();
+                ArrayList<Double> prezzi = (ArrayList<Double>) service.get_Min_And_Max_Prices();
+                ArrayList<Stanza> stanze_offerta = (ArrayList<Stanza>) service.getOfferte();
 
                 String active_link = "ricerca";
-                request.setAttribute("active", active_link);
 
-                //Prendo 3 stanze a caso tra quelle in offerta
-                ArrayList<Stanza> stanze_offerta = getStanzeOfferte();
-
-                ArrayList<Integer> numletti = getLetti();
-                ArrayList<Double> prezzi = getPrices();
-                ArrayList<Integer> Letti_s = new ArrayList<>();
-                ArrayList<Integer> Letti_m = new ArrayList<>();
-
-                Integer maxLetti_s = numletti.get(0);
-                Integer maxLetti_m = numletti.get(1);
-
-                for(int i = 0; i <= maxLetti_s; i++){
-                    Letti_s.add(i);
-                }
-
-                for(int i = 0; i <= maxLetti_m; i++){
-                    Letti_m.add(i);
-                }
                 request.setAttribute("min_price",prezzi.get(0));
                 request.setAttribute("max_price",prezzi.get(1));
-
-                request.setAttribute("Letti_s",Letti_s);
-                request.setAttribute("Letti_m",Letti_m);
-
+                request.setAttribute("active", active_link);
                 request.setAttribute("stanze_offerta",stanze_offerta);
 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ricerca.jsp");
@@ -81,35 +62,6 @@ public class RicercaServlet extends HttpServlet {
         return (ArrayList<Double>) service.get_Min_And_Max_Prices();
     }
 
-    public ArrayList<Integer> getLetti()
-    {
-        StanzaService service = new StanzaService();
-        return (ArrayList<Integer>) service.get_S_And_M_Letti();
-    }
-
-    public ArrayList<Stanza> getStanzeOfferte()
-    {
-
-        StanzaService service = new StanzaService();
-        ArrayList<Stanza> stanze_offerte = (ArrayList<Stanza>) service.getOfferte();
-
-        if(stanze_offerte.size() < 3) return stanze_offerte;
-
-        else {
-
-            Random rand = new Random();
-            ArrayList<Stanza> stanze_temp = new ArrayList<>();
-
-            for(int i = 0; i < 3; i++){
-
-                stanze_temp.add(stanze_offerte.get(rand.nextInt(stanze_offerte.size())));
-            }
-
-            return stanze_temp;
-        }
-
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -122,15 +74,22 @@ public class RicercaServlet extends HttpServlet {
 
                 String temp = request.getParameter("prezzoMinimo");
                 String temp1 = request.getParameter("prezzoMassimo");
-                String temp2 = request.getParameter("letti_matrimoniali");
-                String temp3 = request.getParameter("letti_singoli");
-                String temp4 = request.getParameter("numero_ospiti");
+                String temp2 = request.getParameter("numero_ospiti");
 
-                Double prezzoMinimo = Double.parseDouble(temp);
-                Double prezzoMassimo = Double.parseDouble(temp1);
-                Integer letti_matrimoniali = Integer.parseInt(temp2);
-                Integer letti_singoli = Integer.parseInt(temp3);
-                Integer numero_ospiti = Integer.parseInt(temp4);
+                double prezzoMinimo;
+                double prezzoMassimo;
+                int numero_ospiti;
+
+                try {
+
+                    prezzoMinimo = Double.parseDouble(temp);
+                    prezzoMassimo = Double.parseDouble(temp1);
+                    numero_ospiti = Integer.parseInt(temp2);
+
+                }catch(NumberFormatException e){
+                    e.printStackTrace();
+                    return;
+                }
 
                 boolean animale = request.getParameter("animaleDom") != null;
 
@@ -153,13 +112,14 @@ public class RicercaServlet extends HttpServlet {
                 }
 
                 StanzaService service = new StanzaService();
-                ArrayList<Stanza> stanze = (ArrayList<Stanza>) service.search(animale,fumatore, letti_singoli,letti_matrimoniali,
+                ArrayList<Stanza> stanze = (ArrayList<Stanza>) service.search(animale,fumatore, numero_ospiti,
                         prezzoMinimo,prezzoMassimo,null,null,dataArrivoSql,dataPartenzaSql);
 
                 request.setAttribute("stanze_result",stanze);
                 request.setAttribute("numero_ospiti",numero_ospiti);
                 String active_link = "ricerca";
                 request.setAttribute("active", active_link);
+
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/searchResult.jsp");
                 dispatcher.forward(request,response);
                 break;

@@ -192,8 +192,7 @@ public class StanzaDAO {
      * Recupera gli oggetti Stanza trovati nel database secondo i valori specificati.
      * @param animaleDomestico Permesso animali domestici
      * @param fumatore Permesso fumatori
-     * @param lettiSingoli Quantità letti singoli
-     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param numeroOspiti Numero di ospiti
      * @param costoNotteMinimo Costo minimo per notte
      * @param costoNotteMassimo Costo massimo per notte
      * @param scontoMinimo Sconto minimo
@@ -203,11 +202,11 @@ public class StanzaDAO {
      * @return Le stanze trovate nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-    public List<Stanza> doSearch(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
-                                 Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
+    public List<Stanza> doSearch(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
+                                 Double costoNotteMinimo, Double costoNotteMassimo,
                                  Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) {
 
-        String query = getQuery(animaleDomestico, fumatore, lettiSingoli, lettiMatrimoniali, costoNotteMinimo,
+        String query = getQuery(animaleDomestico, fumatore, numeroOspiti, costoNotteMinimo,
                 costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
 
         ArrayList<Stanza> stanze = new ArrayList<>();
@@ -229,8 +228,8 @@ public class StanzaDAO {
 
     }
 
-    private String getQuery(Boolean animaleDomestico, Boolean fumatore, Integer lettiSingoli,
-                            Integer lettiMatrimoniali, Double costoNotteMinimo, Double costoNotteMassimo,
+    private String getQuery(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
+                            Double costoNotteMinimo, Double costoNotteMassimo,
                             Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) {
 
         String query;
@@ -239,8 +238,7 @@ public class StanzaDAO {
         ArrayList<String> parametri = new ArrayList<>();
         animaleDomesticoStr(parametri, animaleDomestico);
         fumatoreStr(parametri, fumatore);
-        lettiSingoliStr(parametri, lettiSingoli);
-        lettiMatrimonialiStr(parametri, lettiMatrimoniali);
+        numeroOspitiStr(parametri,numeroOspiti);
         costoNotteStr(parametri, costoNotteMinimo, costoNotteMassimo);
         scontoStr(parametri, scontoMinimo, scontoMassimo);
 
@@ -294,7 +292,7 @@ public class StanzaDAO {
         }
     }
 
-    private void lettiSingoliStr(List<String> parametri, Integer lettiSingoli) {
+    /*private void lettiSingoliStr(List<String> parametri, Integer lettiSingoli) {
         if (lettiSingoli != null) {
             parametri.add("lettiSingoli = " + lettiSingoli);
         }
@@ -303,6 +301,12 @@ public class StanzaDAO {
     private void lettiMatrimonialiStr(List<String> parametri, Integer lettiMatrimoniali) {
         if (lettiMatrimoniali != null) {
             parametri.add("lettiMatrimoniali = " + lettiMatrimoniali);
+        }
+    }*/
+
+    private void numeroOspitiStr(List<String> parametri, Integer numeroOspiti) {
+        if (numeroOspiti != null) {
+            parametri.add("(lettiMatrimoniali*2) + lettiSingoli= " + numeroOspiti);
         }
     }
 
