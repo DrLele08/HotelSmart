@@ -44,7 +44,6 @@ public class CheckPayment extends CheckServlet
                     if(paymentIntent.getStatus().equals("succeeded"))
                     {
                         stanzaService.editStato(idPreno,2);
-                        //ToDo Giovanni Generare Stringa random (64 char) per il campo tokenQR
                         stanzaService.generateQrCode(idPreno);
                         String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #"+preno.getIdPrenotazioneStanza()+" è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
                         Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #"+preno.getIdPrenotazioneStanza(),textHtml);

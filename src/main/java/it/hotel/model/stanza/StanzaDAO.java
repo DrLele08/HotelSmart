@@ -306,7 +306,7 @@ public class StanzaDAO {
 
     private void numeroOspitiStr(List<String> parametri, Integer numeroOspiti) {
         if (numeroOspiti != null) {
-            parametri.add("(lettiMatrimoniali*2) + lettiSingoli= " + numeroOspiti);
+            parametri.add("lettiMatrimoniali*2 + lettiSingoli = " + numeroOspiti);
         }
     }
 

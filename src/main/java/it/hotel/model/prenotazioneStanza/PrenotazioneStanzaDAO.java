@@ -24,7 +24,6 @@ public class PrenotazioneStanzaDAO {
      * @param dataInizio Data di entrata
      * @param dataFine Data di uscita
      * @param prezzoFinale Prezzo finale
-     * @param tokenQr Token del codice qr
      * @param commenti Commenti
      * @param valutazione Valutazione
      * @return L'oggetto inserito nel database
@@ -32,18 +31,27 @@ public class PrenotazioneStanzaDAO {
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, Date dataInizio, Date dataFine,
-                                       double prezzoFinale, String tokenQr, String commenti, int valutazione)
+                                       double prezzoFinale, String commenti, int valutazione)
             throws PrenotazioneStanzaInsertException {
         try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT idStato FROM Stato st " +
-                    "WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\') LIMIT 1",
+            PreparedStatement ps = con.prepareStatement("SELECT idPrenotazioneStanza FROM PrenotazioneStanza WHERE " +
+                            "dataFine >= ? AND dataInizio <= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE " +
+                            "(st.stato = 'ANNULLATA') OR (st.stato = 'ARCHIVIATA') OR (st.stato = 'RIMBORSATA'))",
                     Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                throw new PrenotazioneStanzaInsertException();
+            }
+
+            ps = con.prepareStatement("SELECT idStato FROM Stato st " +
+                    "WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\') LIMIT 1",
+                    Statement.RETURN_GENERATED_KEYS);
+            rs = ps.executeQuery();
             int ksStato;
             if (rs.next()) {
                 ksStato = rs.getInt(1);
             } else {
-                return null;
+                throw new PrenotazioneStanzaInsertException();
             }
 
             ps = con.prepareStatement
@@ -60,7 +68,7 @@ public class PrenotazioneStanzaDAO {
             ps.setDate(5, dataFine);
             ps.setDouble(6, prezzoFinale);
             ps.setString(7, null);
-            ps.setString(8, tokenQr);
+            ps.setString(8, null);
             ps.setString(9, commenti);
             ps.setInt(10, valutazione);
             ps.setInt(11, ksUtente);
@@ -75,7 +83,7 @@ public class PrenotazioneStanzaDAO {
             }
 
             return new PrenotazioneStanza(id, ksUtente, ksStanza, ksStato, dataInizio, dataFine,
-                    prezzoFinale, null, tokenQr, commenti, valutazione);
+                    prezzoFinale, null, null, commenti, valutazione);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -96,6 +104,31 @@ public class PrenotazioneStanzaDAO {
                             Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, tokenStripe);
             ps.setInt(2, idPrenotazioneStanza);
+
+            int rs = ps.executeUpdate();
+            if (rs==0) {
+                throw new PrenotazioneStanzaNotFoundException();
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Inserisce nell'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato il relativo Token Qr Code.
+     * @param idPrenotazione L'identificativo dell'oggetto da trovare nel database
+     * @param tokenQr Il Token Qr Code da inserire nell'oggetto
+     * @throws PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public void doInsertTokenQrCode(int idPrenotazione, String tokenQr) throws PrenotazioneStanzaNotFoundException {
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("UPDATE PrenotazioneStanza SET tokenQr=? WHERE idPrenotazioneStanza=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, tokenQr);
+            ps.setInt(2, idPrenotazione);
 
             int rs = ps.executeUpdate();
             if (rs==0) {

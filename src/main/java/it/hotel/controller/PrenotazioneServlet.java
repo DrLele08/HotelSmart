@@ -57,7 +57,7 @@ public class PrenotazioneServlet extends CheckServlet
 
                 PrenotazioneStanzaService prenotazioneStanzaService=new PrenotazioneStanzaService();
                 //ToDo Giovanni Come gestire i dati degli ospiti???
-                PrenotazioneStanza preno=prenotazioneStanzaService.inserisciPrenotazione(user.getIdUtente(),idStanza,dataInizio,dataFine,totale,"aaa","aaa",-1);
+                PrenotazioneStanza preno=prenotazioneStanzaService.inserisciPrenotazione(user.getIdUtente(),idStanza,dataInizio,dataFine,totale,"aaa",-1);
                 response.sendRedirect(request.getContextPath()+"/PagamentoServlet?idPreno="+preno.getIdPrenotazioneStanza());
             }
             else

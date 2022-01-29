@@ -8,6 +8,7 @@ import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.Prenotazion
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Fornisce metodi di utilizzo del database per {@link PrenotazioneStanza}.
@@ -30,16 +31,15 @@ public class PrenotazioneStanzaService {
      * @param dataInizio Data d'inizio
      * @param dataFine Data di fine
      * @param prezzoFinale Prezzo finale
-     * @param tokenQr Token del QR code
      * @param commenti Commenti
      * @param valutazione Valutazione
      * @return Prenotazione stanza inserita
      * @throws PagamentoInAttesaException Un altro pagamento è in attesa di essere completato
      */
     public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, Date dataInizio, Date dataFine, double prezzoFinale,
-            String tokenQr, String commenti, int valutazione) throws PagamentoInAttesaException {
+            String commenti, int valutazione) throws PagamentoInAttesaException {
         try {
-            return dao.doInsert(ksUtente, ksStanza, dataInizio, dataFine, prezzoFinale, tokenQr, commenti, valutazione);
+            return dao.doInsert(ksUtente, ksStanza, dataInizio, dataFine, prezzoFinale, commenti, valutazione);
         } catch (PrenotazioneStanzaInsertException e) {
             throw new PagamentoInAttesaException();
         }
@@ -100,4 +100,24 @@ public class PrenotazioneStanzaService {
     public void addTokenStripe(int idPrenotazione, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
         dao.insertTokenStripe(idPrenotazione, tokenStripe);
     }
+
+    /**
+     * Inserisce nella prenotazione stanza specificata un Token Qr Code alfanumerico generato casualmente.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     */
+    public void generateQrCode(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
+        int leftLimit = 48;
+        int rightLimit = 122;
+        int targetStringLength = 64;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        dao.doInsertTokenQrCode(idPrenotazione, generatedString);
+    }
+
 }
