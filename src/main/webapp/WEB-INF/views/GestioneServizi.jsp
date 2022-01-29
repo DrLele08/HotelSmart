@@ -58,7 +58,7 @@
                 <td><%=s.getCosto()%></td>
                 <td><%=s.getLimitePosti()%></td>
                 <td>
-                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit" data-toggle="modal" data-target="#modalEditServizio" onclick='editServizio("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getIdServizio()%>,<%=s.getNome()%>, <%=s.getCosto()%>, <%=s.getLimitePosti()%>,"<%=s.getDescrizione()%>")'></a></span>
+                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit" data-toggle="modal" data-target="#modalEditServizio" onclick='editServizio("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getIdServizio()%>,"<%=s.getNome()%>", <%=s.getCosto()%>, <%=s.getLimitePosti()%>,"<%=s.getDescrizione()%>")'></a></span>
                 </td>
             </tr>
             <%}%>
@@ -96,7 +96,7 @@
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label class="form-label" for="nomeServizio">Nome Servizio</label>
-                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="nomeServizio" class="form-control form-control-lg" required/>
+                                <input type="text" id="nomeServizio" class="form-control form-control-lg" required/>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4">
@@ -155,7 +155,7 @@
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label class="form-label" for="nomeServizioEdit">Nome Servizio</label>
-                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="nomeServizioEdit" class="form-control form-control-lg" required/>
+                                <input type="text" id="nomeServizioEdit" class="form-control form-control-lg" required/>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4">

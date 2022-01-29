@@ -1,6 +1,10 @@
 package it.hotel.controller;
 
 import it.hotel.Utility.Utility;
+import it.hotel.controller.services.PrenotazioneServizioService;
+import it.hotel.controller.services.ServizioService;
+import it.hotel.model.prenotazioneServizio.PrenotazioneServizio;
+import it.hotel.model.servizio.Servizio;
 import it.hotel.model.utente.Utente;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @WebServlet(name = "StoricoServizi", value = "/StoricoServizi")
@@ -27,6 +32,9 @@ public class StoricoServiziServlet extends CheckServlet
         }
         else
         {
+            PrenotazioneServizioService service = new PrenotazioneServizioService();
+            //List<PrenotazioneServizio> prenotazioneServizio = service.getAll();
+            //request.setAttribute("PrenotazioneServizi", prenotazioneServizio);
             request.setAttribute("Tipo",4);
             rd=request.getRequestDispatcher("/WEB-INF/views/StoricoServizi.jsp");
         }

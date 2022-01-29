@@ -38,7 +38,10 @@ function cambiaStato(){
                 Swal.fire({
                     icon: 'success',
                     title: result.Mess,
+                }).then(function(){
+                    location.reload();
                 })
+                $(".modal .close").click();
             } else {
                 Swal.fire({
                     icon: 'error',

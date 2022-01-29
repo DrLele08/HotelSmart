@@ -133,6 +133,10 @@ public class PrenotazioneStanza implements Serializable
         return valutazione;
     }
 
+    /**
+     * @return Nome dello stato
+     */
+
     public String getStatoName()
     {
 

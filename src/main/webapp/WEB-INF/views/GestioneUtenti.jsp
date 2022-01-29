@@ -19,6 +19,7 @@
     <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/AreaPrivataSidebar.js"></script>
     <script src="${pageContext.request.contextPath}/script/GestioneUtenti.js"></script>
+
 </head>
 <body>
 <%@ include file="/WEB-INF/views/partials/header.jsp" %>
@@ -56,10 +57,10 @@
                 <td><%=s.getNome()%></td>
                 <td><%=s.getCognome()%></td>
                 <td><%=s.getCf()%></td>
-                <td><%=s.getDataNascita()%></td>
+                <td><%=Utility.convertDateToView(s.getDataNascita())%></td>
                 <td><%=s.getEmail()%></td>
-                <td><%=s.getRuolo()%></td>
-                <td><span data-toggle="tooltip" title="Modifica permessi"><a class="bi bi-x-square-fill" id="iconModificaPermessi" onclick='iconModificaPermessi(<%=s.getIdUtente()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal" data-target="#modalModificaPermessi"></a></span></td>
+                <td><%=s.getRuoloName()%></td>
+                <td><span data-toggle="tooltip" title="Modifica permessi"><a class="bi bi-x-square-fill" id="iconModificaPermessi" onclick='iconModificaPermessi(<%=s.getIdUtente()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getRuolo()%>)'  data-toggle="modal" data-target="#modalModificaPermessi"></a></span></td>
             </tr>
             <%}%>
 
@@ -91,11 +92,11 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="select">Permessi</label>
-                    <select class="form-control" id="select">
+                    <label for="selectPermessi">Permessi</label>
+                    <select class="form-control" id="selectPermessi">
                         <option value="1">Admin</option>
                         <option value="2">Assistente</option>
-                        <option selected value="3">Utente</option>
+                        <option value="3">Utente</option>
                     </select>
                 </div>
                 <input type="hidden" id="idUtenteLoggato" value="">
