@@ -10,7 +10,8 @@ $(document).ready(function() {
 
 } );
 
-function iconFillData(idPrenotazione,tokenUtente,idUtente) {
+function iconFillData(stato,idPrenotazione,tokenUtente,idUtente) {
+    $(".stato").val(stato);
     $(".idPrenotazione").val(idPrenotazione);
     $(".tokeUtente").val(tokenUtente);
     $(".idUtente").val(idUtente);

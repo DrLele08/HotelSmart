@@ -75,15 +75,15 @@
                         switch(p.getKsStato()){
                             case 1:
                     %>
-                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id=iconAnnullaOrdineAdmin"" onclick='iconFillData(<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
+                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id=iconAnnullaOrdineAdmin"" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
                     <%   break;
                         case 2:
                     %>
-                    <span data-toggle="tooltip" title="Chek-In"> <a class="bi bi-cash" id="iconCheckIn" onclick='iconFillData(<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckIn"></a></span>
+                    <span data-toggle="tooltip" title="Chek-In"> <a class="bi bi-cash" id="iconCheckIn" onclick='iconFillData(3,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckIn"></a></span>
                     <%   break;
                         case 3:
                     %>
-                    <span data-toggle="tooltip" title="Check-Out"> <a class="bi bi-cash" id="iconCheckOut" onclick='iconFillData(<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckOut" ></a></span>
+                    <span data-toggle="tooltip" title="Check-Out"> <a class="bi bi-cash" id="iconCheckOut" onclick='iconFillData(4,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckOut" ></a></span>
                     <%   break;
                         case 4: case 5: case 6:
                     %>
@@ -101,11 +101,11 @@
                             case 1:
                     %>
                     <span data-toggle="tooltip" title="Effettuare pagamento"><a class="bi bi-credit-card" data-toggle="modal"  data-target="#modalPagamento"></a></span>
-                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id="iconAnnullaOrdineUser" onclick='iconFillData(<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
+                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id="iconAnnullaOrdineUser" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
                     <%   break;
                         case 2:
                     %>
-                    <span data-toggle="tooltip" title="Richiedi rimborso"> <a class="bi bi-cash" id="iconRichiediRimborso" onclick='iconFillData(<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a></span>
+                    <span data-toggle="tooltip" title="Richiedi rimborso"> <a class="bi bi-cash" id="iconRichiediRimborso" onclick='iconFillData(5,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a></span>
                     <%   break;
                         case 3:
                     %>
@@ -149,7 +149,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <input type="hidden" class="stato" value="6">
+            <input type="hidden" class="stato" value="">
             <input type="hidden" class="idPrenotazione" value="">
             <input type="hidden" class="tokeUtente" value="">
             <input type="hidden" class="idUtente" value="">
@@ -171,7 +171,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <input type="hidden" class="stato" value="5">
+            <input type="hidden" class="stato" value="">
             <input type="hidden" class="idPrenotazione" value="">
             <input type="hidden" class="tokeUtente" value="">
             <input type="hidden" class="idUtente" value="">
@@ -211,7 +211,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <input type="hidden" class="stato" value="3">
+            <input type="hidden" class="stato" value="">
             <input type="hidden" class="idPrenotazione" value="">
             <input type="hidden" class="tokeUtente" value="">
             <input type="hidden" class="idUtente" value="">
@@ -233,7 +233,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <input type="hidden" class="stato" value="4">
+            <input type="hidden" class="stato" value="">
             <input type="hidden" class="idPrenotazione" value="">
             <input type="hidden" class="tokeUtente" value="">
             <input type="hidden" class="idUtente" value="">
