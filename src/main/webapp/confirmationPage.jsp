@@ -27,27 +27,29 @@
     </style>
 </head>
 
-<body style="background-color: #cdd7e2">
+<body onload="checkPayment()" style="background-color: #cdd7e2">
 
 <%@include file="/WEB-INF/views/partials/header.jsp" %>
 
 <%
-    //Passare un booleano success
-    boolean success = Boolean.parseBoolean(request.getParameter("success"));
+    int idPreno = Integer.parseInt(request.getParameter("id"));
 %>
+
+<input type="hidden" name="idPreno" id="idPreno" value="<%=idPreno%>">
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container custom-container">
 
-        <%if(success){%>
-        <h1 class="display-4 custom-elem">Grazie! La tua prenotazione è stata confermata.</h1><br><br>
+        <div id="success" style="display: none">
+            <h1 class="display-4 custom-elem">Grazie! La tua prenotazione è stata confermata.</h1><br><br>
+            <p>Controlla la tua email per il riepilogo informazioni o la tua area personale.</p><br>
+        </div>
 
-        <p>Controlla la tua email per il riepilogo informazioni o la tua area personale.</p><br>
-        <%}else{%>
-        <h1 class="display-4 custom-elem">Siamo spiacenti, la tua prenotazione non è andata a buon fine.</h1><br><br>
+        <div id="failure" style="display: none">
+            <h1 class="display-4 custom-elem">Siamo spiacenti, la tua prenotazione non è andata a buon fine.</h1><br><br>
+            <p>Controlla la tua email o area personale per sapere cosa è andato storto.</p><br>
+        </div>
 
-        <p>Controlla la tua email o area personale per sapere cosa è andato storto.</p><br>
-        <%}%>
         <form action="${pageContext.request.contextPath}">
             <input type="submit" class="btn btn-dark" value="Torna alla home">
         </form>
