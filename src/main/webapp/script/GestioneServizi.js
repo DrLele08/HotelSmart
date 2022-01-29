@@ -17,7 +17,7 @@ function createServizi(tokenUtente,idUtente) {
 function editServizio(tokenUtente,idUtente , idServizio, nome, costo, limitePosti,descrizione){
     $("#tokenUtenteEdit").val(tokenUtente);
     $("#idUtenteEdit").val(idUtente);
-    $("#idServizio").val(idUtente);
+    $("#idServizio").val(idServizio);
     $("#nomeServizioEdit").val(nome);
     $("#costoServizioEdit").val(costo);
     $("#limitePostiEdit").val(limitePosti);
@@ -51,7 +51,10 @@ function creazioneServizio(){
                 Swal.fire({
                     icon: 'success',
                     title: result.Mess,
+                }).then(function(){
+                    location.reload();
                 })
+                $(".modal .close").click();
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -95,7 +98,10 @@ function updateServizio(){
                 Swal.fire({
                     icon: 'success',
                     title: result.Mess,
+                }).then(function(){
+                    location.reload();
                 })
+                $(".modal .close").click();
             } else {
                 Swal.fire({
                     icon: 'error',

@@ -9,9 +9,5 @@ $(document).ready(function () {
         $('#sidebar').removeClass('active');
     });
 
-    $('#gestioneUtenti').on('click', function () {
-        $('.active').removeClass('active');
-        $('#gestioneUtenti').toggleClass('active');
-    });
 
 });

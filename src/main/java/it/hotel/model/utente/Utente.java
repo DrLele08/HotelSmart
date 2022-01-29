@@ -1,5 +1,8 @@
 package it.hotel.model.utente;
 
+import it.hotel.Utility.Utility;
+import it.hotel.model.ruolo.Ruolo;
+
 import java.sql.Date;
 
 /**
@@ -103,4 +106,18 @@ public class Utente {
         return tokenAuth;
     }
 
+    /**
+     * @return Nome del ruolo
+     */
+
+    public String getRuoloName()
+    {
+
+        for(Ruolo r: Utility.listRuoli)
+        {
+            if(r.getIdRuolo()== ruolo)
+                return r.getRuolo();
+        }
+        return "N/D";
+    }
 }

@@ -10,8 +10,7 @@ $(document).ready(function() {
 
 } );
 
-function iconFillData(stato,idPrenotazione,tokenUtente,idUtente) {
-    $(".stato").val(stato);
+function iconFillData(idPrenotazione,tokenUtente,idUtente) {
     $(".idPrenotazione").val(idPrenotazione);
     $(".tokeUtente").val(tokenUtente);
     $(".idUtente").val(idUtente);
@@ -38,7 +37,10 @@ function cambiaStato(){
                 Swal.fire({
                     icon: 'success',
                     title: result.Mess,
+                }).then(function(){
+                    location.reload();
                 })
+                $(".modal .close").click();
             } else {
                 Swal.fire({
                     icon: 'error',

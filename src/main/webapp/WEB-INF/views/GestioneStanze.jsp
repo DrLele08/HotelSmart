@@ -77,7 +77,7 @@
                 </td>
                 <td><%=s.getSconto()%></td>
                 <td>
-                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit" data-toggle="modal" data-target="#modalEditStanza" onclick='editStanza(<%=s.getLettiSingoli()%>, <%=s.getLettiMatrimoniali()%>, <%=s.getCostoNotte()%>, <%=s.getAnimaleDomestico()%>, <%=s.getFumatore()%>, <%=s.getSconto()%>, "<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'></a></span>
+                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit" data-toggle="modal" data-target="#modalEditStanza" onclick='editStanza(<%=s.getLettiSingoli()%>, <%=s.getLettiMatrimoniali()%>, <%=s.getCostoNotte()%>, <%=s.getAnimaleDomestico()%>, <%=s.getFumatore()%>, <%=s.getSconto()%>, "<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getIdStanza()%>)'></a></span>
 
                 </td>
             </tr>
@@ -230,6 +230,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" id="idStanza" value="">
                     <input type="hidden" id="tokenUtenteEdit" value="">
                     <input type="hidden" id="idUtenteEdit" value="">
                 </form>

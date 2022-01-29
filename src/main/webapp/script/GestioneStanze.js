@@ -45,7 +45,10 @@ function CreazioneStanza(){
                 Swal.fire({
                     icon: 'success',
                     title: result.Mess,
+                }).then(function(){
+                    location.reload();
                 })
+                $(".modal .close").click();
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -60,14 +63,14 @@ function CreazioneStanza(){
 
 
 
-function editStanza(lettiSingoli, lettiMatrimoniali, costoNotte, animaleDomestico, fumatore, sconto, tokenUtente, idUtente) {
+function editStanza(lettiSingoli, lettiMatrimoniali, costoNotte, animaleDomestico, fumatore, sconto, tokenUtente, idUtente,idStanza) {
     $("#lettiSingoliEdit").val(lettiSingoli);
     $("#lettiMatrimonialiEdit").val(lettiMatrimoniali);
     $("#costoNotteEdit").val(costoNotte);
     $("#scontoEdit").val(sconto);
     $("#tokenUtenteEdit").val(tokenUtente);
     $("#idUtenteEdit").val(idUtente);
-
+    $("#idStanza").val(idStanza);
 
     // se val = true allora seleziona la checkbox altrimenti non la seleziona
     animaleDomestico ? $("#checkAnimDomEdit").prop('checked', true) : $("#checkAnimDomEdit").prop('checked', false);
@@ -85,10 +88,12 @@ function updateStanza(){
     let checkFumatore = $("#checkFumatoreEdit").is(":checked");
     let tokenUtente = $("#tokenUtenteEdit").val();
     let idUtente = $("#idUtenteEdit").val();
+    let idStanza = $("#idStanza").val();
 
     var data = {
         idUtente : idUtente,
         Token : tokenUtente,
+        idStanza : idStanza,
         LettiS : lettiSingoli,
         LettiM : lettiMatrimoniali,
         Costo : costoNotte,
@@ -107,7 +112,10 @@ function updateStanza(){
                  Swal.fire({
                      icon: 'success',
                      title: result.Mess,
+                 }).then(function(){
+                     location.reload();
                  })
+                 $(".modal .close").click();
              } else {
                  Swal.fire({
                      icon: 'error',
