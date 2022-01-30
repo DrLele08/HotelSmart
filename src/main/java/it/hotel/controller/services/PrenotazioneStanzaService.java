@@ -8,6 +8,7 @@ import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.Prenotazion
 
 import java.security.SecureRandom;
 import java.sql.Date;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Random;
 
@@ -113,9 +114,15 @@ public class PrenotazioneStanzaService {
         SecureRandom rnd = new SecureRandom();
         int len=48;
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++)
-            sb.append(AB.charAt(rnd.nextInt(AB.length())));
-        dao.doInsertTokenQrCode(idPrenotazione, sb.toString());
+        boolean duplicate = true;
+        while (duplicate) {
+            try {
+                for (int i = 0; i < len; i++)
+                    sb.append(AB.charAt(rnd.nextInt(AB.length())));
+                dao.doInsertTokenQrCode(idPrenotazione, sb.toString());
+                duplicate = false;
+            } catch (SQLIntegrityConstraintViolationException e) {}
+        }
     }
 
 }

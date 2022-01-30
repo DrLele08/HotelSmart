@@ -132,7 +132,7 @@ public class PrenotazioneStanzaDAO {
      * @throws PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-    public void doInsertTokenQrCode(int idPrenotazione, String tokenQr) throws PrenotazioneStanzaNotFoundException {
+    public void doInsertTokenQrCode(int idPrenotazione, String tokenQr) throws PrenotazioneStanzaNotFoundException, SQLIntegrityConstraintViolationException {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("UPDATE PrenotazioneStanza SET tokenQr=? WHERE idPrenotazioneStanza=?",
@@ -144,6 +144,9 @@ public class PrenotazioneStanzaDAO {
             if (rs==0) {
                 throw new PrenotazioneStanzaNotFoundException();
             }
+        }
+        catch (SQLIntegrityConstraintViolationException e) {
+            throw new SQLIntegrityConstraintViolationException();
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
