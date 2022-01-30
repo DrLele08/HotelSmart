@@ -3,11 +3,25 @@ package it.hotel.Utility;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Properties;
-
+/**
+ * <h1>Invio Email</h1>
+ * Invio di una mail
+ * @author Sais Raffaele
+ * @version 1.6
+ * @since 2022-02-03
+ */
 public class Email
 {
+    /**
+     * Email del mittente
+     */
     private static final String senderEmail = "tsw@saisraffaele.it";
+    /**
+     * Password del mittente
+     */
     private static final String senderPassword = ";7@rk$u0lOX8";
 
     public static void sendAsHtml(String to, String title, String html) throws MessagingException
@@ -19,6 +33,7 @@ public class Email
         Transport.send(message);
         System.out.println("Done");
     }
+
 
     private static void prepareEmailMessage(MimeMessage message, String to, String title, String html) throws MessagingException
     {

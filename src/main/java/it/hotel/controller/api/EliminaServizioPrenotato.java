@@ -2,7 +2,6 @@ package it.hotel.controller.api;
 
 import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.PrenotazioneServizioService;
-import it.hotel.controller.services.ServizioService;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
@@ -12,10 +11,24 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-
+/**
+ * <h1>Eliminazione di un servizio prenotato</h1>
+ * API per eliminare una prenotazione di un servizio effettuata da un cliente
+ * @author Sais Raffaele
+ * @version 1.0
+ * @since 2022-01-17
+ */
 @WebServlet(name = "EliminaServizioPrenotato", value = "/api/EliminaServizioPrenotato")
 public class EliminaServizioPrenotato extends CheckServlet
 {
+    /**
+     * Richiesta che riceve l'ID della prenotazione del servizio
+     * e il token dell'utente per controllare se ha i permessi per l'operazione
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

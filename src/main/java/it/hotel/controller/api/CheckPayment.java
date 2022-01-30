@@ -19,10 +19,24 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-
+/**
+ * <h1>Controllo del pagamento</h1>
+ * API per verificare il pagamento di una prenotazione
+ * @author Sais Raffaele
+ * @version 1.3
+ * @since 2022-01-30
+ */
 @WebServlet(name = "CheckPayment", value = "/api/CheckPayment")
 public class CheckPayment extends CheckServlet
 {
+    /**
+     * Richiesta che riceve la prenotazione
+     * e controlla se il pagamento è stato effettuato
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

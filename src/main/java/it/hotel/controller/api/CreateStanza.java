@@ -3,20 +3,31 @@ package it.hotel.controller.api;
 import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.StanzaService;
 import it.hotel.controller.services.UtenteService;
-import it.hotel.model.stanza.Stanza;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.json.JSONObject;
 
-import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-
+/**
+ * <h1>Creazione di una stanza</h1>
+ * API per creare una stanza dove effettuare prenotazioni
+ * @author Sais Raffaele
+ * @version 1.1
+ * @since 2022-01-30
+ */
 @WebServlet(name = "CreateStanza", value = "/api/CreateStanza")
 public class CreateStanza extends CheckServlet
 {
-
+    /**
+     * Richiesta che riceve i dati della stanza e il token
+     * dell'utente per controllare se ha i permessi per l'operazione
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {

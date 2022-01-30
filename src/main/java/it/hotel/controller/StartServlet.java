@@ -16,7 +16,7 @@ public class StartServlet extends CheckServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         RequestDispatcher requestDispatcher=request.getRequestDispatcher("WEB-INF/views/index.jsp");
-        Optional<Utente> us=getUtente(request,response);
+        Optional<Utente> us=getUtente(request);
         if(us.isPresent())
         {
             HttpSession session=request.getSession(true);

@@ -66,7 +66,7 @@
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container custom-container">
         <h1 class="display-4">Conferma la tua prenotazione</h1><br>
-        <div class="card mb-3 custom-elem" style="width: 75vw;">
+        <div class="card mb-3 custom-elem">
             <img class="card-img-top" src="${pageContext.request.contextPath}/images/hotelroom0.jpg" alt="Room image">
             <div class="card-body" style="background-color: #cdd7e2; text-align: left">
                 <ul>

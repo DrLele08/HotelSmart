@@ -4,18 +4,29 @@ import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
 import org.json.JSONObject;
-
-import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.text.ParseException;
 
-
+/**
+ * <h1>Modifica Anagrafica Utente</h1>
+ * API per modificare l'anagrafica di un utente
+ * @author Sais Raffaele
+ * @version 1.1
+ * @since 2022-01-22
+ */
 @WebServlet(name = "ModificaAnagrafica", value = "/api/ModificaAnagrafica")
 public class ModificaAnagrafica extends CheckServlet
 {
-
+    /**
+     * Richiesta che riceve tutti i dati dell'utente incluso il suo token per
+     * verificare che sia davvero lui
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {

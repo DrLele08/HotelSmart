@@ -12,10 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * <h1>Modifica Anagrafica Utente</h1>
+ * API per modificare le caratteristiche di una stanza
+ * @author Sais Raffaele
+ * @version 1.2
+ * @since 2022-01-25
+ */
 @WebServlet(name = "UpdateStanza", value = "/api/UpdateStanza")
 public class UpdateStanza extends CheckServlet
 {
-
+    /**
+     * Richiesta che riceve tutti i nuovi dati relativi alla stanza scelta
+     * e un token per verificare che l'utente che ha generato la richiesta abbia i permessi
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {

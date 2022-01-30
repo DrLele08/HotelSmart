@@ -22,7 +22,7 @@ public class GestionePrenotazioniServlet extends CheckServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         RequestDispatcher rd;
-        Optional<Utente> us=getUtente(request,response);
+        Optional<Utente> us=getUtente(request);
         if(!us.isPresent())
         {
             rd = request.getRequestDispatcher("./");

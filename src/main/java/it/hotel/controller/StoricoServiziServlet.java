@@ -25,16 +25,16 @@ public class StoricoServiziServlet extends CheckServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         RequestDispatcher rd;
-        Optional<Utente> us=getUtente(request,response);
+        Optional<Utente> us=getUtente(request);
         if(!us.isPresent())
         {
             rd=request.getRequestDispatcher("./");
         }
         else
         {
-            PrenotazioneServizioService service = new PrenotazioneServizioService();
-            //List<PrenotazioneServizio> prenotazioneServizio = service.getAll();
-            //request.setAttribute("PrenotazioneServizi", prenotazioneServizio);
+            ServizioService servizioService=new ServizioService();
+            List<Servizio> prenotazioneServizio = servizioService.getByUser(us.get().getIdUtente());
+            request.setAttribute("Servizi", prenotazioneServizio);
             request.setAttribute("Tipo",4);
             rd=request.getRequestDispatcher("/WEB-INF/views/StoricoServizi.jsp");
         }

@@ -11,10 +11,24 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-
+/**
+ * <h1>Creazione di un servizio</h1>
+ * API per creare un servizio per Hotel da offrire ai clienti
+ * @author Sais Raffaele
+ * @version 1.0
+ * @since 2022-01-24
+ */
 @WebServlet(name = "CreateServizio", value = "/api/CreateServizio")
 public class CreateServizio extends CheckServlet
 {
+    /**
+     * Richiesta che riceve i dati del servizio e il token
+     * dell'utente per controllare se ha i permessi per l'operazione
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

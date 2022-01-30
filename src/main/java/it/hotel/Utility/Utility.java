@@ -1,6 +1,5 @@
 package it.hotel.Utility;
 
-import com.stripe.Stripe;
 import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.stato.Stato;
 
@@ -10,15 +9,39 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * <h1>Utility Generiche</h1>
+ * Contiene tutte le informazioni generiche per offrire i servizi
+ * @author Sais Raffaele
+ * @version 1.9
+ * @since 2022-12-15
+ */
 public class Utility
 {
+    /**
+     * Pattern per la password degli utenti
+    */
     public static final String PASSWORD_PATTERN =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+    /**
+     * Lunghezza token autenticazione
+    */
     public static final int lenghtAuth=64;
+    /**
+     * API Key di Stripe
+    */
     public static final String stripeKey="sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP";
+    /**
+     * Nome dell'attributo utente all'interno della sessione
+    */
     public static final String SESSION_USER="idUsSe";
+    /**
+     * Nome del ID dell'utente per il cookie
+    */
     public static final String COOKIE_ID="idUsCo";
+    /**
+     * Nome del tokenAuth dell'utente per il cookie
+    */
     public static final String COOKIE_TOKEN="toUsCo";
     public static final String CHECK_LOGIN="ACTIVE_LOGIN";
     public static List<Ruolo> listRuoli=new ArrayList<>();
@@ -44,4 +67,5 @@ public class Utility
         final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         return formatter.format(date);
     }
+
 }

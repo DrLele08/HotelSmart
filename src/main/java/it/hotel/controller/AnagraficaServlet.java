@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.model.utente.Utente;
 
 import javax.servlet.*;
@@ -15,7 +14,7 @@ public class AnagraficaServlet extends CheckServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        Optional<Utente> us=getUtente(request,response);
+        Optional<Utente> us=getUtente(request);
         if(!us.isPresent())
         {
             response.sendRedirect("./");

@@ -6,6 +6,7 @@ import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 
+import java.security.SecureRandom;
 import java.sql.Date;
 import java.util.List;
 import java.util.Random;
@@ -105,19 +106,16 @@ public class PrenotazioneStanzaService {
      * Inserisce nella prenotazione stanza specificata un Token Qr Code alfanumerico generato casualmente.
      * @param idPrenotazione Identificativo della prenotazione stanza
      */
-    public void generateQrCode(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
-        int leftLimit = 48;
-        int rightLimit = 122;
-        int targetStringLength = 64;
-        Random random = new Random();
-
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-
-        dao.doInsertTokenQrCode(idPrenotazione, generatedString);
+    public void generateQrCode(int idPrenotazione) throws PrenotazioneStanzaNotFoundException
+    {
+        //TODO GIOVANNI Bisogna controllare che il token generato sia UNIQUE
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        int len=48;
+        StringBuilder sb = new StringBuilder(len);
+        for(int i = 0; i < len; i++)
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        dao.doInsertTokenQrCode(idPrenotazione, sb.toString());
     }
 
 }

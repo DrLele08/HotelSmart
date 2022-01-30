@@ -5,8 +5,10 @@ function checkPayment(){
     $.ajax({
         url: 'api/CheckPayment',
         dataType: "json",
-        type: "post",
-        data: idPreno,
+        type: "GET",
+        data: {
+            idPreno:idPreno
+        },
         success: function (result) {
             if (result.Ris == 1) {
                 document.getElementById("success").style.display = "block";

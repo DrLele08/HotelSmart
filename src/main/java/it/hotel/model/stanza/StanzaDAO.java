@@ -292,18 +292,6 @@ public class StanzaDAO {
         }
     }
 
-    /*private void lettiSingoliStr(List<String> parametri, Integer lettiSingoli) {
-        if (lettiSingoli != null) {
-            parametri.add("lettiSingoli = " + lettiSingoli);
-        }
-    }
-
-    private void lettiMatrimonialiStr(List<String> parametri, Integer lettiMatrimoniali) {
-        if (lettiMatrimoniali != null) {
-            parametri.add("lettiMatrimoniali = " + lettiMatrimoniali);
-        }
-    }*/
-
     private void numeroOspitiStr(List<String> parametri, Integer numeroOspiti) {
         if (numeroOspiti != null) {
             parametri.add("lettiMatrimoniali*2 + lettiSingoli = " + numeroOspiti);

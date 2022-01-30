@@ -11,9 +11,24 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
+/**
+ * <h1>Modifica Anagrafica Utente</h1>
+ * API per modificare i permessi di un utente
+ * @author Sais Raffaele
+ * @version 1.0
+ * @since 2022-01-28
+ */
 @WebServlet(name = "ModificaPermessi", value = "/api/ModificaPermessi")
 public class ModificaPermessi extends CheckServlet
 {
+    /**
+     * Richiesta che riceve il nuovo ruolo dell'utente selezionato
+     * e un token per verificare che l'utente che ha generato la richiesta abbia i permessi
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

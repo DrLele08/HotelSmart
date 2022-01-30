@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
     <script src="${pageContext.request.contextPath}/script/Ricerca.js"></script>
+    <script src="${pageContext.request.contextPath}/script/CheckPayment.js"></script>
 
     <style>
 

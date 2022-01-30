@@ -17,7 +17,7 @@ public class GestioneUtentiServlet extends CheckServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        Optional<Utente> us=getUtente(request,response);
+        Optional<Utente> us=getUtente(request);
         if(us.isPresent() && (us.get().getRuolo()==1 || us.get().getRuolo()==2))
         {
             UtenteService service=new UtenteService();

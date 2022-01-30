@@ -1,7 +1,4 @@
 package it.hotel.Utility;
-
-
-
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 

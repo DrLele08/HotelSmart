@@ -19,7 +19,7 @@
             <ul class="dropdown-menu dropdown-menu-left">
                 <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Login">Home</a></li>
             </ul>
-        </span>
+    </span>
     <div class="navbar-nav mr-auto">
         <a class="nav-item nav-link active onlyDesktop" href="${pageContext.request.contextPath}">Home</a>
         <a class="nav-item nav-link onlyDesktop" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a>
