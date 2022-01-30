@@ -3,6 +3,10 @@ $(document).ready(function() {
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
         },
+        rowReorder: {
+            selector: 'td:nth-child(2)'
+        },
+        responsive: true
     } );
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()

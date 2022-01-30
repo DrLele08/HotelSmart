@@ -36,7 +36,12 @@ function Registrazione()
                 data: data,
                 success: function (result) {
                     if (result.status)
-                        window.location.replace("./");
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.Mess,
+                        }).then(function() {
+                            window.location.replace("./");
+                        });
                     if (result.data == "EMAIL PROBLEMA")
                         Swal.fire({
                             icon: 'error',

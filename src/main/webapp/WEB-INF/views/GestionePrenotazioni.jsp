@@ -10,6 +10,8 @@
 <%@ page import="it.hotel.Utility.Utility" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Optional" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.sql.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -21,7 +23,9 @@
         <jsp:param name="styles" value="header.css"/>
     </jsp:include>
     <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <script src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/AreaPrivataSidebar.js"></script>
     <script src="${pageContext.request.contextPath}/script/GestionePrenotazione.js"></script>
@@ -75,19 +79,19 @@
                         switch(p.getKsStato()){
                             case 1:
                     %>
-                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id=iconAnnullaOrdineAdmin"" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
+                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="fa fa-times" id=iconAnnullaOrdineAdmin"" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
                     <%   break;
                         case 2:
                     %>
-                    <span data-toggle="tooltip" title="Chek-In"> <a class="bi bi-cash" id="iconCheckIn" onclick='iconFillData(3,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckIn"></a></span>
+                    <span data-toggle="tooltip" title="Chek-In"> <a class="fa fa-check" id="iconCheckIn" onclick='iconFillData(3,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckIn"></a></span>
                     <%   break;
                         case 3:
                     %>
-                    <span data-toggle="tooltip" title="Check-Out"> <a class="bi bi-cash" id="iconCheckOut" onclick='iconFillData(4,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckOut" ></a></span>
+                    <span data-toggle="tooltip" title="Check-Out"> <a class="fa fa-sign-out" id="iconCheckOut" onclick='iconFillData(4,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckOut" ></a></span>
                     <%   break;
                         case 4: case 5: case 6:
                     %>
-                    <a data-toggle="tooltip" title="Completata" class="bi bi-archive"></a>
+                    <span><a data-toggle="tooltip" title="Completata" class="fa fa-archive"></a></span>
                     <%   break;
                     }%>
 
@@ -100,21 +104,26 @@
                         switch(p.getKsStato()){
                             case 1:
                     %>
-                    <span data-toggle="tooltip" title="Effettuare pagamento"><a class="bi bi-credit-card" data-toggle="modal"  data-target="#modalPagamento"></a></span>
-                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="bi bi-x-square-fill" id="iconAnnullaOrdineUser" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
+                    <span data-toggle="tooltip" title="Effettuare pagamento"><a class="bi bi-credit-card" href="PagamentoServlet?idPreno=<%=p.getIdPrenotazioneStanza()%>"></a></span>
+                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="fa fa-times" id="iconAnnullaOrdineUser" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
                     <%   break;
                         case 2:
+                            long miliseconds = System.currentTimeMillis();
+                            Date dataAttuale = new Date((miliseconds + (1000 * 60 * 60 * 24 * 13)));
+                            if((dataAttuale.compareTo(p.getDataInizio())) <= 0){
                     %>
-                    <span data-toggle="tooltip" title="Richiedi rimborso"> <a class="bi bi-cash" id="iconRichiediRimborso" onclick='iconFillData(5,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a></span>
-                    <%   break;
+                        <span data-toggle="tooltip" title="Richiedi rimborso"> <a class="fas fa-sack-dollar" id="iconRichiediRimborso" onload="rimborsoGiorni(<%=p.getDataInizio()%>)" onclick='iconFillData(5,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a></span>
+                    <%  }
+                        break;
                         case 3:
                     %>
-                    <a class="bi bi-bag-plus" data-toggle="tooltip" title="Prenota servizi" href="${pageContext.request.contextPath}/servizi/goservizi"></a>
+
+                    <span><a class="bi bi-bag-plus" data-toggle="tooltip" title="Prenota servizi" href="${pageContext.request.contextPath}/servizi/goservizi"></a></span>
                     <span data-toggle="tooltip" title="Visualizza codice qr"><a class="fa fa-qrcode" onclick='iconTokenQr("<%=p.getTokenQr()%>")' data-toggle="modal" data-target="#modalCodiceQr"></a></span>
                     <%   break;
                         case 4: case 5: case 6:
                     %>
-                    <a data-toggle="tooltip" title="Completata" class="bi bi-archive"></a>
+                    <span><a data-toggle="tooltip" title="Completata" class="fa fa-archive"></a></span>
                     <%   break;
                     }%>
                 </td>
