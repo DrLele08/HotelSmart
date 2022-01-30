@@ -109,20 +109,21 @@ public class PrenotazioneStanzaService {
      */
     public void generateQrCode(int idPrenotazione) throws PrenotazioneStanzaNotFoundException
     {
-        //TODO GIOVANNI Bisogna controllare che il token generato sia UNIQUE
         final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         SecureRandom rnd = new SecureRandom();
         int len=48;
         StringBuilder sb = new StringBuilder(len);
-        boolean duplicate = true;
-        while (duplicate) {
+        boolean duplicate;
+        do {
             try {
                 for (int i = 0; i < len; i++)
                     sb.append(AB.charAt(rnd.nextInt(AB.length())));
                 dao.doInsertTokenQrCode(idPrenotazione, sb.toString());
                 duplicate = false;
-            } catch (SQLIntegrityConstraintViolationException e) {}
-        }
+            } catch (SQLIntegrityConstraintViolationException e) {
+                duplicate = true;
+            }
+        } while (duplicate);
     }
 
 }
