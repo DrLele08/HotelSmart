@@ -33,16 +33,25 @@ public class PrenotazioneStanzaDAO {
     public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, Date dataInizio, Date dataFine,
                                        double prezzoFinale, String commenti, int valutazione)
             throws PrenotazioneStanzaInsertException {
+
+        /*
+        Se esistono prenotazioni per la stessa stanza, in un arco temporale anche solo parzialmente sovrapposto,
+        e con stato diverso da ANNULLATA, ARCHIVIATA o RIMBORSATA, lancio PrenotazioneStanzaInsertException().
+        */
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT idPrenotazioneStanza FROM PrenotazioneStanza WHERE " +
-                            "dataFine >= ? AND dataInizio <= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE " +
+                            "ksStanza=? AND dataFine >= ? AND dataInizio <= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE " +
                             "(st.stato = 'ANNULLATA') OR (st.stato = 'ARCHIVIATA') OR (st.stato = 'RIMBORSATA'))",
                     Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, ksStanza);
+            ps.setDate(2, dataInizio);
+            ps.setDate(3, dataFine);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 throw new PrenotazioneStanzaInsertException();
             }
 
+            //recupero l'idStato dello stato 'IN ATTESA DI PAGAMENTO';
             ps = con.prepareStatement("SELECT idStato FROM Stato st " +
                     "WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\') LIMIT 1",
                     Statement.RETURN_GENERATED_KEYS);
@@ -54,6 +63,7 @@ public class PrenotazioneStanzaDAO {
                 throw new PrenotazioneStanzaInsertException();
             }
 
+            //se l'utente non ha altre prenotazioni 'IN ATTESA DI PAGAMENTO', inserisco la nuova prenotazione con questo stato;
             ps = con.prepareStatement
                     ("INSERT INTO PrenotazioneStanza (ksUtente, ksStanza," +
                                     " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
