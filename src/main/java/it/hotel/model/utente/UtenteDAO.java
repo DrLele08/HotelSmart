@@ -246,8 +246,8 @@ public class UtenteDAO {
     {
         try (Connection con = Connect.getConnection())
         {
-            //controllo che la nuova email non sia presente nel database;
-            if (isEmailInDatabase(con, email)) {
+            //se la nuova email è presente nel database ma è diversa da quella vecchia, lancio un'eccezione;
+            if (isEmailInDatabase(con, email) && !isEmailOld(con ,idUtente, email)) {
                 throw new EmailAlreadyExistingException();
             }
 
@@ -321,6 +321,15 @@ public class UtenteDAO {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE email=?",
                 Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+        return rs.next();
+    }
+
+    private boolean isEmailOld(Connection con, int idUtente, String email) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE idUtente=? AND email=?",
+                Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idUtente);
+        ps.setString(2, email);
         ResultSet rs = ps.executeQuery();
         return rs.next();
     }
