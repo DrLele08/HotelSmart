@@ -1,9 +1,7 @@
 package it.hotel.model.utente.utenteExceptions;
 
-import it.hotel.model.utente.UtenteDAO;
-
 /**
- * Segnala che l'email che un oggetto {@link UtenteDAO} cerca nel database non è stata trovata.
+ * Segnala che l'email non è presente nel database.
  */
 public class EmailNotFoundException extends Exception {
 

@@ -1,9 +1,7 @@
 package it.hotel.model.utente.utenteExceptions;
 
-import it.hotel.model.utente.UtenteDAO;
-
 /**
- * Segnala che la password che un oggetto {@link UtenteDAO} sta utilizzando non ha un riscontro nel database.
+ * Segnala che la password non è valida.
  */
 public class PasswordNotValidException extends Exception {
 
