@@ -118,6 +118,7 @@ CREATE TABLE PrenotazioneServizio
 	ksPrenotazioneStanza INT NOT NULL,
 	ksServizio INT NOT NULL,
 	numPersone INT NOT NULL,
+    dataPrenotazioneServizio DATE NOT NULL,
 	PRIMARY KEY (idPrenotazioneServizio),
 	FOREIGN KEY (ksPrenotazioneStanza) REFERENCES PrenotazioneStanza(idPrenotazioneStanza),
 	FOREIGN KEY (ksServizio) REFERENCES Servizio(idServizio)

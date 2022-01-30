@@ -14,16 +14,19 @@ public class PrenotazioneServizioDAO {
      * @param ksPrenotazioneStanza Identificativo della prenotazione stanza associata
      * @param ksServizio Identificativo del servizio
      * @param numPersone Numero delle persone
+     * @param dataPrenotazioneServizio Data della prenotazione del servizio
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-    public PrenotazioneServizio doInsert(int ksPrenotazioneStanza, int ksServizio, int numPersone) {
+    public PrenotazioneServizio doInsert(int ksPrenotazioneStanza, int ksServizio, int numPersone, Date dataPrenotazioneServizio) {
         try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
-                    ("INSERT INTO PrenotazioneServizio (ksPrenotazioneStanza, ksServizio, numPersone) VALUES(?,?,?)",
+                    ("INSERT INTO PrenotazioneServizio (ksPrenotazioneStanza, ksServizio, numPersone, " +
+                                    "dataPrenotazioneServizio) VALUES(?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ksPrenotazioneStanza);
             ps.setInt(2, ksServizio);
             ps.setInt(3, numPersone);
+            ps.setDate(4, dataPrenotazioneServizio);
             ps.executeUpdate();
             int id;
             ResultSet rs = ps.getGeneratedKeys();
@@ -32,7 +35,7 @@ public class PrenotazioneServizioDAO {
             } else {
                 return null;
             }
-            return new PrenotazioneServizio(id, ksPrenotazioneStanza, ksServizio, numPersone);
+            return new PrenotazioneServizio(id, ksPrenotazioneStanza, ksServizio, numPersone, dataPrenotazioneServizio);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -56,7 +59,7 @@ public class PrenotazioneServizioDAO {
     }
 
     private PrenotazioneServizio createPrenotazioneServizio(ResultSet rs) throws SQLException {
-        return new PrenotazioneServizio(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
+        return new PrenotazioneServizio(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5));
     }
 
 }
