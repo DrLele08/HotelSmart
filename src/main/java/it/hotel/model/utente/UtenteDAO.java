@@ -75,29 +75,23 @@ public class UtenteDAO {
 
     /**
      * Recupera un oggetto Utente dal database secondo idUtente e tokenAuth specificati.
+     * @param con Connessione al database
      * @param idUtente L'identificativo dell'utente da recuperare
      * @param tokenAuth Il token di autenticazione dell'utente da recuperare
      * @return L'utente recuperato dal database
      * @throws UtenteNotFoundException Nel database non è presente un utente con i valori specificati
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public Utente doAuthenticate(int idUtente, String tokenAuth)
-            throws UtenteNotFoundException {
-        try (Connection con = Connect.getConnection())
-        {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idUtente);
-            ps.setString(2, tokenAuth);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return createUtente(rs);
-            } else {
-                throw new UtenteNotFoundException();
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+    public Utente doAuthenticate(Connection con, int idUtente, String tokenAuth) throws UtenteNotFoundException, SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
+                Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idUtente);
+        ps.setString(2, tokenAuth);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return createUtente(rs);
+        } else {
+            throw new UtenteNotFoundException();
         }
     }
 
@@ -136,65 +130,54 @@ public class UtenteDAO {
 
     /**
      * Elimina un oggetto Utente dal database.
+     * @param con Connessione al database
      * @param idUtente L'identificativo dell'utente da eliminare
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doDelete(int idUtente)  {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("DELETE FROM Utente WHERE idUtente=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idUtente);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void doDelete(Connection con, int idUtente) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("DELETE FROM Utente WHERE idUtente=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idUtente);
+        ps.executeUpdate();
     }
 
     /**
      * Recupera il ruolo di un oggetto Utente nel database.
+     * @param con Connessione al database
      * @param idUtente L'identificativo dell'utente da recuperare
      * @param tokenAuth Il token di autenticazione dell'utente da recuperare
      * @return Il ruolo dell'utente recuperato
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public int doGetRuolo(int idUtente, String tokenAuth)
+    public int doGetRuolo(Connection con, int idUtente, String tokenAuth) throws SQLException
     {
-        try (Connection con = Connect.getConnection())
-        {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idUtente);
-            ps.setString(2, tokenAuth);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next())
-                return rs.getInt("ksRuolo");
-            else
-                return -1;
-        } catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Utente WHERE idUtente=? AND tokenAuth=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idUtente);
+        ps.setString(2, tokenAuth);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next())
+            return rs.getInt("ksRuolo");
+        else
+            return -1;
     }
 
     /**
      * Modifica il ruolo di un oggetto Utente nel database.
+     * @param con Connessione al database
      * @param idUtente L'identificativo dell'utente da modificare
      * @param ksRuolo Il nuovo ruolo dell'utente da modificare
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doChangeRuolo(int idUtente, int ksRuolo) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("UPDATE Utente SET ksRuolo=? WHERE idUtente=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, ksRuolo);
-            ps.setInt(2, idUtente);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void doChangeRuolo(Connection con, int idUtente, int ksRuolo) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("UPDATE Utente SET ksRuolo=? WHERE idUtente=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, ksRuolo);
+        ps.setInt(2, idUtente);
+        ps.executeUpdate();
     }
 
     /**
@@ -225,47 +208,39 @@ public class UtenteDAO {
 
     /**
      * Recupera dal database l'oggetto utente a cui corrisponde la prenotazione stanza specificata.
+     * @param con Connessione al database
      * @param idPrenotazione L'identificativo della prenotazione stanza
      * @return L'utente trovato nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public Utente doSelectByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT Utente.* FROM Utente, PrenotazioneStanza WHERE idPrenotazioneStanza=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idPrenotazione);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return createUtente(rs);
-            } else {
-                throw new UtenteNotFoundException();
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+    public Utente doSelectByPrenotazioneStanza(Connection con, int idPrenotazione) throws UtenteNotFoundException, SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT Utente.* FROM Utente, PrenotazioneStanza WHERE idPrenotazioneStanza=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idPrenotazione);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return createUtente(rs);
+        } else {
+            throw new UtenteNotFoundException();
         }
     }
 
     /**
      * Recupera tutti gli oggetti Utente presenti nel database.
+     * @param con Connessione al database
      * @return Gli utenti presenti nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Utente> getUtenti() {
+    public List<Utente> getUtenti(Connection con) throws SQLException {
         ArrayList<Utente> utenti = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Utente",
-                            Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                utenti.add(createUtente(rs));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Utente",
+                        Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            utenti.add(createUtente(rs));
         }
         return utenti;
     }

@@ -72,13 +72,20 @@ public class UtenteService
      * @param tokenAuth Token dell'utente
      * @return Utente trovato
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     * @throws RuntimeException Errore nella comunicazione con il database
      * @throws IllegalArgumentException Dati non validi
      * @see Utente
      */
     public Utente doLogin(int idUtente,String tokenAuth) throws UtenteNotFoundException {
         if(!tokenAuth.trim().isEmpty())
         {
-            return dao.doAuthenticate(idUtente,tokenAuth);
+            try (Connection con = Connect.getConnection()) {
+
+                return dao.doAuthenticate(con, idUtente, tokenAuth);
+
+            } catch (SQLException e) {
+                throw new RuntimeException();
+            }
         }
         else
             throw new IllegalArgumentException();
@@ -153,10 +160,13 @@ public class UtenteService
         Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
         if(!token.trim().isEmpty() && !oldPwd.trim().isEmpty() && !newPwd.trim().isEmpty() && pattern.matcher(newPwd).matches())
         {
-            int tipoRuolo = dao.doGetRuolo(idUtente, token);
-            if (tipoRuolo == 2 || tipoRuolo == 1 || tipoRuolo == 3) {
                 try (Connection con = Connect.getConnection()) {
                     con.setAutoCommit(false);
+
+                    int tipoRuolo = dao.doGetRuolo(con, idUtente, token);
+                    if (tipoRuolo == 2 || tipoRuolo == 1 || tipoRuolo == 3) {
+                        throw new PermissionDeniedException();
+                    }
 
                     if (dao.isPasswordValid(con, idUtente, oldPwd)) {
                         dao.doChangePassword(con, idUtente, newPwd);
@@ -169,9 +179,6 @@ public class UtenteService
                 } catch (SQLException e) {
                     throw new RuntimeException();
                 }
-            }
-            else
-                throw new PermissionDeniedException();
         }
         else
             throw new IllegalArgumentException();
@@ -217,26 +224,47 @@ public class UtenteService
      * @param idPrenotazione Identificativo della prenotazione stanza
      * @return Utente trovato
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Utente getUtenteByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
-        return dao.doSelectByPrenotazioneStanza(idPrenotazione);
+        try (Connection con = Connect.getConnection()) {
+
+            return dao.doSelectByPrenotazioneStanza(con, idPrenotazione);
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
      * Recupera tutti gli utenti presenti nel database.
      * @return Lista contenente gli utenti trovati
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<Utente> getAll() {
-        return dao.getUtenti();
+        try (Connection con = Connect.getConnection()) {
+
+            return dao.getUtenti(con);
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
      * Modifica il ruolo di un utente secondo i valori specificati.
      * @param idUtente Identificativo dell'utente
      * @param ruolo Ruolo da inserire
+     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public void editRuoloById(int idUtente, int ruolo) {
-        dao.doChangeRuolo(idUtente, ruolo);
+        try (Connection con = Connect.getConnection()) {
+
+            dao.doChangeRuolo(con, idUtente, ruolo);
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
 }
