@@ -2,34 +2,43 @@ package it.hotel.controller.services;
 
 import it.hotel.Utility.Connect;
 import it.hotel.Utility.Utility;
-import it.hotel.controller.exception.PagamentoInAttesaException;
+import it.hotel.model.personaAggiuntiva.PersonaAggiuntiva;
+import it.hotel.model.personaAggiuntiva.PersonaAggiuntivaDAO;
+import it.hotel.model.personaPrenotazione.PersonaPrenotazioneDAO;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.StanzaDAO;
+import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
 
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.ParseException;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Fornisce metodi di utilizzo del database per {@link PrenotazioneStanza}.
  */
 public class PrenotazioneStanzaService {
 
-    private final PrenotazioneStanzaDAO dao;
+    private final PrenotazioneStanzaDAO prenotazioneStanzaDAO;
     private final StanzaDAO daoStanza;
+    private final PersonaAggiuntivaDAO personaAggiuntivaDAO;
+    private final PersonaPrenotazioneDAO personaPrenotazioneDAO;
+
     /**
      * Costruisce un oggetto PrenotazioneStanzaService.
      */
     public PrenotazioneStanzaService() {
-        this.dao = new PrenotazioneStanzaDAO();
-        this.daoStanza=new StanzaDAO();
+        this.prenotazioneStanzaDAO = new PrenotazioneStanzaDAO();
+        this.daoStanza = new StanzaDAO();
+        this.personaAggiuntivaDAO = new PersonaAggiuntivaDAO();
+        this.personaPrenotazioneDAO = new PersonaPrenotazioneDAO();
     }
 
     /**
@@ -38,25 +47,34 @@ public class PrenotazioneStanzaService {
      * @param ksStanza Identificativo stanza
      * @param dataInizio Data d'inizio
      * @param dataFine Data di fine
-     * @param commenti Commenti
-     * @param valutazione Valutazione
+     * @param listExtra Lista di persone aggiuntive
      * @return Prenotazione stanza inserita
-     * @throws PagamentoInAttesaException Un altro pagamento è in attesa di essere completato
+     *
      */
-    public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, String  dataInizio, String dataFine,
-            String commenti, int valutazione) throws PagamentoInAttesaException {
-        try
-        {
-            Stanza s=daoStanza.doSelectById(ksStanza);
-            double costoNotte=s.getCostoNotte();
-            Date inizio=Utility.dataConverter(dataInizio);
-            Date fine=Utility.dataConverter(dataFine);
-            return dao.doInsert(ksUtente, ksStanza, dataInizio, dataFine, prezzoFinale, commenti, valutazione);
+    public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, String dataInizio, String dataFine, List<PersonaAggiuntiva> listExtra)
+            throws StanzaNotFoundException, ParseException, PrenotazioneStanzaInsertException, PrenotazioneStanzaNotFoundException {
+
+        PrenotazioneStanza prenotazione;
+        try (Connection con = Connect.getConnection()) {
+            con.setAutoCommit(false);
+
+            Stanza s = daoStanza.doSelectById(ksStanza);
+            double costoNotte = s.getCostoNotte();
+            Date inizio = Utility.dataConverter(dataInizio);
+            Date fine = Utility.dataConverter(dataFine);
+            prenotazione = prenotazioneStanzaDAO.doInsert(con, ksUtente, ksStanza, inizio, fine, costoNotte);
+            for (PersonaAggiuntiva persona : listExtra) {
+                int idPersona = personaAggiuntivaDAO.doInsert(con, ksUtente, persona.getCf(), persona.getNome(), persona.getCognome(), persona.getDataNascita()).getIdPersona();
+                personaPrenotazioneDAO.doInsert(con, idPersona, prenotazione.getIdPrenotazioneStanza());
+            }
+
+            con.commit();
+            con.setAutoCommit(true);
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
-        catch (PrenotazioneStanzaInsertException e)
-        {
-            throw new PagamentoInAttesaException();
-        }
+        return prenotazione;
+
     }
 
     /**
@@ -66,7 +84,7 @@ public class PrenotazioneStanzaService {
      * @return Prenotazioni stanza trovate
      */
     public List<PrenotazioneStanza> selectBy(int value, int type) {
-        return dao.doSelectBy(value, type);
+        return prenotazioneStanzaDAO.doSelectBy(value, type);
     }
 
     /**
@@ -74,7 +92,7 @@ public class PrenotazioneStanzaService {
      * @return Lista contenente le prenotazioni stanza trovate
      */
     public List<PrenotazioneStanza> getAll() {
-        return dao.doGetAll();
+        return prenotazioneStanzaDAO.doGetAll();
     }
 
     /**
@@ -84,7 +102,7 @@ public class PrenotazioneStanzaService {
      * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza non è stata trovata
      */
     public void editStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
-        dao.doChangeStato(idPrenotazioneStanza, stato);
+        prenotazioneStanzaDAO.doChangeStato(idPrenotazioneStanza, stato);
     }
 
     /**
@@ -94,7 +112,7 @@ public class PrenotazioneStanzaService {
      * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza cercata non è stata trovata
      */
     public PrenotazioneStanza getPrenotazioneById(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
-        return dao.doSelectById(idPrenotazione);
+        return prenotazioneStanzaDAO.doSelectById(idPrenotazione);
     }
 
     /**
@@ -103,7 +121,7 @@ public class PrenotazioneStanzaService {
      * @return Rimborsabilità della prenotazione
      */
     public boolean isRimborsabile(int idPrenotazione) {
-        return dao.isRimborsabile(idPrenotazione);
+        return prenotazioneStanzaDAO.isRimborsabile(idPrenotazione);
     }
 
     /**
@@ -112,7 +130,7 @@ public class PrenotazioneStanzaService {
      * @param tokenStripe Token da inserire
      */
     public void addTokenStripe(int idPrenotazione, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
-        dao.insertTokenStripe(idPrenotazione, tokenStripe);
+        prenotazioneStanzaDAO.insertTokenStripe(idPrenotazione, tokenStripe);
     }
 
     /**
@@ -130,7 +148,7 @@ public class PrenotazioneStanzaService {
             try {
                 for (int i = 0; i < len; i++)
                     sb.append(AB.charAt(rnd.nextInt(AB.length())));
-                dao.doInsertTokenQrCode(idPrenotazione, sb.toString());
+                prenotazioneStanzaDAO.doInsertTokenQrCode(idPrenotazione, sb.toString());
                 duplicate = false;
             } catch (SQLIntegrityConstraintViolationException e) {
                 duplicate = true;

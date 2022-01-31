@@ -47,7 +47,6 @@ public class PrenotazioneServlet extends CheckServlet
                 String dataInizio=request.getParameter("dataArrivo");
                 String dataFine=request.getParameter("dataPartenza");
                 List<PersonaAggiuntiva> listExtra=new ArrayList<>();
-                //ToDo Gestire Transaction
                 int numPersone=Integer.parseInt(request.getParameter("num_persone"));
                 if(numPersone>1)
                 {
@@ -60,14 +59,12 @@ public class PrenotazioneServlet extends CheckServlet
                             String cognome=request.getParameter("cognome"+index);
                             String cf=request.getParameter("codicef"+index);
                             String dataStr=request.getParameter("dataNascita"+index);
-                            //ToDo Giovanni Service
-                            PersonaAggiuntivaService personaAggiuntivaService=new PersonaAggiuntivaService();
-                            listExtra.add(personaAggiuntivaService.addPersona(nome,cognome,cf,dataStr));
+                            listExtra.add(new PersonaAggiuntiva(cf, nome, cognome, dataStr));
                         }
                     }
                 }
                 PrenotazioneStanzaService prenotazioneStanzaService=new PrenotazioneStanzaService();
-                PrenotazioneStanza preno=prenotazioneStanzaService.inserisciPrenotazione(user.getIdUtente(),idStanza,dataInizio,dataFine,"aaa",-1);
+                PrenotazioneStanza preno=prenotazioneStanzaService.inserisciPrenotazione(user.getIdUtente(),idStanza,dataInizio,dataFine, listExtra);
                 response.sendRedirect(request.getContextPath()+"/PagamentoServlet?idPreno="+preno.getIdPrenotazioneStanza());
             }
             else

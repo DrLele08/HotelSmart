@@ -1,6 +1,9 @@
 package it.hotel.model.personaAggiuntiva;
 
+import it.hotel.Utility.Utility;
+
 import java.sql.Date;
+import java.text.ParseException;
 
 /**
  * Rappresenta una PersonaAggiuntiva e fornisce metodi per il recupero dello stato.
@@ -31,6 +34,22 @@ public class PersonaAggiuntiva {
         this.nome = nome;
         this.cognome = cognome;
         this.dataNascita = dataNascita;
+    }
+
+    /**
+     * Costruisce una PersonaAggiuntiva con i valori specificati.
+     * @param cf Codice fiscale
+     * @param nome Nome
+     * @param cognome Cognome
+     * @param dataNascita Data di nascita
+     */
+    public PersonaAggiuntiva(String cf, String nome, String cognome, String dataNascita) throws ParseException {
+        this.idPersona = -1;
+        this.ksUtente = -1;
+        this.cf = cf;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = Utility.dataConverter(dataNascita);
     }
 
     /**

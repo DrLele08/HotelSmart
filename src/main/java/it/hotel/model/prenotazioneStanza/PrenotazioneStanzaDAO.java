@@ -19,85 +19,80 @@ public class PrenotazioneStanzaDAO {
     /**
      * Inserisce nel database e ritorna un oggetto PrenotazioneStanza secondo i valori specificati
      * e con stato "IN ATTESA DI PAGAMENTO".
+     * @param con Connessione al database
      * @param ksUtente Utente che effettua la prenotazione
      * @param ksStanza Stanza prenotata
      * @param dataInizio Data di entrata
      * @param dataFine Data di uscita
-     * @param prezzoFinale Prezzo finale
-     * @param commenti Commenti
-     * @param valutazione Valutazione
+     * @param costoNotte Costo notte
      * @return L'oggetto inserito nel database
      * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public PrenotazioneStanza doInsert(int ksUtente, int ksStanza, Date dataInizio, Date dataFine,
-                                       double prezzoFinale, String commenti, int valutazione)
-            throws PrenotazioneStanzaInsertException {
+    public PrenotazioneStanza doInsert(Connection con, int ksUtente, int ksStanza, Date dataInizio, Date dataFine, double costoNotte)
+            throws PrenotazioneStanzaInsertException, PrenotazioneStanzaNotFoundException, SQLException {
 
         /*
         Se esistono prenotazioni per la stessa stanza, in un arco temporale anche solo parzialmente sovrapposto,
         e con stato diverso da ANNULLATA, ARCHIVIATA o RIMBORSATA, lancio PrenotazioneStanzaInsertException().
         */
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT idPrenotazioneStanza FROM PrenotazioneStanza WHERE " +
-                            "ksStanza=? AND dataFine >= ? AND dataInizio <= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE " +
-                            "(st.stato = 'ANNULLATA') OR (st.stato = 'ARCHIVIATA') OR (st.stato = 'RIMBORSATA'))",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, ksStanza);
-            ps.setDate(2, dataInizio);
-            ps.setDate(3, dataFine);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                throw new PrenotazioneStanzaInsertException();
-            }
-
-            //recupero l'idStato dello stato 'IN ATTESA DI PAGAMENTO';
-            ps = con.prepareStatement("SELECT idStato FROM Stato st " +
-                    "WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\') LIMIT 1",
-                    Statement.RETURN_GENERATED_KEYS);
-            rs = ps.executeQuery();
-            int ksStato;
-            if (rs.next()) {
-                ksStato = rs.getInt(1);
-            } else {
-                throw new PrenotazioneStanzaInsertException();
-            }
-
-            //se l'utente non ha altre prenotazioni 'IN ATTESA DI PAGAMENTO', inserisco la nuova prenotazione con questo stato;
-            ps = con.prepareStatement
-                    ("INSERT INTO PrenotazioneStanza (ksUtente, ksStanza," +
-                                    " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
-                                    " commenti, valutazione) SELECT ?,?,?,?,?,?,?,?,?,? FROM dual " +
-                                    "WHERE NOT EXISTS (SELECT * FROM PrenotazioneStanza WHERE ksUtente = ? AND " +
-                                    "ksStato = ?)",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, ksUtente);
-            ps.setInt(2, ksStanza);
-            ps.setInt(3, ksStato);
-            ps.setDate(4, dataInizio);
-            ps.setDate(5, dataFine);
-            ps.setDouble(6, prezzoFinale);
-            ps.setString(7, null);
-            ps.setString(8, null);
-            ps.setString(9, commenti);
-            ps.setInt(10, valutazione);
-            ps.setInt(11, ksUtente);
-            ps.setInt(12, ksStato);
-            ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
-            int id;
-            if (rs.next()) {
-                id = rs.getInt(1);
-            } else {
-                throw new PrenotazioneStanzaInsertException();
-            }
-
-            return new PrenotazioneStanza(id, ksUtente, ksStanza, ksStato, dataInizio, dataFine,
-                    prezzoFinale, null, null, commenti, valutazione);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement("SELECT idPrenotazioneStanza FROM PrenotazioneStanza WHERE " +
+                        "ksStanza=? AND dataFine >= ? AND dataInizio <= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE " +
+                        "(st.stato = 'ANNULLATA') OR (st.stato = 'ARCHIVIATA') OR (st.stato = 'RIMBORSATA'))",
+                Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, ksStanza);
+        ps.setDate(2, dataInizio);
+        ps.setDate(3, dataFine);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            throw new PrenotazioneStanzaInsertException();
         }
+
+        //recupero l'idStato dello stato 'IN ATTESA DI PAGAMENTO';
+        ps = con.prepareStatement("SELECT idStato FROM Stato st " +
+                "WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\') LIMIT 1",
+                Statement.RETURN_GENERATED_KEYS);
+        rs = ps.executeQuery();
+        int ksStato;
+        if (rs.next()) {
+            ksStato = rs.getInt(1);
+        } else {
+            throw new PrenotazioneStanzaInsertException();
+        }
+
+        //se l'utente non ha altre prenotazioni 'IN ATTESA DI PAGAMENTO', inserisco la nuova prenotazione con questo stato;
+        ps = con.prepareStatement
+                ("INSERT INTO PrenotazioneStanza (ksUtente, ksStanza," +
+                                " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
+                                " commenti, valutazione) SELECT ?,?,?,?,?,(SELECT DATEDIFF(?,?)*?),?,?,?,? FROM dual " +
+                                "WHERE NOT EXISTS (SELECT * FROM PrenotazioneStanza WHERE ksUtente = ? AND " +
+                                "ksStato = ?)",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, ksUtente);
+        ps.setInt(2, ksStanza);
+        ps.setInt(3, ksStato);
+        ps.setDate(4, dataInizio);
+        ps.setDate(5, dataFine);
+        ps.setDate(6, dataInizio);
+        ps.setDate(7, dataFine);
+        ps.setDouble(8, costoNotte);
+        ps.setString(9, null);
+        ps.setString(10, null);
+        ps.setString(11, null);
+        ps.setInt(12, -1);
+        ps.setInt(13, ksUtente);
+        ps.setInt(14, ksStato);
+        ps.executeUpdate();
+        rs = ps.getGeneratedKeys();
+        int id;
+        if (rs.next()) {
+            id = rs.getInt(1);
+        } else {
+            throw new PrenotazioneStanzaInsertException();
+        }
+
+        return doSelectById(id);
+
     }
 
     /**
