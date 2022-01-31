@@ -233,7 +233,7 @@
 
             <div class="form-group">
                 <label class="form-label" for="IndirizzoEmail">Indirizzo Email</label>
-                <input type="text" id="IndirizzoEmail" class="form-control form-control-lg"
+                <input type="text" name="emailcliente" id="IndirizzoEmail" class="form-control form-control-lg"
                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required/>
                 <div class="invalid-feedback">
                     Inserisci una Email valida!
@@ -242,7 +242,7 @@
 
             <div class="form-group">
                 <label class="form-label" for="Password">Password</label>
-                <input type="password" id="Password" class="form-control form-control-lg"
+                <input type="password" name="pwdcliente" id="Password" class="form-control form-control-lg"
                        pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required/>
                 <div class="invalid-feedback">
                     La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere

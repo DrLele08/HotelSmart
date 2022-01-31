@@ -1,12 +1,17 @@
 package it.hotel.controller.services;
 
+import it.hotel.Utility.Connect;
+import it.hotel.Utility.Utility;
 import it.hotel.controller.exception.PagamentoInAttesaException;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
+import it.hotel.model.stanza.Stanza;
+import it.hotel.model.stanza.StanzaDAO;
 
 import java.security.SecureRandom;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -18,12 +23,13 @@ import java.util.Random;
 public class PrenotazioneStanzaService {
 
     private final PrenotazioneStanzaDAO dao;
-
+    private final StanzaDAO daoStanza;
     /**
      * Costruisce un oggetto PrenotazioneStanzaService.
      */
     public PrenotazioneStanzaService() {
         this.dao = new PrenotazioneStanzaDAO();
+        this.daoStanza=new StanzaDAO();
     }
 
     /**
@@ -32,17 +38,23 @@ public class PrenotazioneStanzaService {
      * @param ksStanza Identificativo stanza
      * @param dataInizio Data d'inizio
      * @param dataFine Data di fine
-     * @param prezzoFinale Prezzo finale
      * @param commenti Commenti
      * @param valutazione Valutazione
      * @return Prenotazione stanza inserita
      * @throws PagamentoInAttesaException Un altro pagamento è in attesa di essere completato
      */
-    public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, Date dataInizio, Date dataFine, double prezzoFinale,
+    public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, String  dataInizio, String dataFine,
             String commenti, int valutazione) throws PagamentoInAttesaException {
-        try {
+        try
+        {
+            Stanza s=daoStanza.doSelectById(ksStanza);
+            double costoNotte=s.getCostoNotte();
+            Date inizio=Utility.dataConverter(dataInizio);
+            Date fine=Utility.dataConverter(dataFine);
             return dao.doInsert(ksUtente, ksStanza, dataInizio, dataFine, prezzoFinale, commenti, valutazione);
-        } catch (PrenotazioneStanzaInsertException e) {
+        }
+        catch (PrenotazioneStanzaInsertException e)
+        {
             throw new PagamentoInAttesaException();
         }
     }
