@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="it.hotel.model.stanza.Stanza" %>
+<%@ page import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -9,21 +10,47 @@
         <jsp:param name="title" value="Risultati"/>
         <jsp:param name="styles" value="header.css"/>
     </jsp:include>
+    <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
 
     <style>
+
         .card-text {
-            font-size: x-small;
+            font-size: medium;
+        }
+
+        .card {
+            flex-direction: row;
+        }
+        .card img {
+            width: 30%;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .card {
+                flex-direction: column;
+            }
+            .card-body {
+                padding: 0.5em 1.2em;
+            }
+            .card-body .card-text {
+                margin: 0;
+            }
+            .card img {
+                width: 100%;
+            }
         }
     </style>
 </head>
 
-<body style="background-color: #cdd7e2">
+<body onload="headerCheck()" style="background-color: #cdd7e2">
 
 <%@include file="/WEB-INF/views/partials/header.jsp" %>
 
 <%
     ArrayList<Stanza> stanze = (ArrayList<Stanza>) request.getAttribute("stanze_result");
     Integer numero_ospiti = (Integer) request.getAttribute("numero_ospiti");
+    String dataArrivo = (String) request.getAttribute("dataArrivoString");
+    String dataPartenza = (String) request.getAttribute("dataPartenzaString");
 %>
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
@@ -37,6 +64,8 @@
             <jsp:param name="numLetti_S" value="<%=s.getLettiSingoli()%>"/>
             <jsp:param name="costoNotte" value="<%=s.getCostoNotte()%>"/>
             <jsp:param name="sconto" value="<%=s.getSconto()%>"/>
+            <jsp:param name="dataArrivo" value="<%=dataArrivo%>"/>
+            <jsp:param name="dataPartenza" value="<%=dataPartenza%>"/>
         </jsp:include>
         <% } %>
         <%} else {%>

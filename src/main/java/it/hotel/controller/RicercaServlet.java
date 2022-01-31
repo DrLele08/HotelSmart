@@ -67,8 +67,6 @@ public class RicercaServlet extends HttpServlet {
 
         String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
         switch (path) {
-            case "/":
-                break;
 
             case "/dosearch": {
 
@@ -95,6 +93,9 @@ public class RicercaServlet extends HttpServlet {
 
                 boolean fumatore = request.getParameter("fumatore") != null;
 
+                String dataArrivoString = request.getParameter("dataArrivo");
+                String dataPartenzaString = request.getParameter("dataPartenza");
+
                 java.sql.Date dataArrivoSql;
                 java.sql.Date dataPartenzaSql;
 
@@ -117,6 +118,8 @@ public class RicercaServlet extends HttpServlet {
 
                 request.setAttribute("stanze_result",stanze);
                 request.setAttribute("numero_ospiti",numero_ospiti);
+                request.setAttribute("dataArrivoString",dataArrivoString);
+                request.setAttribute("dataPartenzaString",dataPartenzaString);
                 String active_link = "ricerca";
                 request.setAttribute("active", active_link);
 
@@ -129,6 +132,9 @@ public class RicercaServlet extends HttpServlet {
 
                 String temp = request.getParameter("stanzaId");
                 String temp1 = request.getParameter("numero_ospiti");
+                String dataArrivoString = request.getParameter("dataArrivo");
+                String dataPartenzaString = request.getParameter("dataPartenza");
+
                 Integer stanzaId = Integer.parseInt(temp);
                 Integer num_persone = Integer.parseInt(temp1);
 
@@ -141,12 +147,20 @@ public class RicercaServlet extends HttpServlet {
                     request.setAttribute("active", active_link);
                     request.setAttribute("selected_stanza",selected_stanza);
                     request.setAttribute("num_persone",num_persone);
+                    request.setAttribute("dataArrivoString",dataArrivoString);
+                    request.setAttribute("dataPartenzaString",dataPartenzaString);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/detailForm.jsp");
                     dispatcher.forward(request,response);
                 } catch (StanzaNotFoundException e) {
                     e.printStackTrace();
                 }
 
+                break;
+            }
+
+            default:
+            {
+                response.sendRedirect(request.getContextPath());
                 break;
             }
 

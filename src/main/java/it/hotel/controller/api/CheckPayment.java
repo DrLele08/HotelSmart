@@ -58,7 +58,7 @@ public class CheckPayment extends CheckServlet
                     if(paymentIntent.getStatus().equals("succeeded"))
                     {
                         stanzaService.editStato(idPreno,2);
-                        stanzaService.generateQrCode(idPreno);
+                        //stanzaService.generateQrCode(idPreno);
                         String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #"+preno.getIdPrenotazioneStanza()+" è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
                         Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #"+preno.getIdPrenotazioneStanza(),textHtml);
                         object.put("Ris",1);
@@ -104,13 +104,15 @@ public class CheckPayment extends CheckServlet
                 object.put("Ris",0);
                 object.put("Mess","Pagamento non trovato");
                 response.getOutputStream().print(object.toString());
+            } catch (UtenteNotFoundException e) {
+                e.printStackTrace();
             }
-            catch (UtenteNotFoundException e)
+            /*catch (UtenteNotFoundException e)
             {
                 object.put("Ris",0);
                 object.put("Mess","Utente non trovato");
                 response.getOutputStream().print(object.toString());
-            }
+            }*/
         }
         else
         {

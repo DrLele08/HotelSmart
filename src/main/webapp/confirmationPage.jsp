@@ -14,6 +14,7 @@
     <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
     <script src="${pageContext.request.contextPath}/script/Ricerca.js"></script>
     <script src="${pageContext.request.contextPath}/script/CheckPayment.js"></script>
+    <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
 
     <style>
 
@@ -28,7 +29,7 @@
     </style>
 </head>
 
-<body onload="checkPayment()" style="background-color: #cdd7e2">
+<body onload="checkPayment(), headerCheck()" style="background-color: #cdd7e2">
 
 <%@include file="/WEB-INF/views/partials/header.jsp" %>
 

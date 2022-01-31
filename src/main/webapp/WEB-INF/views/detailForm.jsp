@@ -16,6 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
+    <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
 
     <style>
 
@@ -47,12 +48,15 @@
 
 </head>
 
-<body style="background-color: #cdd7e2">
+<body onload="headerCheck()" style="background-color: #cdd7e2">
 
 <%@include file="/WEB-INF/views/partials/header.jsp" %>
 
 <%
     Integer num_persone = (Integer) request.getAttribute("num_persone");
+    String dataArrivo = (String) request.getAttribute("dataArrivoString");
+    String dataPartenza = (String) request.getAttribute("dataPartenzaString");
+
     Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
     Stanza selected_stanza = (Stanza) request.getAttribute("selected_stanza");
     Integer id_stanza = selected_stanza.getIdStanza();
@@ -175,6 +179,8 @@
             <% } %>
             <input type="hidden" name="num_persone" value="<%=num_persone%>">
             <input type="hidden" name="id_stanza" value="<%=id_stanza%>">
+            <input type="hidden" name="dataArrivo" value="<%=dataArrivo%>">
+            <input type="hidden" name="dataPartenza" value="<%=dataPartenza%>">
             <Button onclick="Registrazione()" id="ButtonSub" class="btn btn-dark" type="button">Conferma</button>
         </form>
 

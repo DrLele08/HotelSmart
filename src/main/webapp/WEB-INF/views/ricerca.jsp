@@ -14,6 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
     <script src="${pageContext.request.contextPath}/script/Ricerca.js"></script>
+    <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
 
     <style>
 
@@ -22,7 +23,7 @@
         }
 
         .card-text {
-            font-size: small;
+            font-size: medium;
         }
         @media screen and (max-width: 1203px) {
             .card {
@@ -76,7 +77,7 @@
     </style>
 </head>
 
-<body style="background-color: #cdd7e2">
+<body onload="headerCheck()" style="background-color: #cdd7e2">
 
 <%@include file="/WEB-INF/views/partials/header.jsp" %>
 

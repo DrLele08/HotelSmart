@@ -59,4 +59,11 @@ public class ServizioService {
         return dao.doSelectByUserId(idUtente);
     }
 
+    /**
+     * Recupera un servizio dato un id.
+     * @param idServizio Identificativo del servizio.
+     * @return Il servizio trovato.
+     */
+    public Servizio getById(int idServizio){ return dao.doSelectById(idServizio); }
+
 }

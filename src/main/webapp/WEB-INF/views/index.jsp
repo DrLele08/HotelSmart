@@ -7,6 +7,7 @@
         <jsp:param name="title" value="Home"/>
         <jsp:param name="styles" value="header.css"/>
     </jsp:include>
+    <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
 
     <style>
 
@@ -22,7 +23,7 @@
     </style>
 </head>
 
-<body style="background-color: #cdd7e2">
+<body onload="headerCheck()" style="background-color: #cdd7e2">
 
 <%@include file="partials/header.jsp"%>
 
@@ -30,7 +31,7 @@
     <div class="container">
         <%if(u == null){%>
         <h1 class="display-4">Benvenuto su HotelSmart</h1>
-        <p class="lead">HotelSmart è la piattafroma giusta per soddisfare tutte le necessità di gestione di alberghi</p>
+        <p class="lead">HotelSmart è la piattaforma giusta per soddisfare tutte le necessità di gestione di alberghi</p>
         <hr class="my-4">
         <p>Scopri tutti i servizi di HotelSmart registrandoti.</p>
         <p class="lead">

@@ -111,6 +111,30 @@ public class ServizioDAO {
         return servizi;
     }
 
+    /**
+     * Recupera un servizio dato un id.
+     * @param idServizio Identificativo del {@link Servizio}
+     * @return Il servizio trovato
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public Servizio doSelectById(int idServizio){
+        Servizio servizio = null;
+        try (Connection con = Connect.getConnection()) {
+            PreparedStatement ps = con.prepareStatement
+                    ("SELECT servizio.* FROM Servizio WHERE idServizio=?",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idServizio);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                servizio = createServizio(rs);
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return servizio;
+    }
+
     private Servizio createServizio(ResultSet rs) throws SQLException {
         return new Servizio(rs.getInt(1), rs.getString(2), rs.getString(3),
                 rs.getString(4), rs.getDouble(5), rs.getInt(6));

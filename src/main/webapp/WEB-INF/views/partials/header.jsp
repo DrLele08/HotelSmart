@@ -1,5 +1,6 @@
 <%@ page import="it.hotel.model.utente.Utente" %>
 <%@ page import="it.hotel.Utility.Utility" %>
+
 <nav class="navbar sticky-top navbar-dark navbar-expand" style="background-color: #02172d;">
 
     <a class="navbar-brand" href="${pageContext.request.contextPath}/">
@@ -10,47 +11,29 @@
     <%
         String temp = (String) request.getAttribute("active");
         request.removeAttribute("active");
-        if(temp == null){
     %>
     <span class="navbar-nav nav-item dropdown onlyMobile">
         <a class="nav-link dropdownIcon btn btn-info dropdown-toggle" data-toggle="dropdown" style="color: black">
             Menu
         </a>
             <ul class="dropdown-menu dropdown-menu-left">
-                <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/Login">Home</a></li>
+                <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}">Home</a></li>
+                <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a></li>
+                <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/servizi/goservizi">Servizi</a></li>
+                <li><a class="dropdown-item dropdownItem" href="#">Chi siamo</a></li>
+                <li><a class="dropdown-item dropdownItem" href="#">Contattaci</a></li>
             </ul>
     </span>
-    <div class="navbar-nav mr-auto">
-        <a class="nav-item nav-link active onlyDesktop" href="${pageContext.request.contextPath}">Home</a>
-        <a class="nav-item nav-link onlyDesktop" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a>
-        <a class="nav-item nav-link onlyDesktop" href="${pageContext.request.contextPath}/servizi/goservizi">Servizi</a>
-        <a class="nav-item nav-link onlyDesktop" href="#">Chi siamo</a>
-        <a class="nav-item nav-link onlyDesktop" href="#">Contattaci</a>
+
+    <div class="navbar-nav mr-auto" id="navbar">
+        <a class="nav-item nav-link onlyDesktop" id="navbar-home" href="${pageContext.request.contextPath}">Home</a>
+        <a class="nav-item nav-link onlyDesktop" id="navbar-research" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a>
+        <a class="nav-item nav-link onlyDesktop" id="navbar-servizi" href="${pageContext.request.contextPath}/servizi/goservizi">Servizi</a>
+        <a class="nav-item nav-link onlyDesktop" id="navbar-aboutus" href="#">Chi siamo</a>
+        <a class="nav-item nav-link onlyDesktop" id="navbar-contattaci" href="#">Contattaci</a>
     </div>
-    <%
-    }
-    else if(temp.equals("ricerca")){
-    %>
-    <div class="navbar-nav mr-auto">
-        <a class="nav-item nav-link onlyDesktop" href="${pageContext.request.contextPath}">Home</a>
-        <a class="nav-item nav-link active onlyDesktop" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a>
-        <a class="nav-item nav-link onlyDesktop" href="${pageContext.request.contextPath}/servizi/goservizi">Servizi</a>
-        <a class="nav-item nav-link onlyDesktop" href="#">Chi siamo</a>
-        <a class="nav-item nav-link onlyDesktop" href="#">Contattaci</a>
-    </div>
-    <%
-    } else if(temp.equals("servizi")){
-    %>
-    <div class="navbar-nav mr-auto">
-        <a class="nav-item nav-link onlyDesktop" href="${pageContext.request.contextPath}">Home</a>
-        <a class="nav-item nav-link onlyDesktop" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a>
-        <a class="nav-item nav-link active onlyDesktop" href="${pageContext.request.contextPath}/servizi/goservizi">Servizi</a>
-        <a class="nav-item nav-link onlyDesktop" href="#">Chi siamo</a>
-        <a class="nav-item nav-link onlyDesktop" href="#">Contattaci</a>
-    </div>
-    <%
-        }
-    %>
+
+    <input type="hidden" name="headercheck" id="headercheck" value="<%=temp%>">
 
     <%
         Utente u = (Utente) session.getAttribute(Utility.SESSION_USER);
