@@ -18,3 +18,11 @@
 .card-registration .select-arrow {
     top: 13px;
 }
+
+.vh-90{
+    height: 90vh;
+}
+
+.mt-3{
+    margin-top: 0rem!important;
+}

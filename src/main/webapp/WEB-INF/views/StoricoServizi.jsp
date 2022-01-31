@@ -1,5 +1,6 @@
 <%@ page import="it.hotel.model.servizio.Servizio" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="it.hotel.model.prenotazioneServizio.PrenotazioneServizio" %><%--
   Created by IntelliJ IDEA.
   User: aless
   Date: 17/01/2022
@@ -55,25 +56,27 @@
             <tr>
                 <th>Nome servizio</th>
                 <th>Numero persone prenotate</th>
+                <th>Data prenotazione</th>
             </tr>
             </thead>
             <tbody>
-            <%--<%
-                List<PrenotazioneServizio> serviziPrenotati=(List<PrenotazioneServizio>) request.getAttribute("PrenotazioneServizi");
+            <%
+                List<PrenotazioneServizio> serviziPrenotati=(List<PrenotazioneServizio>) request.getAttribute("Servizi");
                 for(PrenotazioneServizio s : serviziPrenotati){
-            %>--%>
+            %>
 
             <tr>
-               <%-- <td><%=s.()%></td>
-                <td><%=s.()%></td> --%>
-                <td>Prova</td>
-                <td>10</td>
+                <td><%=s.getServizioName()%></td>
+                <td><%=s.getNumPersone()%></td>
+                <td><%=Utility.convertDateToView(s.getDataPrenotazioneServizio())%></td>
             </tr>
+            <%}%>
             </tbody>
             <tfoot>
             <tr>
-                <th>Numero stanza</th>
-                <th>Data inizio</th>
+                <th>Nome servizio</th>
+                <th>Numero persone prenotate</th>
+                <th>Data prenotazione</th>
             </tr>
             </tfoot>
         </table>

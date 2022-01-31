@@ -176,6 +176,9 @@ ul ul a {
     color: #7386D5;
 }
 
+.icon-hover:hover {
+    cursor: pointer;
+}
 
 /* ---------------------------------------------------
     MEDIA QUERIES

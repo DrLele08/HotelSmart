@@ -60,7 +60,7 @@
                 <td><%=s.getCosto()%></td>
                 <td><%=s.getLimitePosti()%></td>
                 <td>
-                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit" data-toggle="modal" data-target="#modalEditServizio" onclick='editServizio("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getIdServizio()%>,"<%=s.getNome()%>", <%=s.getCosto()%>, <%=s.getLimitePosti()%>,"<%=s.getDescrizione()%>")'></a></span>
+                    <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit icon-hover" data-toggle="modal" data-target="#modalEditServizio" onclick='editServizio("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getIdServizio()%>,"<%=s.getNome()%>", <%=s.getCosto()%>, <%=s.getLimitePosti()%>,"<%=s.getDescrizione()%>")'></a></span>
                 </td>
             </tr>
             <%}%>
@@ -171,7 +171,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
-                                <label class="form-label" for="limitePostiEdit">Costo notte</label>
+                                <label class="form-label" for="limitePostiEdit">Limite posti</label>
                                 <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}" id="limitePostiEdit" class="form-control form-control-lg" required/>
                             </div>
                         </div>
