@@ -37,11 +37,12 @@ function ModificaAnagrafica()
                 type: "post",
                 data: data,
                 success: function (result) {
-                    if (result.status) {
+                    if (result.Ris == 1) {
                         Swal.fire({
                             icon: 'success',
                             title: result.Mess,
                         })
+                        $("#formAnagr").removeClass("was-validated");
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -89,6 +90,8 @@ function ModificaPassword()
                         $("#VecchiaPassword").val("");
                         $("#NuovaPassword").val("");
                         $("#RipetiPassword").val("");
+                        $("#formPass").removeClass("was-validated");
+
                     } else {
                         Swal.fire({
                             icon: 'error',

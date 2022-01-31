@@ -62,7 +62,10 @@
                 <td><%=Utility.convertDateToView(s.getDataNascita())%></td>
                 <td><%=s.getEmail()%></td>
                 <td><%=s.getRuoloName()%></td>
-                <td><span data-toggle="tooltip" title="Modifica permessi"><a class="bi bi-x-square-fill" id="iconModificaPermessi" onclick='iconModificaPermessi(<%=s.getIdUtente()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getRuolo()%>)'  data-toggle="modal" data-target="#modalModificaPermessi"></a></span></td>
+                <td>
+                    <%if(s.getIdUtente()!=ut.getIdUtente()){%><span data-toggle="tooltip" title="Modifica permessi"><a class="fas fa-edit icon-hover" id="iconModificaPermessi" onclick='iconModificaPermessi(<%=s.getIdUtente()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getRuolo()%>)'  data-toggle="modal" data-target="#modalModificaPermessi"></a></span> <%}%>
+                </td>
+
             </tr>
             <%}%>
 
