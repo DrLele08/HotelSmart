@@ -1,3 +1,5 @@
+//Autore Alessandro d'Esposito
+
 $(document).ready(function() {
     jQuery.fn.isValid = function () {
         return this[0].checkValidity()
