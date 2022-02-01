@@ -1,12 +1,9 @@
+<%--
+  Autore: Alessandro d'Esposito
+--%>
+
 <%@ page import="it.hotel.model.utente.Utente" %>
 <%@ page import="java.util.List" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: aless
-  Date: 21/01/2022
-  Time: 15:49
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
