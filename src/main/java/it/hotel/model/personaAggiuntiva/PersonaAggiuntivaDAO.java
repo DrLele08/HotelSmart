@@ -1,7 +1,5 @@
 package it.hotel.model.personaAggiuntiva;
 
-import it.hotel.Utility.Connect;
-
 import java.sql.*;
 
 /**
@@ -12,12 +10,12 @@ public class PersonaAggiuntivaDAO {
     /**
      * Inserisce nel database e ritorna un oggetto {@link PersonaAggiuntiva} secondo i valori specificati.
      * @param con Connessione al database
-     * @param ksUtente
-     * @param cf
-     * @param nome
-     * @param cognome
-     * @param dataNascita
-     * @return
+     * @param ksUtente Identificativo dell'utente
+     * @param cf Codice fiscale
+     * @param nome Nome
+     * @param cognome Cognome
+     * @param dataNascita Data di nascita
+     * @return L'oggetto inserito nel database
      * @throws SQLException Errore nella comunicazione con il database
      */
     public PersonaAggiuntiva doInsert(Connection con, int ksUtente, String cf, String nome, String cognome, Date dataNascita) throws SQLException {

@@ -124,7 +124,7 @@ public class UtenteService
                     if (dao.isEmailInDatabase(con, email)) {
                         throw new EmailAlreadyExistingException();
                     }
-                    utente = dao.doInsert(con, Ruolo.getIdByNome(Utility.listRuoli,"UTENTE"),cf,nome,cognome,email,data,generatedString,pwd);
+                    utente = dao.doInsert(con, new RuoloService().getByRuolo("UTENTE"),cf,nome,cognome,email,data,generatedString,pwd);
                 }
                 else
                 {

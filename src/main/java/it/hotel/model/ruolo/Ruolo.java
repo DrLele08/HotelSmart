@@ -39,15 +39,4 @@ public class Ruolo {
         return ruolo;
     }
 
-    public static int getIdByNome(List<Ruolo> listRuoli,String ruolo)
-    {
-        RuoloDAO dao = new RuoloDAO();
-        List<Ruolo> RuoloProva = dao.doGetAll();
-        for(Ruolo r:RuoloProva)
-        {
-            if(r.ruolo.equalsIgnoreCase(ruolo))
-                return r.idRuolo;
-        }
-        return -1;
-    }
 }

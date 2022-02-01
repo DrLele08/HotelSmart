@@ -1,6 +1,7 @@
 package it.hotel.model.stanza;
 
 import it.hotel.Utility.Connect;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.stanza.stanzaExceptions.*;
 
 import java.sql.*;
@@ -186,6 +187,27 @@ public class StanzaDAO {
             throw new RuntimeException(e);
         }
         return numLetti;
+    }
+
+    /**
+     * Informa se l'oggetto Stanza specificato è disponibile per una prenotazione nell'intervallo di tempo richiesto.
+     * @param con Connessione al database
+     * @param ksStanza Identificativo della stanza
+     * @param dataInizio Data d'inizio della prenotazione desiderata
+     * @param dataFine Data di fine della prenotazione desiderata
+     * @return Idoneità per prenotazione
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public boolean isDisponibile(Connection con, int ksStanza, Date dataInizio, Date dataFine) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT idPrenotazioneStanza FROM PrenotazioneStanza WHERE " +
+                        "ksStanza=? AND dataFine >= ? AND dataInizio <= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE " +
+                        "(st.stato = 'ANNULLATA') OR (st.stato = 'ARCHIVIATA') OR (st.stato = 'RIMBORSATA'))",
+                Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, ksStanza);
+        ps.setDate(2, dataInizio);
+        ps.setDate(3, dataFine);
+        ResultSet rs = ps.executeQuery();
+        return !rs.next();
     }
 
     /**

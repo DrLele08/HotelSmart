@@ -5,8 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Fornisce l'accesso al database per {@link PersonaPrenotazione}.
+ */
 public class PersonaPrenotazioneDAO {
 
+    /**
+     * Inserisce nel database un oggetto {@link PersonaPrenotazione} secondo i valori specificati.
+     * @param con
+     * @param idPersonaAggiuntiva
+     * @param idPrenotazioneStanza
+     * @throws SQLException Errore nella comunicazione con il database
+     */
     public void doInsert(Connection con, int idPersonaAggiuntiva, int idPrenotazioneStanza) throws SQLException {
         PreparedStatement ps = con.prepareStatement("INSERT INTO PersonePrenotazione " +
                 "(ksPersona, ksPrenotazioneStanza) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);

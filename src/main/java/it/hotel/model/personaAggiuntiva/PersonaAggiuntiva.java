@@ -53,42 +53,42 @@ public class PersonaAggiuntiva {
     }
 
     /**
-     * @return
+     * @return Identificativo della persona
      */
     public int getIdPersona() {
         return idPersona;
     }
 
     /**
-     * @return
+     * @return Identificativo dell'utente
      */
     public int getKsUtente() {
         return ksUtente;
     }
 
     /**
-     * @return
+     * @return Codice fiscale
      */
     public String getCf() {
         return cf;
     }
 
     /**
-     * @return
+     * @return Nome
      */
     public String getNome() {
         return nome;
     }
 
     /**
-     * @return
+     * @return Cognome
      */
     public String getCognome() {
         return cognome;
     }
 
     /**
-     * @return
+     * @return Data di nascita
      */
     public Date getDataNascita() {
         return dataNascita;

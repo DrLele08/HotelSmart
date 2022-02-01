@@ -31,30 +31,25 @@ public class StatoDAO {
 
     /**
      * Recupera l'oggetto Stato trovato nel database secondo la stringa specificata.
+     * @param con Connessione al database
      * @param statoStr Stringa che identifica lo stato cercato
      * @return Lo stato trovato nel database
      * @throws StatoNotFoundException Lo stato specificato non è presente nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public Stato doSelectByStato(String statoStr) throws StatoNotFoundException {
-        Stato stato;
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stato WHERE stato=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, statoStr);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                stato = createStato(rs);
-            } else {
-                throw new StatoNotFoundException();
-            }
+    public Stato doSelectByStato(Connection con, String statoStr) throws StatoNotFoundException, SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Stato WHERE stato=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, statoStr);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return createStato(rs);
+        } else {
+            throw new StatoNotFoundException();
         }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return stato;
     }
+
 
     /**
      * Recupera l'oggetto Stato trovato nel database secondo l'id specificato.

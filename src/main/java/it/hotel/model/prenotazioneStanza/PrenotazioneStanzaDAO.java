@@ -29,39 +29,11 @@ public class PrenotazioneStanzaDAO {
      * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
      * @throws SQLException Errore nella comunicazione con il database
      */
-    public PrenotazioneStanza doInsert(Connection con, int ksUtente, int ksStanza, Date dataInizio, Date dataFine, double costoNotte)
-            throws PrenotazioneStanzaInsertException, PrenotazioneStanzaNotFoundException, SQLException {
-
-        /*
-        Se esistono prenotazioni per la stessa stanza, in un arco temporale anche solo parzialmente sovrapposto,
-        e con stato diverso da ANNULLATA, ARCHIVIATA o RIMBORSATA, lancio PrenotazioneStanzaInsertException().
-        */
-        PreparedStatement ps = con.prepareStatement("SELECT idPrenotazioneStanza FROM PrenotazioneStanza WHERE " +
-                        "ksStanza=? AND dataFine >= ? AND dataInizio <= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE " +
-                        "(st.stato = 'ANNULLATA') OR (st.stato = 'ARCHIVIATA') OR (st.stato = 'RIMBORSATA'))",
-                Statement.RETURN_GENERATED_KEYS);
-        ps.setInt(1, ksStanza);
-        ps.setDate(2, dataInizio);
-        ps.setDate(3, dataFine);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            throw new PrenotazioneStanzaInsertException();
-        }
-
-        //recupero l'idStato dello stato 'IN ATTESA DI PAGAMENTO';
-        ps = con.prepareStatement("SELECT idStato FROM Stato st " +
-                "WHERE (st.stato = \'IN ATTESA DI PAGAMENTO\') LIMIT 1",
-                Statement.RETURN_GENERATED_KEYS);
-        rs = ps.executeQuery();
-        int ksStato;
-        if (rs.next()) {
-            ksStato = rs.getInt(1);
-        } else {
-            throw new PrenotazioneStanzaInsertException();
-        }
+    public int doInsert(Connection con, int ksUtente, int ksStanza, int ksStato, Date dataInizio, Date dataFine, double costoNotte)
+            throws PrenotazioneStanzaInsertException, SQLException, PrenotazioneStanzaNotFoundException {
 
         //se l'utente non ha altre prenotazioni 'IN ATTESA DI PAGAMENTO', inserisco la nuova prenotazione con questo stato;
-        ps = con.prepareStatement
+        PreparedStatement ps = con.prepareStatement
                 ("INSERT INTO PrenotazioneStanza (ksUtente, ksStanza," +
                                 " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
                                 " commenti, valutazione) SELECT ?,?,?,?,?,(SELECT DATEDIFF(?,?)*?),?,?,?,? FROM dual " +
@@ -83,108 +55,90 @@ public class PrenotazioneStanzaDAO {
         ps.setInt(13, ksUtente);
         ps.setInt(14, ksStato);
         ps.executeUpdate();
-        rs = ps.getGeneratedKeys();
+        ResultSet rs = ps.getGeneratedKeys();
         int id;
         if (rs.next()) {
             id = rs.getInt(1);
         } else {
             throw new PrenotazioneStanzaInsertException();
         }
-
-        return doSelectById(id);
+        return id;
 
     }
 
     /**
      * Inserisce nell'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato il relativo Token Stripe.
+     * @param con Connessione al database
      * @param idPrenotazioneStanza L'identificativo dell'oggetto da trovare nel database
      * @param tokenStripe Il Token Stripe da inserire nell'oggetto
      * @throws PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void insertTokenStripe(int idPrenotazioneStanza, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("UPDATE PrenotazioneStanza SET tokenStripe=? WHERE idPrenotazioneStanza=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, tokenStripe);
-            ps.setInt(2, idPrenotazioneStanza);
+    public void insertTokenStripe(Connection con, int idPrenotazioneStanza, String tokenStripe) throws PrenotazioneStanzaNotFoundException, SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("UPDATE PrenotazioneStanza SET tokenStripe=? WHERE idPrenotazioneStanza=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, tokenStripe);
+        ps.setInt(2, idPrenotazioneStanza);
 
-            int rs = ps.executeUpdate();
-            if (rs==0) {
-                throw new PrenotazioneStanzaNotFoundException();
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        int rs = ps.executeUpdate();
+        if (rs==0) {
+            throw new PrenotazioneStanzaNotFoundException();
         }
     }
 
     /**
      * Inserisce nell'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato il relativo Token Qr Code.
+     * @param con Connessione al database
      * @param idPrenotazione L'identificativo dell'oggetto da trovare nel database
      * @param tokenQr Il Token Qr Code da inserire nell'oggetto
      * @throws PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doInsertTokenQrCode(int idPrenotazione, String tokenQr) throws PrenotazioneStanzaNotFoundException, SQLIntegrityConstraintViolationException {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("UPDATE PrenotazioneStanza SET tokenQr=? WHERE idPrenotazioneStanza=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, tokenQr);
-            ps.setInt(2, idPrenotazione);
+    public void doInsertTokenQrCode(Connection con, int idPrenotazione, String tokenQr) throws PrenotazioneStanzaNotFoundException, SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("UPDATE PrenotazioneStanza SET tokenQr=? WHERE idPrenotazioneStanza=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, tokenQr);
+        ps.setInt(2, idPrenotazione);
 
-            int rs = ps.executeUpdate();
-            if (rs==0) {
-                throw new PrenotazioneStanzaNotFoundException();
-            }
-        }
-        catch (SQLIntegrityConstraintViolationException e) {
-            throw new SQLIntegrityConstraintViolationException();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        int rs = ps.executeUpdate();
+        if (rs==0) {
+            throw new PrenotazioneStanzaNotFoundException();
         }
     }
 
     /**
      * Recupera l'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato.
+     * @param con Connessione al database
      * @param idPrenotazioneStanza L'identificativo dell'oggetto da recuperare dal database
      * @return L'oggetto trovato nel database
      * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public PrenotazioneStanza doSelectById(int idPrenotazioneStanza)
-            throws PrenotazioneStanzaNotFoundException {
-        PrenotazioneStanza prenotazioneStanza;
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM PrenotazioneStanza WHERE idPrenotazioneStanza=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idPrenotazioneStanza);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                prenotazioneStanza = createPrenotazioneStanza(rs);
-            } else {
-                throw new PrenotazioneStanzaNotFoundException();
-            }
+    public PrenotazioneStanza doSelectById(Connection con, int idPrenotazioneStanza)
+            throws PrenotazioneStanzaNotFoundException, SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM PrenotazioneStanza WHERE idPrenotazioneStanza=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idPrenotazioneStanza);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return createPrenotazioneStanza(rs);
+        } else {
+            throw new PrenotazioneStanzaNotFoundException();
         }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return prenotazioneStanza;
     }
 
     /**
      * Recupera gli oggetti PrenotazioneStanza trovati nel database secondo i valori specificati.
+     * @param con Connessione al database
      * @param value Il valore identificativo degli oggetti da recuperare dal database
      * @param type Il tipo del valore identificativo
      * @return Gli oggetti trovati nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<PrenotazioneStanza> doSelectBy(int value, int type) {
+    public List<PrenotazioneStanza> doSelectBy(Connection con, int value, int type) throws SQLException {
         ArrayList<PrenotazioneStanza> prenotazioniStanza = new ArrayList<>();
         String str = "";
         switch (type) {
@@ -198,101 +152,74 @@ public class PrenotazioneStanzaDAO {
                 str = "SELECT * FROM PrenotazioneStanza WHERE ksStato=?";
                 break;
         }
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    (str, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, value);
+        PreparedStatement ps = con.prepareStatement
+                (str, Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, value);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                prenotazioniStanza.add(createPrenotazioneStanza(rs));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            prenotazioniStanza.add(createPrenotazioneStanza(rs));
         }
         return prenotazioniStanza;
     }
 
     /**
      * Recupera tutti gli oggetti PrenotazioneStanza presenti nel database.
+     * @param con Connessione al database
      * @return Le prenotazioni stanza presenti nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<PrenotazioneStanza> doGetAll() {
+    public List<PrenotazioneStanza> doGetAll(Connection con) throws SQLException {
         ArrayList<PrenotazioneStanza> prenotazioni = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Prenotazionestanza",
-                            Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Prenotazionestanza",
+                        Statement.RETURN_GENERATED_KEYS);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                prenotazioni.add(createPrenotazioneStanza(rs));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            prenotazioni.add(createPrenotazioneStanza(rs));
         }
         return prenotazioni;
     }
 
     /**
      * Modifica lo stato dell'oggetto PrenotazioneStanza trovato nel database secondo i valori specificati.
+     * @param con Connessione al database
      * @param idPrenotazioneStanza Identificativo della prenotazione stanza da modificare
      * @param stato Stato da inserire nell'oggetto trovato
      * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-    public void doChangeStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("UPDATE PrenotazioneStanza SET ksStato=? WHERE idPrenotazioneStanza=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, stato);
-            ps.setInt(2, idPrenotazioneStanza);
-            int n=ps.executeUpdate();
-            if (n==0) {
-                throw new PrenotazioneStanzaNotFoundException();
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+    public void doChangeStato(Connection con, int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException, SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("UPDATE PrenotazioneStanza SET ksStato=? WHERE idPrenotazioneStanza=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, stato);
+        ps.setInt(2, idPrenotazioneStanza);
+        int n=ps.executeUpdate();
+        if (n==0) {
+            throw new PrenotazioneStanzaNotFoundException();
         }
     }
 
     /**
      * Restituisce un informazione sulla rimborsabilità dell'oggetto PrenotazioneStanza specificato.
+     * @param con Connessione al database
      * @param idPrenotazione Identificativo della prenotazione stanza cercata
+     * @param confermata Identificativo dello stato "CONFERMATA"
      * @return Rimborsabilità della prenotazione
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public boolean isRimborsabile(int idPrenotazione) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT idStato FROM Stato s " +
-                            "WHERE (s.stato = \'CONFERMATA\') LIMIT 1",
-                    Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            int ksStato;
-            if (rs.next()) {
-                ksStato = rs.getInt(1);
-            } else {
-                return false;
-            }
-
-            ps = con.prepareStatement
-                    ("SELECT count(*) FROM Prenotazionestanza WHERE idPrenotazioneStanza=? AND ksStato=? " +
-                                    "AND dataInizio >= (CURDATE() + INTERVAL 14 DAY)",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idPrenotazione);
-            ps.setInt(2, ksStato);
-            rs = ps.executeQuery();
-            if (rs.next() && rs.getInt(1)==1) {
-                return true;
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+    public boolean isRimborsabile(Connection con, int idPrenotazione, int confermata) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT count(*) FROM Prenotazionestanza WHERE idPrenotazioneStanza=? AND ksStato=? " +
+                                "AND dataInizio >= (CURDATE() + INTERVAL 14 DAY)",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idPrenotazione);
+        ps.setInt(2, confermata);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next() && rs.getInt(1)==1) {
+            return true;
         }
         return false;
     }

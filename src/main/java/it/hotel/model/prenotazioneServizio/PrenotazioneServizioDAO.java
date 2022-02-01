@@ -15,6 +15,7 @@ public class PrenotazioneServizioDAO {
      * @param ksServizio Identificativo del servizio
      * @param numPersone Numero delle persone
      * @param dataPrenotazioneServizio Data della prenotazione del servizio
+     * @return L'oggetto inserito nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
     public PrenotazioneServizio doInsert(int ksPrenotazioneStanza, int ksServizio, int numPersone, Date dataPrenotazioneServizio) {
@@ -43,19 +44,16 @@ public class PrenotazioneServizioDAO {
 
     /**
      * Elimina un oggetto PrenotazioneServizio dal database.
+     * @param con Connessione al database
      * @param idPrenotazione L'identificativo della prenotazione da eliminare
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doDelete(int idPrenotazione)  {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("DELETE FROM PrenotazioneServizio WHERE idPrenotazioneServizio=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idPrenotazione);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void doDelete(Connection con, int idPrenotazione) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("DELETE FROM PrenotazioneServizio WHERE idPrenotazioneServizio=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idPrenotazione);
+        ps.executeUpdate();
     }
 
     private PrenotazioneServizio createPrenotazioneServizio(ResultSet rs) throws SQLException {
