@@ -11,9 +11,6 @@
     </jsp:include>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
-    <script src="${pageContext.request.contextPath}/script/Ricerca.js"></script>
-    <script src="${pageContext.request.contextPath}/script/CheckPayment.js"></script>
     <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
 
     <style>
@@ -29,37 +26,35 @@
     </style>
 </head>
 
-<body onload="checkPayment(), headerCheck()" style="background-color: #cdd7e2">
+<body style="background-color: #cdd7e2">
 
 <%@include file="/WEB-INF/views/partials/header.jsp" %>
 
 <%
-    String idPreno = request.getParameter("id");
+    String success = (String) request.getAttribute("success");
 %>
-
-<input type="hidden" name="idPreno" id="idPreno" value="<%=idPreno%>">
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container custom-container">
 
-        <div id="success" style="display: none">
+        <%if(success.equals("OK")){%>
+        <div id="success">
             <h1 class="display-4 custom-elem">Grazie! La tua prenotazione è stata confermata.</h1><br><br>
             <p>Controlla la tua email per il riepilogo informazioni o la tua area personale.</p><br>
         </div>
-
-        <div id="failure" style="display: none">
+        <%}else if(success.equals("FAIL")){%>
+        <div id="failure">
             <h1 class="display-4 custom-elem">Siamo spiacenti, la tua prenotazione non è andata a buon fine.</h1><br><br>
             <p>Controlla la tua email o area personale per sapere cosa è andato storto.</p><br>
         </div>
-
+        <%}%>
         <form action="${pageContext.request.contextPath}">
             <input type="submit" class="btn btn-dark" value="Torna alla home">
         </form>
-
     </div>
 </div>
 
-<%@include file="WEB-INF/views/partials/footer.jsp" %>
+<%@include file="/WEB-INF/views/partials/footer.jsp" %>
 
 </body>
 </html>

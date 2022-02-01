@@ -20,8 +20,8 @@
                 <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}">Home</a></li>
                 <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a></li>
                 <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/servizi/goservizi">Servizi</a></li>
-                <li><a class="dropdown-item dropdownItem" href="#">Chi siamo</a></li>
-                <li><a class="dropdown-item dropdownItem" href="#">Contattaci</a></li>
+                <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/home/aboutus">Chi siamo</a></li>
+                <li><a class="dropdown-item dropdownItem" href="${pageContext.request.contextPath}/home/contattaci">Contattaci</a></li>
             </ul>
     </span>
 
@@ -29,8 +29,8 @@
         <a class="nav-item nav-link onlyDesktop" id="navbar-home" href="${pageContext.request.contextPath}">Home</a>
         <a class="nav-item nav-link onlyDesktop" id="navbar-research" href="${pageContext.request.contextPath}/ricerca/gosearch">Stanze</a>
         <a class="nav-item nav-link onlyDesktop" id="navbar-servizi" href="${pageContext.request.contextPath}/servizi/goservizi">Servizi</a>
-        <a class="nav-item nav-link onlyDesktop" id="navbar-aboutus" href="#">Chi siamo</a>
-        <a class="nav-item nav-link onlyDesktop" id="navbar-contattaci" href="#">Contattaci</a>
+        <a class="nav-item nav-link onlyDesktop" id="navbar-aboutus" href="${pageContext.request.contextPath}/home/aboutus">Chi siamo</a>
+        <a class="nav-item nav-link onlyDesktop" id="navbar-contattaci" href="${pageContext.request.contextPath}/home/contattaci">Contattaci</a>
     </div>
 
     <input type="hidden" name="headercheck" id="headercheck" value="<%=temp%>">

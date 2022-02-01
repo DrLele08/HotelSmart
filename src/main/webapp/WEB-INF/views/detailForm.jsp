@@ -15,7 +15,7 @@
     </jsp:include>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/script/Registrazione.js"></script>
+    <script src="${pageContext.request.contextPath}/script/detailForm.js"></script>
     <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
 
     <style>
@@ -94,7 +94,7 @@
 
         <%if (user != null) {%>
 
-        <form action="#" method="post" class="needs-validation">
+        <form id="form" action="${pageContext.request.contextPath}/Prenotazione" method="post" class="needs-validation">
 
             <p>Dati personali del cliente a cui sarà assegnata la prenotazione</p><br>
 
@@ -181,14 +181,14 @@
             <input type="hidden" name="id_stanza" value="<%=id_stanza%>">
             <input type="hidden" name="dataArrivo" value="<%=dataArrivo%>">
             <input type="hidden" name="dataPartenza" value="<%=dataPartenza%>">
-            <Button onclick="Registrazione()" id="ButtonSub" class="btn btn-dark" type="button">Conferma</button>
+            <input type="submit" id="ButtonSub" value="Conferma" class="btn btn-dark">
         </form>
 
         <%} else { %>
 
         <p>I dati extra inseriti serviranno per registrarti alla piattaforma automaticamente</p><br>
 
-        <form action="#" method="post">
+        <form id="form" action="${pageContext.request.contextPath}/Prenotazione" method="post">
 
             <div class="form-group">
                 <label for="nome1_notLogged">Nome Cliente 1
@@ -294,7 +294,7 @@
             <% } %>
             <input type="hidden" name="num_persone" value="<%=num_persone%>">
             <input type="hidden" name="id_stanza" value="<%=id_stanza%>">
-            <Button onclick="Registrazione()" id="ButtonSub" class="btn btn-dark" type="button">Conferma</button>
+            <Button onclick="return ValidateForm()" id="ButtonSub" class="btn btn-dark" type="submit">Conferma</button>
         </form>
         <%}%>
     </div>

@@ -25,6 +25,7 @@ public class PrenotazioneServizioService {
      * Elimina la prenotazione servizio specificata.
      * @param idPrenotazione Identificativo della prenotazione
      */
+
     public void deletePrenotazioneById(int idPrenotazione) {
         try (Connection con = Connect.getConnection()) {
             con.setAutoCommit(false);

@@ -37,7 +37,7 @@ public class PagamentoServlet extends CheckServlet
                             SessionCreateParams.builder()
                                     .setMode(SessionCreateParams.Mode.PAYMENT)
                                     .setSuccessUrl(link+"true&id="+preno.getIdPrenotazioneStanza())
-                                    .setCancelUrl(link+"false")
+                                    .setCancelUrl(link+"false&id="+-1)
                                     .addLineItem(
                                             SessionCreateParams.LineItem.builder()
                                                     .setQuantity(1L)
