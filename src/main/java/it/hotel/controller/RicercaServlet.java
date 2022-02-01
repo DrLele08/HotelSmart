@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class RicercaServlet extends HttpServlet {
                     request.setAttribute("dataPartenzaString",dataPartenzaString);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/detailForm.jsp");
                     dispatcher.forward(request,response);
-                } catch (StanzaNotFoundException e) {
+                } catch (StanzaNotFoundException | SQLException e) {
                     e.printStackTrace();
                 }
 

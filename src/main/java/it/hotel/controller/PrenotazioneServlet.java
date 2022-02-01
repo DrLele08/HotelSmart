@@ -50,7 +50,7 @@ public class PrenotazioneServlet extends CheckServlet
                 int numPersone=Integer.parseInt(request.getParameter("num_persone"));
                 if(numPersone>1)
                 {
-                    for(int index=1;index<numPersone;index++)
+                    for(int index=2;index<=numPersone;index++)
                     {
                         if(contieneParametro(request,"nome"+index) && contieneParametro(request,"cognome"+index) &&
                                 contieneParametro(request,"codicef"+index) && contieneParametro(request,"dataNascita"+index))
@@ -74,11 +74,12 @@ public class PrenotazioneServlet extends CheckServlet
         }
         catch(Exception e)
         {
+            e.printStackTrace();
             response.sendRedirect(request.getContextPath());
         }
     }
     private boolean canDoSignUp(HttpServletRequest request)
     {
-        return contieneParametro(request, "textCF") && contieneParametro(request, "textNome") && contieneParametro(request, "textCognome") && contieneParametro(request, "textEmail") && contieneParametro(request, "textNascita") && contieneParametro(request, "textPwd");
+        return contieneParametro(request, "codicef1") && contieneParametro(request, "nome1") && contieneParametro(request, "cognome1") && contieneParametro(request, "emailcliente") && contieneParametro(request, "dataNascita1") && contieneParametro(request, "pwdcliente");
     }
 }

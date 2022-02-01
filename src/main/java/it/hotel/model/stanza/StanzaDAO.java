@@ -79,9 +79,8 @@ public class StanzaDAO {
      * @throws StanzaNotFoundException La stanza cercata non è presente nel database
      * @throws RuntimeException Errore nella comunicazione con il database
      */
-    public Stanza doSelectById(int idStanza) throws StanzaNotFoundException {
+    public Stanza doSelectById(int idStanza,Connection con) throws StanzaNotFoundException,SQLException {
         Stanza stanza;
-        try (Connection con = Connect.getConnection()) {
             PreparedStatement ps = con.prepareStatement
                     ("SELECT * FROM Stanza WHERE idStanza=?",
                             Statement.RETURN_GENERATED_KEYS);
@@ -92,10 +91,6 @@ public class StanzaDAO {
             } else {
                 throw new StanzaNotFoundException();
             }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         return stanza;
     }
 

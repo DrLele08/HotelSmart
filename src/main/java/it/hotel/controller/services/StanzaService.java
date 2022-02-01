@@ -1,11 +1,14 @@
 package it.hotel.controller.services;
 
 
+import it.hotel.Utility.Connect;
 import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.StanzaDAO;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +83,11 @@ public class StanzaService
      * @return Stanza trovata
      * @throws StanzaNotFoundException Non è stata trovata la stanza cercata
      */
-    public Stanza selectById(Integer stanzaId) throws StanzaNotFoundException {
-        return dao.doSelectById(stanzaId);
+    public Stanza selectById(Integer stanzaId) throws StanzaNotFoundException,SQLException
+    {
+        Connection con= Connect.getConnection();
+        return dao.doSelectById(stanzaId,con);
+
     }
 
     /**

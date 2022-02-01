@@ -56,20 +56,22 @@ public class PrenotazioneStanzaService {
      * @throws PrenotazioneStanzaNotFoundException La prenotazione non è stata trovata
      */
     public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, String dataInizio, String dataFine, List<PersonaAggiuntiva> listExtra)
-            throws StanzaNotFoundException, ParseException, PrenotazioneStanzaInsertException, PrenotazioneStanzaNotFoundException {
+            throws StanzaNotFoundException, ParseException, PrenotazioneStanzaInsertException, PrenotazioneStanzaNotFoundException, SQLException {
 
         PrenotazioneStanza prenotazione;
-        try (Connection con = Connect.getConnection()) {
+        Connection con = null;
+        try {
+            con=Connect.getConnection();
             con.setAutoCommit(false);
 
-            Stanza s = stanzaDAO.doSelectById(ksStanza);
+            Stanza s = stanzaDAO.doSelectById(ksStanza,con);
             double costoNotte = s.getCostoNotte();
             Date inizio = Utility.dataConverter(dataInizio);
             Date fine = Utility.dataConverter(dataFine);
             if (!stanzaDAO.isDisponibile(con, ksStanza, inizio, fine)) {
                 throw new PrenotazioneStanzaInsertException();
             }
-            int ksStato =  new StatoService().getByStato("IN ATTESA DI PAGAMENTO");
+            int ksStato =  1;
             int idPrenotazione = prenotazioneStanzaDAO.doInsert(con, ksUtente, ksStato, ksStanza, inizio, fine, costoNotte);
             prenotazione = prenotazioneStanzaDAO.doSelectById(con, idPrenotazione);
             for (PersonaAggiuntiva p : listExtra) {
@@ -83,6 +85,8 @@ public class PrenotazioneStanzaService {
             con.commit();
             con.setAutoCommit(true);
         } catch (SQLException e) {
+            con.rollback();
+            con.setAutoCommit(true);
             throw new RuntimeException();
         }
         return prenotazione;

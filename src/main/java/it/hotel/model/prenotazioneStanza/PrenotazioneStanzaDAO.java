@@ -29,7 +29,7 @@ public class PrenotazioneStanzaDAO {
      * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
      * @throws SQLException Errore nella comunicazione con il database
      */
-    public int doInsert(Connection con, int ksUtente, int ksStanza, int ksStato, Date dataInizio, Date dataFine, double costoNotte)
+    public int doInsert(Connection con, int ksUtente, int ksStato, int ksStanza, Date dataInizio, Date dataFine, double costoNotte)
             throws PrenotazioneStanzaInsertException, SQLException, PrenotazioneStanzaNotFoundException {
 
         //se l'utente non ha altre prenotazioni 'IN ATTESA DI PAGAMENTO', inserisco la nuova prenotazione con questo stato;
@@ -45,8 +45,8 @@ public class PrenotazioneStanzaDAO {
         ps.setInt(3, ksStato);
         ps.setDate(4, dataInizio);
         ps.setDate(5, dataFine);
-        ps.setDate(6, dataInizio);
-        ps.setDate(7, dataFine);
+        ps.setDate(6, dataFine);
+        ps.setDate(7, dataInizio);
         ps.setDouble(8, costoNotte);
         ps.setString(9, null);
         ps.setString(10, null);
