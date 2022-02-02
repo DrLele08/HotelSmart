@@ -111,6 +111,7 @@ public class ServiziServlet extends HttpServlet {
                 java.sql.Date dataSql = null;
                 String success = "FAIL";
 
+                //cecceccio
                 PrenotazioneStanza linked_reservation = getActiveReservation(request);
 
                 try {
