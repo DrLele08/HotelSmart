@@ -1,8 +1,11 @@
 package it.hotel.controller.services;
 
+import it.hotel.Utility.Connect;
 import it.hotel.model.servizio.Servizio;
 import it.hotel.model.servizio.ServizioDAO;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -26,7 +29,11 @@ public class ServizioService {
      * @param limitePosti Posti disponibili
      */
     public void createServizio(String nome, String descrizione, String foto, double costo, int limitePosti) {
-        dao.doInsert(nome, descrizione, foto, costo, limitePosti);
+        try (Connection con = Connect.getConnection()) {
+            dao.doInsert(con, nome, descrizione, foto, costo, limitePosti);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -39,7 +46,11 @@ public class ServizioService {
      * @param limitePosti Posti disponibili
      */
     public void updateServizio(int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) {
-        dao.doUpdate(idServizio, nome, descrizione, foto, costo, limitePosti);
+        try (Connection con = Connect.getConnection()) {
+            dao.doUpdate(con, idServizio, nome, descrizione, foto, costo, limitePosti);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -47,7 +58,11 @@ public class ServizioService {
      * @return Lista contenente i servizi trovati
      */
     public List<Servizio> getAll() {
-        return dao.getServizi();
+        try (Connection con = Connect.getConnection()) {
+            return dao.getServizi(con);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -56,7 +71,11 @@ public class ServizioService {
      * @return Lista contenente i servizi trovati per l'utente
      */
     public List<Servizio> getByUser(int idUtente) {
-        return dao.doSelectByUserId(idUtente);
+        try (Connection con = Connect.getConnection()) {
+            return dao.doSelectByUserId(con, idUtente);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -64,6 +83,12 @@ public class ServizioService {
      * @param idServizio Identificativo del servizio.
      * @return Il servizio trovato.
      */
-    public Servizio getById(int idServizio){ return dao.doSelectById(idServizio); }
+    public Servizio getById(int idServizio) {
+        try (Connection con = Connect.getConnection()) {
+            return dao.doSelectById(con, idServizio);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
 
 }

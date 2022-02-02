@@ -8,7 +8,7 @@ import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import javax.servlet.http.*;
 import java.util.Optional;
 
-public class CheckServlet extends HttpServlet
+public abstract class CheckServlet extends HttpServlet
 {
     public boolean contieneParametro(HttpServletRequest request,String nome)
     {

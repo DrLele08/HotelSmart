@@ -1,8 +1,5 @@
 package it.hotel.model.servizio;
 
-import it.hotel.Utility.Connect;
-import it.hotel.model.utente.Utente;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,123 +11,105 @@ public class ServizioDAO {
 
     /**
      * Inserisce nel database un oggetto Servizio secondo i valori specificati.
+     * @param con Connessione al database
      * @param nome Nome
      * @param descrizione Descrizione
      * @param foto Percorso foto
      * @param costo Costo
      * @param limitePosti Posti disponibili
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doInsert(String nome, String descrizione, String foto, double costo, int limitePosti) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("INSERT INTO Servizio (nome, descrizione, foto, costo, limitePosti) VALUES(?,?,?,?,?)",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, nome);
-            ps.setString(2, descrizione);
-            ps.setString(3, foto);
-            ps.setDouble(4, costo);
-            ps.setInt(5, limitePosti);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void doInsert(Connection con, String nome, String descrizione, String foto, double costo, int limitePosti) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("INSERT INTO Servizio (nome, descrizione, foto, costo, limitePosti) VALUES(?,?,?,?,?)",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, nome);
+        ps.setString(2, descrizione);
+        ps.setString(3, foto);
+        ps.setDouble(4, costo);
+        ps.setInt(5, limitePosti);
+        ps.executeUpdate();
     }
 
     /**
      * Aggiorna un oggetto Servizio nel database secondo i valori specificati.
+     * @param con Connessione al database
      * @param idServizio Identificativo
      * @param nome Nome
      * @param descrizione Descrizione
      * @param foto Percorso foto
      * @param costo Costo
      * @param limitePosti Posti disponibili
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doUpdate(int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("UPDATE Servizio SET nome=?, descrizione=?, foto=?, costo=?, " +
-                                    "limitePosti=? WHERE idServizio=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, nome);
-            ps.setString(2, descrizione);
-            ps.setString(3, foto);
-            ps.setDouble(4, costo);
-            ps.setInt(5, limitePosti);
-            ps.setInt(6, idServizio);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void doUpdate(Connection con, int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("UPDATE Servizio SET nome=?, descrizione=?, foto=?, costo=?, " +
+                                "limitePosti=? WHERE idServizio=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, nome);
+        ps.setString(2, descrizione);
+        ps.setString(3, foto);
+        ps.setDouble(4, costo);
+        ps.setInt(5, limitePosti);
+        ps.setInt(6, idServizio);
+        ps.executeUpdate();
     }
 
     /**
      * Recupera tutti gli oggetti Servizio presenti nel database.
+     * @param con Connessione al database
      * @return I servizi presenti nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Servizio> getServizi() {
+    public List<Servizio> getServizi(Connection con) throws SQLException {
         ArrayList<Servizio> servizi = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Servizio",
-                            Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                servizi.add(createServizio(rs));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Servizio",
+                        Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            servizi.add(createServizio(rs));
         }
         return servizi;
     }
 
     /**
      * Recupera gli oggetti Servizio trovati nel database secondo il valore specificato.
-     * @param idUtente Identificativo dell'{@link Utente}
+     * @param con Connessione al database
+     * @param idUtente Identificativo dell'utente
      * @return I servizi trovati nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Servizio> doSelectByUserId(int idUtente) {
+    public List<Servizio> doSelectByUserId(Connection con, int idUtente) throws SQLException {
         ArrayList<Servizio> servizi = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT servizio.* FROM Servizio, Utente WHERE idUtente=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idUtente);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                servizi.add(createServizio(rs));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT servizio.* FROM Servizio, Utente WHERE idUtente=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idUtente);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            servizi.add(createServizio(rs));
         }
         return servizi;
     }
 
     /**
      * Recupera un servizio dato un id.
+     * @param con Connessione al database
      * @param idServizio Identificativo del {@link Servizio}
      * @return Il servizio trovato
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public Servizio doSelectById(int idServizio){
+    public Servizio doSelectById(Connection con, int idServizio) throws SQLException {
         Servizio servizio = null;
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT servizio.* FROM Servizio WHERE idServizio=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idServizio);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                servizio = createServizio(rs);
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT servizio.* FROM Servizio WHERE idServizio=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idServizio);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            servizio = createServizio(rs);
         }
         return servizio;
     }

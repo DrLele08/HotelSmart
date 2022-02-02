@@ -5,7 +5,9 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.TimeZone;
-
+/**
+ * @author Sais Raffaele, Giovanni De Pierro, Pierpaolo Cammardella, Alessandro d'Esposito
+ */
 public class Connect
 {
     private static DataSource datasource;
@@ -19,7 +21,6 @@ public class Connect
             p.setDriverClassName("com.mysql.cj.jdbc.Driver");
             p.setUsername("root");
             p.setPassword("password");
-            p.setMaxActive(1000);
             p.setInitialSize(10);
             p.setMinIdle(10);
             p.setRemoveAbandonedTimeout(60);

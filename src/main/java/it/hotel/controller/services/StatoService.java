@@ -26,23 +26,23 @@ public class StatoService {
      * @return Lista contenente gli stati trovati
      */
     public List<Stato> getAll() {
-        return dao.doGetAll();
+        List<Stato> stati;
+        try (Connection con = Connect.getConnection()) {
+            stati = dao.doGetAll(con);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return stati;
     }
 
     /**
      * Recupera l'identificativo dello stato specificato.
      * @return Identificativo dello stato
-     * @throws StatoNotFoundException Lo stato specificato non è stato trovato
      */
     public int getByStato(String ruolo) {
         int idStato;
         try (Connection con = Connect.getConnection()) {
-            con.setAutoCommit(false);
-
             idStato = dao.doSelectByStato(con, ruolo).getIdStato();
-
-            con.commit();
-            con.setAutoCommit(true);
         } catch (SQLException e) {
             throw new RuntimeException();
         } catch (StatoNotFoundException e) {

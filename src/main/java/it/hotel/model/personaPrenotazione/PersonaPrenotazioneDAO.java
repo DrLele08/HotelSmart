@@ -12,9 +12,9 @@ public class PersonaPrenotazioneDAO {
 
     /**
      * Inserisce nel database un oggetto {@link PersonaPrenotazione} secondo i valori specificati.
-     * @param con
-     * @param idPersonaAggiuntiva
-     * @param idPrenotazioneStanza
+     * @param con Connessione al database
+     * @param idPersonaAggiuntiva Identificativo della persona aggiuntiva
+     * @param idPrenotazioneStanza Identificativo della prenotazione stanza
      * @throws SQLException Errore nella comunicazione con il database
      */
     public void doInsert(Connection con, int idPersonaAggiuntiva, int idPrenotazioneStanza) throws SQLException {
