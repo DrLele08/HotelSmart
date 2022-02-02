@@ -14,7 +14,6 @@ import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.json.JSONObject;
 
-import javax.mail.MessagingException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -58,9 +57,11 @@ public class CheckPayment extends CheckServlet
                     if(paymentIntent.getStatus().equals("succeeded"))
                     {
                         stanzaService.editStato(idPreno,2);
-                        //stanzaService.generateQrCode(idPreno);
-                        String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #"+preno.getIdPrenotazioneStanza()+" è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
-                        Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #"+preno.getIdPrenotazioneStanza(),textHtml);
+                        stanzaService.generateQrCode(idPreno);
+                        new Thread(() -> {
+                            String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #"+preno.getIdPrenotazioneStanza()+" è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
+                            Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #"+preno.getIdPrenotazioneStanza(),textHtml);
+                        });
                         object.put("Ris",1);
                         object.put("Mess","Fatto");
                         response.getOutputStream().print(object.toString());
@@ -80,12 +81,6 @@ public class CheckPayment extends CheckServlet
                     object.put("Mess","Operazione non possibile");
                     response.getOutputStream().print(object.toString());
                 }
-            }
-            catch(MessagingException e)
-            {
-                object.put("Ris",1);
-                object.put("Mess","Fatto, errore durante l'invio della email");
-                response.getOutputStream().print(object.toString());
             }
             catch(NumberFormatException e)
             {

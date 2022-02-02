@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 
@@ -59,7 +60,7 @@ public class RegistrazioneServlet extends HttpServlet
             object.put("data","PWDPROBLEMA");
             response.getOutputStream().print(object.toString());
         }
-        catch (EmailAlreadyExistingException e)
+        catch (EmailAlreadyExistingException | SQLException e)
         {
             object.put("status",false);
             object.put("data","EMAIL PROBLEMA");

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 /**
@@ -63,6 +64,11 @@ public class ModificaAnagrafica extends CheckServlet
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Data non valida");
+            }
+            catch (SQLException e)
+            {
+                obj.put("Ris",0);
+                obj.put("Mess","Errore db");
             }
         }
         else

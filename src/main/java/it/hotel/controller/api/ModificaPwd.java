@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "ModificaPwd", value = "/api/ModificaPwd")
 public class ModificaPwd extends HttpServlet
@@ -46,6 +47,11 @@ public class ModificaPwd extends HttpServlet
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Permessi non validi");
+            }
+            catch (SQLException e)
+            {
+                obj.put("Ris",0);
+                obj.put("Mess","Errore DB");
             }
         }
         else

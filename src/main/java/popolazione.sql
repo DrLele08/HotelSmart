@@ -24,6 +24,7 @@ INSERT INTO Utente(ksRuolo, cf, nome, cognome, email, password, dataNascita, tok
 VALUES(1,"","Raffaele","Sais","saisraffaele08@gmail.com",
 "7c0eff32d087e2bd940faa00d92c5aef4b2436d9e4a759d710902f346ff64ee5",
 "2000-07-30", "wocZmXKWrxp4z5ZMRrCo3InhR8RKWzMqVBwNan6TxVpzZQNI2gGdLXRMddWDCutp");
+
 																							
 
 -- Popolazione Stanza
