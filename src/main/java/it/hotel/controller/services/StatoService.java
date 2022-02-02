@@ -37,15 +37,28 @@ public class StatoService {
 
     /**
      * Recupera l'identificativo dello stato specificato.
+     * @param idStato Identificativo dello stato
+     * @return Stato
+     */
+    public String getById(int idStato) {
+        String stato;
+        try (Connection con = Connect.getConnection()) {
+            stato = dao.doSelectById(con, idStato).getStato();
+        } catch (SQLException | StatoNotFoundException e) {
+            throw new RuntimeException();
+        }
+        return stato;
+    }
+
+    /**
+     * Recupera l'identificativo dello stato specificato.
      * @return Identificativo dello stato
      */
-    public int getByStato(String ruolo) {
+    public int getByStato(String stato) {
         int idStato;
         try (Connection con = Connect.getConnection()) {
-            idStato = dao.doSelectByStato(con, ruolo).getIdStato();
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (StatoNotFoundException e) {
+            idStato = dao.doSelectByStato(con, stato).getIdStato();
+        } catch (SQLException | StatoNotFoundException e) {
             throw new RuntimeException();
         }
         return idStato;

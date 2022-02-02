@@ -141,6 +141,7 @@ public class PrenotazioneStanza implements Serializable
 
     /**
      * @return Nome dello stato
+     * @deprecated
      */
 
     public String getStatoName()
