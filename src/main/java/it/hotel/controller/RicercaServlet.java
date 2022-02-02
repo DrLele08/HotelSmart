@@ -152,7 +152,7 @@ public class RicercaServlet extends HttpServlet {
                     request.setAttribute("dataPartenzaString",dataPartenzaString);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/detailForm.jsp");
                     dispatcher.forward(request,response);
-                } catch (StanzaNotFoundException | SQLException e) {
+                } catch (StanzaNotFoundException e) {
                     e.printStackTrace();
                 }
 

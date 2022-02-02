@@ -1,7 +1,5 @@
 package it.hotel.model.stanza;
 
-import it.hotel.Utility.Connect;
-import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
 import it.hotel.model.stanza.stanzaExceptions.*;
 
 import java.sql.*;
@@ -15,171 +13,150 @@ public class StanzaDAO {
 
     /**
      * Inserisce nel database un oggetto Stanza secondo i valori specificati.
+     * @param con Connessione al database
      * @param animaleDomestico Idoneità per animali domestici
      * @param fumatore Idoneità per fumatori
      * @param lettiSingoli Quantità letti singoli
      * @param lettiMatrimoniali Quantità letti matrimoniali
      * @param costoNotte Costo per notte
      * @param sconto Sconto applicabile
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doInsert(boolean animaleDomestico, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
-                         double costoNotte, double sconto) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("INSERT INTO Stanza (animaleDomestico, fumatore, lettiSingoli," +
-                                    " lettiMatrimoniali, costoNotte, sconto) VALUES(?,?,?,?,?,?)",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setBoolean(1, animaleDomestico);
-            ps.setBoolean(2, fumatore);
-            ps.setInt(3, lettiSingoli);
-            ps.setInt(4, lettiMatrimoniali);
-            ps.setDouble(5, costoNotte);
-            ps.setDouble(6, sconto);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void doInsert(Connection con, boolean animaleDomestico, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
+                         double costoNotte, double sconto) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("INSERT INTO Stanza (animaleDomestico, fumatore, lettiSingoli," +
+                                " lettiMatrimoniali, costoNotte, sconto) VALUES(?,?,?,?,?,?)",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setBoolean(1, animaleDomestico);
+        ps.setBoolean(2, fumatore);
+        ps.setInt(3, lettiSingoli);
+        ps.setInt(4, lettiMatrimoniali);
+        ps.setDouble(5, costoNotte);
+        ps.setDouble(6, sconto);
+        ps.executeUpdate();
     }
 
     /**
      * Aggiorna un oggetto Stanza nel database secondo i valori specificati.
+     * @param con Connessione al database
      * @param animaleDomestico Idoneità per animali domestici
      * @param fumatore Idoneità per fumatori
      * @param lettiSingoli Quantità letti singoli
      * @param lettiMatrimoniali Quantità letti matrimoniali
      * @param costoNotte Costo per notte
      * @param sconto Sconto applicabile
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doUpdate(int idStanza, boolean animaleDomestico, boolean fumatore, int lettiSingoli,
-                         int lettiMatrimoniali, double costoNotte, double sconto) {
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("UPDATE Stanza SET animaleDomestico=?, fumatore=?, lettiSingoli=?, lettiMatrimoniali=?, " +
-                                    "costoNotte=?, sconto=? WHERE idStanza=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setBoolean(1, animaleDomestico);
-            ps.setBoolean(2, fumatore);
-            ps.setInt(3, lettiSingoli);
-            ps.setInt(4, lettiMatrimoniali);
-            ps.setDouble(5, costoNotte);
-            ps.setDouble(6, sconto);
-            ps.setInt(7, idStanza);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void doUpdate(Connection con, int idStanza, boolean animaleDomestico, boolean fumatore, int lettiSingoli,
+                         int lettiMatrimoniali, double costoNotte, double sconto) throws SQLException {
+        PreparedStatement ps = con.prepareStatement
+                ("UPDATE Stanza SET animaleDomestico=?, fumatore=?, lettiSingoli=?, lettiMatrimoniali=?, " +
+                                "costoNotte=?, sconto=? WHERE idStanza=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setBoolean(1, animaleDomestico);
+        ps.setBoolean(2, fumatore);
+        ps.setInt(3, lettiSingoli);
+        ps.setInt(4, lettiMatrimoniali);
+        ps.setDouble(5, costoNotte);
+        ps.setDouble(6, sconto);
+        ps.setInt(7, idStanza);
+        ps.executeUpdate();
     }
 
     /**
      * Recupera l'oggetto Stanza trovato nel database secondo il valore specificato.
+     * @param con Connessione al database
      * @param idStanza Id che identifica la stanza cercata
      * @return La stanza trovata nel database
      * @throws StanzaNotFoundException La stanza cercata non è presente nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public Stanza doSelectById(int idStanza,Connection con) throws StanzaNotFoundException,SQLException {
+    public Stanza doSelectById(Connection con, int idStanza) throws StanzaNotFoundException, SQLException {
         Stanza stanza;
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stanza WHERE idStanza=?",
-                            Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idStanza);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                stanza = createStanza(rs);
-            } else {
-                throw new StanzaNotFoundException();
-            }
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Stanza WHERE idStanza=?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idStanza);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            stanza = createStanza(rs);
+        } else {
+            throw new StanzaNotFoundException();
+        }
         return stanza;
     }
 
     /**
      * Recupera tutti gli oggetti Stanza presenti nel database.
+     * @param con Connessione al database
      * @return Le stanze presenti nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Stanza> getStanze(){
+    public List<Stanza> getStanze(Connection con) throws SQLException {
         ArrayList<Stanza> stanze = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stanza",
-                            Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                stanze.add(createStanza(rs));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Stanza",
+                        Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            stanze.add(createStanza(rs));
         }
         return stanze;
     }
 
     /**
      * Recupera gli oggetti Stanza presenti nel database che hanno uno sconto maggiore di ZERO.
+     * @param con Connessione al database
      * @return Lista contenente le stanze con uno sconto maggiore di ZERO.
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Stanza> getOfferte(){
+    public List<Stanza> getOfferte(Connection con) throws SQLException {
         ArrayList<Stanza> stanze = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stanza WHERE Stanza.sconto > 0",
-                            Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                stanze.add(createStanza(rs));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Stanza WHERE Stanza.sconto > 0",
+                        Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            stanze.add(createStanza(rs));
         }
         return stanze;
     }
 
     /**
      * Recupera il prezzo più basso e il prezzo più alto tra tutti gli oggetti Stanza presenti nel database.
+     * @param con Connessione al database
      * @return Lista contenente il prezzo più basso e il prezzo più alto
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Double> doSelect_Min_And_Max_Prices() {
+    public List<Double> doSelect_Min_And_Max_Prices(Connection con) throws SQLException {
         ArrayList<Double> prezzi = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT MIN(costoNotte), MAX(costoNotte) FROM Stanza",
-                            Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                prezzi.add(rs.getDouble(1));
-                prezzi.add(rs.getDouble(2));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT MIN(costoNotte), MAX(costoNotte) FROM Stanza",
+                        Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            prezzi.add(rs.getDouble(1));
+            prezzi.add(rs.getDouble(2));
         }
         return prezzi;
     }
 
     /**
      * Recupera le quantità maggiori di letti singoli e matrimoniali tra tutti gli oggetti Stanza presenti nel database.
+     * @param con Connessione al database
      * @return Lista contenente le quantità maggiori di letti singoli e matrimoniali
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Integer> doSelect_S_And_M_Letti() {
+    public List<Integer> doSelect_S_And_M_Letti(Connection con) throws SQLException {
         ArrayList<Integer> numLetti = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT MAX(lettiSingoli), MAX(lettiMatrimoniali) FROM Stanza",
-                            Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                numLetti.add(rs.getInt(1));
-                numLetti.add(rs.getInt(2));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT MAX(lettiSingoli), MAX(lettiMatrimoniali) FROM Stanza",
+                        Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            numLetti.add(rs.getInt(1));
+            numLetti.add(rs.getInt(2));
         }
         return numLetti;
     }
@@ -207,6 +184,7 @@ public class StanzaDAO {
 
     /**
      * Recupera gli oggetti Stanza trovati nel database secondo i valori specificati.
+     * @param con Connessione al database
      * @param animaleDomestico Permesso animali domestici
      * @param fumatore Permesso fumatori
      * @param numeroOspiti Numero di ospiti
@@ -217,30 +195,24 @@ public class StanzaDAO {
      * @param dataIn Data di entrata
      * @param dataOut Data di uscita
      * @return Le stanze trovate nel database
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<Stanza> doSearch(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
+    public List<Stanza> doSearch(Connection con, Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
                                  Double costoNotteMinimo, Double costoNotteMassimo,
-                                 Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) {
+                                 Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) throws SQLException {
 
         String query = getQuery(animaleDomestico, fumatore, numeroOspiti, costoNotteMinimo,
                 costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
 
         ArrayList<Stanza> stanze = new ArrayList<>();
-        try (Connection con = Connect.getConnection()) {
-            PreparedStatement ps = con.prepareStatement
-                    ("SELECT * FROM Stanza s" + query,
-                            Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT * FROM Stanza s" + query,
+                        Statement.RETURN_GENERATED_KEYS);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                stanze.add(createStanza(rs));
-            }
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            stanze.add(createStanza(rs));
         }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
         return stanze;
 
     }

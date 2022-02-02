@@ -33,21 +33,41 @@ public class StanzaService
      * @return Lista contenente le stanze trovate
      */
     public List<Stanza> getStanze() {
-        return dao.getStanze();
+        List<Stanza> stanze;
+        try (Connection con = Connect.getConnection()) {
+            stanze = dao.getStanze(con);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return stanze;
     }
 
     /**
      * Recupera tutte le stanze con sconto maggiore di ZERO.
      * @return Lista contenente le stanze trovate
      */
-    public List<Stanza> getOfferte() { return dao.getOfferte(); }
+    public List<Stanza> getOfferte() {
+        List<Stanza> stanze;
+        try (Connection con = Connect.getConnection()) {
+            stanze = dao.getOfferte(con);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return stanze;
+    }
 
     /**
      * Restituisce il più basso e il più alto tra i prezzi tra tutte le stanze.
      * @return Lista contenente il prezzo più basso e il prezzo più alto
      */
     public List<Double> get_Min_And_Max_Prices() {
-        return dao.doSelect_Min_And_Max_Prices();
+        List<Double> prezzi;
+        try (Connection con = Connect.getConnection()) {
+            prezzi = dao.doSelect_Min_And_Max_Prices(con);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return prezzi;
     }
 
     /**
@@ -55,7 +75,13 @@ public class StanzaService
      * @return Lista contenente le quantità maggiori di letti singoli e matrimoniali
      */
     public List<Integer> get_S_And_M_Letti() {
-        return dao.doSelect_S_And_M_Letti();
+        List<Integer> letti;
+        try (Connection con = Connect.getConnection()) {
+            letti = dao.doSelect_S_And_M_Letti(con);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return letti;
     }
 
     /**
@@ -73,8 +99,14 @@ public class StanzaService
      */
     public List<Stanza> search(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti, Double costoNotteMinimo, Double costoNotteMassimo,
                                       Double scontoMinimo, Double scontoMassimo, java.sql.Date dataIn, Date dataOut) {
-        return dao.doSearch(animaleDomestico, fumatore, numeroOspiti,
-                costoNotteMinimo, costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
+        List<Stanza> stanze;
+        try (Connection con = Connect.getConnection()) {
+            stanze = dao.doSearch(con, animaleDomestico, fumatore, numeroOspiti,
+                    costoNotteMinimo, costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return stanze;
     }
 
     /**
@@ -83,11 +115,15 @@ public class StanzaService
      * @return Stanza trovata
      * @throws StanzaNotFoundException Non è stata trovata la stanza cercata
      */
-    public Stanza selectById(Integer stanzaId) throws StanzaNotFoundException,SQLException
+    public Stanza selectById(Integer stanzaId) throws StanzaNotFoundException
     {
-        Connection con= Connect.getConnection();
-        return dao.doSelectById(stanzaId,con);
-
+        Stanza stanza;
+        try (Connection con= Connect.getConnection()) {
+            stanza = dao.doSelectById(con, stanzaId);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return stanza;
     }
 
     /**
@@ -101,7 +137,11 @@ public class StanzaService
      */
     public void insertStanza(boolean animale, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
                              double costoNotte, double sconto) {
-        dao.doInsert(animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);
+        try (Connection con = Connect.getConnection()) {
+            dao.doInsert(con, animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -115,6 +155,10 @@ public class StanzaService
      */
     public void updateStanza(int idStanza, boolean animale, boolean fumatore, int lettiSingoli,
                              int lettiMatrimoniali, double costoNotte, double sconto) {
-        dao.doUpdate(idStanza, animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);
+        try (Connection con = Connect.getConnection()) {
+            dao.doUpdate(con, idStanza, animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
     }
 }

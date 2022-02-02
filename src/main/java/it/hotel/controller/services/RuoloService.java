@@ -28,12 +28,7 @@ public class RuoloService {
     public List<Ruolo> getAll() {
         List<Ruolo> ruoli;
         try (Connection con = Connect.getConnection()) {
-            con.setAutoCommit(false);
-
             ruoli = dao.doGetAll(con);
-
-            con.commit();
-            con.setAutoCommit(true);
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -43,17 +38,11 @@ public class RuoloService {
     /**
      * Recupera l'identificativo del ruolo specificato.
      * @return Identificativo del ruolo
-     * @throws RuoloNotFoundException Il ruolo specificato non è stato trovato
      */
     public int getByRuolo(String ruolo) {
         int idRuolo;
         try (Connection con = Connect.getConnection()) {
-            con.setAutoCommit(false);
-
             idRuolo = dao.doSelectByRuolo(con, ruolo).getIdRuolo();
-
-            con.commit();
-            con.setAutoCommit(true);
         } catch (SQLException e) {
             throw new RuntimeException();
         } catch (RuoloNotFoundException e) {

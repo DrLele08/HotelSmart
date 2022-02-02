@@ -28,12 +28,7 @@ public class PrenotazioneServizioService {
 
     public void deletePrenotazioneById(int idPrenotazione) {
         try (Connection con = Connect.getConnection()) {
-            con.setAutoCommit(false);
-
             dao.doDelete(con, idPrenotazione);
-
-            con.commit();
-            con.setAutoCommit(true);
         } catch (SQLException e) {
             throw new RuntimeException();
         }

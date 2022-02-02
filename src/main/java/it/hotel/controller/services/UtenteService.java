@@ -38,16 +38,17 @@ public class UtenteService
      * @return Utente trovato
      * @throws  EmailNotFoundException L'email specificata non è stata trovata nel database
      * @throws PasswordNotValidException La password specificata non è esatta
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      * @throws IllegalArgumentException Dati non validi
      * @see Utente
      */
-    public Utente doLogin(String email, String pwd) throws EmailNotFoundException, PasswordNotValidException
-    {
+    public Utente doLogin(String email, String pwd) throws EmailNotFoundException, PasswordNotValidException, SQLException {
         if(!(email.trim().isEmpty() || pwd.trim().isEmpty()))
         {
             Utente utente;
-            try (Connection con = Connect.getConnection()) {
+            Connection con = null;
+            try {
+                con = Connect.getConnection();
                 con.setAutoCommit(false);
 
                 if (!dao.isEmailInDatabase(con, email)) {
@@ -59,6 +60,8 @@ public class UtenteService
                 con.setAutoCommit(true);
                 return utente;
             } catch (SQLException e) {
+                con.rollback();
+                con.setAutoCommit(true);
                 throw new RuntimeException();
             }
         }
@@ -72,7 +75,6 @@ public class UtenteService
      * @param tokenAuth Token dell'utente
      * @return Utente trovato
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
-     * @throws RuntimeException Errore nella comunicazione con il database
      * @throws IllegalArgumentException Dati non validi
      * @see Utente
      */
@@ -80,9 +82,7 @@ public class UtenteService
         if(!tokenAuth.trim().isEmpty())
         {
             try (Connection con = Connect.getConnection()) {
-
                 return dao.doAuthenticate(con, idUtente, tokenAuth);
-
             } catch (SQLException e) {
                 throw new RuntimeException();
             }
@@ -102,17 +102,18 @@ public class UtenteService
      * @return Utente registrato
      * @throws EmailAlreadyExistingException L'email specificata è già presente nel database
      * @throws PasswordNotValidException La password specificata non è valida
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      * @throws IllegalArgumentException Dati non validi
      * @see Utente
      */
-    public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException,PasswordNotValidException
-    {
+    public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException, PasswordNotValidException, SQLException {
         if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !email.trim().isEmpty() && !pwd.trim().isEmpty())
         {
             Utente utente;
-            try (Connection con = Connect.getConnection())
+            Connection con = null;
+            try
             {
+                con = Connect.getConnection();
                 con.setAutoCommit(false);
 
                 Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
@@ -135,6 +136,8 @@ public class UtenteService
                 con.setAutoCommit(true);
                 return utente;
             } catch (SQLException e) {
+                con.rollback();
+                con.setAutoCommit(true);
                 throw new RuntimeException(e);
             }
         }
@@ -151,34 +154,37 @@ public class UtenteService
      * @throws PasswordNotValidException La password specificata non è valida
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
      * @throws PermissionDeniedException Non si dispone dei privilegi necessari
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      * @throws IllegalArgumentException Dati non validi
      */
     public void editPassword(int idUtente,String token,String oldPwd,String newPwd)
-            throws PasswordNotValidException, UtenteNotFoundException, PermissionDeniedException
-    {
+            throws PasswordNotValidException, UtenteNotFoundException, PermissionDeniedException, SQLException {
         Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
         if(!token.trim().isEmpty() && !oldPwd.trim().isEmpty() && !newPwd.trim().isEmpty() && pattern.matcher(newPwd).matches())
         {
-                try (Connection con = Connect.getConnection()) {
-                    con.setAutoCommit(false);
+            Connection con = null;
+            try {
+                con = Connect.getConnection();
+                con.setAutoCommit(false);
 
-                    int tipoRuolo = dao.doGetRuolo(con, idUtente, token);
-                    if (tipoRuolo == 2 || tipoRuolo == 1 || tipoRuolo == 3) {
-                        throw new PermissionDeniedException();
-                    }
-
-                    if (dao.isPasswordValid(con, idUtente, oldPwd)) {
-                        dao.doChangePassword(con, idUtente, newPwd);
-                    } else {
-                        throw new PasswordNotValidException();
-                    }
-
-                    con.commit();
-                    con.setAutoCommit(true);
-                } catch (SQLException e) {
-                    throw new RuntimeException();
+                int tipoRuolo = dao.doGetRuolo(con, idUtente, token);
+                if (tipoRuolo == 2 || tipoRuolo == 1 || tipoRuolo == 3) {
+                    throw new PermissionDeniedException();
                 }
+
+                if (dao.isPasswordValid(con, idUtente, oldPwd)) {
+                    dao.doChangePassword(con, idUtente, newPwd);
+                } else {
+                    throw new PasswordNotValidException();
+                }
+
+                con.commit();
+                con.setAutoCommit(true);
+            } catch (SQLException e) {
+                con.rollback();
+                con.setAutoCommit(true);
+                throw new RuntimeException();
+            }
         }
         else
             throw new IllegalArgumentException();
@@ -194,14 +200,16 @@ public class UtenteService
      * @param email Email dell'utente
      * @throws EmailAlreadyExistingException L'email specificata è già presente nel database
      * @throws ParseException La data di nascita non è in un formato comprensibile
-     * @throws RuntimeException Errore nella comunicazione con il database
+     * @throws SQLException Errore nella comunicazione con il database
      * @throws IllegalArgumentException Dati non validi
      */
     public void editAnagrafica(int idUtente, String tokenAuth, String nome, String cognome, String cf, String dataNascitaStr, String email)
-            throws EmailAlreadyExistingException, ParseException {
+            throws EmailAlreadyExistingException, ParseException, SQLException {
         if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !dataNascitaStr.trim().isEmpty() && !email.trim().isEmpty())
         {
-            try (Connection con = Connect.getConnection()) {
+            Connection con = null;
+            try {
+                con = Connect.getConnection();
                 con.setAutoCommit(false);
 
                 if (dao.isEmailInDatabase(con, email) && !dao.isEmailOld(con, idUtente, email)) {
@@ -212,6 +220,8 @@ public class UtenteService
                 con.commit();
                 con.setAutoCommit(true);
             } catch (SQLException e) {
+                con.rollback();
+                con.setAutoCommit(true);
                 throw new RuntimeException();
             }
         }
@@ -224,13 +234,10 @@ public class UtenteService
      * @param idPrenotazione Identificativo della prenotazione stanza
      * @return Utente trovato
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
-     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public Utente getUtenteByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
         try (Connection con = Connect.getConnection()) {
-
             return dao.doSelectByPrenotazioneStanza(con, idPrenotazione);
-
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -239,13 +246,10 @@ public class UtenteService
     /**
      * Recupera tutti gli utenti presenti nel database.
      * @return Lista contenente gli utenti trovati
-     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public List<Utente> getAll() {
         try (Connection con = Connect.getConnection()) {
-
             return dao.getUtenti(con);
-
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -255,13 +259,10 @@ public class UtenteService
      * Modifica il ruolo di un utente secondo i valori specificati.
      * @param idUtente Identificativo dell'utente
      * @param ruolo Ruolo da inserire
-     * @throws RuntimeException Errore nella comunicazione con il database
      */
     public void editRuoloById(int idUtente, int ruolo) {
         try (Connection con = Connect.getConnection()) {
-
             dao.doChangeRuolo(con, idUtente, ruolo);
-
         } catch (SQLException e) {
             throw new RuntimeException();
         }

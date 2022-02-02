@@ -1,6 +1,5 @@
 package it.hotel.model.prenotazioneStanza;
 
-import it.hotel.Utility.Connect;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.*;
 
 import java.sql.*;
@@ -21,22 +20,24 @@ public class PrenotazioneStanzaDAO {
      * e con stato "IN ATTESA DI PAGAMENTO".
      * @param con Connessione al database
      * @param ksUtente Utente che effettua la prenotazione
+     * @param ksStato Stato della prenotazione
      * @param ksStanza Stanza prenotata
      * @param dataInizio Data di entrata
      * @param dataFine Data di uscita
      * @param costoNotte Costo notte
+     * @param sconto Sconto costo notte
      * @return L'oggetto inserito nel database
      * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
      * @throws SQLException Errore nella comunicazione con il database
      */
-    public int doInsert(Connection con, int ksUtente, int ksStato, int ksStanza, Date dataInizio, Date dataFine, double costoNotte)
+    public int doInsert(Connection con, int ksUtente, int ksStato, int ksStanza, Date dataInizio, Date dataFine, double costoNotte, double sconto)
             throws PrenotazioneStanzaInsertException, SQLException, PrenotazioneStanzaNotFoundException {
 
         //se l'utente non ha altre prenotazioni 'IN ATTESA DI PAGAMENTO', inserisco la nuova prenotazione con questo stato;
         PreparedStatement ps = con.prepareStatement
                 ("INSERT INTO PrenotazioneStanza (ksUtente, ksStanza," +
                                 " ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr," +
-                                " commenti, valutazione) SELECT ?,?,?,?,?,(SELECT DATEDIFF(?,?)*?),?,?,?,? FROM dual " +
+                                " commenti, valutazione) SELECT ?,?,?,?,?,(SELECT DATEDIFF(?,?)*(?-?)),?,?,?,? FROM dual " +
                                 "WHERE NOT EXISTS (SELECT * FROM PrenotazioneStanza WHERE ksUtente = ? AND " +
                                 "ksStato = ?)",
                         Statement.RETURN_GENERATED_KEYS);
@@ -48,12 +49,13 @@ public class PrenotazioneStanzaDAO {
         ps.setDate(6, dataFine);
         ps.setDate(7, dataInizio);
         ps.setDouble(8, costoNotte);
-        ps.setString(9, null);
+        ps.setDouble(9, sconto);
         ps.setString(10, null);
         ps.setString(11, null);
-        ps.setInt(12, -1);
-        ps.setInt(13, ksUtente);
-        ps.setInt(14, ksStato);
+        ps.setString(12, null);
+        ps.setInt(13, -1);
+        ps.setInt(14, ksUtente);
+        ps.setInt(15, ksStato);
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
         int id;
