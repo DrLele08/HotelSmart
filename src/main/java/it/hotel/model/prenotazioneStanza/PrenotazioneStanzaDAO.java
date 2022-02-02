@@ -1,6 +1,7 @@
 package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.*;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -119,7 +120,7 @@ public class PrenotazioneStanzaDAO {
      * @throws SQLException Errore nella comunicazione con il database
      */
     public PrenotazioneStanza doSelectById(Connection con, int idPrenotazioneStanza)
-            throws PrenotazioneStanzaNotFoundException, SQLException {
+            throws PrenotazioneStanzaNotFoundException, SQLException, UtenteNotFoundException {
         PreparedStatement ps = con.prepareStatement
                 ("SELECT * FROM PrenotazioneStanza WHERE idPrenotazioneStanza=?",
                         Statement.RETURN_GENERATED_KEYS);
@@ -140,7 +141,7 @@ public class PrenotazioneStanzaDAO {
      * @return Gli oggetti trovati nel database
      * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<PrenotazioneStanza> doSelectBy(Connection con, int value, int type) throws SQLException {
+    public List<PrenotazioneStanza> doSelectBy(Connection con, int value, int type) throws SQLException, UtenteNotFoundException {
         ArrayList<PrenotazioneStanza> prenotazioniStanza = new ArrayList<>();
         String str = "";
         switch (type) {
@@ -171,7 +172,7 @@ public class PrenotazioneStanzaDAO {
      * @return Le prenotazioni stanza presenti nel database
      * @throws SQLException Errore nella comunicazione con il database
      */
-    public List<PrenotazioneStanza> doGetAll(Connection con) throws SQLException {
+    public List<PrenotazioneStanza> doGetAll(Connection con) throws SQLException, UtenteNotFoundException {
         ArrayList<PrenotazioneStanza> prenotazioni = new ArrayList<>();
         PreparedStatement ps = con.prepareStatement
                 ("SELECT * FROM Prenotazionestanza",
@@ -226,7 +227,7 @@ public class PrenotazioneStanzaDAO {
         return false;
     }
 
-    private PrenotazioneStanza createPrenotazioneStanza(ResultSet rs) throws SQLException {
+    private PrenotazioneStanza createPrenotazioneStanza(ResultSet rs) throws SQLException, UtenteNotFoundException {
         return new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3),
                 rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8),
                 rs.getString(9), rs.getString(10), rs.getInt(11));

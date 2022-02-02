@@ -1,7 +1,10 @@
 package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.Utility.Utility;
+import it.hotel.controller.services.UtenteService;
 import it.hotel.model.stato.Stato;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -16,6 +19,7 @@ public class PrenotazioneStanza implements Serializable
 
     private int idPrenotazioneStanza;
     private int ksUtente;
+    private Utente utente;
     private int ksStanza;
     private int ksStato;
     private Date dataInizio;
@@ -42,7 +46,7 @@ public class PrenotazioneStanza implements Serializable
      */
     public PrenotazioneStanza(int idPrenotazioneStanza, int ksUtente, int ksStanza, int ksStato,
                 Date dataInizio, Date dataFine, double prezzoFinale, String tokenStripe,
-                        String tokenQr, String commenti, int valutazione) {
+                        String tokenQr, String commenti, int valutazione) throws UtenteNotFoundException {
         this.idPrenotazioneStanza = idPrenotazioneStanza;
         this.ksUtente = ksUtente;
         this.ksStanza = ksStanza;
@@ -54,6 +58,8 @@ public class PrenotazioneStanza implements Serializable
         this.tokenQr = tokenQr;
         this.commenti = commenti;
         this.valutazione = valutazione;
+        UtenteService utenteService=new UtenteService();
+        utente=utenteService.getUtenteByPrenotazioneStanza(idPrenotazioneStanza);
     }
 
     /**

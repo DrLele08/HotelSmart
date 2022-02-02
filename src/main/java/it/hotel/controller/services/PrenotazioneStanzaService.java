@@ -15,6 +15,7 @@ import it.hotel.model.stanza.StanzaDAO;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
 import it.hotel.model.stato.StatoDAO;
 import it.hotel.model.stato.statoExceptions.StatoNotFoundException;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import java.security.SecureRandom;
 import java.sql.*;
@@ -97,7 +98,7 @@ public class PrenotazioneStanzaService {
 
             con.commit();
             con.setAutoCommit(true);
-        } catch (SQLException e) {
+        } catch (SQLException | UtenteNotFoundException e) {
             con.rollback();
             con.setAutoCommit(true);
             throw new RuntimeException();
@@ -116,7 +117,7 @@ public class PrenotazioneStanzaService {
         List<PrenotazioneStanza> prenotazioni;
         try (Connection con = Connect.getConnection()) {
             prenotazioni = prenotazioneStanzaDAO.doSelectBy(con, value, type);
-        } catch (SQLException e) {
+        } catch (SQLException | UtenteNotFoundException e) {
             throw new RuntimeException();
         }
         return prenotazioni;
@@ -130,7 +131,7 @@ public class PrenotazioneStanzaService {
         List<PrenotazioneStanza> prenotazioni;
         try (Connection con = Connect.getConnection()) {
             prenotazioni = prenotazioneStanzaDAO.doGetAll(con);
-        } catch (SQLException e) {
+        } catch (SQLException | UtenteNotFoundException e) {
             throw new RuntimeException();
         }
         return prenotazioni;
@@ -160,7 +161,7 @@ public class PrenotazioneStanzaService {
         PrenotazioneStanza prenotazione;
         try (Connection con = Connect.getConnection()) {
             prenotazione = prenotazioneStanzaDAO.doSelectById(con, idPrenotazione);
-        } catch (SQLException e) {
+        } catch (SQLException | UtenteNotFoundException e) {
             throw new RuntimeException();
         }
         return prenotazione;
