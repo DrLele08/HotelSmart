@@ -48,6 +48,14 @@ public class Utility
      */
     public static final String CHECK_LOGIN="ACTIVE_LOGIN";
     /**
+     * Nome per controllare se il signup è attivo
+     */
+    public static final String CHECK_SIGNUP="ACTIVE_SIGNUP";
+    /**
+     * Nome per controllare se la ricerca è attiva
+     */
+    public static final String CHECK_SEARCH="ACTIVE_SEARCH";
+    /**
      * Lista con i vari ruoli
      */
     public static List<Ruolo> listRuoli=new ArrayList<>();
