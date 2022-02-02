@@ -44,6 +44,10 @@
             <thead>
             <tr>
                 <th>Numero stanza</th>
+                <%if(ut.getRuolo()!=3){%>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                <%}%>
                 <th>Data inizio</th>
                 <th>Data fine</th>
                 <th>Prezzo finale</th>
@@ -59,74 +63,68 @@
             %>
             <tr>
                 <td><%=p.getKsStanza()%></td>
+                <%if(ut.getRuolo()!=3){%>
+                    <td><%=p.getUtente().getNome()%></td>
+                    <td><%=p.getUtente().getCognome()%></td>
+                <%}%>
                 <td><%=Utility.convertDateToView(p.getDataInizio())%></td>
                 <td><%=Utility.convertDateToView(p.getDataFine())%></td>
                 <td><%=p.getPrezzoFinale()%></td>
                 <td><%=p.getStatoName()%></td>
-                <!-- blocco if sul ruolo  -->
-                <!-- in questo caso get non ha bisogno di controlli perche se non fosse settato non
-                    arriverebbe in questa pagina, vedi la servlet -->
-
-                <% if(us.get().getRuolo() == 1 || us.get().getRuolo() == 2){ %>
-
-                <!-- Blocco Administrator -->
-                <td>
-                    <%
-                        switch(p.getKsStato()){
-                            case 1:
-                    %>
-                    <span data-toggle="tooltip" title="Annullare ordine"> <a class="fa fa-times icon-hover" id=iconAnnullaOrdineAdmin"" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
-                    <%   break;
-                        case 2:
-                    %>
-                    <span data-toggle="tooltip" title="Check-In"> <a class="fa fa-check icon-hover" id="iconCheckIn" onclick='iconFillData(3,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckIn"></a></span>
-                    <%   break;
-                        case 3:
-                    %>
-                    <span data-toggle="tooltip" title="Check-Out"> <a class="fas fa-sign-out-alt icon-hover" id="iconCheckOut" onclick='iconFillData(4,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckOut" ></a></span>
-                    <%   break;
-
-                    }%>
-
-                </td>
-                <!-- Blocco Utente -->
-                <% }else{ %>
                 <td>
 
                     <%
                         switch(p.getKsStato()){
                             case 1:
+                                //controllo se è un utente o se la prenotazione è la sua
+                                if((ut.getRuolo()==3)||(ut.getIdUtente() == p.getKsUtente())){
                     %>
                     <span data-toggle="tooltip" title="Effettuare pagamento"><a class="bi bi-credit-card icon-hover" href="PagamentoServlet?idPreno=<%=p.getIdPrenotazioneStanza()%>"></a></span>
+                   <%}%>
                     <span data-toggle="tooltip" title="Annullare ordine"> <a class="fa fa-times icon-hover" id="iconAnnullaOrdineUser" onclick='iconFillData(6,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)'  data-toggle="modal"  data-target="#modalAnnullaOrdine"></a></span>
                     <%   break;
                         case 2:
+                            //controllo se è un utente o se la prenotazione è la sua
+                            if((ut.getRuolo()==3)||(ut.getIdUtente() == p.getKsUtente())){
                             long miliseconds = System.currentTimeMillis();
                             Date dataAttuale = new Date((miliseconds + (1000 * 60 * 60 * 24 * 13)));
                             if((dataAttuale.compareTo(p.getDataInizio())) <= 0){
                     %>
                         <span data-toggle="tooltip" title="Richiedi rimborso"> <a class="fa fa-shopping-bag icon-hover" id="iconRichiediRimborso" onload="rimborsoGiorni(<%=p.getDataInizio()%>)" onclick='iconFillData(5,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a></span>
                     <%  }
+                            }
+                        if(ut.getRuolo()==1||ut.getRuolo()==2){
+                    %>
+                    <span data-toggle="tooltip" title="Check-In"> <a class="fa fa-check icon-hover" id="iconCheckIn" onclick='iconFillData(3,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckIn"></a></span>
+                    <%}
                         break;
                         case 3:
+                            //controllo se è un utente o se la prenotazione è la sua
+                            if((ut.getRuolo()==3)||(ut.getIdUtente() == p.getKsUtente())){
                     %>
-
                     <span><a class="bi bi-bag-plus" data-toggle="tooltip" title="Prenota servizi" href="${pageContext.request.contextPath}/servizi/goservizi"></a></span>
                     <span data-toggle="tooltip" title="Visualizza codice qr"><a class="fa fa-qrcode icon-hover" onclick='iconTokenQr("<%=p.getTokenQr()%>")' data-toggle="modal" data-target="#modalCodiceQr"></a></span>
-                    <%   break;
+                    <%} if(ut.getRuolo()==1||ut.getRuolo()==2){
+
+                    %>
+                    <span data-toggle="tooltip" title="Check-Out"> <a class="fas fa-sign-out-alt icon-hover" id="iconCheckOut" onclick='iconFillData(4,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCheckOut" ></a></span>
+                    <% }
+                            break;
 
                     }%>
                 </td>
-                <!-- Fine if -->
-                <% } %>
-
+                <!-- Fine for -->
+                <% }%>
             </tr>
-            <!-- Fine for -->
-            <% }%>
+
             </tbody>
             <tfoot>
             <tr>
                 <th>Numero stanza</th>
+                <%if(ut.getRuolo()!=3){%>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                <%}%>
                 <th>Data inizio</th>
                 <th>Data fine</th>
                 <th>Prezzo finale</th>

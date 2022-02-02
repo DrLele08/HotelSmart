@@ -50,31 +50,31 @@
             </div>
         <table id="StoricoPrenotazioniServiziTable" class="display" style="width:100%">
             <thead>
-            <tr>
-                <th>Nome servizio</th>
-                <th>Numero persone prenotate</th>
-                <th>Data prenotazione</th>
-            </tr>
+                <tr>
+                    <th>Nome servizio</th>
+                    <th>Numero persone prenotate</th>
+                    <th>Data prenotazione</th>
+                </tr>
             </thead>
             <tbody>
-            <%
-                List<PrenotazioneServizio> serviziPrenotati=(List<PrenotazioneServizio>) request.getAttribute("Servizi");
-                for(PrenotazioneServizio s : serviziPrenotati){
-            %>
+                <%
+                    List<PrenotazioneServizio> serviziPrenotati=(List<PrenotazioneServizio>) request.getAttribute("Servizi");
+                    for(PrenotazioneServizio s : serviziPrenotati){
+                %>
 
-            <tr>
-                <td><%=s.getServizioName()%></td>
-                <td><%=s.getNumPersone()%></td>
-                <td><%=Utility.convertDateToView(s.getDataPrenotazioneServizio())%></td>
-            </tr>
-            <%}%>
+                <tr>
+                    <td><%=s.getServizioName()%></td>
+                    <td><%=s.getNumPersone()%></td>
+                    <td><%=Utility.convertDateToView(s.getDataPrenotazioneServizio())%></td>
+                </tr>
+                <%}%>
             </tbody>
             <tfoot>
-            <tr>
-                <th>Nome servizio</th>
-                <th>Numero persone prenotate</th>
-                <th>Data prenotazione</th>
-            </tr>
+                <tr>
+                    <th>Nome servizio</th>
+                    <th>Numero persone prenotate</th>
+                    <th>Data prenotazione</th>
+                </tr>
             </tfoot>
         </table>
     </div>

@@ -59,7 +59,7 @@ public class PrenotazioneStanza implements Serializable
         this.commenti = commenti;
         this.valutazione = valutazione;
         UtenteService utenteService=new UtenteService();
-        utente=utenteService.getUtenteByPrenotazioneStanza(idPrenotazioneStanza);
+        this.utente=utenteService.getUtenteByPrenotazioneStanza(idPrenotazioneStanza);
     }
 
     /**
@@ -153,4 +153,12 @@ public class PrenotazioneStanza implements Serializable
         }
         return "N/D";
     }
+
+    /**
+     * @return Utente
+     */
+    public Utente getUtente() {
+        return this.utente;
+    }
+
 }
