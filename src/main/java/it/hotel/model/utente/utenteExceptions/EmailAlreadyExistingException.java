@@ -1,7 +1,9 @@
 package it.hotel.model.utente.utenteExceptions;
 
+import it.hotel.model.utente.Utente;
+
 /**
- * Segnala che l'email è già presente nel database.
+ * Segnala che l'email di un oggetto {@link Utente} è già presente nel database.
  */
 public class EmailAlreadyExistingException extends Exception {
 
