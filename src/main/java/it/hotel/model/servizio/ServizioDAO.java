@@ -84,7 +84,9 @@ public class ServizioDAO {
     public List<Servizio> doSelectByUserId(Connection con, int idUtente) throws SQLException {
         ArrayList<Servizio> servizi = new ArrayList<>();
         PreparedStatement ps = con.prepareStatement
-                ("SELECT servizio.* FROM Servizio, Utente WHERE idUtente=?",
+                ("SELECT s.* FROM Servizio as s, PrenotazioneServizio as pser, PrenotazioneStanza as psta WHERE " +
+                                "s.idServizio = pser.ksServizio AND pser.ksPrenotazioneStanza = psta.idPrenotazioneStanza " +
+                                "AND psta.ksUtente = ?",
                         Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, idUtente);
         ResultSet rs = ps.executeQuery();

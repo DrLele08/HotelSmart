@@ -136,20 +136,4 @@ public class PrenotazioneStanza implements Serializable
         return valutazione;
     }
 
-    /**
-     * @return Nome dello stato
-     * @deprecated
-     */
-
-    public String getStatoName()
-    {
-
-        for(Stato s:Utility.listStato)
-        {
-            if(s.getIdStato()==ksStato)
-                return s.getStato();
-        }
-        return "N/D";
-    }
-
 }
