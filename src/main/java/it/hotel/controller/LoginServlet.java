@@ -12,6 +12,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "Login", value = "/Login")
 public class LoginServlet extends HttpServlet
@@ -112,7 +113,7 @@ public class LoginServlet extends HttpServlet
             obj.put("data","PWDPROBLEMA");
             response.getOutputStream().print(obj.toString());
         }
-        catch (IllegalArgumentException e)
+        catch (IllegalArgumentException | SQLException e)
         {
             obj.put("status",false);
             obj.put("data","BO PROBLEMA");

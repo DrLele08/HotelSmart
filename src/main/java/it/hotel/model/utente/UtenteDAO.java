@@ -216,7 +216,7 @@ public class UtenteDAO {
      */
     public Utente doSelectByPrenotazioneStanza(Connection con, int idPrenotazione) throws UtenteNotFoundException, SQLException {
         PreparedStatement ps = con.prepareStatement
-                ("SELECT Utente.* FROM Utente, PrenotazioneStanza WHERE idPrenotazioneStanza=?",
+                ("SELECT Utente.* FROM Utente, PrenotazioneStanza WHERE idPrenotazioneStanza=? AND utente.idUtente=prenotazionestanza.ksUtente",
                         Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, idPrenotazione);
         ResultSet rs = ps.executeQuery();

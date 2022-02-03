@@ -48,6 +48,7 @@ public abstract class CheckServlet extends HttpServlet
             try
             {
                 us=new UtenteService().doLogin(idUtente,tokenAuth);
+                session.setAttribute(Utility.SESSION_USER,us);
                 return Optional.of(us);
             }
             catch (UtenteNotFoundException e)

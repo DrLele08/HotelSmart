@@ -1,7 +1,9 @@
 package it.hotel.model.utente.utenteExceptions;
 
+import it.hotel.model.utente.Utente;
+
 /**
- * Segnala che l'email non è presente nel database.
+ * Segnala che l'email di un oggetto {@link Utente} non è presente nel database.
  */
 public class EmailNotFoundException extends Exception {
 

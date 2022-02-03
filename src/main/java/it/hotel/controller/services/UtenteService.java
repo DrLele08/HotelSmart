@@ -168,7 +168,8 @@ public class UtenteService
                 con.setAutoCommit(false);
 
                 int tipoRuolo = dao.doGetRuolo(con, idUtente, token);
-                if (tipoRuolo == 2 || tipoRuolo == 1 || tipoRuolo == 3) {
+                if (tipoRuolo==-1)
+                {
                     throw new PermissionDeniedException();
                 }
 

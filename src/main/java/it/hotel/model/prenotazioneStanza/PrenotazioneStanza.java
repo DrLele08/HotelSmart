@@ -1,7 +1,10 @@
 package it.hotel.model.prenotazioneStanza;
 
 import it.hotel.Utility.Utility;
+import it.hotel.controller.services.UtenteService;
 import it.hotel.model.stato.Stato;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -135,6 +138,7 @@ public class PrenotazioneStanza implements Serializable
 
     /**
      * @return Nome dello stato
+     * @deprecated
      */
 
     public String getStatoName()
@@ -147,4 +151,5 @@ public class PrenotazioneStanza implements Serializable
         }
         return "N/D";
     }
+
 }

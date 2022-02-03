@@ -43,16 +43,44 @@ public class Utility
      * Nome del tokenAuth dell'utente per il cookie
     */
     public static final String COOKIE_TOKEN="toUsCo";
+    /**
+     * Nome per controllare se il login è attivo
+     */
     public static final String CHECK_LOGIN="ACTIVE_LOGIN";
+    /**
+     * Nome per controllare se il signup è attivo
+     */
+    public static final String CHECK_SIGNUP="ACTIVE_SIGNUP";
+    /**
+     * Nome per controllare se la ricerca è attiva
+     */
+    public static final String CHECK_SEARCH="ACTIVE_SEARCH";
+    /**
+     * Lista con i vari ruoli
+     */
     public static List<Ruolo> listRuoli=new ArrayList<>();
+    /**
+     * Lista con i vari stati
+     */
     public static List<Stato> listStato=new ArrayList<>();
 
-    public static boolean isActive(String s)
+    /**
+     * Controlla se è possibile accedere a quella funzione RunTime
+     * @param keyType Chiave DB per la relativa funzione
+     * @return Booleano per controllare se è attiva o meno
+     */
+    public static boolean isActive(String keyType)
     {
-        return UtilityDAO.isActive(s);
+        return UtilityDAO.isActive(keyType);
     }
 
-    public static Date dataConverter(String dataStr) throws ParseException {
+    /**
+     * Ritorna una data dando una stringa come parametro
+     * @param dataStr Stringa in formato YYYY-mm-dd
+     * @return Data convertita
+     */
+    public static Date dataConverter(String dataStr) throws ParseException
+    {
         SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date dataUtil = in.parse(dataStr);
         return new Date(dataUtil.getTime());
@@ -63,7 +91,8 @@ public class Utility
      * @param date data non formattata YYYY-mm-dd
      * @return date formattato
      */
-    public static String convertDateToView(Date date){
+    public static String convertDateToView(Date date)
+    {
         final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         return formatter.format(date);
     }

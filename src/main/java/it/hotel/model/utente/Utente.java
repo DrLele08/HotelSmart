@@ -108,6 +108,7 @@ public class Utente {
 
     /**
      * @return Nome del ruolo
+     * @deprecated
      */
 
     public String getRuoloName()

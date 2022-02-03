@@ -31,16 +31,16 @@
 
                     <div class="form-outline mb-4">
                         <label for="username">Indirizzo email</label>
-                        <input type="text" class="form-control" id="username" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                        <input type="text" class="form-control" id="username" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                         <div class="invalid-feedback">
                             Inserisci una Email valida!
                         </div>
                     </div>
                     <div class="form-outline mb-3">
-                        <label for="password">Indirizzo email</label>
+                        <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required>
                         <div class="invalid-feedback">
-                            Inserisci una Password!
+                            Inserisci una Password valida!
                         </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">

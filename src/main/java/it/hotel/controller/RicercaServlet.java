@@ -1,5 +1,6 @@
 package it.hotel.controller;
 
+import it.hotel.Utility.Utility;
 import it.hotel.controller.services.StanzaService;
 import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
@@ -25,36 +26,33 @@ import java.util.Random;
 public class RicercaServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
-        switch (path)
+            throws ServletException, IOException
+    {
+        if(Utility.isActive(Utility.CHECK_SEARCH))
         {
-            case "/gosearch":
-            {
+            String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
+            if ("/gosearch".equals(path)) {
                 StanzaService service = new StanzaService();
                 ArrayList<Double> prezzi = (ArrayList<Double>) service.get_Min_And_Max_Prices();
                 ArrayList<Stanza> stanze_offerta = (ArrayList<Stanza>) service.getOfferte();
 
                 String active_link = "ricerca";
 
-                request.setAttribute("min_price",prezzi.get(0));
-                request.setAttribute("max_price",prezzi.get(1));
+                request.setAttribute("min_price", prezzi.get(0));
+                request.setAttribute("max_price", prezzi.get(1));
                 request.setAttribute("active", active_link);
-                request.setAttribute("stanze_offerta",stanze_offerta);
+                request.setAttribute("stanze_offerta", stanze_offerta);
 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ricerca.jsp");
                 dispatcher.forward(request, response);
-                break;
-            }
-            default:
-            {
+            } else {
                 response.sendRedirect(request.getContextPath());
-                break;
             }
-
         }
-
+        else
+        {
+            response.sendRedirect("./ServiceNA.html");
+        }
     }
 
     public ArrayList<Double> getPrices()
@@ -140,7 +138,7 @@ public class RicercaServlet extends HttpServlet {
                 Integer num_persone = Integer.parseInt(temp1);
 
                 StanzaService service = new StanzaService();
-                Stanza selected_stanza = null;
+                Stanza selected_stanza;
 
                 try {
                     selected_stanza = service.selectById(stanzaId);

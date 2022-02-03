@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 
@@ -20,14 +21,21 @@ public class RegistrazioneServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        RequestDispatcher rd;
-        HttpSession session = request.getSession(true);
-        Utente u = (Utente) session.getAttribute("utente");
-        if(u == null)
-            rd=request.getRequestDispatcher("/WEB-INF/views/Registrazione.jsp");
+        if(Utility.isActive(Utility.CHECK_SIGNUP))
+        {
+            RequestDispatcher rd;
+            HttpSession session = request.getSession(true);
+            Utente u = (Utente) session.getAttribute("utente");
+            if(u == null)
+                rd=request.getRequestDispatcher("/WEB-INF/views/Registrazione.jsp");
+            else
+                rd=request.getRequestDispatcher("index.jsp");
+            rd.forward(request, response);
+        }
         else
-            rd=request.getRequestDispatcher("index.jsp");
-        rd.forward(request, response);
+        {
+            response.sendRedirect("./ServiceNA.html");
+        }
     }
 
     @Override
@@ -59,7 +67,7 @@ public class RegistrazioneServlet extends HttpServlet
             object.put("data","PWDPROBLEMA");
             response.getOutputStream().print(object.toString());
         }
-        catch (EmailAlreadyExistingException e)
+        catch (EmailAlreadyExistingException | SQLException e)
         {
             object.put("status",false);
             object.put("data","EMAIL PROBLEMA");

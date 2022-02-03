@@ -36,16 +36,30 @@ public class RuoloService {
     }
 
     /**
+     * Recupera il ruolo secondo l'identificativo specificato.
+     * @param idRuolo Identificativo del ruolo
+     * @return Ruolo
+     */
+    public String getById(int idRuolo) {
+        String ruolo;
+        try (Connection con = Connect.getConnection()) {
+            ruolo = dao.doSelectById(con, idRuolo).getRuolo();
+        } catch (SQLException | RuoloNotFoundException e) {
+            throw new RuntimeException();
+        }
+        return ruolo;
+    }
+
+    /**
      * Recupera l'identificativo del ruolo specificato.
+     * @param ruolo Ruolo
      * @return Identificativo del ruolo
      */
     public int getByRuolo(String ruolo) {
         int idRuolo;
         try (Connection con = Connect.getConnection()) {
             idRuolo = dao.doSelectByRuolo(con, ruolo).getIdRuolo();
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (RuoloNotFoundException e) {
+        } catch (SQLException | RuoloNotFoundException e) {
             throw new RuntimeException();
         }
         return idRuolo;

@@ -15,6 +15,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "ModificaStato", value = "/api/ModificaStato")
 public class ModificaStato extends CheckServlet
@@ -86,6 +87,12 @@ public class ModificaStato extends CheckServlet
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Utente non valido");
+                response.getOutputStream().print(obj.toString());
+            }
+            catch (SQLException e)
+            {
+                obj.put("Ris",0);
+                obj.put("Mess","Errore db");
                 response.getOutputStream().print(obj.toString());
             }
         }
