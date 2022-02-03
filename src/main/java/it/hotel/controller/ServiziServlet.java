@@ -4,6 +4,7 @@ import it.hotel.Utility.Utility;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.ServizioService;
 import it.hotel.controller.services.StanzaService;
+import it.hotel.controller.services.StatoService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.servizio.Servizio;
@@ -45,6 +46,9 @@ public class ServiziServlet extends HttpServlet {
 
                     ArrayList<PrenotazioneStanza> prenotazioni = (ArrayList<PrenotazioneStanza>) service1.selectBy(user.getIdUtente(), PrenotazioneStanzaDAO.UTENTE);
                     for(PrenotazioneStanza p: prenotazioni){
+                        /* String stato = new StatoService().getById(p.getKsStato());
+                            if stato.equals("IN CORSO")
+                         */
                         if(p.getStatoName().equals("IN CORSO")){
                             has_active_reservation = true;
                         }

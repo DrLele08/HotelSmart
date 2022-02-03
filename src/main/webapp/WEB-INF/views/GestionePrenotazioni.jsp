@@ -64,6 +64,8 @@
             <tr>
                 <td><%=p.getKsStanza()%></td>
                 <%if(ut.getRuolo()!=3){%>
+                /* UtenteService utenteService=new UtenteService();
+                p = utenteService.getUtenteByPrenotazioneStanza(idPrenotazioneStanza);*/
                     <td><%=p.getUtente().getNome()%></td>
                     <td><%=p.getUtente().getCognome()%></td>
                 <%}%>

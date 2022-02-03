@@ -19,7 +19,6 @@ public class PrenotazioneStanza implements Serializable
 
     private int idPrenotazioneStanza;
     private int ksUtente;
-    private Utente utente;
     private int ksStanza;
     private int ksStato;
     private Date dataInizio;
@@ -46,7 +45,7 @@ public class PrenotazioneStanza implements Serializable
      */
     public PrenotazioneStanza(int idPrenotazioneStanza, int ksUtente, int ksStanza, int ksStato,
                 Date dataInizio, Date dataFine, double prezzoFinale, String tokenStripe,
-                        String tokenQr, String commenti, int valutazione) throws UtenteNotFoundException {
+                        String tokenQr, String commenti, int valutazione) {
         this.idPrenotazioneStanza = idPrenotazioneStanza;
         this.ksUtente = ksUtente;
         this.ksStanza = ksStanza;
@@ -58,8 +57,6 @@ public class PrenotazioneStanza implements Serializable
         this.tokenQr = tokenQr;
         this.commenti = commenti;
         this.valutazione = valutazione;
-        UtenteService utenteService=new UtenteService();
-        this.utente=utenteService.getUtenteByPrenotazioneStanza(idPrenotazioneStanza);
     }
 
     /**
@@ -153,13 +150,6 @@ public class PrenotazioneStanza implements Serializable
                 return s.getStato();
         }
         return "N/D";
-    }
-
-    /**
-     * @return Utente
-     */
-    public Utente getUtente() {
-        return this.utente;
     }
 
 }
