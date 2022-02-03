@@ -4,6 +4,8 @@
 
 <%@ page import="it.hotel.model.utente.Utente" %>
 <%@ page import="java.util.List" %>
+<%@ page import="it.hotel.controller.services.UtenteService" %>
+<%@ page import="it.hotel.controller.services.RuoloService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
@@ -50,6 +52,7 @@
 
             <%
                 List<Utente> utenti=(List<Utente>) request.getAttribute("Utenti");
+                RuoloService serviceRuolo = new RuoloService();
                 for(Utente s : utenti){
             %>
             <tr>
@@ -58,7 +61,7 @@
                 <td><%=s.getCf()%></td>
                 <td><%=Utility.convertDateToView(s.getDataNascita())%></td>
                 <td><%=s.getEmail()%></td>
-                <td><%=s.getRuoloName()%></td>
+                <td><%=serviceRuolo.getById(s.getRuolo())%></td>
                 <td>
                     <%if(s.getIdUtente()!=ut.getIdUtente()){%><span data-toggle="tooltip" title="Modifica permessi"><a class="fas fa-edit icon-hover" id="iconModificaPermessi" onclick='iconModificaPermessi(<%=s.getIdUtente()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getRuolo()%>)'  data-toggle="modal" data-target="#modalModificaPermessi"></a></span> <%}%>
                 </td>
