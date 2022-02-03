@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,11 +120,11 @@ public class ServiziServlet extends HttpServlet {
                     Date temp_data = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data"));
                     dataSql =  new java.sql.Date(temp_data.getTime());
 
-                    PrenotazioneServizioDAO service = new PrenotazioneServizioDAO();
+                    PrenotazioneServizioService service = new PrenotazioneServizioService();
 
-                    service.doInsert(linked_reservation.getIdPrenotazioneStanza(),servizioId,numero_ospiti,dataSql);
+                    service.createPrenotazione(linked_reservation.getIdPrenotazioneStanza(),servizioId,numero_ospiti,dataSql);
 
-                } catch (ParseException e) {
+                } catch (ParseException | SQLException e) {
                     e.printStackTrace();
                     request.setAttribute("success",success);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ServizioConfirmation.jsp");

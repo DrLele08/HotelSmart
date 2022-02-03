@@ -8,7 +8,7 @@
             <li class="card-text">Costo per notte: ${param.costoNotte}</li>
             <li class="card-text">Sconto applicato (per notte): ${param.sconto}%</li>
         </ul>
-        <form action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
+        <form onsubmit="return checkReservationsState()" action="${pageContext.request.contextPath}/ricerca/goDetailForm" method="post">
             <input type="hidden" name="stanzaId" value="${param.id}">
             <input type="hidden" name="numero_ospiti" value="${param.numOspiti}">
             <input type="hidden" name="dataArrivo" value="${param.dataArrivo}">

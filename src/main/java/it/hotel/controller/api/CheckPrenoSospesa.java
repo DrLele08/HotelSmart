@@ -42,8 +42,8 @@ public class CheckPrenoSospesa extends CheckServlet
                 utenteService.doLogin(idUtente,token);
                 PrenotazioneStanzaService stanzaService=new PrenotazioneStanzaService();
                 boolean hasPrenoInCorso=stanzaService.selectBy(idUtente, PrenotazioneStanzaDAO.UTENTE).stream().anyMatch(p->p.getKsStato()==1);
-                obj.put("Ris",1);
-                obj.put("InCorso",hasPrenoInCorso);
+                if(hasPrenoInCorso) obj.put("Ris",1);
+                else obj.put("Ris",0);
                 response.getOutputStream().print(obj.toString());
             }
             catch(NumberFormatException e)

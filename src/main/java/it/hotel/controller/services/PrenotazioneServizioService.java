@@ -5,6 +5,7 @@ import it.hotel.model.prenotazioneServizio.PrenotazioneServizio;
 import it.hotel.model.prenotazioneServizio.PrenotazioneServizioDAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 
 /**
@@ -19,6 +20,24 @@ public class PrenotazioneServizioService {
      */
     public PrenotazioneServizioService() {
         this.dao = new PrenotazioneServizioDAO();
+    }
+
+    /**
+     * Crea la prenotazione di un servizio
+     * @param ksPrenotazioneStanza Identificativo della prenotazione stanza associata
+     * @param ksServizio Identificativo del servizio
+     * @param numPersone Numero delle persone
+     * @param dataPrenotazioneServizio Data della prenotazione del servizio
+     */
+
+    public void createPrenotazione(int ksPrenotazioneStanza, int ksServizio, int numPersone, Date dataPrenotazioneServizio) throws SQLException {
+
+        try (Connection con = Connect.getConnection()){
+            dao.doInsert(con,ksPrenotazioneStanza,ksServizio,numPersone,dataPrenotazioneServizio);
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+
     }
 
     /**

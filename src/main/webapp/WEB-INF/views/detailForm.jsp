@@ -80,7 +80,7 @@
                     <li class="card-text">Fumatore: <%=fumatore%></li>
                     <li class="card-text">Animale domestico: <%=animale_domestico%></li>
                     <li class="card-text">Costo per notte: <%=selected_stanza.getCostoNotte()%></li>
-                    <li class="card-text">Sconto applicato (per notte): <%=selected_stanza.getSconto()%>%</li>
+                    <li class="card-text">Sconto applicato (per notte): <%=selected_stanza.getSconto()%>€</li>
                 </ul>
             </div>
         </div>

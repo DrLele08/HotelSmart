@@ -11,6 +11,7 @@
         <jsp:param name="styles" value="header.css"/>
     </jsp:include>
     <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
+    <script src="${pageContext.request.contextPath}/script/CheckReservationState.js"></script>
 
     <style>
 
@@ -51,7 +52,15 @@
     Integer numero_ospiti = (Integer) request.getAttribute("numero_ospiti");
     String dataArrivo = (String) request.getAttribute("dataArrivoString");
     String dataPartenza = (String) request.getAttribute("dataPartenzaString");
+
+    Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
+    String userId = Integer.toString(user.getIdUtente());
+    String token = user.getTokenAuth();
 %>
+
+<input type="hidden" id="userId" value="<%=userId%>">
+<input type="hidden" id="token" value="<%=token%>">
+
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
     <div class="container">
