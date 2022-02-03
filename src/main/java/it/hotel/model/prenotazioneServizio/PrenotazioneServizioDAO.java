@@ -1,6 +1,8 @@
 package it.hotel.model.prenotazioneServizio;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fornisce l'accesso al database per {@link PrenotazioneServizio}.
@@ -38,9 +40,31 @@ public class PrenotazioneServizioDAO {
     }
 
     /**
-     * Elimina un oggetto PrenotazioneServizio dal database.
+     * Recupera gli oggetti PrenotazioneServizio presenti nel database secondo il valore specificato.
      * @param con Connessione al database
-     * @param idPrenotazione L'identificativo della prenotazione da eliminare
+     * @param idUtente Identificativo dell'utente
+     * @return Prenotazioni servizio trovate nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List<PrenotazioneServizio> doSelectByUser(Connection con, int idUtente) throws SQLException {
+        ArrayList<PrenotazioneServizio> prenotazioni = new ArrayList<>();
+        PreparedStatement ps = con.prepareStatement
+                ("SELECT pser.* FROM PrenotazioneServizio as pser, PrenotazioneStanza as psta WHERE " +
+                                "pser.ksPrenotazioneStanza = psta.idPrenotazioneStanza " +
+                                "AND psta.ksUtente = ?",
+                        Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idUtente);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            prenotazioni.add(createPrenotazioneServizio(rs));
+        };
+        return prenotazioni;
+    }
+
+    /**
+     * Elimina un oggetto PrenotazioneServizio specificato dal database.
+     * @param con Connessione al database
+     * @param idPrenotazione Identificativo della prenotazione da eliminare
      * @throws SQLException Errore nella comunicazione con il database
      */
     public void doDelete(Connection con, int idPrenotazione) throws SQLException {
