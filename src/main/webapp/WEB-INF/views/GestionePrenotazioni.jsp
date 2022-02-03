@@ -8,6 +8,8 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.sql.Date" %>
+<%@ page import="it.hotel.controller.services.UtenteService" %>
+<%@ page import="it.hotel.controller.services.StatoService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -59,20 +61,22 @@
             <%
                 List<PrenotazioneStanza> ps=(List<PrenotazioneStanza>) request.getAttribute("ListaPreno");
                 Optional<Utente> us = (Optional<Utente>) request.getAttribute("Utente");
+                UtenteService serviceUtente = new UtenteService();
+                StatoService serviceStato = new StatoService();
+
                 for(PrenotazioneStanza p : ps){
             %>
             <tr>
                 <td><%=p.getKsStanza()%></td>
                 <%if(ut.getRuolo()!=3){%>
-                /* UtenteService utenteService=new UtenteService();
-                p = utenteService.getUtenteByPrenotazioneStanza(idPrenotazioneStanza);*/
-                    <td><%=p.getUtente().getNome()%></td>
-                    <td><%=p.getUtente().getCognome()%></td>
+
+                    <td><%=serviceUtente.getUtenteByPrenotazioneStanza(p.getIdPrenotazioneStanza()).getNome()%></td>
+                    <td><%=serviceUtente.getUtenteByPrenotazioneStanza(p.getIdPrenotazioneStanza()).getCognome()%></td>
                 <%}%>
                 <td><%=Utility.convertDateToView(p.getDataInizio())%></td>
                 <td><%=Utility.convertDateToView(p.getDataFine())%></td>
                 <td><%=p.getPrezzoFinale()%></td>
-                <td><%=p.getStatoName()%></td>
+                <td><%=serviceStato.getById(p.getKsStato())%></td>
                 <td>
 
                     <%
@@ -92,7 +96,7 @@
                             Date dataAttuale = new Date((miliseconds + (1000 * 60 * 60 * 24 * 13)));
                             if((dataAttuale.compareTo(p.getDataInizio())) <= 0){
                     %>
-                        <span data-toggle="tooltip" title="Richiedi rimborso"> <a class="fa fa-shopping-bag icon-hover" id="iconRichiediRimborso" onload="rimborsoGiorni(<%=p.getDataInizio()%>)" onclick='iconFillData(5,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a></span>
+                        <span data-toggle="tooltip" title="Richiedi rimborso"> <a class="fa fa-shopping-bag icon-hover" id="iconRichiediRimborso" onclick='iconFillData(5,<%=p.getIdPrenotazioneStanza()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalRimborso"></a></span>
                     <%  }
                             }
                         if(ut.getRuolo()==1||ut.getRuolo()==2){

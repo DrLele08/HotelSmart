@@ -112,4 +112,49 @@ INSERT INTO Foto(ksStanza, percorso) VALUES(4,"Stanza/7.jpeg");
 INSERT INTO Foto(ksStanza, percorso) VALUES(4,"Stanza/8.jpeg");
 
 INSERT INTO Foto(ksStanza, percorso) VALUES(5,"Stanza/9.jpeg");
-INSERT INTO Foto(ksStanza, percorso) VALUES(5,"Stanza/10.jpeg");																																																																															
+INSERT INTO Foto(ksStanza, percorso) VALUES(5,"Stanza/10.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(6,"Stanza/1.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(6,"Stanza/2.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(7,"Stanza/3.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(7,"Stanza/4.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(8,"Stanza/5.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(8,"Stanza/6.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(9,"Stanza/7.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(9,"Stanza/8.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(10,"Stanza/9.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(10,"Stanza/10.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(11,"Stanza/1.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(11,"Stanza/2.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(12,"Stanza/3.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(12,"Stanza/4.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(13,"Stanza/5.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(13,"Stanza/6.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(14,"Stanza/7.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(14,"Stanza/8.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(15,"Stanza/9.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(15,"Stanza/10.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(16,"Stanza/1.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(16,"Stanza/2.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(17,"Stanza/3.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(17,"Stanza/4.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(18,"Stanza/5.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(18,"Stanza/6.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(19,"Stanza/7.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(19,"Stanza/8.jpeg");
+
+INSERT INTO Foto(ksStanza, percorso) VALUES(20,"Stanza/9.jpeg");
+INSERT INTO Foto(ksStanza, percorso) VALUES(20,"Stanza/10.jpeg");
