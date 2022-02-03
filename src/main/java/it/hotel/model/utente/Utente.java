@@ -106,19 +106,4 @@ public class Utente {
         return tokenAuth;
     }
 
-    /**
-     * @return Nome del ruolo
-     * @deprecated
-     */
-
-    public String getRuoloName()
-    {
-
-        for(Ruolo r: Utility.listRuoli)
-        {
-            if(r.getIdRuolo()== ruolo)
-                return r.getRuolo();
-        }
-        return "N/D";
-    }
 }
