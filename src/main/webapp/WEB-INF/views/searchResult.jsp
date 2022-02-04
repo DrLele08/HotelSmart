@@ -12,6 +12,7 @@
     </jsp:include>
     <script src="${pageContext.request.contextPath}/script/HeaderCheck.js"></script>
     <script src="${pageContext.request.contextPath}/script/CheckReservationState.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
 
@@ -54,8 +55,14 @@
     String dataPartenza = (String) request.getAttribute("dataPartenzaString");
 
     Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
-    String userId = Integer.toString(user.getIdUtente());
-    String token = user.getTokenAuth();
+
+    String userId = "";
+    String token = "";
+
+    if(user != null) {
+        userId = Integer.toString(user.getIdUtente());
+        token = user.getTokenAuth();
+    }
 %>
 
 <input type="hidden" id="userId" value="<%=userId%>">

@@ -73,7 +73,7 @@ public class ServiziServlet extends HttpServlet {
 
             ArrayList<PrenotazioneStanza> prenotazioni = (ArrayList<PrenotazioneStanza>) service1.selectBy(user.getIdUtente(), PrenotazioneStanzaDAO.UTENTE);
             for(PrenotazioneStanza p: prenotazioni){
-                if(p.getStatoName().equals("IN CORSO")){
+                if(p.getKsStato() == 3){
                     result = p;
                     break;
                 }
@@ -124,7 +124,7 @@ public class ServiziServlet extends HttpServlet {
 
                     service.createPrenotazione(linked_reservation.getIdPrenotazioneStanza(),servizioId,numero_ospiti,dataSql);
 
-                } catch (ParseException | SQLException e) {
+                } catch (ParseException e) {
                     e.printStackTrace();
                     request.setAttribute("success",success);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ServizioConfirmation.jsp");

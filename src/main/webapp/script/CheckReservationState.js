@@ -1,37 +1,43 @@
-function checkReservationsState(){
+function checkReservationsState() {
 
-    let utenteId = document.getElementById("userId").value;
+    let idUtente = document.getElementById("userId").value;
     let token = document.getElementById("token").value;
 
-    var data = {
-        idUtente : utenteId,
-        token : "'"+token+"'",
-    }
+    let returnvalue = true;
 
-    if(utenteId != "" && token != "") {
+    const xhttp = new XMLHttpRequest();
+    const path = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 
-        $.ajax({
-            url: 'api/CheckPrenoSospesa',
-            dataType: "json",
-            type: "GET",
-            data: data,
-            success: function (result) {
-                if (result.Ris == 1) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: Errore,
-                        text: result.Mess,
-                    })
-                    return false;
+    if(idUtente != "" && token != "") {
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState === XMLHttpRequest.DONE) {
+                if (xhttp.status >= 100 && xhttp.status < 300) {
+
+                    var result = JSON.parse(xhttp.responseText).Ris;
+
+                    if (result == "1") {
+                        returnvalue = false;
+                    } else {
+                        returnvalue = true;
+                    }
+
                 }
-            },
-            error: function (r,e,t){
-                alert(r);
-                alert(e);
-                alert(t);
             }
-        });
-    } else {
-        return true;
+        }
+
+        xhttp.open("GET", path + "/api/CheckPrenoSospesa?idUtente=" + idUtente + "&token=" + token, false);
+        xhttp.send();
     }
+
+    if(!returnvalue){
+        Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: 'Non è possibile prenotare nuove camere perché hai dei pagamenti in sospeso',
+        });
+        return returnvalue;
+    } else{
+        return returnvalue;
+    }
+
 }

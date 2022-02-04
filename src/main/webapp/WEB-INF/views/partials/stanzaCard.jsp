@@ -13,7 +13,7 @@
             <input type="hidden" name="numero_ospiti" value="${param.numOspiti}">
             <input type="hidden" name="dataArrivo" value="${param.dataArrivo}">
             <input type="hidden" name="dataPartenza" value="${param.dataPartenza}">
-            <input type="submit" class="btn btn-dark" value="Prenota">
+            <button type="submit" class="btn btn-dark">Seleziona</button>
         </form>
     </div>
 </div>
