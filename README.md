@@ -12,38 +12,9 @@
   <p align="center">
     Gestisci il tuo Hotel senza problemi!
     <br />
-    <a href="https://trello.com/b/dggFDzTL/ingegneria-del-software" targer="_blank">Road Map</a>
+    <a href="https://trello.com/b/dggFDzTL/ingegneria-del-software" target="_blank">RoadMap</a>
   </p>
 </div>
-
-
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
 
 
 <!-- ABOUT THE PROJECT -->
@@ -62,7 +33,7 @@ Ecco perchè:
 
 
 
-### Built With
+### Tecnologie Utilizzate
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
@@ -75,17 +46,11 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">Torna sopra</a>)</p>
 
 
 
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
+### Requisiti
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm
@@ -93,7 +58,7 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
 
-### Installation
+### Installazione
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
@@ -111,12 +76,12 @@ _Below is an example of how you can instruct your audience on installing and set
    const API_KEY = 'ENTER YOUR API';
    ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">Torna sopra</a>)</p>
 
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Utilizzo
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
@@ -142,12 +107,11 @@ Vedi i [problemi correnti](https://trello.com/b/dggFDzTL/ingegneria-del-software
 
 
 <!-- CONTACT -->
-## Contact
-
-Raffaele Sais - [@DrLele08](https://twitter.com/drlele08) - saisraffaele08@gmail.com
-Giovanni De Pierro
-Alessandro d'Esposito
-Pierpaolo Cammardella
+## Contatti
+- Raffaele Sais - [@DrLele08](https://twitter.com/drlele08) - saisraffaele08@gmail.com<br>
+- Giovanni De Pierro<br>
+- Alessandro d'Esposito<br>
+- Pierpaolo Cammardella<br>
 
 <p align="right">(<a href="#top">Torna sopra</a>)</p>
 
