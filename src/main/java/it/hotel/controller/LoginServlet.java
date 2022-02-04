@@ -91,7 +91,8 @@ public class LoginServlet extends HttpServlet
             user = service.doLogin(email,pwd);
             HttpSession session=request.getSession();
             session.setAttribute(Utility.SESSION_USER,user);
-            obj.put("status",true);
+            obj.put("Ris",1);
+            obj.put("Mess","Login effettuato con successo");
             response.getOutputStream().print(obj.toString());
             if(ricordami)
             {
@@ -101,22 +102,16 @@ public class LoginServlet extends HttpServlet
                 response.addCookie(c2);
             }
         }
-        catch (EmailNotFoundException e)
+        catch (EmailNotFoundException | PasswordNotValidException e)
         {
-            obj.put("status",false);
-            obj.put("data","EMAIL PROBLEMA");
-            response.getOutputStream().print(obj.toString());
-        }
-        catch (PasswordNotValidException e)
-        {
-            obj.put("status",false);
-            obj.put("data","PWDPROBLEMA");
+            obj.put("Ris",0);
+            obj.put("Mess","Hai immesso un nome utente o una password errata!");
             response.getOutputStream().print(obj.toString());
         }
         catch (IllegalArgumentException | SQLException e)
         {
-            obj.put("status",false);
-            obj.put("data","BO PROBLEMA");
+            obj.put("Ris",0);
+            obj.put("Mess","Si e' verificato un errore, riprovare più tardi o contattare l'assistenza");
             response.getOutputStream().print(obj.toString());
         }
     }

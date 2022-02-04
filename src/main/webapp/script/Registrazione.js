@@ -37,19 +37,21 @@ function Registrazione()
                 type: "post",
                 data: data,
                 success: function (result) {
-                    if (result.status)
+                    if (result.Ris == 1) {
                         Swal.fire({
                             icon: 'success',
                             title: result.Mess,
-                        }).then(function() {
+                        }).then(function () {
                             window.location.replace("./");
                         });
-                    if (result.data == "EMAIL PROBLEMA")
+                    }
+                   else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Errore',
                             text: result.Mess,
                         })
+                    }
                 }
             });
         }

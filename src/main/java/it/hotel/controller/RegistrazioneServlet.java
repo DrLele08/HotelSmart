@@ -47,31 +47,32 @@ public class RegistrazioneServlet extends HttpServlet
         String codiceFiscale = request.getParameter("textCodiceFiscale");
         String indirizzoEmail = request.getParameter("textEmail");
         String password = request.getParameter("textPwd");
-        JSONObject object=new JSONObject();
+        JSONObject obj=new JSONObject();
         UtenteService service = new UtenteService();
         try
         {
             service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail,Utility.dataConverter(dataNascita),password);
-            object.put("status",true);
-            response.getOutputStream().print(object.toString());
+            obj.put("Ris",1);
+            obj.put("Mess","Registrazione effettuata con successo");
+            response.getOutputStream().print(obj.toString());
         }
-        catch (ParseException e)
+        catch (ParseException | SQLException e)
         {
-            object.put("status",false);
-            object.put("data","BOPROBLEMA");
-            response.getOutputStream().print(object.toString());
+            obj.put("Ris",0);
+            obj.put("Mess","Si è verificato un errore, riprovare piu' tardi o contattare l'assistenza");
+            response.getOutputStream().print(obj.toString());
         }
         catch (PasswordNotValidException e)
         {
-            object.put("status",false);
-            object.put("data","PWDPROBLEMA");
-            response.getOutputStream().print(object.toString());
+            obj.put("Ris",0);
+            obj.put("Mess","La password non e' nel formato corretto");
+            response.getOutputStream().print(obj.toString());
         }
-        catch (EmailAlreadyExistingException | SQLException e)
+        catch (EmailAlreadyExistingException e)
         {
-            object.put("status",false);
-            object.put("data","EMAIL PROBLEMA");
-            response.getOutputStream().print(object.toString());
+            obj.put("Ris",0);
+            obj.put("Mess","Email gia' esistente");
+            response.getOutputStream().print(obj.toString());
         }
 
     }

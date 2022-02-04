@@ -5,6 +5,7 @@
 <%@ page import="it.hotel.model.servizio.Servizio" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.hotel.model.prenotazioneServizio.PrenotazioneServizio" %>
+<%@ page import="it.hotel.controller.services.ServizioService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -59,11 +60,12 @@
             <tbody>
                 <%
                     List<PrenotazioneServizio> serviziPrenotati=(List<PrenotazioneServizio>) request.getAttribute("Servizi");
+                    ServizioService service = new ServizioService();
                     for(PrenotazioneServizio s : serviziPrenotati){
                 %>
 
                 <tr>
-                    <td><%=s.getServizioName()%></td>
+                    <td><%=service.getById(s.getKsServizio())%></td>
                     <td><%=s.getNumPersone()%></td>
                     <td><%=Utility.convertDateToView(s.getDataPrenotazioneServizio())%></td>
                 </tr>
