@@ -23,7 +23,7 @@ import java.util.Random;
 
 @WebServlet(name = "Ricerca", value = "/ricerca/*")
 
-public class RicercaServlet extends HttpServlet {
+public class RicercaServlet extends CheckServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException

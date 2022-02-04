@@ -1,7 +1,7 @@
 package it.hotel.controller;
 
-import it.hotel.controller.services.ServizioService;
-import it.hotel.model.servizio.Servizio;
+import it.hotel.controller.services.PrenotazioneServizioService;
+import it.hotel.model.prenotazioneServizio.PrenotazioneServizio;
 import it.hotel.model.utente.Utente;
 
 import javax.servlet.RequestDispatcher;
@@ -27,9 +27,10 @@ public class StoricoServiziServlet extends CheckServlet
         }
         else
         {
-            ServizioService servizioService=new ServizioService();
-            List<Servizio> prenotazioneServizio = servizioService.getByUser(us.get().getIdUtente());
-            request.setAttribute("Servizi", prenotazioneServizio);
+            //ToDo Giovanni
+            PrenotazioneServizioService servizioService=new PrenotazioneServizioService();
+            //List<PrenotazioneServizio> prenotazioneServizio = servizioService.getByUser(us.get().getIdUtente());
+            //request.setAttribute("Servizi", prenotazioneServizio);
             request.setAttribute("Tipo",4);
             rd=request.getRequestDispatcher("/WEB-INF/views/StoricoServizi.jsp");
         }

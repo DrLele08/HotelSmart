@@ -28,13 +28,15 @@ public class GestioneServiziServlet extends CheckServlet
             ServizioService service=new ServizioService();
             List<Servizio> listServizi;
             if(user.getRuolo()==3)
-                listServizi=service.getByUser(user.getIdUtente());
+                response.sendRedirect(request.getContextPath());
             else
+            {
                 listServizi=service.getAll();
-            request.setAttribute("Servizi",listServizi);
-            RequestDispatcher requestDispatcher=request.getRequestDispatcher("/WEB-INF/views/GestioneServizi.jsp");
-            request.setAttribute("Tipo",6);
-            requestDispatcher.forward(request,response);
+                request.setAttribute("Servizi",listServizi);
+                RequestDispatcher requestDispatcher=request.getRequestDispatcher("/WEB-INF/views/GestioneServizi.jsp");
+                request.setAttribute("Tipo",6);
+                requestDispatcher.forward(request,response);
+            }
         }
     }
 }
