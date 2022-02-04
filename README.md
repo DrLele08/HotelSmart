@@ -3,23 +3,16 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://www.saisraffaele.it">
+    <img src="https://github.com/DrLele08/HotelSmart/blob/master/src/main/webapp/images/logo.jpeg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">HotelSmart</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    Gestisci il tuo Hotel senza problemi!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://trello.com/b/dggFDzTL/ingegneria-del-software" targer="_blank">Road Map</a>
   </p>
 </div>
 
@@ -54,22 +47,18 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## Informazioni generali
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+Il nostro progetto nasce come necessità per i propretari di un Hotel (o una catena di Hotel), per permettere loro di utilizzare e gestire una piattaforma semplice, veloce e sopratutto <b>GRATUITA</b>
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Ecco perchè:
+* Il sito è personale ed è personalizzabile
+* Per ogni pagamento RAGP SRL detrae solamente il 5% (A differenza degli altri competitor che hanno una commissione pari al 30%)
+* Offriamo un'assistenza 24/24 per qualsiasi dubbio e/o problema
+* I tempi di consegna del sito sono pressochè immediati
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">Torna sopra</a>)</p>
 
 
 
@@ -161,22 +150,4 @@ Alessandro d'Esposito
 Pierpaolo Cammardella
 
 <p align="right">(<a href="#top">Torna sopra</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
