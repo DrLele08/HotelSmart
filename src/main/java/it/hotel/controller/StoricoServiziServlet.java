@@ -29,8 +29,8 @@ public class StoricoServiziServlet extends CheckServlet
         {
             //ToDo Giovanni
             PrenotazioneServizioService servizioService=new PrenotazioneServizioService();
-            //List<PrenotazioneServizio> prenotazioneServizio = servizioService.getByUser(us.get().getIdUtente());
-            //request.setAttribute("Servizi", prenotazioneServizio);
+            List<PrenotazioneServizio> prenotazioneServizio = servizioService.getAllByUser(us.get().getIdUtente());
+            request.setAttribute("Servizi", prenotazioneServizio);
             request.setAttribute("Tipo",4);
             rd=request.getRequestDispatcher("/WEB-INF/views/StoricoServizi.jsp");
         }
