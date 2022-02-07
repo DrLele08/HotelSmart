@@ -15,9 +15,23 @@ import java.util.Optional;
 
 import static it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO.UTENTE;
 
+/**
+ * <h1>Gestione Prenotazioni Servlet</h1>
+ * Servlet che visualizza la pagine di Gestione Prenotazioni
+ * @author Sais Raffaele
+ * @version 1.4
+ * @since 2022-01-20
+ */
 @WebServlet(name = "GestionePrenotazioni", value = "/GestionePrenotazioni")
 public class GestionePrenotazioniServlet extends CheckServlet
 {
+    /**
+     * Richiede di visualizzare la pagina di gestione prenotazioni
+     * @param request Richiesta del cliente
+     * @param response Visualizza la pagina con i dati delle prenotazioni
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

@@ -10,10 +10,23 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * <h1>Gestione Stanze Servlet</h1>
+ * Servlet che visualizza la pagine di Gestione Stanze
+ * @author Sais Raffaele
+ * @version 1.0
+ * @since 2022-01-16
+ */
 @WebServlet(name = "GestioneStanze", value = "/GestioneStanze")
 public class GestioneStanzeServlet extends CheckServlet
 {
+    /**
+     * Richiede di visualizzare la pagina di gestione stanze
+     * @param request Richiesta del cliente
+     * @param response Visualizza la pagina con i dati delle stanze
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -31,10 +44,5 @@ public class GestioneStanzeServlet extends CheckServlet
         {
             response.sendRedirect("./");
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

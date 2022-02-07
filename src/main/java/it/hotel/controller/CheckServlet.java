@@ -7,14 +7,37 @@ import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import javax.servlet.http.*;
 import java.util.Optional;
-
+/**
+ * <h1>Gestione Controlli Servlet</h1>
+ * Classe astratta per effettuare controlli
+ * @author Sais Raffaele
+ * @version 1.3
+ * @since 2022-01-2
+ */
 public abstract class CheckServlet extends HttpServlet
 {
+    /**
+     * Controlla se il parametro indicato è presente nella richiesta
+     * @param request Richiesta del cliente
+     * @param nome Identificatore del valore della richiesta
+     * @see HttpServletRequest
+     * @see String
+     * @return Booleano per indicare se il valore è presente
+     */
     public boolean contieneParametro(HttpServletRequest request,String nome)
     {
         return request.getParameterMap().containsKey(nome);
     }
-
+    /**
+     * Controlla se l'utente è presente in sessione o in cookie e lo restituisce
+     * @param request Richiesta del cliente
+     * @see HttpServletRequest
+     * @see Utente
+     * @see Cookie
+     * @see HttpSession
+     * @see Optional
+     * @return Utente loggato
+     */
     public Optional<Utente> getUtente(HttpServletRequest request)
     {
         int idUtente=-1;

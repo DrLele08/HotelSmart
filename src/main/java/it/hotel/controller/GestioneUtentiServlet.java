@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
 
@@ -11,9 +10,23 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * <h1>Gestione Utenti Servlet</h1>
+ * Servlet che visualizza la pagine di Gestione Utenti
+ * @author Sais Raffaele
+ * @version 1.1
+ * @since 2022-01-18
+ */
 @WebServlet(name = "GestioneUtenti", value = "/GestioneUtenti")
 public class GestioneUtentiServlet extends CheckServlet
 {
+    /**
+     * Richiede di visualizzare la pagina di gestione utenti
+     * @param request Richiesta del cliente
+     * @param response Visualizza la pagina con i dati degli utenti
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

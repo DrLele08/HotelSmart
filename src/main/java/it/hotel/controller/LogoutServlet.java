@@ -1,16 +1,29 @@
 package it.hotel.controller;
 
 import it.hotel.Utility.Utility;
-import it.hotel.model.utente.Utente;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-
+/**
+ * <h1>Logout Servlet</h1>
+ * Servlet che effettua il logout
+ * @author Alessandro d'Esposito
+ * @version 1.0
+ * @since 2022-01-4
+ */
 @WebServlet(name = "Logout", value = "/Logout")
 public class LogoutServlet extends HttpServlet
 {
+    /**
+     * Richiesta che elimina i cookie dell'utente
+     * e lo rimuove dalla sessione
+     * @param request Richiesta del cliente
+     * @param response Visualizza la home page
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

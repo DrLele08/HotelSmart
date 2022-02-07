@@ -10,10 +10,23 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * <h1>Gestione Stanze Servlet</h1>
+ * Servlet che visualizza la pagine di Gestione Servizi
+ * @author Sais Raffaele
+ * @version 1.1
+ * @since 2022-01-17
+ */
 @WebServlet(name = "GestioneServizi", value = "/GestioneServizi")
 public class GestioneServiziServlet extends CheckServlet
 {
+    /**
+     * Richiede di visualizzare la pagina di gestione servizi
+     * @param request Richiesta del cliente
+     * @param response Visualizza la pagina con i dati dei servizi
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

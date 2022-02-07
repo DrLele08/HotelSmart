@@ -13,10 +13,24 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
-
+/**
+ * <h1>Login Servlet</h1>
+ * Servlet che gestisce l'accesso di un utente
+ * @author Sais Raffaele
+ * @version 2.0
+ * @since 2022-02-1
+ */
 @WebServlet(name = "Login", value = "/Login")
 public class LoginServlet extends HttpServlet
 {
+    /**
+     * Richiesta che controlla se l'utente è gia loggato altrimenti
+     * visualizza la pagina di login
+     * @param request Richiesta del cliente
+     * @param response Visualizza la pagina richiesta
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -74,7 +88,13 @@ public class LoginServlet extends HttpServlet
             response.sendRedirect("./ServiceNA.html");
         }
     }
-
+    /**
+     * Richiesta che effettua il login
+     * @param request Richiesta del cliente
+     * @param response JSON di risposta
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
