@@ -65,7 +65,7 @@
                 %>
 
                 <tr>
-                    <td><%=service.getById(s.getKsServizio())%></td>
+                    <td><%=service.getById(s.getKsServizio()).getNome()%></td>
                     <td><%=s.getNumPersone()%></td>
                     <td><%=Utility.convertDateToView(s.getDataPrenotazioneServizio())%></td>
                 </tr>

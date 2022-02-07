@@ -51,7 +51,7 @@ public class RicercaServlet extends CheckServlet {
         }
         else
         {
-            response.sendRedirect("./ServiceNA.html");
+            response.sendRedirect("../ServiceNA.html");
         }
     }
 

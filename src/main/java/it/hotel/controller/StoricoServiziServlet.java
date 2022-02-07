@@ -27,7 +27,6 @@ public class StoricoServiziServlet extends CheckServlet
         }
         else
         {
-            //ToDo Giovanni
             PrenotazioneServizioService servizioService=new PrenotazioneServizioService();
             List<PrenotazioneServizio> prenotazioneServizio = servizioService.getAllByUser(us.get().getIdUtente());
             request.setAttribute("Servizi", prenotazioneServizio);
