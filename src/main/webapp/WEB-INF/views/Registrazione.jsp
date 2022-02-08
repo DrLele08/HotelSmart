@@ -84,7 +84,7 @@
 
                                         <div class="form-outline">
                                             <label class="form-label" for="IndirizzoEmail">Indirizzo Email</label>
-                                            <input type="text" id="IndirizzoEmail" class="form-control form-control-lg" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
+                                            <input type="text" id="IndirizzoEmail" class="form-control form-control-lg" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" required />
                                             <div class="invalid-feedback">
                                                 Inserisci una Email valida!
                                             </div>

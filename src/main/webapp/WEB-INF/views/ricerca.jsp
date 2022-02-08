@@ -141,10 +141,10 @@
                 </div>
 
                 <div class="form-group w-100">
-                    <label for="numero_ospiti">Numero ospiti</label><br>
+                    <label for="numero_ospiti">Numero persone</label><br>
                     <input type="number" name="numero_ospiti" id="numero_ospiti" min="1">
                     <div class="invalid-feedback" id="errore_ospiti">
-                        Numero ospiti non valido
+                        Numero persone non valido
                     </div>
                 </div>
 

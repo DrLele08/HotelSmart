@@ -38,6 +38,8 @@ function creazioneServizio(){
     let limitePosti = $("#limitePosti").val();
     let descrizione = $("#descrizione").val();
 
+    const regexNome = new RegExp("[A-z0-9'-( *)]{2}$");
+
     var data = {
         idUtente : idUtente,
         Token : tokenUtente,
@@ -46,32 +48,43 @@ function creazioneServizio(){
         Posti : limitePosti,
         Descrizione : descrizione,
     }
-
-    $.ajax({
-        url: 'api/CreateServizio',
-        dataType: "json",
-        type: "post",
-        data: data,
-        success: function (result) {
-            if (result.Ris == 1) {
-                Swal.fire({
-                    icon: 'success',
-                    title: result.Mess,
-                }).then(function(){
-                    location.reload();
-                })
-                $(".modal .close").click();
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Errore',
-                    text: result.Mess,
-                })
+    if((regexNome.test(nomeServizio))&&(nomeServizio.length<=30)&&(descrizione.length<=255)) {
+        $.ajax({
+            url: 'api/CreateServizio',
+            dataType: "json",
+            type: "post",
+            data: data,
+            success: function (result) {
+                if (result.Ris == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.Mess,
+                    }).then(function () {
+                        location.reload();
+                    })
+                    $(".modal .close").click();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Errore',
+                        text: result.Mess,
+                    })
+                }
             }
-        }
-    });
-
-
+        });
+    } else if((regexNome.test(nomeServizio))&&(nomeServizio.length<=30)){
+        Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: "Inserisci una descrizione di massimo 255 caratteri",
+        })
+    }else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: "Inserisci un nome valido",
+        })
+    }
 }
 
 
@@ -84,6 +97,8 @@ function updateServizio(){
     let limitePosti = $("#limitePostiEdit").val();
     let descrizione = $("#descrizioneEdit").val();
 
+    const regexNome = new RegExp("[A-z0-9/!'-( *)]{2,30}$");
+
     var data = {
         idUtente : idUtente,
         Token : tokenUtente,
@@ -94,29 +109,43 @@ function updateServizio(){
         Descrizione : descrizione,
     }
 
-    $.ajax({
-        url: 'api/UpdateServizio',
-        dataType: "json",
-        type: "post",
-        data: data,
-        success: function (result) {
-            if (result.Ris == 1) {
-                Swal.fire({
-                    icon: 'success',
-                    title: result.Mess,
-                }).then(function(){
-                    location.reload();
-                })
-                $(".modal .close").click();
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Errore',
-                    text: result.Mess,
-                })
+    if((regexNome.test(nomeServizio))&&(descrizione.length<=255)) {
+        $.ajax({
+            url: 'api/UpdateServizio',
+            dataType: "json",
+            type: "post",
+            data: data,
+            success: function (result) {
+                if (result.Ris == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.Mess,
+                    }).then(function () {
+                        location.reload();
+                    })
+                    $(".modal .close").click();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Errore',
+                        text: result.Mess,
+                    })
+                }
             }
-        }
-    });
+        });
+    }else if(regexNome.test(nomeServizio)){
+        Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: "Inserisci una descrizione di massimo 255 caratteri",
+        })
+    }else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: "Inserisci un nome valido",
+        })
+    }
 
 }
 

@@ -69,6 +69,16 @@ function iconTokenQr(tokeQr) {
     qrcode.clear();
     qrcode.makeCode(tokeQr);
 
+
+}
+
+function clickQrCode(){
+    //dowload qrcode
+    let qelem = document.querySelector('#tokenQr img')
+    let dowloadQr = document.querySelector('#dowloadQr')
+    let qr = qelem.getAttribute('src');
+    dowloadQr.setAttribute('href', qr);
+    dowloadQr.setAttribute('download', 'qrCode');
 }
 
 function cleanQr(){

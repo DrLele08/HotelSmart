@@ -10,6 +10,15 @@ p {
     color: #999;
 }
 
+#dowloadQr{
+    padding: 6px;
+    background-color: green;
+}
+
+#modalCodiceQr .modal-content{
+    width: 60%;
+}
+
 .profile-head h4{
     padding: 10px;
     color: #333;

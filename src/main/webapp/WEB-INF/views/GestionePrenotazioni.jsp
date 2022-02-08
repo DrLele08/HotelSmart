@@ -198,6 +198,7 @@
             </div>
 
             <div class="modal-footer">
+                <a id='dowloadQr' class="btn btn-info" role="button" onclick="clickQrCode()">Download</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>

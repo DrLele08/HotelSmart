@@ -104,13 +104,13 @@
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label class="form-label" for="nomeServizio">Nome Servizio</label>
-                                <input type="text" id="nomeServizio" class="form-control form-control-lg" required/>
+                                <input type="text" id="nomeServizio" class="form-control form-control-lg"/>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label class="form-label" for="costoServizio">Costo Servizio</label>
-                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="costoServizio" class="form-control form-control-lg" required/>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}" id="costoServizio" class="form-control form-control-lg"/>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label class="form-label" for="limitePosti">Limite posti</label>
-                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}" id="limitePosti" class="form-control form-control-lg" required/>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="limitePosti" class="form-control form-control-lg"/>
                             </div>
                         </div>
 
@@ -169,7 +169,7 @@
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label class="form-label" for="costoServizioEdit">Costo Servizio</label>
-                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="costoServizioEdit" class="form-control form-control-lg" required/>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}" id="costoServizioEdit" class="form-control form-control-lg" required/>
                             </div>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label class="form-label" for="limitePostiEdit">Limite posti</label>
-                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}" id="limitePostiEdit" class="form-control form-control-lg" required/>
+                                <input type="number" min="0" value="0" onchange="if(!(this.value>0)){this.value= 0}else{this.value = parseInt(this.value);}" id="limitePostiEdit" class="form-control form-control-lg" required/>
                             </div>
                         </div>
 
