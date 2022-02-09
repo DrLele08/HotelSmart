@@ -29,6 +29,30 @@ import java.io.IOException;
 public class CheckPayment extends CheckServlet
 {
     /**
+     * Ritorna il service della prenotazione stanza
+     * @see PrenotazioneStanzaService
+     */
+    public PrenotazioneStanzaService getPrenoStanzaService()
+    {
+        return new PrenotazioneStanzaService();
+    }
+    /**
+     * Ritorna il payment intent di un pagamento
+     * @see PaymentIntent
+     */
+    public PaymentIntent getPaymentIntent(String stripeToken) throws StripeException
+    {
+        return PaymentIntent.retrieve(stripeToken);
+    }
+    /**
+     * Ritorna uno user service
+     * @see UtenteService
+     */
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+    /**
      * Richiesta che riceve la prenotazione
      * e controlla se il pagamento è stato effettuato
      * @param request Richiesta del cliente
@@ -37,7 +61,7 @@ public class CheckPayment extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         JSONObject object=new JSONObject();
         if(contieneParametro(request,"idPreno"))
@@ -45,23 +69,21 @@ public class CheckPayment extends CheckServlet
             try
             {
                 int idPreno=Integer.parseInt(request.getParameter("idPreno"));
-                PrenotazioneStanzaService stanzaService=new PrenotazioneStanzaService();
+                PrenotazioneStanzaService stanzaService=getPrenoStanzaService();
                 PrenotazioneStanza preno=stanzaService.getPrenotazioneById(idPreno);
                 if(preno.getKsStato()==1)
                 {
                     String tokenStripe=preno.getTokenStripe();
                     Stripe.apiKey = Utility.stripeKey;
-                    PaymentIntent paymentIntent=PaymentIntent.retrieve(tokenStripe);
-                    UtenteService utenteService=new UtenteService();
+                    PaymentIntent paymentIntent=getPaymentIntent(tokenStripe);
+                    UtenteService utenteService=getUtenteService();
                     Utente user=utenteService.getUtenteByPrenotazioneStanza(idPreno);
                     if(paymentIntent.getStatus().equals("succeeded"))
                     {
                         stanzaService.editStato(idPreno,2);
                         stanzaService.generateQrCode(idPreno);
-                        new Thread(() -> {
-                            String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #"+preno.getIdPrenotazioneStanza()+" è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
-                            Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #"+preno.getIdPrenotazioneStanza(),textHtml);
-                        });
+                        String textHtml="Ciao "+user.getNome()+"<br>Il pagamento per la prenotazione #"+preno.getIdPrenotazioneStanza()+" è stato ricevuto con successo!<br>La aspettiamo, HotelSmart!";
+                        Email.sendAsHtml(user.getEmail(),"[HotelSmart] Pagamento confermato ordine #"+preno.getIdPrenotazioneStanza(),textHtml);
                         object.put("Ris",1);
                         object.put("Mess","Fatto");
                         response.getOutputStream().print(object.toString());
@@ -94,20 +116,12 @@ public class CheckPayment extends CheckServlet
                 object.put("Mess","Prenotazione non trovata");
                 response.getOutputStream().print(object.toString());
             }
-            catch (StripeException e)
+            catch (StripeException|UtenteNotFoundException e)
             {
                 object.put("Ris",0);
                 object.put("Mess","Pagamento non trovato");
                 response.getOutputStream().print(object.toString());
-            } catch (UtenteNotFoundException e) {
-                e.printStackTrace();
             }
-            /*catch (UtenteNotFoundException e)
-            {
-                object.put("Ris",0);
-                object.put("Mess","Utente non trovato");
-                response.getOutputStream().print(object.toString());
-            }*/
         }
         else
         {

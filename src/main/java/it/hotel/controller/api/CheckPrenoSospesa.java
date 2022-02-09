@@ -30,7 +30,7 @@ public class CheckPrenoSospesa extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         JSONObject obj=new JSONObject();
         if(contieneParametro(request,"idUtente") && contieneParametro(request,"token"))

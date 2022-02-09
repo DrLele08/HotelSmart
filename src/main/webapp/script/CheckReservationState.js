@@ -15,7 +15,7 @@ function checkReservationsState() {
 
                     var result = JSON.parse(xhttp.responseText).Ris;
 
-                    if (result == "1") {
+                    if (result == 1) {
                         returnvalue = false;
                     } else {
                         returnvalue = true;
@@ -33,9 +33,10 @@ function checkReservationsState() {
         Swal.fire({
             icon: 'error',
             title: 'Errore',
-            text: 'Non è possibile prenotare nuove camere perché hai dei pagamenti in sospeso',
+            text: 'Non è possibile prenotare nuove camere perché hai dei pagamenti in sospeso'
+        }).then(function () {
+            return returnvalue;
         });
-        return returnvalue;
     } else{
         return returnvalue;
     }
