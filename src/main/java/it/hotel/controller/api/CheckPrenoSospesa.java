@@ -22,6 +22,23 @@ import java.io.IOException;
 public class CheckPrenoSospesa extends CheckServlet
 {
     /**
+     * Ritorna utente service
+     * @see UtenteService
+     */
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+
+    /**
+     * Ritorna prenotazione utente service
+     * @see PrenotazioneStanzaService
+     */
+    public PrenotazioneStanzaService getPrenoService()
+    {
+        return new PrenotazioneStanzaService();
+    }
+    /**
      * Richiesta che riceve i dati del cliente
      * e controlla se ha una prenotazione in sospeso
      * @param request Richiesta del cliente
@@ -38,9 +55,9 @@ public class CheckPrenoSospesa extends CheckServlet
             {
                 int idUtente=Integer.parseInt(request.getParameter("idUtente"));
                 String token=request.getParameter("token");
-                UtenteService utenteService=new UtenteService();
+                UtenteService utenteService=getUtenteService();
                 utenteService.doLogin(idUtente,token);
-                PrenotazioneStanzaService stanzaService=new PrenotazioneStanzaService();
+                PrenotazioneStanzaService stanzaService=getPrenoService();
                 boolean hasPrenoInCorso=stanzaService.selectBy(idUtente, PrenotazioneStanzaDAO.UTENTE).stream().anyMatch(p->p.getKsStato()==1);
                 obj.put("Ris",1);
                 obj.put("InCorso",hasPrenoInCorso);

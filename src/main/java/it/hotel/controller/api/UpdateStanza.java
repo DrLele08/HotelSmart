@@ -22,6 +22,18 @@ import java.io.IOException;
 @WebServlet(name = "UpdateStanza", value = "/api/UpdateStanza")
 public class UpdateStanza extends CheckServlet
 {
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+    /**
+     * Ritorna stanza service
+     * @see StanzaService
+     */
+    public StanzaService getStanzaService()
+    {
+        return new StanzaService();
+    }
     /**
      * Richiesta che riceve tutti i nuovi dati relativi alla stanza scelta
      * e un token per verificare che l'utente che ha generato la richiesta abbia i permessi
@@ -31,7 +43,7 @@ public class UpdateStanza extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         JSONObject obj=new JSONObject();
         if(contieneParametro(request,"idUtente") && contieneParametro(request,"Token") && contieneParametro(request,"idStanza")
@@ -43,7 +55,7 @@ public class UpdateStanza extends CheckServlet
             {
                 int idUtente=Integer.parseInt(request.getParameter("idUtente"));
                 String token=request.getParameter("Token");
-                UtenteService utenteService=new UtenteService();
+                UtenteService utenteService=getUtenteService();
                 Utente user=utenteService.doLogin(idUtente,token);
                 if(user.getRuolo()==1)
                 {
@@ -54,7 +66,7 @@ public class UpdateStanza extends CheckServlet
                     int lettiMatri=Integer.parseInt(request.getParameter("LettiM"));
                     double costoNotte=Double.parseDouble(request.getParameter("Costo"));
                     double sconto=Double.parseDouble(request.getParameter("Sconto"));
-                    StanzaService service=new StanzaService();
+                    StanzaService service=getStanzaService();
                     service.updateStanza(idStanza,animale,fumatore,lettiSingoli,lettiMatri,costoNotte,sconto);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");

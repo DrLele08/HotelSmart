@@ -21,6 +21,24 @@ import java.io.IOException;
 @WebServlet(name = "CreateServizio", value = "/api/CreateServizio")
 public class CreateServizio extends CheckServlet
 {
+
+    /**
+     * Ritorna un utente service
+     * @see UtenteService
+     */
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+
+    /**
+     * Ritorna servizio service
+     * @see ServizioService
+     */
+    public ServizioService getServizioService()
+    {
+        return new ServizioService();
+    }
     /**
      * Richiesta che riceve i dati del servizio e il token
      * dell'utente per controllare se ha i permessi per l'operazione
@@ -30,7 +48,7 @@ public class CreateServizio extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         JSONObject obj=new JSONObject();
         if(contieneParametro(request,"idUtente") && contieneParametro(request,"Token")
@@ -41,7 +59,7 @@ public class CreateServizio extends CheckServlet
             {
                 int idUtente=Integer.parseInt(request.getParameter("idUtente"));
                 String token=request.getParameter("Token");
-                UtenteService userService=new UtenteService();
+                UtenteService userService=getUtenteService();
                 Utente user=userService.doLogin(idUtente,token);
                 if(user.getRuolo()==1)
                 {
@@ -50,7 +68,7 @@ public class CreateServizio extends CheckServlet
                     String foto="Servizi/default.jpg";
                     double prezzo=Double.parseDouble(request.getParameter("Prezzo"));
                     int posti=Integer.parseInt(request.getParameter("Posti"));
-                    ServizioService servizioService=new ServizioService();
+                    ServizioService servizioService=getServizioService();
                     servizioService.createServizio(nome,descrizione,foto,prezzo,posti);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");
