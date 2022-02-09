@@ -177,11 +177,11 @@
             </div>
             <br><br>
             <% } %>
-            <input type="hidden" name="num_persone" value="<%=num_persone%>">
+            <input type="hidden" class="num_persone" name="num_persone" value="<%=num_persone%>">
             <input type="hidden" name="id_stanza" value="<%=id_stanza%>">
             <input type="hidden" name="dataArrivo" value="<%=dataArrivo%>">
             <input type="hidden" name="dataPartenza" value="<%=dataPartenza%>">
-            <input type="submit" id="ButtonSub" value="Conferma" class="btn btn-dark">
+            <Button onclick="return ValidateFormLogged()" id="ButtonSub" class="btn btn-dark" type="submit">Conferma</button>
         </form>
 
         <%} else { %>
@@ -292,8 +292,10 @@
             </div>
             <br><br>
             <% } %>
-            <input type="hidden" name="num_persone" value="<%=num_persone%>">
+            <input type="hidden" class="num_persone" name="num_persone" value="<%=num_persone%>">
             <input type="hidden" name="id_stanza" value="<%=id_stanza%>">
+            <input type="hidden" name="dataArrivo" value="<%=dataArrivo%>">
+            <input type="hidden" name="dataPartenza" value="<%=dataPartenza%>">
             <Button onclick="return ValidateForm()" id="ButtonSub" class="btn btn-dark" type="submit">Conferma</button>
         </form>
         <%}%>

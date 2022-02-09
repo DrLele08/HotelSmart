@@ -176,13 +176,17 @@
                 </ol>
                 <div class="carousel-inner">
                     <%boolean active_set = false;
+                    int b=0;
                     for (int i = 0; i < stanze_offerta.size(); i++) {
-                        if (!active_set){%>
+                        if(b>=3)
+                            b=0;
+                        if (!active_set){
+                           %>
                             <div class="carousel-item active">
                                 <div class="card"
                                     style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
                                     <img class="card-img-top img-fluid"
-                                        src="${pageContext.request.contextPath}/images/hotelroom<%=i%>.jpg"
+                                        src="${pageContext.request.contextPath}/images/hotelroom<%=b%>.jpg"
                                         alt="Card image cap">
                                     <div class="card-body" style="background-color: #cdd7e2;">
                                         <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
@@ -201,7 +205,7 @@
                                 <div class="card"
                                 style="width: 40rem;margin-left: auto; height: 35rem; margin-top: 2rem; background-color: #cdd7e2;">
                                     <img class="card-img-top img-fluid"
-                                        src="${pageContext.request.contextPath}/images/hotelroom<%=i%>.jpg"
+                                        src="${pageContext.request.contextPath}/images/hotelroom<%=b%>.jpg"
                                         alt="Card image cap">
                                     <div class="card-body" style="background-color: #cdd7e2;">
                                         <h5 class="card-title">Scopri le nostre offerte speciali!</h5>
@@ -215,7 +219,8 @@
                                 </div>
                             </div>
                     <%}%>
-                    <%}%>
+                    <%b++;
+                    }%>
                 </div>
             </div>
         </div>
