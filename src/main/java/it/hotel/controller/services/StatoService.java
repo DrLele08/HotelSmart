@@ -15,31 +15,36 @@ import java.util.List;
 public class StatoService
 {
 
-    private StatoDAO dao;
-
     /**
      * Costruisce un oggetto StatoService.
      */
-    public StatoService()
-    {
-        //this.dao=createDAO();
-    }
+    public StatoService() {}
 
+    /**
+     * Costruisce un oggetto StatoDAO.
+     * @return Lo StatoDAO costruito.
+     */
     public StatoDAO createDAO()
     {
         return new StatoDAO();
     }
 
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
     public Connection getConnection() throws SQLException {
         return Connect.getConnection();
     }
+
     /**
      * Recupera tutti gli stati presenti nel database.
      * @return Lista contenente gli stati trovati
      */
     public List<Stato> getAll()
     {
-        dao=createDAO();
+        StatoDAO dao=createDAO();
         List<Stato> stati;
         try (Connection con = getConnection()) {
             stati = dao.doGetAll(con);
@@ -56,13 +61,15 @@ public class StatoService
      */
     public String getById(int idStato)
     {
-        String stato;
-        try (Connection con = Connect.getConnection()) {
-            stato = dao.doSelectById(con, idStato).getStato();
+        StatoDAO dao = createDAO();
+        String statoStr;
+        try (Connection con = getConnection()) {
+            Stato stato = dao.doSelectById(con, idStato);
+            statoStr = stato.getStato();
         } catch (SQLException | StatoNotFoundException e) {
             throw new RuntimeException();
         }
-        return stato;
+        return statoStr;
     }
 
 }

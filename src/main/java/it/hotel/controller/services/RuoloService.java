@@ -14,20 +14,37 @@ import java.util.List;
  */
 public class RuoloService {
 
-    private final RuoloDAO dao;
-
     /**
      * Costruisce un oggetto RuoloService.
      */
-    public RuoloService() { this.dao = new RuoloDAO(); }
+    public RuoloService() { }
+
+    /**
+     * Costruisce un oggetto RuoloDAO.
+     * @return Il RuoloDAO costruito.
+     */
+    public RuoloDAO createDAO()
+    {
+        return new RuoloDAO();
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+        return Connect.getConnection();
+    }
 
     /**
      * Recupera tutti i ruoli presenti nel database.
      * @return Lista contenente i ruoli trovati
      */
     public List<Ruolo> getAll() {
+        RuoloDAO dao=createDAO();
         List<Ruolo> ruoli;
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
             ruoli = dao.doGetAll(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -41,13 +58,16 @@ public class RuoloService {
      * @return Ruolo
      */
     public String getById(int idRuolo) {
-        String ruolo;
-        try (Connection con = Connect.getConnection()) {
-            ruolo = dao.doSelectById(con, idRuolo).getRuolo();
+        RuoloDAO dao=createDAO();
+        Ruolo ruolo;
+        String ruoloStr;
+        try (Connection con = getConnection()) {
+            ruolo = dao.doSelectById(con, idRuolo);
+            ruoloStr = ruolo.getRuolo();
         } catch (SQLException | RuoloNotFoundException e) {
             throw new RuntimeException();
         }
-        return ruolo;
+        return ruoloStr;
     }
 
     /**
@@ -56,8 +76,9 @@ public class RuoloService {
      * @return Identificativo del ruolo
      */
     public int getByRuolo(String ruolo) {
+        RuoloDAO dao=createDAO();
         int idRuolo;
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
             idRuolo = dao.doSelectByRuolo(con, ruolo).getIdRuolo();
         } catch (SQLException | RuoloNotFoundException e) {
             throw new RuntimeException();

@@ -4,6 +4,7 @@ import it.hotel.Utility.Connect;
 import it.hotel.Utility.Utility;
 import it.hotel.controller.exception.PermissionDeniedException;
 import it.hotel.model.ruolo.Ruolo;
+import it.hotel.model.ruolo.RuoloDAO;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.UtenteDAO;
 import it.hotel.model.utente.utenteExceptions.*;
@@ -21,14 +22,46 @@ import java.util.regex.Pattern;
  */
 public class UtenteService
 {
-    private final UtenteDAO dao;
 
     /**
      * Costruisce un oggetto UtenteService.
      */
-    public UtenteService()
+    public UtenteService() {}
+
+    /**
+     * Costruisce un oggetto UtenteDAO.
+     * @return L'UtenteDAO costruito.
+     */
+    public UtenteDAO createDAO()
     {
-        dao=new UtenteDAO();
+        return new UtenteDAO();
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+        return Connect.getConnection();
+    }
+
+    /**
+     * Genera un Token di autenticazione.
+     * @param useLetters Uso di caratteri alfabetici
+     * @param useNumbers Uso di caratteri numerici
+     * @return Token di autenticazione
+     */
+    public String generateToken(boolean useLetters, boolean useNumbers) {
+        return RandomStringUtils.random(Utility.lenghtAuth, useLetters, useNumbers);
+    }
+
+    /**
+     * Restituisce un RuoloService.
+     * @return RuoloService
+     */
+    public RuoloService getRuoloService() {
+        return new RuoloService();
     }
 
     /**
@@ -45,10 +78,11 @@ public class UtenteService
     public Utente doLogin(String email, String pwd) throws EmailNotFoundException, PasswordNotValidException, SQLException {
         if(!(email.trim().isEmpty() || pwd.trim().isEmpty()))
         {
+            UtenteDAO dao=createDAO();
             Utente utente;
             Connection con = null;
             try {
-                con = Connect.getConnection();
+                con = getConnection();
                 con.setAutoCommit(false);
 
                 if (!dao.isEmailInDatabase(con, email)) {
@@ -81,7 +115,8 @@ public class UtenteService
     public Utente doLogin(int idUtente,String tokenAuth) throws UtenteNotFoundException {
         if(!tokenAuth.trim().isEmpty())
         {
-            try (Connection con = Connect.getConnection()) {
+            try (Connection con = getConnection()) {
+                UtenteDAO dao = createDAO();
                 return dao.doAuthenticate(con, idUtente, tokenAuth);
             } catch (SQLException e) {
                 throw new RuntimeException();
@@ -109,11 +144,12 @@ public class UtenteService
     public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException, PasswordNotValidException, SQLException {
         if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !email.trim().isEmpty() && !pwd.trim().isEmpty())
         {
+            UtenteDAO dao = createDAO();
             Utente utente;
             Connection con = null;
             try
             {
-                con = Connect.getConnection();
+                con = getConnection();
                 con.setAutoCommit(false);
 
                 Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
@@ -121,11 +157,11 @@ public class UtenteService
                 {
                     boolean useLetters = true;
                     boolean useNumbers = false;
-                    String generatedString = RandomStringUtils.random(Utility.lenghtAuth, useLetters, useNumbers);
+                    String generatedString = generateToken(useLetters, useNumbers);
                     if (dao.isEmailInDatabase(con, email)) {
                         throw new EmailAlreadyExistingException();
                     }
-                    utente = dao.doInsert(con, new RuoloService().getByRuolo("UTENTE"),cf,nome,cognome,email,data,generatedString,pwd);
+                    utente = dao.doInsert(con,getRuoloService().getByRuolo("UTENTE"),cf,nome,cognome,email,data,generatedString,pwd);
                 }
                 else
                 {
@@ -164,9 +200,10 @@ public class UtenteService
         {
             Connection con = null;
             try {
-                con = Connect.getConnection();
+                con = getConnection();
                 con.setAutoCommit(false);
 
+                UtenteDAO dao = createDAO();
                 int tipoRuolo = dao.doGetRuolo(con, idUtente, token);
                 if (tipoRuolo==-1)
                 {
@@ -210,9 +247,10 @@ public class UtenteService
         {
             Connection con = null;
             try {
-                con = Connect.getConnection();
+                con = getConnection();
                 con.setAutoCommit(false);
 
+                UtenteDAO dao = createDAO();
                 if (dao.isEmailInDatabase(con, email) && !dao.isEmailOld(con, idUtente, email)) {
                     throw new EmailAlreadyExistingException();
                 }
@@ -223,7 +261,6 @@ public class UtenteService
             } catch (SQLException e) {
                 con.rollback();
                 con.setAutoCommit(true);
-                throw new RuntimeException();
             }
         }
         else
@@ -237,7 +274,8 @@ public class UtenteService
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
      */
     public Utente getUtenteByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            UtenteDAO dao = createDAO();
             return dao.doSelectByPrenotazioneStanza(con, idPrenotazione);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -249,7 +287,8 @@ public class UtenteService
      * @return Lista contenente gli utenti trovati
      */
     public List<Utente> getAll() {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            UtenteDAO dao = createDAO();
             return dao.getUtenti(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -262,7 +301,8 @@ public class UtenteService
      * @param ruolo Ruolo da inserire
      */
     public void editRuoloById(int idUtente, int ruolo) {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            UtenteDAO dao = createDAO();
             dao.doChangeRuolo(con, idUtente, ruolo);
         } catch (SQLException e) {
             throw new RuntimeException();
