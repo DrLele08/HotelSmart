@@ -35,7 +35,8 @@ Ecco perchè:
 
 ### Tecnologie Utilizzate
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+
+In questa sezione vengono elencati tutti i principali framework/librerie utilizzate all'interno del progetto, ecco alcuni esempi:
 
 * [Next.js](https://nextjs.org/)
 * [React.js](https://reactjs.org/)
@@ -45,6 +46,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [Laravel](https://laravel.com)
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
+* [JUnit5](https://junit.org)
+* [Mockito](https://site.mockito.org)
 
 <p align="right">(<a href="#top">Torna sopra</a>)</p>
 
@@ -58,10 +61,9 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
 
-### Installazione
+### Guida all'Installazione
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
+Ecco una semplice guida che spiega le istruzioni per l'installazione:
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
@@ -83,9 +85,9 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 ## Utilizzo
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Attualmente, in molti alberghi e b&b italiani, soprattuto nelle realtà medio/piccole e non cittadine c’è una forte mancanza di organizzazione, spesso ci sono più persone addette a prendere le prenotazioni ma queste lavorano in maniera non sincronizzata, molti utilizzano metodi cartacei di cui è difficile da tenere traccia inoltre è difficile a volte tenere traccia dei pagamenti, problemi che verrebbero facilmente risolti da una piattaforma web che va a centralizzare e organizzare tutte queste funzionalità tramite un’interfaccia semplice e intuitiva da utilizzare
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+Hotel Smart si è prefissato il compito di sviluppare un interfaccia semplice e intuitiva, ecco il manuale utente:
 
 <p align="right">(<a href="#top">Torna sopra</a>)</p>
 
@@ -110,7 +112,7 @@ Vedi i [problemi correnti](https://trello.com/b/dggFDzTL/ingegneria-del-software
 ## Contatti
 - Raffaele Sais - [@DrLele08](https://twitter.com/drlele08) - saisraffaele08@gmail.com<br>
 - Giovanni De Pierro<br>
-- Alessandro d'Esposito<br>
+- Alessandro d'Esposito - alessandro6296@gmail.com<br>
 - Pierpaolo Cammardella<br>
 
 <p align="right">(<a href="#top">Torna sopra</a>)</p>
