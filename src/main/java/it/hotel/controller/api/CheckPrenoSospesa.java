@@ -59,7 +59,7 @@ public class CheckPrenoSospesa extends CheckServlet
                 utenteService.doLogin(idUtente,token);
                 PrenotazioneStanzaService stanzaService=getPrenoService();
                 boolean hasPrenoInCorso=stanzaService.selectBy(idUtente, PrenotazioneStanzaDAO.UTENTE).stream().anyMatch(p->p.getKsStato()==1);
-                obj.put("Ris",1);
+                obj.put("Ris",hasPrenoInCorso?1:0);
                 obj.put("InCorso",hasPrenoInCorso);
                 response.getOutputStream().print(obj.toString());
             }
