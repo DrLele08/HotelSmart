@@ -1,3 +1,5 @@
+package serviceTest;
+
 import it.hotel.controller.exception.PermissionDeniedException;
 import it.hotel.controller.services.RuoloService;
 import it.hotel.controller.services.UtenteService;
@@ -71,12 +73,8 @@ public class UtenteServiceTest extends Mockito {
     @Test
     public void testDoLoginEmailRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
-        doReturn(conn).when(service).getConnection();
-        when(dao.isEmailInDatabase(conn, "email")).thenReturn(true);
-        when(dao.doAuthenticate(conn, "email", "password")).thenReturn(new Utente
-                (1, 1, "cf", "nome", "cognome","email", new Date(0), "token"));
-        doThrow(new SQLException()).when(conn).setAutoCommit(true);
-        Assert.assertThrows(SQLException.class, ()-> service.doLogin("email", "password"));
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()-> service.doLogin("email", "password"));
     }
 
     @Test
@@ -151,9 +149,7 @@ public class UtenteServiceTest extends Mockito {
     @Test
     public void testEditPasswordRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
-        doReturn(conn).when(service).getConnection();
-        when(dao.doGetRuolo(conn, 1, "token")).thenReturn(3);
-        when(dao.isPasswordValid(conn, 1, "password")).thenThrow(new SQLException());
+        doThrow(new SQLException()).when(service).getConnection();
         Assert.assertThrows(RuntimeException.class, ()->
                 service.editPassword(1, "token", "password", "newPassword?9"));
     }

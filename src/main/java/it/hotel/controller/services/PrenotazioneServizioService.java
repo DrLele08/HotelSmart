@@ -3,6 +3,7 @@ package it.hotel.controller.services;
 import it.hotel.Utility.Connect;
 import it.hotel.model.prenotazioneServizio.PrenotazioneServizio;
 import it.hotel.model.prenotazioneServizio.PrenotazioneServizioDAO;
+import it.hotel.model.ruolo.RuoloDAO;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,13 +15,27 @@ import java.util.List;
  */
 public class PrenotazioneServizioService {
 
-    private final PrenotazioneServizioDAO dao;
-
     /**
      * Costruisce un oggetto PrenotazioneServizioService.
      */
-    public PrenotazioneServizioService() {
-        this.dao = new PrenotazioneServizioDAO();
+    public PrenotazioneServizioService() { }
+
+    /**
+     * Costruisce un oggetto PrenotazioneServizioDAO.
+     * @return L'oggetto PrenotazioneServizioDAO costruito.
+     */
+    public PrenotazioneServizioDAO createDAO()
+    {
+        return new PrenotazioneServizioDAO();
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+        return Connect.getConnection();
     }
 
     /**
@@ -31,7 +46,8 @@ public class PrenotazioneServizioService {
      * @param dataPrenotazioneServizio Data della prenotazione del servizio
      */
     public void createPrenotazione(int ksPrenotazioneStanza, int ksServizio, int numPersone, Date dataPrenotazioneServizio) {
-        try (Connection con = Connect.getConnection()){
+        try (Connection con = getConnection()){
+            PrenotazioneServizioDAO dao = createDAO();
             dao.doInsert(con,ksPrenotazioneStanza,ksServizio,numPersone,dataPrenotazioneServizio);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -45,7 +61,8 @@ public class PrenotazioneServizioService {
      */
     public List<PrenotazioneServizio> getAllByUser(int idUtente) {
         List<PrenotazioneServizio> prenotazioni;
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            PrenotazioneServizioDAO dao = createDAO();
             prenotazioni = dao.doSelectByUser(con, idUtente);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -58,7 +75,8 @@ public class PrenotazioneServizioService {
      * @param idPrenotazione Identificativo della prenotazione
      */
     public void deletePrenotazioneById(int idPrenotazione) {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            PrenotazioneServizioDAO dao = createDAO();
             dao.doDelete(con, idPrenotazione);
         } catch (SQLException e) {
             throw new RuntimeException();

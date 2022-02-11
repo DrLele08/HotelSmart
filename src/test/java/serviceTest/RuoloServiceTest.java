@@ -1,3 +1,5 @@
+package serviceTest;
+
 import it.hotel.controller.services.RuoloService;
 import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.ruolo.RuoloDAO;
@@ -7,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +39,16 @@ public class RuoloServiceTest extends Mockito {
     }
 
     @Test
+    public void testGetAllRuntimeException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()->service.getAll());
+    }
+
+    @Test
     public void testGetByIdRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
-        doReturn(conn).when(service).getConnection();
-        when(dao.doSelectById(conn, 0)).thenReturn(null);
+        doThrow(new SQLException()).when(service).getConnection();
         Assert.assertThrows(RuntimeException.class, ()->service.getById(0));
     }
 
@@ -55,8 +64,7 @@ public class RuoloServiceTest extends Mockito {
     @Test
     public void testGetByRuoloRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
-        doReturn(conn).when(service).getConnection();
-        when(dao.doSelectByRuolo(conn, "")).thenReturn(null);
+        doThrow(new SQLException()).when(service).getConnection();
         Assert.assertThrows(RuntimeException.class, ()->service.getByRuolo(""));
     }
 

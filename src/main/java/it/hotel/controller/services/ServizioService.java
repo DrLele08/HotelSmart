@@ -1,6 +1,7 @@
 package it.hotel.controller.services;
 
 import it.hotel.Utility.Connect;
+import it.hotel.model.ruolo.RuoloDAO;
 import it.hotel.model.servizio.Servizio;
 import it.hotel.model.servizio.ServizioDAO;
 
@@ -13,12 +14,28 @@ import java.util.List;
  */
 public class ServizioService {
 
-    private final ServizioDAO dao;
-
     /**
      * Costruisce un oggetto ServizioService.
      */
-    public ServizioService() { this.dao = new ServizioDAO(); }
+    public ServizioService() {}
+
+    /**
+     * Costruisce un oggetto ServizioDAO.
+     * @return L'oggetto ServizioDAO costruito.
+     */
+    public ServizioDAO createDAO()
+    {
+        return new ServizioDAO();
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+        return Connect.getConnection();
+    }
 
     /**
      * Inserisce un servizio secondo i valori specificati.
@@ -29,7 +46,8 @@ public class ServizioService {
      * @param limitePosti Posti disponibili
      */
     public void createServizio(String nome, String descrizione, String foto, double costo, int limitePosti) {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            ServizioDAO dao = createDAO();
             dao.doInsert(con, nome, descrizione, foto, costo, limitePosti);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -46,7 +64,8 @@ public class ServizioService {
      * @param limitePosti Posti disponibili
      */
     public void updateServizio(int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            ServizioDAO dao = createDAO();
             dao.doUpdate(con, idServizio, nome, descrizione, foto, costo, limitePosti);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -58,21 +77,9 @@ public class ServizioService {
      * @return Lista contenente i servizi trovati
      */
     public List<Servizio> getAll() {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            ServizioDAO dao = createDAO();
             return dao.getServizi(con);
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    /**
-     * Recupera i servizi utilizzati dall'utente specificato.
-     * @param idUtente Identificativo dell'utente
-     * @return Lista contenente i servizi trovati per l'utente
-     */
-    public List<Servizio> getByUser(int idUtente) {
-        try (Connection con = Connect.getConnection()) {
-            return dao.doSelectByUserId(con, idUtente);
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -84,7 +91,8 @@ public class ServizioService {
      * @return Il servizio trovato.
      */
     public Servizio getById(int idServizio) {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            ServizioDAO dao = createDAO();
             return dao.doSelectById(con, idServizio);
         } catch (SQLException e) {
             throw new RuntimeException();

@@ -30,7 +30,7 @@ public class UtenteService
 
     /**
      * Costruisce un oggetto UtenteDAO.
-     * @return L'UtenteDAO costruito.
+     * @return L'oggetto UtenteDAO costruito.
      */
     public UtenteDAO createDAO()
     {

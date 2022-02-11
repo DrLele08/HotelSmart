@@ -21,7 +21,7 @@ public class RuoloService {
 
     /**
      * Costruisce un oggetto RuoloDAO.
-     * @return Il RuoloDAO costruito.
+     * @return L'oggetto RuoloDAO costruito.
      */
     public RuoloDAO createDAO()
     {

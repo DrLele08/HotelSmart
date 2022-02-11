@@ -13,6 +13,7 @@ import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.Prenotazion
 import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.StanzaDAO;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
+import it.hotel.model.stato.Stato;
 import it.hotel.model.stato.StatoDAO;
 import it.hotel.model.stato.statoExceptions.StatoNotFoundException;
 
@@ -26,21 +27,63 @@ import java.util.List;
  */
 public class PrenotazioneStanzaService {
 
-    private final PrenotazioneStanzaDAO prenotazioneStanzaDAO;
-    private final StanzaDAO stanzaDAO;
-    private final PersonaAggiuntivaDAO personaAggiuntivaDAO;
-    private final PersonaPrenotazioneDAO personaPrenotazioneDAO;
-    private final StatoDAO statoDAO;
-
     /**
      * Costruisce un oggetto PrenotazioneStanzaService.
      */
-    public PrenotazioneStanzaService() {
-        this.prenotazioneStanzaDAO = new PrenotazioneStanzaDAO();
-        this.stanzaDAO = new StanzaDAO();
-        this.personaAggiuntivaDAO = new PersonaAggiuntivaDAO();
-        this.personaPrenotazioneDAO = new PersonaPrenotazioneDAO();
-        this.statoDAO = new StatoDAO();
+    public PrenotazioneStanzaService() {}
+
+    /**
+     * Costruisce un oggetto PrenotazioneStanzaDAO.
+     * @return L'oggetto PrenotazioneStanzaDAO costruito.
+     */
+    public PrenotazioneStanzaDAO createPrenotazioneStanzaDAO()
+    {
+        return new PrenotazioneStanzaDAO();
+    }
+
+    /**
+     * Costruisce un oggetto StanzaDAO.
+     * @return L'oggetto StanzaDAO costruito.
+     */
+    public StanzaDAO createStanzaDAO()
+    {
+        return new StanzaDAO();
+    }
+
+    /**
+     * Costruisce un oggetto PersonaAggiuntivaDAO.
+     * @return L'oggetto PersonaAggiuntivaDAO costruito.
+     */
+    public PersonaAggiuntivaDAO createPersonaAggiuntivaDAO()
+    {
+        return new PersonaAggiuntivaDAO();
+    }
+
+    /**
+     * Costruisce un oggetto PersonaPrenotazioneDAO.
+     * @return L'oggetto PersonaPrenotazioneDAO costruito.
+     */
+    public PersonaPrenotazioneDAO createPersonaPrenotazioneDAO()
+    {
+        return new PersonaPrenotazioneDAO();
+    }
+
+    /**
+     * Costruisce un oggetto StatoDAO.
+     * @return L'oggetto StatoDAO costruito.
+     */
+    public StatoDAO createStatoDAO()
+    {
+        return new StatoDAO();
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+        return Connect.getConnection();
     }
 
     /**
@@ -64,9 +107,10 @@ public class PrenotazioneStanzaService {
         PrenotazioneStanza prenotazione;
         Connection con = null;
         try {
-            con=Connect.getConnection();
+            con=getConnection();
             con.setAutoCommit(false);
 
+            StanzaDAO stanzaDAO = createStanzaDAO();
             Stanza s = stanzaDAO.doSelectById(con, ksStanza);
             double costoNotte = s.getCostoNotte();
             double sconto = s.getSconto();
@@ -78,10 +122,12 @@ public class PrenotazioneStanzaService {
             int ksStato =  1;
             int idPrenotazione;
             try {
+                PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
                 idPrenotazione = prenotazioneStanzaDAO.doInsert(con, ksUtente, ksStato, ksStanza, inizio, fine, costoNotte, sconto);
             } catch (PrenotazioneStanzaInsertException e) {
                 throw new PagamentoInAttesaException();
             }
+            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazione = prenotazioneStanzaDAO.doSelectById(con, idPrenotazione);
             int posti = s.getLettiMatrimoniali()*2 + s.getLettiSingoli();
             if (listExtra.size() + 1 != posti) {
@@ -91,7 +137,9 @@ public class PrenotazioneStanzaService {
                 if (p.getCf().length()!=16 || p.getNome().trim().isEmpty() || p.getCognome().trim().isEmpty()) {
                     throw new PrenotazioneStanzaInsertException();
                 }
+                PersonaAggiuntivaDAO personaAggiuntivaDAO = createPersonaAggiuntivaDAO();
                 int idPersona = personaAggiuntivaDAO.doInsert(con, ksUtente, p.getCf(), p.getNome(), p.getCognome(), p.getDataNascita()).getIdPersona();
+                PersonaPrenotazioneDAO personaPrenotazioneDAO = createPersonaPrenotazioneDAO();
                 personaPrenotazioneDAO.doInsert(con, idPersona, prenotazione.getIdPrenotazioneStanza());
             }
 
@@ -114,7 +162,8 @@ public class PrenotazioneStanzaService {
      */
     public List<PrenotazioneStanza> selectBy(int value, int type) {
         List<PrenotazioneStanza> prenotazioni;
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioni = prenotazioneStanzaDAO.doSelectBy(con, value, type);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -128,7 +177,8 @@ public class PrenotazioneStanzaService {
      */
     public List<PrenotazioneStanza> getAll() {
         List<PrenotazioneStanza> prenotazioni;
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioni = prenotazioneStanzaDAO.doGetAll(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -143,7 +193,8 @@ public class PrenotazioneStanzaService {
      * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza non è stata trovata
      */
     public void editStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioneStanzaDAO.doChangeStato(con, idPrenotazioneStanza, stato);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -158,7 +209,8 @@ public class PrenotazioneStanzaService {
      */
     public PrenotazioneStanza getPrenotazioneById(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
         PrenotazioneStanza prenotazione;
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazione = prenotazioneStanzaDAO.doSelectById(con, idPrenotazione);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -176,10 +228,13 @@ public class PrenotazioneStanzaService {
         boolean rimborsabile;
         Connection con = null;
         try {
-            con = Connect.getConnection();
+            con = getConnection();
             con.setAutoCommit(false);
 
-            int confermata = statoDAO.doSelectByStato(con, "CONFERMATA").getIdStato();
+            StatoDAO statoDAO = createStatoDAO();
+            Stato stato = statoDAO.doSelectByStato(con, "CONFERMATA");
+            int confermata = stato.getIdStato();
+            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             rimborsabile = prenotazioneStanzaDAO.isRimborsabile(con, idPrenotazione, confermata);
 
             con.commit();
@@ -203,7 +258,8 @@ public class PrenotazioneStanzaService {
      * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza specificata non è stata trovata
      */
     public void addTokenStripe(int idPrenotazione, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
-        try (Connection con = Connect.getConnection()) {
+        try (Connection con = getConnection()) {
+            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioneStanzaDAO.insertTokenStripe(con, idPrenotazione, tokenStripe);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -223,9 +279,10 @@ public class PrenotazioneStanzaService {
         StringBuilder sb = new StringBuilder(len);
         boolean duplicate;
         do {
-            try (Connection con = Connect.getConnection()) {
+            try (Connection con = getConnection()) {
                 for (int i = 0; i < len; i++)
                     sb.append(AB.charAt(rnd.nextInt(AB.length())));
+                PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
                 prenotazioneStanzaDAO.doInsertTokenQrCode(con, idPrenotazione, sb.toString());
                 duplicate = false;
             } catch (SQLIntegrityConstraintViolationException e) {

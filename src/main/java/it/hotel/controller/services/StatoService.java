@@ -22,7 +22,7 @@ public class StatoService
 
     /**
      * Costruisce un oggetto StatoDAO.
-     * @return Lo StatoDAO costruito.
+     * @return L'oggetto StatoDAO costruito.
      */
     public StatoDAO createDAO()
     {

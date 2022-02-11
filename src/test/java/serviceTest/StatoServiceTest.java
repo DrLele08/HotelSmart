@@ -1,3 +1,5 @@
+package serviceTest;
+
 import it.hotel.Utility.Connect;
 import it.hotel.controller.services.StatoService;
 import it.hotel.model.stato.Stato;
@@ -10,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +43,16 @@ public class StatoServiceTest extends Mockito
     }
 
     @Test
+    public void testGetAllRuntimeException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()->service.getAll());
+    }
+
+    @Test
     public void testGetByIdRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
-        doReturn(conn).when(service).getConnection();
-        when(dao.doSelectById(conn, 0)).thenReturn(null);
+        doThrow(new SQLException()).when(service).getConnection();
         Assert.assertThrows(RuntimeException.class, ()->service.getById(0));
     }
 
