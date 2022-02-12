@@ -106,6 +106,13 @@ public class StanzaServiceTest extends Mockito {
     }
 
     @Test
+    public void testSelectByIdRuntimeException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()-> service.selectById(1));
+    }
+
+    @Test
     public void testSelectByIdFine() throws Exception {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();

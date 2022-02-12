@@ -138,7 +138,8 @@ public class PrenotazioneStanzaService {
                     throw new PrenotazioneStanzaInsertException();
                 }
                 PersonaAggiuntivaDAO personaAggiuntivaDAO = createPersonaAggiuntivaDAO();
-                int idPersona = personaAggiuntivaDAO.doInsert(con, ksUtente, p.getCf(), p.getNome(), p.getCognome(), p.getDataNascita()).getIdPersona();
+                PersonaAggiuntiva persona = personaAggiuntivaDAO.doInsert(con, ksUtente, p.getCf(), p.getNome(), p.getCognome(), p.getDataNascita());
+                int idPersona = persona.getIdPersona();
                 PersonaPrenotazioneDAO personaPrenotazioneDAO = createPersonaPrenotazioneDAO();
                 personaPrenotazioneDAO.doInsert(con, idPersona, prenotazione.getIdPrenotazioneStanza());
             }

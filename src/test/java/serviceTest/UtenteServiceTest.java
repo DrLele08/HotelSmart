@@ -7,6 +7,7 @@ import it.hotel.model.ruolo.Ruolo;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.UtenteDAO;
 import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
+import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.junit.Assert;
@@ -53,6 +54,13 @@ public class UtenteServiceTest extends Mockito {
     }
 
     @Test
+    public void testDoLoginIdRuntimeException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()->service.doLogin(1, "token"));
+    }
+
+    @Test
     public void testDoLoginEmailFine() throws Exception {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
@@ -73,8 +81,26 @@ public class UtenteServiceTest extends Mockito {
     @Test
     public void testDoLoginEmailRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
-        doThrow(new SQLException()).when(service).getConnection();
+        doReturn(conn).when(service).getConnection();
+        doThrow(new SQLException()).when(dao).isEmailInDatabase(conn, "email");
         Assert.assertThrows(RuntimeException.class, ()-> service.doLogin("email", "password"));
+    }
+
+    @Test
+    public void testDoLoginEmailEmailNotFoundException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        doReturn(false).when(dao).isEmailInDatabase(conn, "email");
+        Assert.assertThrows(EmailNotFoundException.class, ()-> service.doLogin("email", "password"));
+    }
+
+    @Test
+    public void testDoRegistrazioneRuntimeException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        doThrow(new SQLException()).when(dao).isEmailInDatabase(conn, "email");
+        Assert.assertThrows(RuntimeException.class,()->
+                service.doRegistrazione("asdfghjklasdfghj", "nome", "cognome", "email", new Date(0), "Password?9"));
     }
 
     @Test
@@ -149,7 +175,9 @@ public class UtenteServiceTest extends Mockito {
     @Test
     public void testEditPasswordRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
-        doThrow(new SQLException()).when(service).getConnection();
+        doReturn(conn).when(service).getConnection();
+        doReturn(3).when(dao).doGetRuolo(conn, 1, "token");
+        doThrow(new SQLException()).when(dao).doGetRuolo(conn, 1, "token");
         Assert.assertThrows(RuntimeException.class, ()->
                 service.editPassword(1, "token", "password", "newPassword?9"));
     }
@@ -235,6 +263,14 @@ public class UtenteServiceTest extends Mockito {
     }
 
     @Test
+    public void testGetAllRuntimeException() throws Exception
+    {
+        doReturn(dao).when(service).createDAO();
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()->service.getAll());
+    }
+
+    @Test
     public void testGetAllFine() throws Exception
     {
         doReturn(dao).when(service).createDAO();
@@ -244,11 +280,25 @@ public class UtenteServiceTest extends Mockito {
     }
 
     @Test
-    public void testEditRuoloById() throws Exception {
+    public void testEditRuoloByIdRuntimeException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()->service.editRuoloById(1, 1));
+    }
+
+    @Test
+    public void testEditRuoloByIdFine() throws Exception {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
         doNothing().when(dao).doChangeRuolo(conn, 1, 1);
         service.editRuoloById(1, 1);
+    }
+
+    @Test
+    public void testGetUtenteByPrenotazioneStanzaRuntimeException() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doThrow(new SQLException()).when(service).getConnection();
+        Assert.assertThrows(RuntimeException.class, ()->service.getUtenteByPrenotazioneStanza(1));
     }
 
     @Test
