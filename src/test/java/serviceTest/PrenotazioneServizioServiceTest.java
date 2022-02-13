@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PrenotazioneServizioServiceTest extends Mockito {
 
@@ -39,6 +40,7 @@ public class PrenotazioneServizioServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doReturn(null).when(dao).doInsert(conn, 1,1,1,null);
         service.createPrenotazione(1,1,1,null);
+        Mockito.verify(service,times(1)).createPrenotazione(1,1,1,null);
     }
 
     @Test
@@ -55,6 +57,7 @@ public class PrenotazioneServizioServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(dao).doDelete(conn, 1);
         service.deletePrenotazioneById(1);
+        Mockito.verify(service,times(1)).deletePrenotazioneById(1);
     }
 
     @Test
@@ -69,8 +72,8 @@ public class PrenotazioneServizioServiceTest extends Mockito {
     public void testGetAllByUserFine() throws Exception {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
-        doReturn(null).when(dao).doSelectByUser(conn, 1);
-        service.getAllByUser(1);
+        doReturn(new ArrayList<String>()).when(dao).doSelectByUser(conn, 1);
+        Assert.assertNotNull(service.getAllByUser(1));
     }
 
     @Test

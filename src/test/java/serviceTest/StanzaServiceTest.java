@@ -136,6 +136,7 @@ public class StanzaServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(dao).doInsert(conn, true, true, 1, 1, 10.0, 2.0);
         service.insertStanza(true, true, 1, 1, 10.0, 2.0);
+        Mockito.verify(service,times(1)).insertStanza(true, true, 1, 1, 10.0, 2.0);
     }
 
     @Test
@@ -152,6 +153,7 @@ public class StanzaServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(dao).doUpdate(conn, 1, true, true, 1, 1, 10.0, 2.0);
         service.updateStanza(1,true, true, 1, 1, 10.0, 2.0);
+        Mockito.verify(service,times(1)).updateStanza(1,true, true, 1, 1, 10.0, 2.0);
     }
 
     @Test

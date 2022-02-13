@@ -42,7 +42,7 @@ public class UtenteDAOTest extends Mockito {
         doReturn(rs).when(ps).getGeneratedKeys();
         when(rs.next()).thenReturn(true);
         doReturn(1).when(rs).getInt(1);
-        dao.doInsert(conn, 1, null, null, null, null, new Date(0), null, null);
+        Assert.assertNotNull(dao.doInsert(conn, 1, null, null, null, null, new Date(0), null, null));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class UtenteDAOTest extends Mockito {
         doReturn(rs).when(ps).getGeneratedKeys();
         when(rs.next()).thenReturn(false);
         doReturn(1).when(rs).getInt(1);
-        dao.doInsert(conn, 1, null, null, null, null, new Date(0), null, null);
+        Assert.assertNull(dao.doInsert(conn, 1, null, null, null, null, new Date(0), null, null));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class UtenteDAOTest extends Mockito {
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true);
         doReturn(1).when(rs).getInt(1);
-        dao.doAuthenticate(conn, null, null);
+        Assert.assertNotNull(dao.doAuthenticate(conn, null, null));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class UtenteDAOTest extends Mockito {
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true);
         doReturn(1).when(rs).getInt(1);
-        dao.doAuthenticate(conn, 1, null);
+        Assert.assertNotNull(dao.doAuthenticate(conn, 1, null));
     }
 
     @Test
@@ -123,6 +123,7 @@ public class UtenteDAOTest extends Mockito {
         doNothing().when(ps).setInt(2,1);
         doReturn(1).when(ps).executeUpdate();
         dao.doChangePassword(conn, 1, null);
+        Mockito.verify(dao, times(1)).doChangePassword(conn, 1, null);
     }
 
     @Test
@@ -134,6 +135,7 @@ public class UtenteDAOTest extends Mockito {
         doReturn(rs).when(ps).executeQuery();
         doReturn(true).when(rs).next();
         dao.isPasswordValid(conn, 1, null);
+        Mockito.verify(dao, times(1)).isPasswordValid(conn, 1, null);
     }
 
     @Test
@@ -146,6 +148,7 @@ public class UtenteDAOTest extends Mockito {
         doReturn(true).when(rs).next();
         doReturn(1).when(rs).getInt("ksRuolo");
         dao.doGetRuolo(conn, 1, null);
+        Mockito.verify(dao, times(1)).doGetRuolo(conn, 1, null);
     }
 
     @Test
@@ -158,6 +161,7 @@ public class UtenteDAOTest extends Mockito {
         doReturn(false).when(rs).next();
         doReturn(1).when(rs).getInt("ksRuolo");
         dao.doGetRuolo(conn, 1, null);
+        Mockito.verify(dao, times(1)).doGetRuolo(conn, 1, null);
     }
 
     @Test
@@ -168,6 +172,7 @@ public class UtenteDAOTest extends Mockito {
         doNothing().when(ps).setInt(2,1);
         doReturn(1).when(ps).executeUpdate();
         dao.doChangeRuolo(conn,1,1);
+        Mockito.verify(dao,times(1)).doChangeRuolo(conn,1,1);
     }
 
     @Test
@@ -184,6 +189,7 @@ public class UtenteDAOTest extends Mockito {
         doNothing().when(ps).setInt(7,1);
         doReturn(1).when(ps).executeUpdate();
         dao.doChangeAnagrafica(conn,1,null,null,null,null,new Date(0),null);
+        Mockito.verify(dao, times(1)).doChangeAnagrafica(conn,1,null,null,null,null,new Date(0),null);
     }
 
     @Test
@@ -194,7 +200,7 @@ public class UtenteDAOTest extends Mockito {
         doNothing().when(ps).setInt(1,1);
         doReturn(rs).when(ps).executeQuery();
         doReturn(true).when(rs).next();
-        dao.doSelectByPrenotazioneStanza(conn, 1);
+        Assert.assertNotNull(dao.doSelectByPrenotazioneStanza(conn, 1));
     }
 
     @Test
@@ -215,7 +221,7 @@ public class UtenteDAOTest extends Mockito {
                 Statement.RETURN_GENERATED_KEYS);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.getUtenti(conn);
+        Assert.assertNotNull(dao.getUtenti(conn));
     }
 
     @Test
@@ -225,7 +231,7 @@ public class UtenteDAOTest extends Mockito {
         doNothing().when(ps).setString(1,null);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true);
-        dao.isEmailInDatabase(conn, null);
+        Assert.assertNotNull(dao.isEmailInDatabase(conn, null));
     }
 
     @Test
@@ -236,7 +242,7 @@ public class UtenteDAOTest extends Mockito {
         doNothing().when(ps).setString(2,null);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true);
-        dao.isEmailOld(conn,1,null);
+        Assert.assertNotNull(dao.isEmailOld(conn,1,null));
     }
 
 }

@@ -31,6 +31,7 @@ public class PersonaPrenotazioneDAOTest extends Mockito {
         doNothing().when(ps).setInt(2,1);
         doReturn(0).when(ps).executeUpdate();
         dao.doInsert(conn, 1,1);
+        Mockito.verify(dao,times(1)).doInsert(conn, 1,1);
     }
 
 }

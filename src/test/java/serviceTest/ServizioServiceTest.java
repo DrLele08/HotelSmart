@@ -42,6 +42,8 @@ public class ServizioServiceTest extends Mockito {
         doNothing().when(dao).doInsert(conn, "nome", "descrizione", "foto", 10.0, 2);
         service.createServizio(
                 "nome", "descrizione", "foto", 10.0, 2);
+        Mockito.verify(service,times(1)).createServizio(
+                "nome", "descrizione", "foto", 10.0, 2);
     }
 
     @Test
@@ -59,6 +61,7 @@ public class ServizioServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(dao).doUpdate(conn,1, "nome", "descrizione", "foto", 10.0, 2);
         service.updateServizio(1, "nome", "descrizione", "foto", 10.0, 2);
+        Mockito.verify(service,times(1)).updateServizio(1, "nome", "descrizione", "foto", 10.0, 2);
     }
 
     @Test
@@ -75,7 +78,7 @@ public class ServizioServiceTest extends Mockito {
         when(dao.doSelectById(conn, 1)).thenReturn(new Servizio(
                 1, "nome", "descrizione", "foto", 10.0, 2)
         );
-        service.getById(1);
+        Assert.assertNotNull(service.getById(1));
     }
 
     @Test

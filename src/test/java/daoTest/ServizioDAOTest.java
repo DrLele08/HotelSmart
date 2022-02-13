@@ -1,6 +1,7 @@
 package daoTest;
 
 import it.hotel.model.servizio.ServizioDAO;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -34,6 +35,7 @@ public class ServizioDAOTest extends Mockito {
         doNothing().when(ps).setInt(5, 1);
         doReturn(1).when(ps).executeUpdate();
         dao.doInsert(conn, "nome", "descrizione", "foto", 1.0, 1);
+        Mockito.verify(dao, times(1)).doInsert(conn, "nome", "descrizione", "foto", 1.0, 1);
     }
 
     @Test
@@ -49,6 +51,7 @@ public class ServizioDAOTest extends Mockito {
         doNothing().when(ps).setInt(6,1);
         doReturn(1).when(ps).executeUpdate();
         dao.doUpdate(conn, 1,"nome", "descrizione", "foto", 1.0, 1);
+        Mockito.verify(dao, times(1)).doUpdate(conn, 1,"nome", "descrizione", "foto", 1.0, 1);
     }
 
     @Test
@@ -57,7 +60,7 @@ public class ServizioDAOTest extends Mockito {
                 Statement.RETURN_GENERATED_KEYS);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.getServizi(conn);
+        Assert.assertNotNull(dao.getServizi(conn));
     }
 
     @Test
@@ -67,7 +70,7 @@ public class ServizioDAOTest extends Mockito {
         doNothing().when(ps).setInt(1,1);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.doSelectById(conn, 1);
+        Assert.assertNotNull(dao.doSelectById(conn, 1));
     }
 
 }

@@ -1,14 +1,11 @@
 package serviceTest;
 
-import it.hotel.Utility.Connect;
 import it.hotel.controller.services.StatoService;
 import it.hotel.model.stato.Stato;
 import it.hotel.model.stato.StatoDAO;
-import it.hotel.model.stato.statoExceptions.StatoNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.sql.Connection;

@@ -95,7 +95,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(prenotazioneStanzaDAO).when(service).createPrenotazioneStanzaDAO();
         doReturn(conn).when(service).getConnection();
         when(prenotazioneStanzaDAO.doSelectBy(conn,1, 1)).thenReturn(new ArrayList<>());
-        service.selectBy(1,1);
+        Assert.assertNotNull(service.selectBy(1,1));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(prenotazioneStanzaDAO).when(service).createPrenotazioneStanzaDAO();
         doReturn(conn).when(service).getConnection();
         when(prenotazioneStanzaDAO.doGetAll(conn)).thenReturn(new ArrayList<>());
-        service.getAll();
+        Assert.assertNotNull(service.getAll());
     }
 
     @Test
@@ -126,6 +126,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(prenotazioneStanzaDAO).doChangeStato(conn, 1, 1);
         service.editStato(1,1);
+        Mockito.verify(service,times(1)).editStato(1,1);
     }
 
     @Test
@@ -142,7 +143,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(new PrenotazioneStanza(
                 1, 1,1, 1, new Date(0), new Date(0), 20.0, "", "", "", -1)
         ).when(prenotazioneStanzaDAO).doSelectById(conn, 1);
-        service.getPrenotazioneById(1);
+        Assert.assertNotNull(service.getPrenotazioneById(1));
     }
 
     @Test
@@ -158,6 +159,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(prenotazioneStanzaDAO).insertTokenStripe(conn, 1, "");
         service.addTokenStripe(1,"");
+        Mockito.verify(service,times(1)).addTokenStripe(1,"");
     }
 
     @Test
@@ -173,6 +175,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(prenotazioneStanzaDAO).doInsertTokenQrCode(conn, 1, "");
         service.generateQrCode(1);
+        Mockito.verify(service,times(1)).generateQrCode(1);
     }
 
     @Test
@@ -201,7 +204,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doReturn(new Stato(1, "")).when(statoDAO).doSelectByStato(conn, "CONFERMATA");
         doReturn(true).when(prenotazioneStanzaDAO).isRimborsabile(conn, 1,1);
-        service.isRimborsabile(1);
+        Assert.assertNotNull(service.isRimborsabile(1));
     }
 
     @Test
@@ -227,7 +230,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         doReturn(persona).when(personaAggiuntivaDAO).doInsert(conn, 1, "asdfghjklasdfghj", "nome", "cognome", inizio);
         doNothing().when(personaPrenotazioneDAO).doInsert(conn, 1,1);
         lista.add(persona);
-        service.inserisciPrenotazione(1,1,"2000-01-01", "2000-01-02", lista);
+        Assert.assertNotNull(service.inserisciPrenotazione(1,1,"2000-01-01", "2000-01-02", lista));
     }
 
     @Test
@@ -247,7 +250,7 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
         Date fine = new Date(fi.getTimeInMillis());
         doReturn(false).when(stanzaDAO).isDisponibile(conn, 1,inizio, fine);
         Assert.assertThrows(PrenotazioneStanzaInsertException.class, ()->
-        service.inserisciPrenotazione(1,1,"2000-01-01", "2000-01-02", new ArrayList<>()));
+            service.inserisciPrenotazione(1,1,"2000-01-01", "2000-01-02", new ArrayList<>()));
     }
 
     @Test

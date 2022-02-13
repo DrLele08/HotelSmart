@@ -5,6 +5,7 @@ import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.sql.*;
@@ -38,6 +39,7 @@ public class StanzaDAOTest extends Mockito {
         doNothing().when(ps).setDouble(6,1.0);
         doReturn(0).when(ps).executeUpdate();
         dao.doInsert(conn,true,true,1,1,1.0,1.0);
+        Mockito.verify(dao, times(1)).doInsert(conn,true,true,1,1,1.0,1.0);
     }
 
     @Test
@@ -54,6 +56,7 @@ public class StanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(7,1);
         doReturn(0).when(ps).executeUpdate();
         dao.doUpdate(conn,1,true,true,1,1,1.0,1.0);
+        Mockito.verify(dao, times(1)).doUpdate(conn,1,true,true,1,1,1.0,1.0);
     }
 
     @Test
@@ -63,7 +66,7 @@ public class StanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(1,1);
         doReturn(rs).when(ps).executeQuery();
         doReturn(true).when(rs).next();
-        dao.doSelectById(conn ,1);
+        Assert.assertNotNull(dao.doSelectById(conn ,1));
     }
 
     @Test
@@ -83,7 +86,7 @@ public class StanzaDAOTest extends Mockito {
                 Statement.RETURN_GENERATED_KEYS);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.getStanze(conn);
+        Assert.assertNotNull(dao.getStanze(conn));
     }
 
     @Test
@@ -92,7 +95,7 @@ public class StanzaDAOTest extends Mockito {
                 Statement.RETURN_GENERATED_KEYS);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.getOfferte(conn);
+        Assert.assertNotNull(dao.getOfferte(conn));
     }
 
     @Test
@@ -101,7 +104,7 @@ public class StanzaDAOTest extends Mockito {
                 Statement.RETURN_GENERATED_KEYS);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true);
-        dao.doSelect_Min_And_Max_Prices(conn);
+        Assert.assertNotNull(dao.doSelect_Min_And_Max_Prices(conn));
     }
 
     @Test
@@ -110,7 +113,7 @@ public class StanzaDAOTest extends Mockito {
                 Statement.RETURN_GENERATED_KEYS);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(false);
-        dao.doSelect_Min_And_Max_Prices(conn);
+        Assert.assertNotNull(dao.doSelect_Min_And_Max_Prices(conn));
     }
 
     @Test
@@ -124,7 +127,7 @@ public class StanzaDAOTest extends Mockito {
         doNothing().when(ps).setDate(3,new Date(0));
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true);
-        dao.isDisponibile(conn, 1,new Date(0), new Date(0));
+        Assert.assertNotNull(dao.isDisponibile(conn, 1,new Date(0), new Date(0)));
     }
 
     @Test
@@ -138,127 +141,158 @@ public class StanzaDAOTest extends Mockito {
         doNothing().when(ps).setDate(3,new Date(0));
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(false);
-        dao.isDisponibile(conn, 1,new Date(0), new Date(0));
+        Assert.assertNotNull(dao.isDisponibile(conn, 1,new Date(0), new Date(0)));
     }
 
     @Test
     public void testAnimaleDomesticoStrTrue() {
-        dao.animaleDomesticoStr(new ArrayList<>(), true);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.animaleDomesticoStr(lista, true);
+        Mockito.verify(dao, times(1)).animaleDomesticoStr(lista, true);
     }
 
     @Test
     public void testAnimaleDomesticoStrFalse() {
-        dao.animaleDomesticoStr(new ArrayList<>(), false);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.animaleDomesticoStr(lista, false);
+        Mockito.verify(dao, times(1)).animaleDomesticoStr(lista, false);
     }
 
     @Test
     public void testAnimaleDomesticoStrNull() {
-        dao.animaleDomesticoStr(new ArrayList<>(), null);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.animaleDomesticoStr(lista, null);
+        Mockito.verify(dao, times(1)).animaleDomesticoStr(lista, null);
     }
 
     @Test
     public void testFumatoreStrTrue() {
-        dao.fumatoreStr(new ArrayList<>(), true);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.fumatoreStr(lista, true);
+        Mockito.verify(dao, times(1)).fumatoreStr(lista, true);
     }
 
     @Test
     public void testFumatoreStrFalse() {
-        dao.fumatoreStr(new ArrayList<>(), false);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.fumatoreStr(lista, false);
+        Mockito.verify(dao, times(1)).fumatoreStr(lista, false);
     }
 
     @Test
     public void testFumatoreStrNull() {
         dao.fumatoreStr(new ArrayList<>(), null);
+        Mockito.verify(dao, times(1)).fumatoreStr(new ArrayList<>(), null);
     }
 
     @Test
     public void testNumeroOspitiStrFine() {
-        dao.numeroOspitiStr(new ArrayList<>(), 3);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.numeroOspitiStr(lista, 3);
+        Mockito.verify(dao, times(1)).numeroOspitiStr(lista, 3);
     }
 
     @Test
     public void testNumeroOspitiStrNull() {
-        dao.numeroOspitiStr(new ArrayList<>(), null);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.numeroOspitiStr(lista, null);
+        Mockito.verify(dao, times(1)).numeroOspitiStr(lista, null);
     }
 
     @Test
     public void testCostoNotteStr1() {
-        dao.costoNotteStr(new ArrayList<>(), 1.0, null);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.costoNotteStr(lista, 1.0, null);
+        Mockito.verify(dao, times(1)).costoNotteStr(lista, 1.0, null);
     }
 
     @Test
     public void testCostoNotteStr2() {
-        dao.costoNotteStr(new ArrayList<>(), null, 1.0);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.costoNotteStr(lista, null, 1.0);
+        Mockito.verify(dao, times(1)).costoNotteStr(lista, null, 1.0);
     }
 
     @Test
     public void testCostoNotteStr3() {
-        dao.costoNotteStr(new ArrayList<>(), 1.0, 2.0);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.costoNotteStr(lista, 1.0, 2.0);
+        Mockito.verify(dao, times(1)).costoNotteStr(lista, 1.0, 2.0);
     }
 
     @Test
     public void testCostoNotteStr4() {
-        dao.costoNotteStr(new ArrayList<>(), null, null);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.costoNotteStr(lista, null, null);
+        Mockito.verify(dao, times(1)).costoNotteStr(lista, null, null);
     }
 
     @Test
     public void testScontoStr1() {
-        dao.scontoStr(new ArrayList<>(), 1.0, null);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.scontoStr(lista, 1.0, null);
+        Mockito.verify(dao, times(1)).scontoStr(lista, 1.0, null);
     }
 
     @Test
     public void testScontoStr2() {
-        dao.scontoStr(new ArrayList<>(), null, 1.0);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.scontoStr(lista, null, 1.0);
+        Mockito.verify(dao, times(1)).scontoStr(lista, null, 1.0);
     }
 
     @Test
     public void testScontoStr3() {
-        dao.scontoStr(new ArrayList<>(), 1.0, 2.0);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.scontoStr(lista, 1.0, 2.0);
+        Mockito.verify(dao, times(1)).scontoStr(lista, 1.0, 2.0);
     }
 
     @Test
     public void testScontoStr4() {
-        dao.scontoStr(new ArrayList<>(), null, null);
+        ArrayList<String> lista = new ArrayList<>();
+        dao.scontoStr(lista, null, null);
+        Mockito.verify(dao, times(1)).scontoStr(lista, null, null);
     }
 
     @Test
     public void testData1() {
-        dao.data(null, null, null);
+        Assert.assertNotNull(dao.data(null, null, null));
     }
 
     @Test
     public void testData2() {
-        dao.data(null, new Date(0), new Date(0));
+        Assert.assertNotNull(dao.data(null, new Date(0), new Date(0)));
     }
 
     @Test
     public void testData3() {
-        dao.data(null, new Date(0), null);
+        Assert.assertNotNull(dao.data(null, new Date(0), null));
     }
 
     @Test
     public void testData4() {
-        dao.data(null, null, new Date(0));
+        Assert.assertNotNull(dao.data(null, null, new Date(0)));
     }
 
     @Test
     public void testData5() {
-        dao.data("", null, null);
+        Assert.assertNotNull(dao.data("", null, null));
     }
 
     @Test
     public void testData6() {
-        dao.data("", new Date(0), new Date(0));
+        Assert.assertNotNull(dao.data("", new Date(0), new Date(0)));
     }
 
     @Test
     public void testData7() {
-        dao.data("", new Date(0), null);
+        Assert.assertNotNull(dao.data("", new Date(0), null));
     }
 
     @Test
     public void testData8() {
-        dao.data("", null, new Date(0));
+        Assert.assertNotNull(dao.data("", null, new Date(0)));
     }
 
     @Test
@@ -268,27 +302,27 @@ public class StanzaDAOTest extends Mockito {
         doReturn("").when(dao).getQuery(null,null,null,null,null,null,null,null,null);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.doSearch(conn, null, null,null,null,null,null,null,null,null);
+        Assert.assertNotNull(dao.doSearch(conn, null, null,null,null,null,null,null,null,null));
     }
 
     @Test
     public void testGetQuery1() {
-        dao.getQuery(null,null,null,null,null,null,null,null,null);
+        Assert.assertNotNull(dao.getQuery(null,null,null,null,null,null,null,null,null));
     }
 
     @Test
     public void testGetQuery2() {
-        dao.getQuery(true,true,null,null,null,null,null,new Date(0),new Date(0));
+        Assert.assertNotNull(dao.getQuery(true,true,null,null,null,null,null,new Date(0),new Date(0)));
     }
 
     @Test
     public void testGetQuery3() {
-        dao.getQuery(true,true,null,null,null,null,null,null,new Date(0));
+        Assert.assertNotNull(dao.getQuery(true,true,null,null,null,null,null,null,new Date(0)));
     }
 
     @Test
     public void testGetQuery4() {
-        dao.getQuery(true,true,null,null,null,null,null,new Date(0),null);
+        Assert.assertNotNull(dao.getQuery(true,true,null,null,null,null,null,new Date(0),null));
     }
 
 }

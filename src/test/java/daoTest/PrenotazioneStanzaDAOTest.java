@@ -52,7 +52,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doReturn(rs).when(ps).getGeneratedKeys();
         when(rs.next()).thenReturn(true);
         doReturn(1).when(rs).getInt(1);
-        dao.doInsert(conn, 1,1,1,new Date(0),new Date(0),10.0,1.0);
+        Assert.assertNotNull(dao.doInsert(conn, 1,1,1,new Date(0),new Date(0),10.0,1.0));
     }
 
     @Test
@@ -95,6 +95,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(2,1);
         doReturn(1).when(ps).executeUpdate();
         dao.doInsertTokenQrCode(conn, 1, null);
+        Mockito.verify(dao, times(1)).doInsertTokenQrCode(conn, 1, null);
     }
 
     @Test
@@ -128,7 +129,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doReturn(null).when(rs).getString(9);
         doReturn(null).when(rs).getString(10);
         doReturn(1).when(rs).getInt(11);
-        dao.doSelectById(conn, 1);
+        Assert.assertNotNull(dao.doSelectById(conn, 1));
     }
 
     @Test
@@ -152,6 +153,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(2,1);
         doReturn(1).when(ps).executeUpdate();
         dao.insertTokenStripe(conn, 1, null);
+        Mockito.verify(dao,times(1)).insertTokenStripe(conn, 1, null);
     }
 
     @Test
@@ -172,7 +174,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
                 Statement.RETURN_GENERATED_KEYS);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.doGetAll(conn);
+        Assert.assertNotNull(dao.doGetAll(conn));
     }
 
     @Test
@@ -184,6 +186,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(2,1);
         doReturn(1).when(ps).executeUpdate();
         dao.doChangeStato(conn,1,1);
+        Mockito.verify(dao, times(1)).doChangeStato(conn,1,1);
     }
 
     @Test
@@ -261,7 +264,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(1,1);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.doSelectBy(conn,1,0);
+        Assert.assertNotNull(dao.doSelectBy(conn,1,0));
     }
 
     @Test
@@ -271,7 +274,7 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(1,1);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.doSelectBy(conn,1,1);
+        Assert.assertNotNull(dao.doSelectBy(conn,1,1));
     }
 
     @Test
@@ -281,12 +284,12 @@ public class PrenotazioneStanzaDAOTest extends Mockito {
         doNothing().when(ps).setInt(1,1);
         doReturn(rs).when(ps).executeQuery();
         when(rs.next()).thenReturn(true).thenReturn(false);
-        dao.doSelectBy(conn,1,2);
+        Assert.assertNotNull(dao.doSelectBy(conn,1,2));
     }
 
     @Test
     public void testDoSelectByDefault() throws Exception {
-        dao.doSelectBy(conn,1,3);
+        Assert.assertNotNull(dao.doSelectBy(conn,1,3));
     }
 
 }

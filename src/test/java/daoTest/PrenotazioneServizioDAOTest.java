@@ -1,6 +1,7 @@
 package daoTest;
 
 import it.hotel.model.prenotazioneServizio.PrenotazioneServizioDAO;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -34,7 +35,7 @@ public class PrenotazioneServizioDAOTest extends Mockito {
         doReturn(rs).when(ps).getGeneratedKeys();
         doReturn(true).when(rs).next();
         doReturn(1).when(rs).getInt(1);
-        dao.doInsert(conn, 1,1,1,new Date(0));
+        Assert.assertNotNull(dao.doInsert(conn, 1,1,1,new Date(0)));
     }
 
     @Test
@@ -49,7 +50,7 @@ public class PrenotazioneServizioDAOTest extends Mockito {
         doReturn(rs).when(ps).getGeneratedKeys();
         doReturn(false).when(rs).next();
         doReturn(1).when(rs).getInt(1);
-        dao.doInsert(conn, 1,1,1,new Date(0));
+        Assert.assertNull(dao.doInsert(conn, 1,1,1,new Date(0)));
     }
 
     @Test
@@ -66,7 +67,7 @@ public class PrenotazioneServizioDAOTest extends Mockito {
         doReturn(1).when(rs).getInt(3);
         doReturn(1).when(rs).getInt(4);
         doReturn(new Date(0)).when(rs).getDate(5);
-        dao.doSelectByUser(conn, 1);
+        Assert.assertNotNull(dao.doSelectByUser(conn, 1));
     }
 
     @Test
@@ -77,6 +78,7 @@ public class PrenotazioneServizioDAOTest extends Mockito {
         doNothing().when(ps).setInt(1,1);
         doReturn(0).when(ps).executeUpdate();
         dao.doDelete(conn, 1);
+        Mockito.verify(dao,times(1)).doDelete(conn, 1);
     }
 
 }

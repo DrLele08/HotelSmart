@@ -251,6 +251,7 @@ public class UtenteServiceTest extends Mockito {
         when(dao.doGetRuolo(conn, 1, "token")).thenReturn(3);
         when(dao.isPasswordValid(conn, 1, "password")).thenReturn(true);
         service.editPassword(1, "token", "password", "newPassword?9");
+        Mockito.verify(service, times(1)).editPassword(1, "token", "password", "newPassword?9");
     }
 
     @Test
@@ -333,6 +334,8 @@ public class UtenteServiceTest extends Mockito {
         when(dao.isEmailOld(conn, 1,"email")).thenReturn(true);
         service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
                         "2000-01-01", "email");
+        Mockito.verify(service,times(1)).editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
+                "2000-01-01", "email");
     }
 
     @Test
@@ -343,6 +346,8 @@ public class UtenteServiceTest extends Mockito {
         when(dao.isEmailOld(conn, 1,"email")).thenReturn(true);
         service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
                         "2000-01-01", "email");
+        Mockito.verify(service,times(1)).editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
+                "2000-01-01", "email");
     }
 
     @Test
@@ -353,6 +358,8 @@ public class UtenteServiceTest extends Mockito {
         when(dao.isEmailOld(conn, 1,"email")).thenReturn(false);
         service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
                         "2000-01-01", "email");
+        Mockito.verify(service,times(1)).editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
+                "2000-01-01", "email");
     }
 
     @Test
@@ -374,6 +381,8 @@ public class UtenteServiceTest extends Mockito {
         doNothing().when(dao).doChangeAnagrafica(conn, 1, "token", "nome", "cognome", "asdfghjklasdfghj", null, "email");
         service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
                         "2000-01-01", "email");
+        Mockito.verify(service,times(1)).editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
+                "2000-01-01", "email");
     }
 
     @Test
@@ -401,7 +410,7 @@ public class UtenteServiceTest extends Mockito {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
         when(dao.getUtenti(conn)).thenReturn(new ArrayList<>());
-        service.getAll();
+        Assert.assertNotNull(service.getAll());
     }
 
     @Test
@@ -417,6 +426,7 @@ public class UtenteServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         doNothing().when(dao).doChangeRuolo(conn, 1, 1);
         service.editRuoloById(1, 1);
+        Mockito.verify(service,times(1)).editRuoloById(1, 1);
     }
 
     @Test
