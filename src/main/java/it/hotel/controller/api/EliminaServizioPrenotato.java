@@ -22,6 +22,23 @@ import java.io.IOException;
 public class EliminaServizioPrenotato extends CheckServlet
 {
     /**
+     * Ritorna utente service
+     * @see UtenteService
+     */
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+
+    /**
+     * Ritorna prenotazione servizio service
+     * @see PrenotazioneServizioService
+     */
+    public PrenotazioneServizioService getPrenoService()
+    {
+        return new PrenotazioneServizioService();
+    }
+    /**
      * Richiesta che riceve l'ID della prenotazione del servizio
      * e il token dell'utente per controllare se ha i permessi per l'operazione
      * @param request Richiesta del cliente
@@ -30,7 +47,7 @@ public class EliminaServizioPrenotato extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         JSONObject obj=new JSONObject();
         if(contieneParametro(request,"idUtente") && contieneParametro(request,"Token") && contieneParametro(request,"idPrenoServizio"))
@@ -40,11 +57,11 @@ public class EliminaServizioPrenotato extends CheckServlet
                 int idUtente=Integer.parseInt(request.getParameter("idUtente"));
                 String token=request.getParameter("Token");
                 int idPrenoServizio=Integer.parseInt(request.getParameter("idPrenoServizio"));
-                UtenteService utenteService=new UtenteService();
+                UtenteService utenteService=getUtenteService();
                 Utente user=utenteService.doLogin(idUtente,token);
                 if(user.getRuolo()==1 || user.getRuolo()==2)
                 {
-                    PrenotazioneServizioService prenoServizioService=new PrenotazioneServizioService();
+                    PrenotazioneServizioService prenoServizioService=getPrenoService();
                     prenoServizioService.deletePrenotazioneById(idPrenoServizio);
                     obj.put("Ris",1);
                     obj.put("Mess","Fatto");

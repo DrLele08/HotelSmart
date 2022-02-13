@@ -1,5 +1,6 @@
+package controller.api;
+
 import it.hotel.controller.api.CreateStanza;
-import it.hotel.controller.api.UpdateStanza;
 import it.hotel.controller.services.StanzaService;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
@@ -13,9 +14,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UpdateStanzaTest extends Mockito
+public class CreateStanzaTest extends Mockito
 {
-    private UpdateStanza controller;
+    private CreateStanza controller;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private JSONObject object;
@@ -25,7 +26,7 @@ public class UpdateStanzaTest extends Mockito
     @Before
     public void setUp()
     {
-        controller=Mockito.spy(new UpdateStanza());
+        controller=Mockito.spy(new CreateStanza());
         request=mock(HttpServletRequest.class);
         response=mock(HttpServletResponse.class);
         object=new JSONObject();
@@ -33,6 +34,7 @@ public class UpdateStanzaTest extends Mockito
         stanzaService=mock(StanzaService.class);
         user=mock(Utente.class);
     }
+
     @Test
     public void testNonContieneParametri() throws Exception
     {
@@ -68,7 +70,6 @@ public class UpdateStanzaTest extends Mockito
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"idStanza");
         doReturn(true).when(controller).contieneParametro(request,"Animale");
         doReturn(true).when(controller).contieneParametro(request,"Fumatore");
         doReturn(true).when(controller).contieneParametro(request,"LettiS");
@@ -89,7 +90,6 @@ public class UpdateStanzaTest extends Mockito
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"idStanza");
         doReturn(true).when(controller).contieneParametro(request,"Animale");
         doReturn(true).when(controller).contieneParametro(request,"Fumatore");
         doReturn(true).when(controller).contieneParametro(request,"LettiS");
@@ -112,7 +112,6 @@ public class UpdateStanzaTest extends Mockito
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"idStanza");
         doReturn(true).when(controller).contieneParametro(request,"Animale");
         doReturn(true).when(controller).contieneParametro(request,"Fumatore");
         doReturn(true).when(controller).contieneParametro(request,"LettiS");
@@ -136,7 +135,6 @@ public class UpdateStanzaTest extends Mockito
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"idStanza");
         doReturn(true).when(controller).contieneParametro(request,"Animale");
         doReturn(true).when(controller).contieneParametro(request,"Fumatore");
         doReturn(true).when(controller).contieneParametro(request,"LettiS");
@@ -147,7 +145,6 @@ public class UpdateStanzaTest extends Mockito
         when(controller.getUtenteService()).thenReturn(utenteService);
         when(utenteService.doLogin(anyInt(),anyString())).thenReturn(user);
         when(user.getRuolo()).thenReturn(1);
-        when(request.getParameter("idStanza")).thenReturn("1");
         when(request.getParameter("LettiS")).thenReturn("1");
         when(request.getParameter("LettiM")).thenReturn("1");
         when(request.getParameter("Costo")).thenReturn("1");
@@ -159,5 +156,4 @@ public class UpdateStanzaTest extends Mockito
         object.put("Mess","Fatto");
         Mockito.verify(mockOutput).print(object.toString());
     }
-
 }

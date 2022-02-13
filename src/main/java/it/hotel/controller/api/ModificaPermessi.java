@@ -21,6 +21,11 @@ import java.io.IOException;
 @WebServlet(name = "ModificaPermessi", value = "/api/ModificaPermessi")
 public class ModificaPermessi extends CheckServlet
 {
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+
     /**
      * Richiesta che riceve il nuovo ruolo dell'utente selezionato
      * e un token per verificare che l'utente che ha generato la richiesta abbia i permessi
@@ -30,7 +35,7 @@ public class ModificaPermessi extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         JSONObject obj=new JSONObject();
         if(contieneParametro(request,"idUtente") && contieneParametro(request,"Token") && contieneParametro(request,"idUtenteCambio")
@@ -42,7 +47,7 @@ public class ModificaPermessi extends CheckServlet
                 String tokenAuth=request.getParameter("Token");
                 int idUtenteCambio=Integer.parseInt(request.getParameter("idUtenteCambio"));
                 int newRuolo=Integer.parseInt(request.getParameter("idRuolo"));
-                UtenteService userService=new UtenteService();
+                UtenteService userService=getUtenteService();
                 Utente user=userService.doLogin(idUtente,tokenAuth);
                 if(user.getRuolo()==1)
                 {

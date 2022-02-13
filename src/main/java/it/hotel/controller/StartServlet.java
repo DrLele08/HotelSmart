@@ -13,7 +13,7 @@ import java.util.Optional;
 public class StartServlet extends CheckServlet
 {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         RequestDispatcher requestDispatcher=request.getRequestDispatcher("WEB-INF/views/index.jsp");
         Optional<Utente> us=getUtente(request);

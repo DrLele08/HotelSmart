@@ -223,7 +223,6 @@ public class PrenotazioneStanzaService {
      * Informa se la prenotazione stanza specificata è rimborsabile.
      * @param idPrenotazione Identificativo della prenotazione stanza
      * @return Rimborsabilità della prenotazione
-     * @throws SQLException Errore nella comunicazione con il database
      */
     public boolean isRimborsabile(int idPrenotazione) throws SQLException {
         boolean rimborsabile;

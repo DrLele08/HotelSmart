@@ -1,3 +1,5 @@
+package controller.api;
+
 import it.hotel.controller.api.CheckPrenoSospesa;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.UtenteService;

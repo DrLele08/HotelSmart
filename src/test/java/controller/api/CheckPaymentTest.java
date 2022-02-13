@@ -1,3 +1,5 @@
+package controller.api;
+
 import com.stripe.model.PaymentIntent;
 import it.hotel.controller.api.CheckPayment;
 import it.hotel.controller.services.PrenotazioneStanzaService;
@@ -6,6 +8,7 @@ import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 import it.hotel.model.utente.Utente;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

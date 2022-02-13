@@ -24,6 +24,14 @@ import java.util.Optional;
 public class ModificaAnagrafica extends CheckServlet
 {
     /**
+     * Ritorna utente service
+     * @see UtenteService
+     */
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+    /**
      * Richiesta che riceve tutti i dati dell'utente incluso il suo token per
      * verificare che sia davvero lui
      * @param request Richiesta del cliente
@@ -32,23 +40,23 @@ public class ModificaAnagrafica extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         JSONObject obj=new JSONObject();
         if(contieneParametro(request,"textNome") && contieneParametro(request,"textCognome") && contieneParametro(request,"textCodiceFiscale")
                 && contieneParametro(request,"textDataNascita") && contieneParametro(request,"textEmail")
                         && contieneParametro(request,"textIdUtente") && contieneParametro(request,"textToken"))
         {
-            int idUtente=Integer.parseInt(request.getParameter("textIdUtente"));
-            String tokenAuth=request.getParameter("textToken");
-            String textNome=request.getParameter("textNome");
-            String textCognome=request.getParameter("textCognome");
-            String textCodiceFiscale=request.getParameter("textCodiceFiscale");
-            String textDataNascita=request.getParameter("textDataNascita");
-            String textEmail=request.getParameter("textEmail");
-            UtenteService service = new UtenteService();
             try
             {
+                int idUtente=Integer.parseInt(request.getParameter("textIdUtente"));
+                String tokenAuth=request.getParameter("textToken");
+                String textNome=request.getParameter("textNome");
+                String textCognome=request.getParameter("textCognome");
+                String textCodiceFiscale=request.getParameter("textCodiceFiscale");
+                String textDataNascita=request.getParameter("textDataNascita");
+                String textEmail=request.getParameter("textEmail");
+                UtenteService service = getUtenteService();
                 service.editAnagrafica(idUtente, tokenAuth, textNome, textCognome, textCodiceFiscale, textDataNascita, textEmail);
                 HttpSession session=request.getSession(true);
                 Utente ul = (Utente)session.getAttribute(Utility.SESSION_USER);

@@ -16,8 +16,12 @@ import java.util.Optional;
 @WebServlet(name = "StoricoServizi", value = "/StoricoServizi")
 public class StoricoServiziServlet extends CheckServlet
 {
+    public PrenotazioneServizioService getPrenotazioneServizioService()
+    {
+        return new PrenotazioneServizioService();
+    }
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         RequestDispatcher rd;
         Optional<Utente> us=getUtente(request);
@@ -27,7 +31,7 @@ public class StoricoServiziServlet extends CheckServlet
         }
         else
         {
-            PrenotazioneServizioService servizioService=new PrenotazioneServizioService();
+            PrenotazioneServizioService servizioService=getPrenotazioneServizioService();
             List<PrenotazioneServizio> prenotazioneServizio = servizioService.getAllByUser(us.get().getIdUtente());
             request.setAttribute("Servizi", prenotazioneServizio);
             request.setAttribute("Tipo",4);

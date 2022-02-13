@@ -1,5 +1,6 @@
 package it.hotel.controller.api;
 
+import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.controller.exception.PermissionDeniedException;
 import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
@@ -12,26 +13,44 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @WebServlet(name = "ModificaPwd", value = "/api/ModificaPwd")
-public class ModificaPwd extends HttpServlet
+public class ModificaPwd extends CheckServlet
 {
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        int idUtente=Integer.parseInt(request.getParameter("textIdUtente"));
-        String token=request.getParameter("textToken");
-        String oldPwd=request.getParameter("textOldPwd");
-        String newPwd=request.getParameter("textNewPwd");
-        String repeatPwd=request.getParameter("textRepeatPwd");
         JSONObject obj=new JSONObject();
-        if(newPwd.equals(repeatPwd))
+        if(contieneParametro(request,"textIdUtente") && contieneParametro(request,"textToken") && contieneParametro(request,"textOldPwd")
+                                && contieneParametro(request,"textNewPwd") && contieneParametro(request,"textRepeatPwd"))
         {
-            UtenteService service=new UtenteService();
             try
             {
-                service.editPassword(idUtente,token,oldPwd,newPwd);
-                obj.put("Ris",1);
-                obj.put("Mess","Fatto");
+                int idUtente=Integer.parseInt(request.getParameter("textIdUtente"));
+                String token=request.getParameter("textToken");
+                String oldPwd=request.getParameter("textOldPwd");
+                String newPwd=request.getParameter("textNewPwd");
+                String repeatPwd=request.getParameter("textRepeatPwd");
+                if(newPwd.equals(repeatPwd))
+                {
+                    UtenteService service=getUtenteService();
+                    service.editPassword(idUtente,token,oldPwd,newPwd);
+                    obj.put("Ris",1);
+                    obj.put("Mess","Fatto");
+                }
+                else
+                {
+                    obj.put("Ris",0);
+                    obj.put("Mess","Le password non coincidono");
+                }
+            }
+            catch(NumberFormatException e)
+            {
+                obj.put("Ris",0);
+                obj.put("Mess","Inserisci tutti i parametri correttamente");
             }
             catch (PasswordNotValidException e)
             {
@@ -57,7 +76,7 @@ public class ModificaPwd extends HttpServlet
         else
         {
             obj.put("Ris",0);
-            obj.put("Mess","Le password non coincidono");
+            obj.put("Mess","Inserisci tutti i parametri");
         }
         response.getOutputStream().print(obj.toString());
     }
