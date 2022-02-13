@@ -198,7 +198,7 @@ public class StanzaDAO {
 
     }
 
-    private String getQuery(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
+    public String getQuery(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
                             Double costoNotteMinimo, Double costoNotteMassimo,
                             Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) {
 

@@ -261,6 +261,34 @@ public class StanzaDAOTest extends Mockito {
         dao.data("", null, new Date(0));
     }
 
+    @Test
+    public void testDoSearchFine() throws Exception {
+        doReturn(ps).when(conn).prepareStatement("SELECT * FROM Stanza s",
+                Statement.RETURN_GENERATED_KEYS);
+        doReturn("").when(dao).getQuery(null,null,null,null,null,null,null,null,null);
+        doReturn(rs).when(ps).executeQuery();
+        when(rs.next()).thenReturn(true).thenReturn(false);
+        dao.doSearch(conn, null, null,null,null,null,null,null,null,null);
+    }
 
+    @Test
+    public void testGetQuery1() {
+        dao.getQuery(null,null,null,null,null,null,null,null,null);
+    }
+
+    @Test
+    public void testGetQuery2() {
+        dao.getQuery(true,true,null,null,null,null,null,new Date(0),new Date(0));
+    }
+
+    @Test
+    public void testGetQuery3() {
+        dao.getQuery(true,true,null,null,null,null,null,null,new Date(0));
+    }
+
+    @Test
+    public void testGetQuery4() {
+        dao.getQuery(true,true,null,null,null,null,null,new Date(0),null);
+    }
 
 }
