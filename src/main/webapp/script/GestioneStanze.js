@@ -2,9 +2,11 @@
 
 $(document).ready(function() {
     $('#GestioneStanzeTable').DataTable( {
+        //Rende la tabella in italiano
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
         },
+        //Rende la tabella responsive
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
@@ -14,12 +16,13 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
 } );
-
+//Inserisce nel modal i valori in campi hidden
 function createStanza(tokenUtente,idUtente) {
     $("#tokenUtente").val(tokenUtente);
     $("#idUtente").val(idUtente);
 }
-
+//Esegue la chiamata ajax e restituisce un oggetto json dove Ris=1 nel caso la creazione va a buon fine
+//0 se la creazione non va a buon fine
 function CreazioneStanza(){
     let tokenUtente = $("#tokenUtente").val();
     let idUtente = $("#idUtente").val();
@@ -68,7 +71,7 @@ function CreazioneStanza(){
 
 
 
-
+//Inserisce nel modal i valori in campi hidden e nei vari campi della modifiac
 function editStanza(lettiSingoli, lettiMatrimoniali, costoNotte, animaleDomestico, fumatore, sconto, tokenUtente, idUtente,idStanza) {
     $("#lettiSingoliEdit").val(lettiSingoli);
     $("#lettiMatrimonialiEdit").val(lettiMatrimoniali);
@@ -83,7 +86,8 @@ function editStanza(lettiSingoli, lettiMatrimoniali, costoNotte, animaleDomestic
     fumatore ? $("#checkFumatoreEdit").prop('checked', true) : $("#checkFumatoreEdit").prop('checked', false);
 
 }
-
+//Esegue la chiamata ajax e restituisce un oggetto json dove Ris=1 nel caso la Modifica va a buon fine
+//0 se la Modifica non va a buon fine
 function updateStanza(){
 
     let lettiSingoli = $("#lettiSingoliEdit").val();

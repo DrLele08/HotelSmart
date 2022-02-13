@@ -39,17 +39,17 @@
 
 <input type="hidden" name="idPreno" id="idPreno" value="<%=idPreno%>">
 
-<div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">
+<div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke; height: 75vh">
     <div class="container custom-container">
 
         <div id="success" style="display: none">
-            <h1 class="display-4 custom-elem">Grazie! La tua prenotazione è stata confermata.</h1><br><br>
-            <p>Controlla la tua email per il riepilogo informazioni o la tua area personale.</p><br>
+            <h1 class="display-4 custom-elem">Grazie! Il pagamento è andato a buon fine.</h1><br><br>
+            <p>Controlla la tua email per il riepilogo pagamento e la tua area personale per visualizzare la prenotazione effettuata.</p><br>
         </div>
 
         <div id="failure" style="display: none">
-            <h1 class="display-4 custom-elem">Siamo spiacenti, la tua prenotazione non è andata a buon fine.</h1><br><br>
-            <p>Controlla la tua email o area personale per sapere cosa è andato storto.</p><br>
+            <h1 class="display-4 custom-elem">Siamo spiacenti, il pagamento non è andato a buon fine.</h1><br><br>
+            <p>Puoi effettuare in qualsiasi momento il pagamento della prenotazione andando nella tua area personale nella sezione Gestione prenotazione</p><br>
         </div>
 
         <form action="${pageContext.request.contextPath}">

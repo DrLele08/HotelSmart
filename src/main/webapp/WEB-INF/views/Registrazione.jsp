@@ -25,6 +25,7 @@
                     <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                         <div class="card-body p-4 p-md-5">
                             <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registrazione</h3>
+                            <%--quando tutti campi rispettano le regex viene aggiunto al form la classe was-validated--%>
                             <form class = "needs-validation">
 
                                 <div class="row">
@@ -33,6 +34,7 @@
                                         <div class="form-outline">
                                             <label class="form-label" for="Nome">Nome</label>
                                             <input type="text" id="Nome" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
+                                            <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                                             <div class="invalid-feedback">
                                                 Inserisci un nome valido!
                                             </div>
@@ -44,6 +46,7 @@
                                         <div class="form-outline">
                                             <label class="form-label" for="Cognome">Cognome</label>
                                             <input type="text"id="Cognome" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
+                                            <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                                             <div class="invalid-feedback">
                                                 Inserisci un cognome valido!
                                             </div>
@@ -58,6 +61,7 @@
                                         <div class="form-outline">
                                             <label class="form-label" for="CodiceFiscale">Codice fiscale</label>
                                             <input type="text" id="CodiceFiscale" class="form-control form-control-lg" pattern="[A-z0-9]{16}$" required/>
+                                            <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                                             <div class="invalid-feedback">
                                                 Inserisci un codice fiscale valido!
                                             </div>
@@ -70,9 +74,10 @@
                                         <div class="form-outline w-100">
                                             <label for="DataNascita" class="form-label">Data di nascita</label>
                                             <input id="DataNascita" type="date" class="form-control form-control-lg" required/>
-                                            <div class="invalid-feedback">
-                                                Inserisci una Email valida!
-                                            </div>
+                                            <%--nell'onclick Registrazione() viene richiamata la funzione validateMaggiorenne()
+                                            che confronta se la data di nascita inserita è inferiore a 18 anni dalla data attuale
+                                            (vedere Registrazione.js)
+                                            --%>
                                         </div>
 
                                     </div>
@@ -85,6 +90,7 @@
                                         <div class="form-outline">
                                             <label class="form-label" for="IndirizzoEmail">Indirizzo Email</label>
                                             <input type="text" id="IndirizzoEmail" class="form-control form-control-lg" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" required />
+                                            <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                                             <div class="invalid-feedback">
                                                 Inserisci una Email valida!
                                             </div>
@@ -98,6 +104,7 @@
                                         <div class="form-outline">
                                             <label class="form-label" for="Password">Password</label>
                                             <input type="password" id="Password" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
+                                            <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                                             <div class="invalid-feedback">
                                                 La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
                                             </div>

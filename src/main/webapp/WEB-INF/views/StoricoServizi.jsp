@@ -49,6 +49,7 @@
                     Storico servizi
                 </h4>
             </div>
+        <!-- Table storico servizi -->
         <table id="StoricoPrenotazioniServiziTable" class="display" style="width:100%">
             <thead>
                 <tr>

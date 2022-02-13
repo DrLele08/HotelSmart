@@ -7,7 +7,9 @@ $(document).ready(function() {
     new initValidation();
     new initValidationPass();
 });
-
+//Esegue la chiamata ajax se l'utente è maggiorenne e se tutti i campi rispettano le regex
+//e restituisce un oggetto json dove Ris=1 nel caso la Modifica va a buon fine
+//0 se la Modifica non va a buon fine
 function ModificaAnagrafica()
 {
     var id = $("#idUtenteAna").val();
@@ -57,6 +59,10 @@ function ModificaAnagrafica()
         }
     }
 }
+//Esegue la chiamata ajax se il campo ripetiPassword è uguale a nuovaPassword
+// e se tutti i campi rispettano le regex
+//e restituisce un oggetto json dove Ris=1 nel caso la Modifica va a buon fine
+//0 se la Modifica non va a buon fine
 function ModificaPassword()
 {
     var vecchiaPassword = $("#VecchiaPassword").val();
@@ -106,6 +112,7 @@ function ModificaPassword()
         }
     }
 }
+//Aggiunge la classe was-validated alla form Anagrafica se tutti i campi rispettano le regex
 function initValidation() {
     this.form = $('#formAnagr');
     this.submit = $('#ButtonSub');
@@ -115,6 +122,7 @@ function initValidation() {
         $this.form.addClass('was-validated');
     });
 }
+//Aggiunge la classe was-validated alla form Password se tutti i campi rispettano le regex
 function initValidationPass() {
     this.form = $('#formPass');
     this.submit = $('#ButtonSubPass');
@@ -124,7 +132,7 @@ function initValidationPass() {
         $this.form.addClass('was-validated');
     });
 }
-
+//Esegue i vari confronti sulla data di nascita per vedere se l'utente è maggiorenne
 function validateMaggiorenne(){
     //document.getElementById("DataNascita").val();
     const dataNascita = $('#DataNascita').val();

@@ -36,7 +36,8 @@
                 Gestione servizi
             </h4>
         </div>
-        <%if(ut.getRuolo()==1){%>
+        <%//Se è un amministratore può creare un nuovo servizio utilizzando il button
+            if(ut.getRuolo()==1){%>
             <button type="button" id="buttonCreazione" class="btn btn-success" data-toggle="modal" onclick='createServizi("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-target="#modalCreazioneServizio">Nuovo servizio</button>
         <%}%>
         <!-- Table gestione servizi -->
@@ -61,7 +62,8 @@
                 <td><%=s.getNome()%></td>
                 <td><%=s.getCosto()%></td>
                 <td><%=s.getLimitePosti()%></td>
-                <%if(ut.getRuolo()==1){%>
+                <%//Se è un amministratore può modificare un servizio utilizzando l'icon
+                    if(ut.getRuolo()==1){%>
                 <td>
                     <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit icon-hover" data-toggle="modal" data-target="#modalEditServizio" onclick='editServizio("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getIdServizio()%>,"<%=s.getNome()%>", <%=s.getCosto()%>, <%=s.getLimitePosti()%>,"<%=s.getDescrizione()%>")'></a></span>
                 </td>

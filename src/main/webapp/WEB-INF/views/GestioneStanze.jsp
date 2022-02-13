@@ -40,7 +40,8 @@
                 Gestione stanze
             </h4>
         </div>
-        <%if(ut.getRuolo()==1){%>
+        <%//Se è un amministratore può creare una stanza utilizzando il button
+            if(ut.getRuolo()==1){%>
             <button type="button" id="buttonCreazione" class="btn btn-success" onclick='createStanza("<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>)' data-toggle="modal"  data-target="#modalCreazioneStanza">Nuova stanza</button>
         <%}%>
         <!-- Table gestione stanza -->
@@ -80,7 +81,8 @@
                         <i class="bi bi-x-square">  <%}%>
                 </td>
                 <td><%=s.getSconto()%></td>
-                <%if(ut.getRuolo()==1){%>
+                <%//Se è un amministratore può modificare una stanza utilizzando l'icon
+                    if(ut.getRuolo()==1){%>
                 <td>
                     <span data-toggle="tooltip" title="Modifica"><a class="fas fa-edit icon-hover" data-toggle="modal" data-target="#modalEditStanza" onclick='editStanza(<%=s.getLettiSingoli()%>, <%=s.getLettiMatrimoniali()%>, <%=s.getCostoNotte()%>, <%=s.getAnimaleDomestico()%>, <%=s.getFumatore()%>, <%=s.getSconto()%>, "<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getIdStanza()%>)'></a></span>
                 </td>

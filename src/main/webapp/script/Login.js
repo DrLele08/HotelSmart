@@ -6,7 +6,9 @@ $(document).ready(function() {
     }
     new initValidation();
 });
-
+//Esegue la chiamata ajax se tutti i campi rispettano le regex
+//e restituisce un oggetto json dove Ris=1 nel caso il login va a buon fine
+//0 se il login non va a buon fine
 function Login()
 {
     var username = $("#username").val();
@@ -44,7 +46,7 @@ function Login()
     }
 }
 
-// Example starter JavaScript for disabling form submissions if there are invalid fields
+//Aggiunge la classe was-validated alla form se tutti i campi rispettano le regex
 function initValidation() {
     this.form = $('form');
     this.submit = $('button.btn-primary');

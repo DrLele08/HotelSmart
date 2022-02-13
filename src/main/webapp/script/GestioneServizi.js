@@ -2,9 +2,11 @@
 
 $(document).ready(function() {
     $('#GestioneServiziTable').DataTable( {
+        //Rende la tabella in italiano
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
         },
+        //Rende la tabella responsive
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
@@ -14,12 +16,12 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
 } );
-
+//Inserisce nel modal i valori in campi hidden
 function createServizi(tokenUtente,idUtente) {
     $("#tokenUtente").val(tokenUtente);
     $("#idUtente").val(idUtente);
 }
-
+//Inserisce nel modal i valori in campi hidden e nei vari campi di modifica
 function editServizio(tokenUtente,idUtente , idServizio, nome, costo, limitePosti,descrizione){
     $("#tokenUtenteEdit").val(tokenUtente);
     $("#idUtenteEdit").val(idUtente);
@@ -29,7 +31,8 @@ function editServizio(tokenUtente,idUtente , idServizio, nome, costo, limitePost
     $("#limitePostiEdit").val(limitePosti);
     $("#descrizioneEdit").val(descrizione);
 }
-
+//Esegue la chiamata ajax e restituisce un oggetto json dove Ris=1 nel caso la creazione va a buon fine
+//0 se la creazione non va a buon fine
 function creazioneServizio(){
     let tokenUtente = $("#tokenUtente").val();
     let idUtente = $("#idUtente").val();
@@ -87,7 +90,8 @@ function creazioneServizio(){
     }
 }
 
-
+//Esegue la chiamata ajax e restituisce un oggetto json dove Ris=1 nel caso la Modifica va a buon fine
+//0 se la Modifica non va a buon fine
 function updateServizio(){
     let tokenUtente = $("#tokenUtenteEdit").val();
     let idUtente = $("#idUtenteEdit").val();
