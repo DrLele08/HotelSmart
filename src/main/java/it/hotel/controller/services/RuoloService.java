@@ -44,7 +44,9 @@ public class RuoloService {
     public List<Ruolo> getAll() {
         RuoloDAO dao=createDAO();
         List<Ruolo> ruoli;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             ruoli = dao.doGetAll(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -61,7 +63,9 @@ public class RuoloService {
         RuoloDAO dao=createDAO();
         Ruolo ruolo;
         String ruoloStr;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             ruolo = dao.doSelectById(con, idRuolo);
             ruoloStr = ruolo.getRuolo();
         } catch (SQLException | RuoloNotFoundException e) {
@@ -78,7 +82,9 @@ public class RuoloService {
     public int getByRuolo(String ruolo) {
         RuoloDAO dao=createDAO();
         int idRuolo;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             idRuolo = dao.doSelectByRuolo(con, ruolo).getIdRuolo();
         } catch (SQLException | RuoloNotFoundException e) {
             throw new RuntimeException();

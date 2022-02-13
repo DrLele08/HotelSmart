@@ -46,7 +46,9 @@ public class StatoService
     {
         StatoDAO dao=createDAO();
         List<Stato> stati;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             stati = dao.doGetAll(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -63,7 +65,9 @@ public class StatoService
     {
         StatoDAO dao = createDAO();
         String statoStr;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             Stato stato = dao.doSelectById(con, idStato);
             statoStr = stato.getStato();
         } catch (SQLException | StatoNotFoundException e) {

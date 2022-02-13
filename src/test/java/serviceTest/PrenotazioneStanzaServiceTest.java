@@ -299,6 +299,60 @@ public class PrenotazioneStanzaServiceTest extends Mockito {
     }
 
     @Test
+    public void testInserisciPrenotazionePrenotazioneStanzaInsertException4() throws Exception {
+        doReturn(statoDAO).when(service).createStatoDAO();
+        doReturn(prenotazioneStanzaDAO).when(service).createPrenotazioneStanzaDAO();
+        doReturn(personaAggiuntivaDAO).when(service).createPersonaAggiuntivaDAO();
+        doReturn(personaPrenotazioneDAO).when(service).createPersonaPrenotazioneDAO();
+        doReturn(stanzaDAO).when(service).createStanzaDAO();
+        doReturn(conn).when(service).getConnection();
+        doReturn(new Stanza(
+                1, true, true, 2,0,10.0,1.0)
+        ).when(stanzaDAO).doSelectById(conn, 1);
+        GregorianCalendar in = new GregorianCalendar(2000,0,1);
+        GregorianCalendar fi = new GregorianCalendar(2000,0,2);
+        Date inizio = new Date(in.getTimeInMillis());
+        Date fine = new Date(fi.getTimeInMillis());
+        doReturn(true).when(stanzaDAO).isDisponibile(conn, 1,inizio, fine);
+        doReturn(new PrenotazioneStanza(1,1,1,1,inizio,fine,10.0,"token","token","commenti", -1)).when(prenotazioneStanzaDAO).doSelectById(conn, 1);
+        doReturn(1).when(prenotazioneStanzaDAO).doInsert(conn, 1, 1, 1,inizio, fine, 10.0, 1.0);
+        List<PersonaAggiuntiva> lista = new ArrayList<>();
+        PersonaAggiuntiva persona = new PersonaAggiuntiva("asdfghjklasdfghj", "", "cognome", "2000-01-01");
+        doReturn(persona).when(personaAggiuntivaDAO).doInsert(conn, 1, "asdfghjklasdfghj", "nome", "cognome", inizio);
+        doNothing().when(personaPrenotazioneDAO).doInsert(conn, 1,1);
+        lista.add(persona);
+        Assert.assertThrows(PrenotazioneStanzaInsertException.class,()->
+                service.inserisciPrenotazione(1,1,"2000-01-01", "2000-01-02", lista));
+    }
+
+    @Test
+    public void testInserisciPrenotazionePrenotazioneStanzaInsertException5() throws Exception {
+        doReturn(statoDAO).when(service).createStatoDAO();
+        doReturn(prenotazioneStanzaDAO).when(service).createPrenotazioneStanzaDAO();
+        doReturn(personaAggiuntivaDAO).when(service).createPersonaAggiuntivaDAO();
+        doReturn(personaPrenotazioneDAO).when(service).createPersonaPrenotazioneDAO();
+        doReturn(stanzaDAO).when(service).createStanzaDAO();
+        doReturn(conn).when(service).getConnection();
+        doReturn(new Stanza(
+                1, true, true, 2,0,10.0,1.0)
+        ).when(stanzaDAO).doSelectById(conn, 1);
+        GregorianCalendar in = new GregorianCalendar(2000,0,1);
+        GregorianCalendar fi = new GregorianCalendar(2000,0,2);
+        Date inizio = new Date(in.getTimeInMillis());
+        Date fine = new Date(fi.getTimeInMillis());
+        doReturn(true).when(stanzaDAO).isDisponibile(conn, 1,inizio, fine);
+        doReturn(new PrenotazioneStanza(1,1,1,1,inizio,fine,10.0,"token","token","commenti", -1)).when(prenotazioneStanzaDAO).doSelectById(conn, 1);
+        doReturn(1).when(prenotazioneStanzaDAO).doInsert(conn, 1, 1, 1,inizio, fine, 10.0, 1.0);
+        List<PersonaAggiuntiva> lista = new ArrayList<>();
+        PersonaAggiuntiva persona = new PersonaAggiuntiva("asdfghjklasdfghj", "nome", "", "2000-01-01");
+        doReturn(persona).when(personaAggiuntivaDAO).doInsert(conn, 1, "asdfghjklasdfghj", "nome", "cognome", inizio);
+        doNothing().when(personaPrenotazioneDAO).doInsert(conn, 1,1);
+        lista.add(persona);
+        Assert.assertThrows(PrenotazioneStanzaInsertException.class,()->
+                service.inserisciPrenotazione(1,1,"2000-01-01", "2000-01-02", lista));
+    }
+
+    @Test
     public void testInserisciPrenotazionePagamentoInAttesaException() throws Exception {
         doReturn(statoDAO).when(service).createStatoDAO();
         doReturn(prenotazioneStanzaDAO).when(service).createPrenotazioneStanzaDAO();

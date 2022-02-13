@@ -163,7 +163,9 @@ public class PrenotazioneStanzaService {
      */
     public List<PrenotazioneStanza> selectBy(int value, int type) {
         List<PrenotazioneStanza> prenotazioni;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioni = prenotazioneStanzaDAO.doSelectBy(con, value, type);
         } catch (SQLException e) {
@@ -178,7 +180,9 @@ public class PrenotazioneStanzaService {
      */
     public List<PrenotazioneStanza> getAll() {
         List<PrenotazioneStanza> prenotazioni;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioni = prenotazioneStanzaDAO.doGetAll(con);
         } catch (SQLException e) {
@@ -194,7 +198,9 @@ public class PrenotazioneStanzaService {
      * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza non è stata trovata
      */
     public void editStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioneStanzaDAO.doChangeStato(con, idPrenotazioneStanza, stato);
         } catch (SQLException e) {
@@ -210,7 +216,9 @@ public class PrenotazioneStanzaService {
      */
     public PrenotazioneStanza getPrenotazioneById(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
         PrenotazioneStanza prenotazione;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazione = prenotazioneStanzaDAO.doSelectById(con, idPrenotazione);
         } catch (SQLException e) {
@@ -259,7 +267,9 @@ public class PrenotazioneStanzaService {
      * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza specificata non è stata trovata
      */
     public void addTokenStripe(int idPrenotazione, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();
             prenotazioneStanzaDAO.insertTokenStripe(con, idPrenotazione, tokenStripe);
         } catch (SQLException e) {
@@ -280,7 +290,9 @@ public class PrenotazioneStanzaService {
         StringBuilder sb = new StringBuilder(len);
         boolean duplicate;
         do {
-            try (Connection con = getConnection()) {
+            Connection con;
+            try {
+                con = getConnection();
                 for (int i = 0; i < len; i++)
                     sb.append(AB.charAt(rnd.nextInt(AB.length())));
                 PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();

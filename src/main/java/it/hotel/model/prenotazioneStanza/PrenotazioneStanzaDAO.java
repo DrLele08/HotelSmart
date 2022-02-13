@@ -153,6 +153,7 @@ public class PrenotazioneStanzaDAO {
             case STATO:
                 str = "SELECT * FROM PrenotazioneStanza WHERE ksStato=?";
                 break;
+            default: return prenotazioniStanza;
         }
         PreparedStatement ps = con.prepareStatement
                 (str, Statement.RETURN_GENERATED_KEYS);

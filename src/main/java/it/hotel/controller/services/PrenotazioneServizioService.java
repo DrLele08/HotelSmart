@@ -3,7 +3,6 @@ package it.hotel.controller.services;
 import it.hotel.Utility.Connect;
 import it.hotel.model.prenotazioneServizio.PrenotazioneServizio;
 import it.hotel.model.prenotazioneServizio.PrenotazioneServizioDAO;
-import it.hotel.model.ruolo.RuoloDAO;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -46,7 +45,9 @@ public class PrenotazioneServizioService {
      * @param dataPrenotazioneServizio Data della prenotazione del servizio
      */
     public void createPrenotazione(int ksPrenotazioneStanza, int ksServizio, int numPersone, Date dataPrenotazioneServizio) {
-        try (Connection con = getConnection()){
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneServizioDAO dao = createDAO();
             dao.doInsert(con,ksPrenotazioneStanza,ksServizio,numPersone,dataPrenotazioneServizio);
         } catch (SQLException e) {
@@ -61,7 +62,9 @@ public class PrenotazioneServizioService {
      */
     public List<PrenotazioneServizio> getAllByUser(int idUtente) {
         List<PrenotazioneServizio> prenotazioni;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneServizioDAO dao = createDAO();
             prenotazioni = dao.doSelectByUser(con, idUtente);
         } catch (SQLException e) {
@@ -75,7 +78,9 @@ public class PrenotazioneServizioService {
      * @param idPrenotazione Identificativo della prenotazione
      */
     public void deletePrenotazioneById(int idPrenotazione) {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             PrenotazioneServizioDAO dao = createDAO();
             dao.doDelete(con, idPrenotazione);
         } catch (SQLException e) {

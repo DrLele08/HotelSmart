@@ -75,7 +75,14 @@ public class UtenteServiceTest extends Mockito {
     public void testDoLoginEmailIllegalArgumentException() throws Exception {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
-        Assert.assertThrows(IllegalArgumentException.class, ()-> service.doLogin("", ""));
+        Assert.assertThrows(IllegalArgumentException.class, ()-> service.doLogin("", "password"));
+    }
+
+    @Test
+    public void testDoLoginEmailIllegalArgumentException2() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()-> service.doLogin("email", ""));
     }
 
     @Test
@@ -109,6 +116,37 @@ public class UtenteServiceTest extends Mockito {
         doReturn(conn).when(service).getConnection();
         Assert.assertThrows(IllegalArgumentException.class,()->
                 service.doRegistrazione("cf", "nome", "cognome", "email", new Date(0), "password"));
+    }
+    @Test
+    public void testDoRegistrazioneIllegalArgumentException2() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class,()->
+                service.doRegistrazione("asdfghjklasdfghj", "", "cognome", "email", new Date(0), "password"));
+    }
+
+    @Test
+    public void testDoRegistrazioneIllegalArgumentException3() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class,()->
+                service.doRegistrazione("asdfghjklasdfghj", "nome", "", "email", new Date(0), "password"));
+    }
+
+    @Test
+    public void testDoRegistrazioneIllegalArgumentException4() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class,()->
+                service.doRegistrazione("asdfghjklasdfghj", "nome", "cognome", "", new Date(0), "password"));
+    }
+
+    @Test
+    public void testDoRegistrazioneIllegalArgumentException5() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class,()->
+                service.doRegistrazione("asdfghjklasdfghj", "nome", "cognome", "email", new Date(0), ""));
     }
 
     @Test
@@ -173,6 +211,30 @@ public class UtenteServiceTest extends Mockito {
     }
 
     @Test
+    public void testEditPasswordIllegalArgumentException2() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()->
+                service.editPassword(1, "", "password", "newPassword"));
+    }
+
+    @Test
+    public void testEditPasswordIllegalArgumentException3() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()->
+                service.editPassword(1, "token", "", "newPassword"));
+    }
+
+    @Test
+    public void testEditPasswordIllegalArgumentException4() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()->
+                service.editPassword(1, "token", "password", ""));
+    }
+
+    @Test
     public void testEditPasswordRuntimeException() throws Exception {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
@@ -208,7 +270,39 @@ public class UtenteServiceTest extends Mockito {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
         Assert.assertThrows(IllegalArgumentException.class, ()->
-                service.editAnagrafica(1, "token", "nome", "cognome", "cf", "data", "email"));
+                service.editAnagrafica(1, "", "nome", "cognome", "asdfghjklasdfghj", "data", "email"));
+    }
+
+    @Test
+    public void testEditAnagraficaIllegalArgumentException2() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()->
+                service.editAnagrafica(1, "token", "", "cognome", "asdfghjklasdfghj", "data", "email"));
+    }
+
+    @Test
+    public void testEditAnagraficaIllegalArgumentException3() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()->
+                service.editAnagrafica(1, "token", "nome", "", "asdfghjklasdfghj", "data", "email"));
+    }
+
+    @Test
+    public void testEditAnagraficaIllegalArgumentException4() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()->
+                service.editAnagrafica(1, "token", "nome", "cognome", "", "data", "email"));
+    }
+
+    @Test
+    public void testEditAnagraficaIllegalArgumentException5() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        Assert.assertThrows(IllegalArgumentException.class, ()->
+                service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj", "data", ""));
     }
 
     @Test
@@ -225,9 +319,40 @@ public class UtenteServiceTest extends Mockito {
         doReturn(dao).when(service).createDAO();
         doReturn(conn).when(service).getConnection();
         when(dao.isEmailInDatabase(conn, "email")).thenReturn(true);
+        when(dao.isEmailOld(conn, 1,"email")).thenReturn(false);
         Assert.assertThrows(EmailAlreadyExistingException.class, ()->
                 service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
                         "2000-01-01", "email"));
+    }
+
+    @Test
+    public void testEditAnagraficaEmailAlreadyExistingException2() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        when(dao.isEmailInDatabase(conn, "email")).thenReturn(false);
+        when(dao.isEmailOld(conn, 1,"email")).thenReturn(true);
+        service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
+                        "2000-01-01", "email");
+    }
+
+    @Test
+    public void testEditAnagraficaEmailAlreadyExistingException3() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        when(dao.isEmailInDatabase(conn, "email")).thenReturn(true);
+        when(dao.isEmailOld(conn, 1,"email")).thenReturn(true);
+        service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
+                        "2000-01-01", "email");
+    }
+
+    @Test
+    public void testEditAnagraficaEmailAlreadyExistingException4() throws Exception {
+        doReturn(dao).when(service).createDAO();
+        doReturn(conn).when(service).getConnection();
+        when(dao.isEmailInDatabase(conn, "email")).thenReturn(false);
+        when(dao.isEmailOld(conn, 1,"email")).thenReturn(false);
+        service.editAnagrafica(1, "token", "nome", "cognome", "asdfghjklasdfghj",
+                        "2000-01-01", "email");
     }
 
     @Test

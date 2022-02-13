@@ -5,12 +5,10 @@ import it.hotel.Utility.Connect;
 import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.StanzaDAO;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
-import it.hotel.model.stato.StatoDAO;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +47,9 @@ public class StanzaService
     public List<Stanza> getStanze() {
         StanzaDAO dao = createDAO();
         List<Stanza> stanze;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             stanze = dao.getStanze(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -64,7 +64,9 @@ public class StanzaService
     public List<Stanza> getOfferte() {
         StanzaDAO dao = createDAO();
         List<Stanza> stanze;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             stanze = dao.getOfferte(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -79,7 +81,9 @@ public class StanzaService
     public List<Double> get_Min_And_Max_Prices() {
         StanzaDAO dao = createDAO();
         List<Double> prezzi;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             prezzi = dao.doSelect_Min_And_Max_Prices(con);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -104,7 +108,9 @@ public class StanzaService
                                Double scontoMinimo, Double scontoMassimo, java.sql.Date dataIn, Date dataOut) {
         StanzaDAO dao = createDAO();
         List<Stanza> stanze;
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             stanze = dao.doSearch(con, animaleDomestico, fumatore, numeroOspiti,
                     costoNotteMinimo, costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
         } catch (SQLException e) {
@@ -123,7 +129,9 @@ public class StanzaService
     {
         StanzaDAO dao = createDAO();
         Stanza stanza;
-        try (Connection con= getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             stanza = dao.doSelectById(con, stanzaId);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -143,7 +151,9 @@ public class StanzaService
     public void insertStanza(boolean animale, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
                              double costoNotte, double sconto) {
         StanzaDAO dao = createDAO();
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             dao.doInsert(con, animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -162,7 +172,9 @@ public class StanzaService
     public void updateStanza(int idStanza, boolean animale, boolean fumatore, int lettiSingoli,
                              int lettiMatrimoniali, double costoNotte, double sconto) {
         StanzaDAO dao = createDAO();
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             dao.doUpdate(con, idStanza, animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);
         } catch (SQLException e) {
             throw new RuntimeException();

@@ -1,7 +1,6 @@
 package it.hotel.controller.services;
 
 import it.hotel.Utility.Connect;
-import it.hotel.model.ruolo.RuoloDAO;
 import it.hotel.model.servizio.Servizio;
 import it.hotel.model.servizio.ServizioDAO;
 
@@ -46,7 +45,9 @@ public class ServizioService {
      * @param limitePosti Posti disponibili
      */
     public void createServizio(String nome, String descrizione, String foto, double costo, int limitePosti) {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             ServizioDAO dao = createDAO();
             dao.doInsert(con, nome, descrizione, foto, costo, limitePosti);
         } catch (SQLException e) {
@@ -64,7 +65,9 @@ public class ServizioService {
      * @param limitePosti Posti disponibili
      */
     public void updateServizio(int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             ServizioDAO dao = createDAO();
             dao.doUpdate(con, idServizio, nome, descrizione, foto, costo, limitePosti);
         } catch (SQLException e) {
@@ -77,7 +80,9 @@ public class ServizioService {
      * @return Lista contenente i servizi trovati
      */
     public List<Servizio> getAll() {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             ServizioDAO dao = createDAO();
             return dao.getServizi(con);
         } catch (SQLException e) {
@@ -91,7 +96,9 @@ public class ServizioService {
      * @return Il servizio trovato.
      */
     public Servizio getById(int idServizio) {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             ServizioDAO dao = createDAO();
             return dao.doSelectById(con, idServizio);
         } catch (SQLException e) {

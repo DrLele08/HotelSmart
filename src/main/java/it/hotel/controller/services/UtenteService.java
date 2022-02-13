@@ -3,8 +3,6 @@ package it.hotel.controller.services;
 import it.hotel.Utility.Connect;
 import it.hotel.Utility.Utility;
 import it.hotel.controller.exception.PermissionDeniedException;
-import it.hotel.model.ruolo.Ruolo;
-import it.hotel.model.ruolo.RuoloDAO;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.UtenteDAO;
 import it.hotel.model.utente.utenteExceptions.*;
@@ -115,7 +113,9 @@ public class UtenteService
     public Utente doLogin(int idUtente,String tokenAuth) throws UtenteNotFoundException {
         if(!tokenAuth.trim().isEmpty())
         {
-            try (Connection con = getConnection()) {
+            Connection con;
+            try {
+                con = getConnection();
                 UtenteDAO dao = createDAO();
                 return dao.doAuthenticate(con, idUtente, tokenAuth);
             } catch (SQLException e) {
@@ -243,7 +243,7 @@ public class UtenteService
      */
     public void editAnagrafica(int idUtente, String tokenAuth, String nome, String cognome, String cf, String dataNascitaStr, String email)
             throws EmailAlreadyExistingException, ParseException, SQLException {
-        if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !dataNascitaStr.trim().isEmpty() && !email.trim().isEmpty())
+        if(cf.length()==16 && !nome.trim().isEmpty() && !cognome.trim().isEmpty() && !tokenAuth.trim().isEmpty() && !email.trim().isEmpty())
         {
             Connection con = null;
             try {
@@ -274,7 +274,9 @@ public class UtenteService
      * @throws UtenteNotFoundException L'utente cercato non è stato trovato
      */
     public Utente getUtenteByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             UtenteDAO dao = createDAO();
             return dao.doSelectByPrenotazioneStanza(con, idPrenotazione);
         } catch (SQLException e) {
@@ -287,7 +289,9 @@ public class UtenteService
      * @return Lista contenente gli utenti trovati
      */
     public List<Utente> getAll() {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             UtenteDAO dao = createDAO();
             return dao.getUtenti(con);
         } catch (SQLException e) {
@@ -301,7 +305,9 @@ public class UtenteService
      * @param ruolo Ruolo da inserire
      */
     public void editRuoloById(int idUtente, int ruolo) {
-        try (Connection con = getConnection()) {
+        Connection con;
+        try {
+            con = getConnection();
             UtenteDAO dao = createDAO();
             dao.doChangeRuolo(con, idUtente, ruolo);
         } catch (SQLException e) {
