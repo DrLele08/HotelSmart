@@ -31,12 +31,14 @@
                     Dettagli anagrafica utente
                 </h4>
             </div>
+        <%--quando tutti campi rispettano le regex viene aggiunto al form la classe was-validated--%>
         <form id="formAnagr" class = "needs-validation">
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="form-outline">
                         <label class="form-label" for="Nome">Nome</label>
                         <input type="text" id="Nome" value="<%=ut.getNome()%>" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             Inserisci un nome valido!
                         </div>
@@ -46,6 +48,7 @@
                     <div class="form-outline">
                         <label class="form-label" for="Cognome">Cognome</label>
                         <input type="text"id="Cognome" value="<%=ut.getCognome()%>" class="form-control form-control-lg" pattern="[A-z'-( *)]{2,30}$" required/>
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             Inserisci un cognome valido!
                         </div>
@@ -57,6 +60,7 @@
                     <div class="form-outline">
                         <label class="form-label" for="CodiceFiscale">Codice fiscale</label>
                         <input type="text" id="CodiceFiscale" value="<%=ut.getCf()%>" class="form-control form-control-lg" pattern="[A-z 0-9]{16}$" required/>
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             Inserisci un codice fiscale valido!
                         </div>
@@ -66,6 +70,10 @@
                     <div class="form-outline w-100">
                         <label for="DataNascita" class="form-label">Data di nascita</label>
                         <input id="DataNascita"  type="date" class="form-control form-control-lg" value="<%=ut.getDataNascita()%>" required/>
+                        <%--nell'onclick ModificaAnagrafica() viene richiamata la funzione validateMaggiorenne()
+                        che confronta se la data di nascita inserita è inferiore a 18 anni dalla data attuale
+                        (vedere ModificaAnagrafica.js)
+                        --%>
                     </div>
                 </div>
             </div>
@@ -74,6 +82,7 @@
                     <div class="form-outline">
                         <label class="form-label" for="IndirizzoEmail">Indirizzo Email</label>
                         <input type="text" id="IndirizzoEmail" value="<%=ut.getEmail()%>" class="form-control form-control-lg" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             Inserisci una Email valida!
                         </div>
@@ -88,6 +97,7 @@
                 </div>
             </div>
          </form>
+        <%--quando tutti campi rispettano le regex viene aggiunto al form la classe was-validated--%>
         <form id="formPass" class = "needs-validation">
         <div class="profile-head">
             <h4>
@@ -100,6 +110,7 @@
                     <div class="form-outline">
                         <label class="form-label" for="VecchiaPassword">Vecchia Password</label>
                         <input type="password" id="VecchiaPassword" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
                         </div>
@@ -113,6 +124,7 @@
                     <div class="form-outline">
                         <label class="form-label" for="NuovaPassword">Nuova Password</label>
                         <input type="password" id="NuovaPassword" class="form-control form-control-lg" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required  />
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             La password deve contenere almeno una lettera maiuscola,una minuscola, un numero e un carattere speciale e deve essere da 8 a 20 caratteri
                         </div>

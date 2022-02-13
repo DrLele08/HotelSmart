@@ -42,10 +42,13 @@
                 Gestione prenotazioni
             </h4>
         </div>
+        <%-- creazione della tabella delle prenotazioni stanze--%>
         <table id="StoricoPrenotazioniTable" class="display" style="width:100%">
             <thead>
             <tr>
                 <th>Numero stanza</th>
+                <%-- Se è l'amministratore visualizza il nome e cognome dell'utente
+                     che ha effettuato la prenotazione--%>
                 <%if(ut.getRuolo()!=3){%>
                     <th>Nome</th>
                     <th>Cognome</th>
@@ -59,6 +62,7 @@
             </thead>
             <tbody>
             <%
+                //Prende i dati dalla request
                 List<PrenotazioneStanza> ps=(List<PrenotazioneStanza>) request.getAttribute("ListaPreno");
                 Optional<Utente> us = (Optional<Utente>) request.getAttribute("Utente");
                 UtenteService serviceUtente = new UtenteService();
@@ -78,7 +82,9 @@
                 <td><%=p.getPrezzoFinale()%></td>
                 <td><%=serviceStato.getById(p.getKsStato())%></td>
                 <td>
-
+                    <%-- Effettua il controllo sul ruolo dell'utente e sullo stato della prenotazione
+                         per inserire l'icon cliccabile
+                    --%>
                     <%
                         switch(p.getKsStato()){
                             case 1:

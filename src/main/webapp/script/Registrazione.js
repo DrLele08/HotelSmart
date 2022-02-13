@@ -6,6 +6,9 @@ $(document).ready(function() {
     }
     new initValidation();
 });
+//Esegue la chiamata ajax se l'utente è maggiorenne e se tutti i campi rispettano le regex
+//e restituisce un oggetto json dove Ris=1 nel caso la registrazione va a buon fine
+//0 se la registrazione non va a buon fine
 function Registrazione()
 {
     var nome = $("#Nome").val();
@@ -57,6 +60,7 @@ function Registrazione()
         }
     }
 }
+//Aggiunge la classe was-validated alla form se tutti i campi rispettano le regex
 function initValidation() {
     this.form = $('form');
     this.submit = $('#ButtonSub');
@@ -66,7 +70,7 @@ function initValidation() {
         $this.form.addClass('was-validated');
     });
 }
-
+//Esegue i vari confronti sulla data di nascita per vedere se l'utente è maggiorenne
 function validateMaggiorenne(){
     //document.getElementById("DataNascita").val();
     const dataNascita = $('#DataNascita').val();

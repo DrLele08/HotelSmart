@@ -24,6 +24,7 @@
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid image" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <%--quando tutti campi rispettano le regex viene aggiunto al form la classe was-validated--%>
                 <form class = "needs-validation" >
                     <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                         <p class="lead fw-normal mb-0 me-3">Accedi</p>
@@ -32,6 +33,7 @@
                     <div class="form-outline mb-4">
                         <label for="username">Indirizzo email</label>
                         <input type="text" class="form-control" id="username" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             Inserisci una Email valida!
                         </div>
@@ -39,12 +41,13 @@
                     <div class="form-outline mb-3">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}:;',?+\*~$^=<>]).{8,20}$" required>
+                        <%--se la regex non è rispettata viene visualizzata il messaggio dell'invalid-feedback--%>
                         <div class="invalid-feedback">
                             Inserisci una Password valida!
                         </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
-                        <!-- Checkbox -->
+                        <!-- Checkbox permette di salvare all'interno dei cookie l'utente che ha effettuato il login-->
                         <div class="form-check mb-0">
                             <input class="form-check-input me-2" type="checkbox" id="ricordami" />
                             <label class="form-check-label" for="ricordami">

@@ -35,6 +35,7 @@
                 Gestione utenti
             </h4>
         </div>
+        <!-- Table gestione utenti -->
         <table id="GestioneUtentiTable" class="display" style="width:100%">
             <thead>
             <tr>
@@ -63,6 +64,7 @@
                 <td><%=s.getEmail()%></td>
                 <td><%=serviceRuolo.getById(s.getRuolo())%></td>
                 <td>
+                    <%-- non c'è bisogno di effetuare il controllo sul ruolo perchè solo l'amministratore può accedere a questa pagina--%>
                     <%if(s.getIdUtente()!=ut.getIdUtente()){%><span data-toggle="tooltip" title="Modifica permessi"><a class="fas fa-edit icon-hover" id="iconModificaPermessi" onclick='iconModificaPermessi(<%=s.getIdUtente()%>,"<%=ut.getTokenAuth()%>",<%=ut.getIdUtente()%>,<%=s.getRuolo()%>)'  data-toggle="modal" data-target="#modalModificaPermessi"></a></span> <%}%>
                 </td>
 
