@@ -16,16 +16,16 @@ import java.text.ParseException;
 
 
 @WebServlet(name = "Registrazione", value = "/Registrazione")
-public class RegistrazioneServlet extends HttpServlet
+public class RegistrazioneServlet extends CheckServlet
 {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        if(Utility.isActive(Utility.CHECK_SIGNUP))
+        if(canOpen(Utility.CHECK_SIGNUP))
         {
             RequestDispatcher rd;
             HttpSession session = request.getSession(true);
-            Utente u = (Utente) session.getAttribute("utente");
+            Utente u = (Utente) session.getAttribute(Utility.SESSION_USER);
             if(u == null)
                 rd=request.getRequestDispatcher("/WEB-INF/views/Registrazione.jsp");
             else

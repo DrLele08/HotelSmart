@@ -16,6 +16,11 @@ import java.util.Optional;
  */
 public abstract class CheckServlet extends HttpServlet
 {
+    public boolean canOpen(String name)
+    {
+        return Utility.isActive(name);
+    }
+
     /**
      * Controlla se il parametro indicato è presente nella richiesta
      * @param request Richiesta del cliente
@@ -27,6 +32,11 @@ public abstract class CheckServlet extends HttpServlet
     public boolean contieneParametro(HttpServletRequest request,String nome)
     {
         return request.getParameterMap().containsKey(nome);
+    }
+
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
     }
     /**
      * Controlla se l'utente è presente in sessione o in cookie e lo restituisce
@@ -42,7 +52,7 @@ public abstract class CheckServlet extends HttpServlet
     {
         int idUtente=-1;
         String tokenAuth="";
-        HttpSession session=request.getSession();
+        HttpSession session=request.getSession(true);
         Utente us=(Utente)session.getAttribute(Utility.SESSION_USER);
         if(us!=null)
         {
@@ -70,7 +80,7 @@ public abstract class CheckServlet extends HttpServlet
         {
             try
             {
-                us=new UtenteService().doLogin(idUtente,tokenAuth);
+                us=getUtenteService().doLogin(idUtente,tokenAuth);
                 session.setAttribute(Utility.SESSION_USER,us);
                 return Optional.of(us);
             }

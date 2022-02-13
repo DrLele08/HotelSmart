@@ -20,6 +20,10 @@ import java.util.Optional;
 @WebServlet(name = "GestioneServizi", value = "/GestioneServizi")
 public class GestioneServiziServlet extends CheckServlet
 {
+    public ServizioService getServizioService()
+    {
+        return new ServizioService();
+    }
     /**
      * Richiede di visualizzare la pagina di gestione servizi
      * @param request Richiesta del cliente
@@ -28,7 +32,7 @@ public class GestioneServiziServlet extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         Optional<Utente> us=getUtente(request);
         if(!us.isPresent())
@@ -38,7 +42,7 @@ public class GestioneServiziServlet extends CheckServlet
         else
         {
             Utente user=us.get();
-            ServizioService service=new ServizioService();
+            ServizioService service=getServizioService();
             List<Servizio> listServizi;
             if(user.getRuolo()==3)
                 response.sendRedirect(request.getContextPath());

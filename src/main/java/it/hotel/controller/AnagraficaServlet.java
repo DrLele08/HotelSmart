@@ -26,7 +26,7 @@ public class AnagraficaServlet extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         Optional<Utente> us=getUtente(request);
         if(!us.isPresent())

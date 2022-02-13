@@ -6,8 +6,6 @@ import it.hotel.controller.services.UtenteService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 import it.hotel.model.utente.Utente;
-import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
-import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.json.JSONObject;
 
@@ -20,8 +18,17 @@ import java.sql.SQLException;
 @WebServlet(name = "ModificaStato", value = "/api/ModificaStato")
 public class ModificaStato extends CheckServlet
 {
+    public UtenteService getUtenteService()
+    {
+        return new UtenteService();
+    }
+
+    public PrenotazioneStanzaService getPrenotazioneStanzaService()
+    {
+        return new PrenotazioneStanzaService();
+    }
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         JSONObject obj=new JSONObject();
         if(contieneParametro(request,"idUtente") && contieneParametro(request,"Token")
@@ -33,9 +40,9 @@ public class ModificaStato extends CheckServlet
                 String tokenAuth=request.getParameter("Token");
                 int idPreno=Integer.parseInt(request.getParameter("idPreno"));
                 int newStato=Integer.parseInt(request.getParameter("Stato"));
-                UtenteService service=new UtenteService();
+                UtenteService service=getUtenteService();
                 Utente user=service.doLogin(idUtente,tokenAuth);
-                PrenotazioneStanzaService serviceStanza=new PrenotazioneStanzaService();
+                PrenotazioneStanzaService serviceStanza=getPrenotazioneStanzaService();
                 PrenotazioneStanza prenotazione=serviceStanza.getPrenotazioneById(idPreno);
                 if(user.getRuolo()==1 || user.getRuolo()==2)
                 {
@@ -77,7 +84,7 @@ public class ModificaStato extends CheckServlet
                     }
                 }
             }
-            catch(NumberFormatException | PrenotazioneStanzaNotFoundException e)
+            catch(NumberFormatException | PrenotazioneStanzaNotFoundException | SQLException e)
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Inserisci i parametri correttamente");
@@ -87,12 +94,6 @@ public class ModificaStato extends CheckServlet
             {
                 obj.put("Ris",0);
                 obj.put("Mess","Utente non valido");
-                response.getOutputStream().print(obj.toString());
-            }
-            catch (SQLException e)
-            {
-                obj.put("Ris",0);
-                obj.put("Mess","Errore db");
                 response.getOutputStream().print(obj.toString());
             }
         }

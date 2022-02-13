@@ -1,5 +1,7 @@
-import it.hotel.controller.api.CreateServizio;
-import it.hotel.controller.services.ServizioService;
+package controller.api;
+
+import it.hotel.controller.api.ModificaStato;
+import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
@@ -11,107 +13,104 @@ import org.mockito.Mockito;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
-public class CreateServizioTest extends Mockito
+public class ModificaStatoTest extends Mockito
 {
-    private CreateServizio controller;
+    private ModificaStato controller;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private JSONObject object;
+    private ServletOutputStream mockOutput;
+    private PrenotazioneStanzaService prenotazioneStanzaService;
     private UtenteService utenteService;
-    private Utente user;
-    private ServizioService servizioService;
+    private Utente utente;
+    private JSONObject object;
+
     @Before
     public void setUp()
     {
-        controller= Mockito.spy(new CreateServizio());
+        controller=spy(new ModificaStato());
         request=mock(HttpServletRequest.class);
         response=mock(HttpServletResponse.class);
+        mockOutput=mock(ServletOutputStream.class);
+        prenotazioneStanzaService=mock(PrenotazioneStanzaService.class);
         utenteService=mock(UtenteService.class);
-        user=mock(Utente.class);
-        servizioService=mock(ServizioService.class);
+        utente=mock(Utente.class);
         object=new JSONObject();
     }
 
     @Test
     public void testNonContieneParametri() throws Exception
     {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         when(response.getOutputStream()).thenReturn(mockOutput);
         controller.doPost(request,response);
         object.put("Ris",0);
-        object.put("Mess","Inserisci tutti i parametri");
+        object.put("Mess","Non hai inserito tutti i parametri");
         Mockito.verify(mockOutput).print(object.toString());
     }
 
     @Test
     public void testNonContieneUnParametro() throws Exception
     {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"Nome");
-        doReturn(true).when(controller).contieneParametro(request,"Descrizione");
-        doReturn(true).when(controller).contieneParametro(request,"Prezzo");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
         when(response.getOutputStream()).thenReturn(mockOutput);
         controller.doPost(request,response);
         object.put("Ris",0);
-        object.put("Mess","Inserisci tutti i parametri");
+        object.put("Mess","Non hai inserito tutti i parametri");
         Mockito.verify(mockOutput).print(object.toString());
     }
 
     @Test
-    public void testParametroNonIntero() throws Exception
+    public void testParametroNonNumerico() throws Exception
     {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"Nome");
-        doReturn(true).when(controller).contieneParametro(request,"Descrizione");
-        doReturn(true).when(controller).contieneParametro(request,"Prezzo");
-        doReturn(true).when(controller).contieneParametro(request,"Posti");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        doReturn(true).when(controller).contieneParametro(request,"Stato");
         when(request.getParameter("idUtente")).thenReturn("asd");
         when(response.getOutputStream()).thenReturn(mockOutput);
         controller.doPost(request,response);
         object.put("Ris",0);
-        object.put("Mess","Inserisci tutti i parametri correttamente");
+        object.put("Mess","Inserisci i parametri correttamente");
         Mockito.verify(mockOutput).print(object.toString());
     }
 
     @Test
-    public void testUtenteNotFound() throws Exception
+    public void testUtenteNonTrovato() throws Exception
     {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"Nome");
-        doReturn(true).when(controller).contieneParametro(request,"Descrizione");
-        doReturn(true).when(controller).contieneParametro(request,"Prezzo");
-        doReturn(true).when(controller).contieneParametro(request,"Posti");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        doReturn(true).when(controller).contieneParametro(request,"Stato");
         when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPreno")).thenReturn("1");
+        when(request.getParameter("Stato")).thenReturn("1");
         when(controller.getUtenteService()).thenReturn(utenteService);
+        when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
         when(utenteService.doLogin(anyInt(),anyString())).thenThrow(new UtenteNotFoundException());
         when(response.getOutputStream()).thenReturn(mockOutput);
         controller.doPost(request,response);
         object.put("Ris",0);
-        object.put("Mess","Utente inesistente");
+        object.put("Mess","Utente non valido");
         Mockito.verify(mockOutput).print(object.toString());
     }
 
     @Test
-    public void testUtenteSenzaPermessi() throws Exception
+    public void testPermessoNegato() throws Exception
     {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"Nome");
-        doReturn(true).when(controller).contieneParametro(request,"Descrizione");
-        doReturn(true).when(controller).contieneParametro(request,"Prezzo");
-        doReturn(true).when(controller).contieneParametro(request,"Posti");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        doReturn(true).when(controller).contieneParametro(request,"Stato");
         when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPreno")).thenReturn("1");
+        when(request.getParameter("Stato")).thenReturn("1");
         when(controller.getUtenteService()).thenReturn(utenteService);
-        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(user);
-        when(user.getRuolo()).thenReturn(0);
+        when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(3);
         when(response.getOutputStream()).thenReturn(mockOutput);
         controller.doPost(request,response);
         object.put("Ris",0);
@@ -120,22 +119,19 @@ public class CreateServizioTest extends Mockito
     }
 
     @Test
-    public void testUtenteConPermessi() throws Exception
+    public void testEsitoPositivo() throws Exception
     {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
         doReturn(true).when(controller).contieneParametro(request,"idUtente");
         doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"Nome");
-        doReturn(true).when(controller).contieneParametro(request,"Descrizione");
-        doReturn(true).when(controller).contieneParametro(request,"Prezzo");
-        doReturn(true).when(controller).contieneParametro(request,"Posti");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        doReturn(true).when(controller).contieneParametro(request,"Stato");
         when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPreno")).thenReturn("1");
+        when(request.getParameter("Stato")).thenReturn("1");
         when(controller.getUtenteService()).thenReturn(utenteService);
-        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(user);
-        when(user.getRuolo()).thenReturn(1);
-        when(request.getParameter("Prezzo")).thenReturn("1");
-        when(request.getParameter("Posti")).thenReturn("1");
-        when(controller.getServizioService()).thenReturn(servizioService);
+        when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(1);
         when(response.getOutputStream()).thenReturn(mockOutput);
         controller.doPost(request,response);
         object.put("Ris",1);
