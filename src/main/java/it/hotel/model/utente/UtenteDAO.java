@@ -125,21 +125,8 @@ public class UtenteDAO {
                         Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, idUtente);
         ps.setString(2, password);
-        return (ps.executeQuery()).next();
-    }
-
-    /**
-     * Elimina un oggetto Utente dal database.
-     * @param con Connessione al database
-     * @param idUtente L'identificativo dell'utente da eliminare
-     * @throws SQLException Errore nella comunicazione con il database
-     */
-    public void doDelete(Connection con, int idUtente) throws SQLException {
-        PreparedStatement ps = con.prepareStatement
-                ("DELETE FROM Utente WHERE idUtente=?",
-                        Statement.RETURN_GENERATED_KEYS);
-        ps.setInt(1, idUtente);
-        ps.executeUpdate();
+        ResultSet rs = ps.executeQuery();
+        return rs.next();
     }
 
     /**

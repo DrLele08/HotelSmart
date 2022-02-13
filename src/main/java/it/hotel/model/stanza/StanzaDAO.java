@@ -143,25 +143,6 @@ public class StanzaDAO {
     }
 
     /**
-     * Recupera le quantità maggiori di letti singoli e matrimoniali tra tutti gli oggetti Stanza presenti nel database.
-     * @param con Connessione al database
-     * @return Lista contenente le quantità maggiori di letti singoli e matrimoniali
-     * @throws SQLException Errore nella comunicazione con il database
-     */
-    public List<Integer> doSelect_S_And_M_Letti(Connection con) throws SQLException {
-        ArrayList<Integer> numLetti = new ArrayList<>();
-        PreparedStatement ps = con.prepareStatement
-                ("SELECT MAX(lettiSingoli), MAX(lettiMatrimoniali) FROM Stanza",
-                        Statement.RETURN_GENERATED_KEYS);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            numLetti.add(rs.getInt(1));
-            numLetti.add(rs.getInt(2));
-        }
-        return numLetti;
-    }
-
-    /**
      * Informa se l'oggetto Stanza specificato è disponibile per una prenotazione nell'intervallo di tempo richiesto.
      * @param con Connessione al database
      * @param ksStanza Identificativo della stanza
@@ -261,7 +242,7 @@ public class StanzaDAO {
         return query;
     }
 
-    private void animaleDomesticoStr(List<String> parametri, Boolean animaleDomestico) {
+    public void animaleDomesticoStr(List<String> parametri, Boolean animaleDomestico) {
         if (animaleDomestico != null) {
             if (animaleDomestico) {
                 parametri.add("animaleDomestico = TRUE");
@@ -271,7 +252,7 @@ public class StanzaDAO {
         }
     }
 
-    private void fumatoreStr(List<String> parametri, Boolean fumatore) {
+    public void fumatoreStr(List<String> parametri, Boolean fumatore) {
         if (fumatore != null) {
             if (fumatore) {
                 parametri.add("fumatore = TRUE");
@@ -281,13 +262,13 @@ public class StanzaDAO {
         }
     }
 
-    private void numeroOspitiStr(List<String> parametri, Integer numeroOspiti) {
+    public void numeroOspitiStr(List<String> parametri, Integer numeroOspiti) {
         if (numeroOspiti != null) {
             parametri.add("lettiMatrimoniali*2 + lettiSingoli = " + numeroOspiti);
         }
     }
 
-    private void costoNotteStr(List<String> parametri, Double costoNotteMinimo, Double costoNotteMassimo) {
+    public void costoNotteStr(List<String> parametri, Double costoNotteMinimo, Double costoNotteMassimo) {
         if ((costoNotteMinimo != null) && (costoNotteMassimo != null)) {
             parametri.add("costoNotte >= " + costoNotteMinimo + " AND " +
                     "costoNotte <= " + costoNotteMassimo);
@@ -298,7 +279,7 @@ public class StanzaDAO {
         }
     }
 
-    private void scontoStr(List<String> parametri, Double scontoMinimo, Double scontoMassimo) {
+    public void scontoStr(List<String> parametri, Double scontoMinimo, Double scontoMassimo) {
         if ((scontoMinimo != null) && (scontoMassimo != null)) {
             parametri.add("sconto >= " + scontoMinimo + " AND " +
                     "sconto <= " + scontoMassimo);
@@ -309,7 +290,7 @@ public class StanzaDAO {
         }
     }
 
-    private String data(String NOT_EXISTS_prenotazioneStanza, Date dataIn, Date dataOut) {
+    public String data(String NOT_EXISTS_prenotazioneStanza, Date dataIn, Date dataOut) {
         NOT_EXISTS_prenotazioneStanza += "(SELECT idPrenotazioneStanza FROM PrenotazioneStanza rs WHERE (";
         NOT_EXISTS_prenotazioneStanza += "rs.ksStanza = s.idStanza AND ";
         String inizio = "";

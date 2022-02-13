@@ -75,28 +75,6 @@ public class ServizioDAO {
     }
 
     /**
-     * Recupera gli oggetti Servizio trovati nel database secondo il valore specificato.
-     * @param con Connessione al database
-     * @param idUtente Identificativo dell'utente
-     * @return I servizi trovati nel database
-     * @throws SQLException Errore nella comunicazione con il database
-     */
-    public List<Servizio> doSelectByUserId(Connection con, int idUtente) throws SQLException {
-        ArrayList<Servizio> servizi = new ArrayList<>();
-        PreparedStatement ps = con.prepareStatement
-                ("SELECT s.* FROM Servizio as s, PrenotazioneServizio as pser, PrenotazioneStanza as psta WHERE " +
-                                "s.idServizio = pser.ksServizio AND pser.ksPrenotazioneStanza = psta.idPrenotazioneStanza " +
-                                "AND psta.ksUtente = ?",
-                        Statement.RETURN_GENERATED_KEYS);
-        ps.setInt(1, idUtente);
-        ResultSet rs = ps.executeQuery();
-        while(rs.next()) {
-            servizi.add(createServizio(rs));
-        }
-        return servizi;
-    }
-
-    /**
      * Recupera un servizio dato un id.
      * @param con Connessione al database
      * @param idServizio Identificativo del {@link Servizio}
