@@ -40,6 +40,7 @@ In questa sezione vengono elencati tutti i principali framework/librerie utilizz
 
 * [Java](https://www.java.com/it/)
 * [Stripe](https://stripe.com/it)
+* [Javascript](https://www.javascript.com/)
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
 * [JUnit5](https://junit.org)
