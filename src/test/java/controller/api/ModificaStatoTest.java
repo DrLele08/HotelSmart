@@ -435,4 +435,82 @@ public class ModificaStatoTest extends Mockito
         Mockito.verify(mockOutput).print(object.toString());
     }
 
+    @Test
+    public void testEsitoPositivo3() throws Exception
+    {
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        doReturn(true).when(controller).contieneParametro(request,"Stato");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPreno")).thenReturn("1");
+        when(request.getParameter("Token")).thenReturn("token");
+        when(request.getParameter("Stato")).thenReturn("6");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(1,"token")).thenReturn(new Utente(1,3,"asdfghjklasdfghj","nome","cognome",
+                "email", new Date(0), "token"));
+        when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
+        when(prenotazioneStanzaService.getPrenotazioneById(1)).thenReturn(new PrenotazioneStanza(
+                1,1,1,1,new Date(0), new Date(0),10.0,"tokenStripe",
+                "tokenQr", "commenti", -1));
+        when(prenotazioneStanzaService.isRimborsabile(1)).thenReturn(true);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",1);
+        object.put("Mess","Fatto");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testPermessoNegato4() throws Exception
+    {
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        doReturn(true).when(controller).contieneParametro(request,"Stato");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPreno")).thenReturn("1");
+        when(request.getParameter("Token")).thenReturn("token");
+        when(request.getParameter("Stato")).thenReturn("7");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(1,"token")).thenReturn(new Utente(1,3,"asdfghjklasdfghj","nome","cognome",
+                "email", new Date(0), "token"));
+        when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
+        when(prenotazioneStanzaService.getPrenotazioneById(1)).thenReturn(new PrenotazioneStanza(
+                1,1,1,1,new Date(0), new Date(0),10.0,"tokenStripe",
+                "tokenQr", "commenti", -1));
+        when(prenotazioneStanzaService.isRimborsabile(1)).thenReturn(true);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Non hai i permessi");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testPermessoNegato5() throws Exception
+    {
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        doReturn(true).when(controller).contieneParametro(request,"Stato");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPreno")).thenReturn("1");
+        when(request.getParameter("Token")).thenReturn("token");
+        when(request.getParameter("Stato")).thenReturn("6");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(1,"token")).thenReturn(new Utente(1,3,"asdfghjklasdfghj","nome","cognome",
+                "email", new Date(0), "token"));
+        when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
+        when(prenotazioneStanzaService.getPrenotazioneById(1)).thenReturn(new PrenotazioneStanza(
+                1,1,1,3,new Date(0), new Date(0),10.0,"tokenStripe",
+                "tokenQr", "commenti", -1));
+        when(prenotazioneStanzaService.isRimborsabile(1)).thenReturn(true);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Non hai i permessi");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
 }

@@ -160,4 +160,26 @@ public class ModificaAnagraficaTest extends Mockito
         Mockito.verify(mockOutput).print(object.toString());
     }
 
+    @Test
+    public void testParametroMancante() throws Exception {
+        boolean b[] = new boolean[7];
+        for (int i = 0; i < 7; i++) {
+            b[i]=false;
+            ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+            doReturn(b[0]).when(controller).contieneParametro(request, "textIdUtente");
+            doReturn(b[1]).when(controller).contieneParametro(request, "textToken");
+            doReturn(b[2]).when(controller).contieneParametro(request, "textNome");
+            doReturn(b[3]).when(controller).contieneParametro(request, "textCognome");
+            doReturn(b[4]).when(controller).contieneParametro(request, "textCodiceFiscale");
+            doReturn(b[5]).when(controller).contieneParametro(request, "textDataNascita");
+            doReturn(b[6]).when(controller).contieneParametro(request, "textEmail");
+            when(response.getOutputStream()).thenReturn(mockOutput);
+            controller.doPost(request, response);
+            object.put("Ris", 0);
+            object.put("Mess", "Inserisci tutti i parametri");
+            Mockito.verify(mockOutput).print(object.toString());
+            b[i]=true;
+        }
+    }
+
 }

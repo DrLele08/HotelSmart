@@ -47,22 +47,6 @@ public class CreateServizioTest extends Mockito
     }
 
     @Test
-    public void testNonContieneUnParametro() throws Exception
-    {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
-        doReturn(true).when(controller).contieneParametro(request,"idUtente");
-        doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"Nome");
-        doReturn(true).when(controller).contieneParametro(request,"Descrizione");
-        doReturn(true).when(controller).contieneParametro(request,"Prezzo");
-        when(response.getOutputStream()).thenReturn(mockOutput);
-        controller.doPost(request,response);
-        object.put("Ris",0);
-        object.put("Mess","Inserisci tutti i parametri");
-        Mockito.verify(mockOutput).print(object.toString());
-    }
-
-    @Test
     public void testParametroNonIntero() throws Exception
     {
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
@@ -144,4 +128,27 @@ public class CreateServizioTest extends Mockito
         object.put("Mess","Fatto");
         Mockito.verify(mockOutput).print(object.toString());
     }
+
+    @Test
+    public void testNonContieneUnParametro() throws Exception
+    {
+        boolean b[] = new boolean[6];
+        for (int i=0; i<6; i++) {
+            b[i]=false;
+            ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+            doReturn(b[0]).when(controller).contieneParametro(request, "idUtente");
+            doReturn(b[1]).when(controller).contieneParametro(request, "Token");
+            doReturn(b[2]).when(controller).contieneParametro(request, "Nome");
+            doReturn(b[3]).when(controller).contieneParametro(request, "Descrizione");
+            doReturn(b[4]).when(controller).contieneParametro(request, "Prezzo");
+            doReturn(b[5]).when(controller).contieneParametro(request, "Posti");
+            when(response.getOutputStream()).thenReturn(mockOutput);
+            controller.doPost(request, response);
+            object.put("Ris", 0);
+            object.put("Mess", "Inserisci tutti i parametri");
+            Mockito.verify(mockOutput).print(object.toString());
+            b[i]=true;
+        }
+    }
+
 }

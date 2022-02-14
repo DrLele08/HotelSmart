@@ -144,4 +144,39 @@ public class UpdateStanzaTest extends Mockito
         Mockito.verify(mockOutput).print(object.toString());
     }
 
+    @Test
+    public void testNonTuttiIParametri() throws Exception {
+        boolean b[] = new boolean[9];
+        for (int i = 0; i < 9; i++) {
+            b[i] = false;
+            ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+            doReturn(b[0]).when(controller).contieneParametro(request, "idUtente");
+            doReturn(b[1]).when(controller).contieneParametro(request, "Token");
+            doReturn(b[2]).when(controller).contieneParametro(request, "idStanza");
+            doReturn(b[3]).when(controller).contieneParametro(request, "Animale");
+            doReturn(b[4]).when(controller).contieneParametro(request, "Fumatore");
+            doReturn(b[5]).when(controller).contieneParametro(request, "LettiS");
+            doReturn(b[6]).when(controller).contieneParametro(request, "LettiM");
+            doReturn(b[7]).when(controller).contieneParametro(request, "Costo");
+            doReturn(b[8]).when(controller).contieneParametro(request, "Sconto");
+            when(request.getParameter("idUtente")).thenReturn("1");
+            when(controller.getUtenteService()).thenReturn(utenteService);
+            when(utenteService.doLogin(anyInt(), anyString())).thenReturn(user);
+            when(user.getRuolo()).thenReturn(1);
+            when(request.getParameter("idStanza")).thenReturn("1");
+            when(request.getParameter("LettiS")).thenReturn("1");
+            when(request.getParameter("LettiM")).thenReturn("1");
+            when(request.getParameter("Costo")).thenReturn("1");
+            when(request.getParameter("Sconto")).thenReturn("1");
+            when(controller.getStanzaService()).thenReturn(stanzaService);
+            when(response.getOutputStream()).thenReturn(mockOutput);
+            controller.doPost(request, response);
+            object.put("Ris", 0);
+            object.put("Mess", "Inserisci tutti i parametri");
+            Mockito.verify(mockOutput).print(object.toString());
+            b[i] = true;
+        }
+    }
+
+
 }

@@ -38,17 +38,6 @@ public class ModificaPwdTest extends Mockito
     }
 
     @Test
-    public void testParametroMancante() throws Exception
-    {
-        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
-        when(response.getOutputStream()).thenReturn(mockOutput);
-        controller.doPost(request,response);
-        object.put("Ris",0);
-        object.put("Mess","Inserisci tutti i parametri");
-        Mockito.verify(mockOutput).print(object.toString());
-    }
-
-    @Test
     public void testParametroNonNumerico() throws Exception
     {
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
@@ -194,6 +183,27 @@ public class ModificaPwdTest extends Mockito
         object.put("Ris",0);
         object.put("Mess","Errore DB");
         Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametroMancante() throws Exception
+    {
+        boolean b[]= new boolean[5];
+        for (int i = 0; i <5;i++) {
+            b[i]=false;
+            ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+            doReturn(b[0]).when(controller).contieneParametro(request, "textIdUtente");
+            doReturn(b[1]).when(controller).contieneParametro(request, "textToken");
+            doReturn(b[2]).when(controller).contieneParametro(request, "textOldPwd");
+            doReturn(b[3]).when(controller).contieneParametro(request, "textNewPwd");
+            doReturn(b[4]).when(controller).contieneParametro(request, "textRepeatPwd");
+            when(response.getOutputStream()).thenReturn(mockOutput);
+            controller.doPost(request, response);
+            object.put("Ris", 0);
+            object.put("Mess", "Inserisci tutti i parametri");
+            Mockito.verify(mockOutput).print(object.toString());
+            b[i]=true;
+        }
     }
 
 }

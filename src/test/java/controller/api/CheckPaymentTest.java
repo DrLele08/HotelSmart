@@ -7,6 +7,7 @@ import it.hotel.controller.services.UtenteService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
 import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
@@ -148,4 +149,29 @@ public class CheckPaymentTest extends Mockito
         object.put("Mess","Fatto");
         Mockito.verify(mockOutput).print(object.toString());
     }
+
+    @Test
+    public void testPagamentoNonTrovato() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idPreno");
+        when(request.getParameter("idPreno")).thenReturn("999");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        when(controller.getPrenoStanzaService()).thenReturn(prenotazioneStanzaService);
+        when(prenotazioneStanzaService.getPrenotazioneById(anyInt()))
+                .thenReturn(prenotazioneStanza);
+        when(prenotazioneStanza.getKsStato()).thenReturn(1);
+        doReturn(paymentIntent).when(controller).getPaymentIntent(anyString());
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.getUtenteByPrenotazioneStanza(anyInt())).thenReturn(mock(Utente.class));
+        when(utenteService.getUtenteByPrenotazioneStanza(anyInt())).thenThrow(new UtenteNotFoundException());
+        when(paymentIntent.getStatus()).thenReturn("succeeded");
+        when(utente.getNome()).thenReturn("Testing");
+        when(utente.getEmail()).thenReturn("saisraffaele08@gmail.con");
+        controller.doGet(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Pagamento non trovato");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
 }
