@@ -118,4 +118,145 @@ public class EliminaServizioTest extends Mockito
         object.put("Mess","Fatto");
         Mockito.verify(mockOutput).print(object.toString());
     }
+
+    @Test
+    public void testUtenteConPermessi1() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idPrenoServizio");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPrenoServizio")).thenReturn("1");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(2);
+        when(controller.getPrenoService()).thenReturn(prenotazioneServizioService);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",1);
+        object.put("Mess","Fatto");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametriNonInseriti1() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idPrenoServizio");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPrenoServizio")).thenReturn("1");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(1);
+        when(controller.getPrenoService()).thenReturn(prenotazioneServizioService);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametriNonInseriti2() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idPrenoServizio");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPrenoServizio")).thenReturn("1");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(1);
+        when(controller.getPrenoService()).thenReturn(prenotazioneServizioService);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametriNonInseriti3() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"idPrenoServizio");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPrenoServizio")).thenReturn("1");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(1);
+        when(controller.getPrenoService()).thenReturn(prenotazioneServizioService);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametriNonInseriti4() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idPrenoServizio");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPrenoServizio")).thenReturn("1");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(1);
+        when(controller.getPrenoService()).thenReturn(prenotazioneServizioService);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametriNonInseriti5() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"idPrenoServizio");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPrenoServizio")).thenReturn("1");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(1);
+        when(controller.getPrenoService()).thenReturn(prenotazioneServizioService);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametriNonInseriti6() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"idPrenoServizio");
+        when(request.getParameter("idUtente")).thenReturn("1");
+        when(request.getParameter("idPrenoServizio")).thenReturn("1");
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(utente);
+        when(utente.getRuolo()).thenReturn(1);
+        when(controller.getPrenoService()).thenReturn(prenotazioneServizioService);
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
 }

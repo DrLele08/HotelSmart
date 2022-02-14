@@ -65,6 +65,44 @@ public class CreateStanzaTest extends Mockito
     }
 
     @Test
+    public void testTuttiIParametri() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"Animale");
+        doReturn(true).when(controller).contieneParametro(request,"Fumatore");
+        doReturn(true).when(controller).contieneParametro(request,"LettiS");
+        doReturn(true).when(controller).contieneParametro(request,"LettiM");
+        doReturn(true).when(controller).contieneParametro(request,"Costo");
+        doReturn(true).when(controller).contieneParametro(request,"Sconto");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri correttamente");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testNessunParametro() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"Animale");
+        doReturn(false).when(controller).contieneParametro(request,"Fumatore");
+        doReturn(false).when(controller).contieneParametro(request,"LettiS");
+        doReturn(false).when(controller).contieneParametro(request,"LettiM");
+        doReturn(false).when(controller).contieneParametro(request,"Costo");
+        doReturn(false).when(controller).contieneParametro(request,"Sconto");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
     public void testParametroNonIntero() throws Exception
     {
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
@@ -130,20 +168,19 @@ public class CreateStanzaTest extends Mockito
     }
 
     @Test
-    public void testUtenteConPermessi() throws Exception
-    {
+    public void testUtenteConPermessi() throws Exception {
         ServletOutputStream mockOutput = mock(ServletOutputStream.class);
-        doReturn(true).when(controller).contieneParametro(request,"idUtente");
-        doReturn(true).when(controller).contieneParametro(request,"Token");
-        doReturn(true).when(controller).contieneParametro(request,"Animale");
-        doReturn(true).when(controller).contieneParametro(request,"Fumatore");
-        doReturn(true).when(controller).contieneParametro(request,"LettiS");
-        doReturn(true).when(controller).contieneParametro(request,"LettiM");
-        doReturn(true).when(controller).contieneParametro(request,"Costo");
-        doReturn(true).when(controller).contieneParametro(request,"Sconto");
+        doReturn(true).when(controller).contieneParametro(request, "idUtente");
+        doReturn(true).when(controller).contieneParametro(request, "Token");
+        doReturn(true).when(controller).contieneParametro(request, "Animale");
+        doReturn(true).when(controller).contieneParametro(request, "Fumatore");
+        doReturn(true).when(controller).contieneParametro(request, "LettiS");
+        doReturn(true).when(controller).contieneParametro(request, "LettiM");
+        doReturn(true).when(controller).contieneParametro(request, "Costo");
+        doReturn(true).when(controller).contieneParametro(request, "Sconto");
         when(request.getParameter("idUtente")).thenReturn("1");
         when(controller.getUtenteService()).thenReturn(utenteService);
-        when(utenteService.doLogin(anyInt(),anyString())).thenReturn(user);
+        when(utenteService.doLogin(anyInt(), anyString())).thenReturn(user);
         when(user.getRuolo()).thenReturn(1);
         when(request.getParameter("LettiS")).thenReturn("1");
         when(request.getParameter("LettiM")).thenReturn("1");
@@ -151,9 +188,10 @@ public class CreateStanzaTest extends Mockito
         when(request.getParameter("Sconto")).thenReturn("1");
         when(controller.getStanzaService()).thenReturn(stanzaService);
         when(response.getOutputStream()).thenReturn(mockOutput);
-        controller.doPost(request,response);
-        object.put("Ris",1);
-        object.put("Mess","Fatto");
+        controller.doPost(request, response);
+        object.put("Ris", 1);
+        object.put("Mess", "Fatto");
         Mockito.verify(mockOutput).print(object.toString());
     }
+
 }

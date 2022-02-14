@@ -121,4 +121,148 @@ public class ModificaPermessiTest extends Mockito
         object.put("Mess","Fatto");
         Mockito.verify(mockOutput).print(object.toString());
     }
+
+    @Test
+    public void testParametroMancante1() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(true).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametroMancante2() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(true).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+    @Test
+    public void testParametroMancante3() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(true).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+    @Test
+    public void testParametroMancante4() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(false).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+    @Test
+    public void testParametroMancante5() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(true).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+    @Test
+    public void testParametroMancante6() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(true).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+    @Test
+    public void testParametroMancante7() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(false).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(false).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+    @Test
+    public void testParametroMancante8() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(true).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+    @Test
+    public void testParametroMancante9() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(false).when(controller).contieneParametro(request,"Token");
+        doReturn(true).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(false).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
+    @Test
+    public void testParametroMancante10() throws Exception
+    {
+        ServletOutputStream mockOutput = mock(ServletOutputStream.class);
+        doReturn(true).when(controller).contieneParametro(request,"idUtente");
+        doReturn(true).when(controller).contieneParametro(request,"Token");
+        doReturn(false).when(controller).contieneParametro(request,"idUtenteCambio");
+        doReturn(false).when(controller).contieneParametro(request,"idRuolo");
+        when(response.getOutputStream()).thenReturn(mockOutput);
+        controller.doPost(request,response);
+        object.put("Ris",0);
+        object.put("Mess","Inserisci tutti i parametri");
+        Mockito.verify(mockOutput).print(object.toString());
+    }
+
 }
