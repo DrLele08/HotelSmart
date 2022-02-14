@@ -20,6 +20,12 @@ import java.util.Optional;
 @WebServlet(name = "GestioneStanze", value = "/GestioneStanze")
 public class GestioneStanzeServlet extends CheckServlet
 {
+
+    public StanzaService getStanzaService()
+    {
+        return new StanzaService();
+    }
+
     /**
      * Richiede di visualizzare la pagina di gestione stanze
      * @param request Richiesta del cliente
@@ -28,12 +34,12 @@ public class GestioneStanzeServlet extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         Optional<Utente> us=getUtente(request);
         if(us.isPresent() && (us.get().getRuolo()==1 || us.get().getRuolo()==2))
         {
-            StanzaService stanze=new StanzaService();
+            StanzaService stanze=getStanzaService();
             List<Stanza> listStanze=stanze.getStanze();
             request.setAttribute("Stanze",listStanze);
             RequestDispatcher requestDispatcher=request.getRequestDispatcher("/WEB-INF/views/GestioneStanze.jsp");

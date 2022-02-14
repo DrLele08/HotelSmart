@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * Fornisce l'accesso al database per {@link Stato}.
  */
-public class StatoDAO {
+public class StatoDAO
+{
 
     /**
      * Inserisce nel database l'oggetto Stato specificato.
@@ -17,7 +18,8 @@ public class StatoDAO {
      * @param stato Stato da inserire nel database
      * @throws SQLException Errore nella comunicazione con il database
      */
-    public void doInsert(Connection con, Stato stato) throws SQLException {
+    public void doInsert(Connection con, Stato stato) throws SQLException
+    {
         PreparedStatement ps = con.prepareStatement
                 ("INSERT INTO Stato (stato) VALUES(?)",
                         Statement.RETURN_GENERATED_KEYS);
@@ -89,7 +91,7 @@ public class StatoDAO {
         return ruoli;
     }
 
-    private Stato createStato (ResultSet rs) throws SQLException {
+    public Stato createStato (ResultSet rs) throws SQLException {
         return new Stato(rs.getInt(1), rs.getString(2));
     }
 

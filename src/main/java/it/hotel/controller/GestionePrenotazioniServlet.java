@@ -25,6 +25,10 @@ import static it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO.UTENTE;
 @WebServlet(name = "GestionePrenotazioni", value = "/GestionePrenotazioni")
 public class GestionePrenotazioniServlet extends CheckServlet
 {
+    public PrenotazioneStanzaService getPrenoService()
+    {
+        return new PrenotazioneStanzaService();
+    }
     /**
      * Richiede di visualizzare la pagina di gestione prenotazioni
      * @param request Richiesta del cliente
@@ -33,7 +37,7 @@ public class GestionePrenotazioniServlet extends CheckServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         RequestDispatcher rd;
         Optional<Utente> us=getUtente(request);
@@ -44,7 +48,7 @@ public class GestionePrenotazioniServlet extends CheckServlet
         else
         {
             rd=request.getRequestDispatcher("/WEB-INF/views/GestionePrenotazioni.jsp");
-            PrenotazioneStanzaService service = new PrenotazioneStanzaService();
+            PrenotazioneStanzaService service =getPrenoService();
             request.setAttribute("Tipo",3);
             List<PrenotazioneStanza> list = null;
             if(us.get().getRuolo()==3)

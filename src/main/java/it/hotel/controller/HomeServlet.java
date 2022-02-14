@@ -26,7 +26,7 @@ public class HomeServlet extends HttpServlet
      * @see HttpServletRequest
      * @see HttpServletResponse
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";

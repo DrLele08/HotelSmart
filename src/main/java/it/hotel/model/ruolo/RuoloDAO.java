@@ -87,7 +87,7 @@ public class RuoloDAO {
         return ruoli;
     }
 
-    private Ruolo createRuolo(ResultSet rs) throws SQLException {
+    public Ruolo createRuolo(ResultSet rs) throws SQLException {
         return new Ruolo(rs.getInt(1), rs.getString(2));
     }
 
