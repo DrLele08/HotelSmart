@@ -38,12 +38,8 @@ Ecco perchè:
 
 In questa sezione vengono elencati tutti i principali framework/librerie utilizzate all'interno del progetto, ecco alcuni esempi:
 
-* [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
+* [Java](https://www.java.com/it/)
+* [Stripe](https://stripe.com/it)
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
 * [JUnit5](https://junit.org)
@@ -55,30 +51,7 @@ In questa sezione vengono elencati tutti i principali framework/librerie utilizz
 
 ### Requisiti
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Guida all'Installazione
-
-Ecco una semplice guida che spiega le istruzioni per l'installazione:
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#top">Torna sopra</a>)</p>
+Non ci sono requisiti particolari, è solamente necessario un server per la piattaforma e il database.
 
 
 
