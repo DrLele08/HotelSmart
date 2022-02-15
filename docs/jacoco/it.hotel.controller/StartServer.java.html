@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StartServer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller</a> &gt; <span class="el_source">StartServer.java</span></div><h1>StartServer.java</h1><pre class="source lang-java linenums">package it.hotel.controller;
+
+import it.hotel.controller.services.RuoloService;
+import it.hotel.controller.services.StatoService;
+import it.hotel.model.ruolo.Ruolo;
+import it.hotel.model.stato.Stato;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.util.List;
+
+@WebServlet(name = &quot;Servlet&quot;, value = &quot;/Servlet&quot;,loadOnStartup = 1)
+<span class="nc" id="L14">public class StartServer extends HttpServlet</span>
+{
+    public List&lt;Ruolo&gt; getAllRuoli()
+    {
+<span class="nc" id="L18">        return new RuoloService().getAll();</span>
+    }
+
+    public List&lt;Stato&gt; getAllStato()
+    {
+<span class="nc" id="L23">        return new StatoService().getAll();</span>
+    }
+    @Override
+    public void init() throws ServletException
+    {
+<span class="nc" id="L28">        super.init();</span>
+<span class="nc" id="L29">        it.hotel.Utility.Utilita.listRuoli=getAllRuoli();</span>
+<span class="nc" id="L30">        it.hotel.Utility.Utilita.listStato=getAllStato();</span>
+<span class="nc" id="L31">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

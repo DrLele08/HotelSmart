@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestionePrenotazioniServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller</a> &gt; <span class="el_source">GestionePrenotazioniServlet.java</span></div><h1>GestionePrenotazioniServlet.java</h1><pre class="source lang-java linenums">package it.hotel.controller;
+
+import it.hotel.controller.services.PrenotazioneStanzaService;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
+import it.hotel.model.utente.Utente;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import static it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO.UTENTE;
+
+/**
+ * &lt;h1&gt;Gestione Prenotazioni Servlet&lt;/h1&gt;
+ * Servlet che visualizza la pagine di Gestione Prenotazioni
+ * @author Sais Raffaele
+ * @version 1.4
+ * @since 2022-01-20
+ */
+@WebServlet(name = &quot;GestionePrenotazioni&quot;, value = &quot;/GestionePrenotazioni&quot;)
+<span class="fc" id="L26">public class GestionePrenotazioniServlet extends CheckServlet</span>
+{
+    public PrenotazioneStanzaService getPrenoService()
+    {
+<span class="fc" id="L30">        return new PrenotazioneStanzaService();</span>
+    }
+    /**
+     * Richiede di visualizzare la pagina di gestione prenotazioni
+     * @param request Richiesta del cliente
+     * @param response Visualizza la pagina con i dati delle prenotazioni
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        RequestDispatcher rd;
+<span class="fc" id="L43">        Optional&lt;Utente&gt; us=getUtente(request);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if(!us.isPresent())</span>
+        {
+<span class="fc" id="L46">            rd = request.getRequestDispatcher(&quot;./&quot;);</span>
+        }
+        else
+        {
+<span class="fc" id="L50">            rd=request.getRequestDispatcher(&quot;/WEB-INF/views/GestionePrenotazioni.jsp&quot;);</span>
+<span class="fc" id="L51">            PrenotazioneStanzaService service =getPrenoService();</span>
+<span class="fc" id="L52">            request.setAttribute(&quot;Tipo&quot;,3);</span>
+<span class="fc" id="L53">            List&lt;PrenotazioneStanza&gt; list = null;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            if(us.get().getRuolo()==3)</span>
+            {
+<span class="fc" id="L56">                list=service.selectBy(us.get().getIdUtente(),UTENTE);</span>
+            }
+<span class="pc bpc" id="L58" title="3 of 4 branches missed.">            else if(us.get().getRuolo()== 1 || us.get().getRuolo()==2)</span>
+            {
+<span class="fc" id="L60">                list=service.getAll();</span>
+            }
+<span class="fc" id="L62">            request.setAttribute(&quot;ListaPreno&quot;,list);</span>
+<span class="fc" id="L63">            request.setAttribute(&quot;Utente&quot;,us);</span>
+
+        }
+<span class="fc" id="L66">        rd.forward(request,response);</span>
+<span class="fc" id="L67">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

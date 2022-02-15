@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrenotazioneStanzaService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.services</a> &gt; <span class="el_source">PrenotazioneStanzaService.java</span></div><h1>PrenotazioneStanzaService.java</h1><pre class="source lang-java linenums">package it.hotel.controller.services;
+
+import it.hotel.Utility.Connect;
+import it.hotel.controller.exception.PagamentoInAttesaException;
+import it.hotel.model.personaAggiuntiva.PersonaAggiuntiva;
+import it.hotel.model.personaAggiuntiva.PersonaAggiuntivaDAO;
+import it.hotel.model.personaPrenotazione.PersonaPrenotazioneDAO;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaInsertException;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
+import it.hotel.model.stanza.Stanza;
+import it.hotel.model.stanza.StanzaDAO;
+import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
+import it.hotel.model.stato.Stato;
+import it.hotel.model.stato.StatoDAO;
+import it.hotel.model.stato.statoExceptions.StatoNotFoundException;
+
+import java.security.SecureRandom;
+import java.sql.*;
+import java.text.ParseException;
+import java.util.List;
+
+/**
+ * Fornisce metodi di utilizzo del database per {@link PrenotazioneStanza}.
+ */
+public class PrenotazioneStanzaService {
+
+    /**
+     * Costruisce un oggetto PrenotazioneStanzaService.
+     */
+<span class="fc" id="L32">    public PrenotazioneStanzaService() {}</span>
+
+    /**
+     * Costruisce un oggetto PrenotazioneStanzaDAO.
+     * @return L'oggetto PrenotazioneStanzaDAO costruito.
+     */
+    public PrenotazioneStanzaDAO createPrenotazioneStanzaDAO()
+    {
+<span class="fc" id="L40">        return new PrenotazioneStanzaDAO();</span>
+    }
+
+    /**
+     * Costruisce un oggetto StanzaDAO.
+     * @return L'oggetto StanzaDAO costruito.
+     */
+    public StanzaDAO createStanzaDAO()
+    {
+<span class="fc" id="L49">        return new StanzaDAO();</span>
+    }
+
+    /**
+     * Costruisce un oggetto PersonaAggiuntivaDAO.
+     * @return L'oggetto PersonaAggiuntivaDAO costruito.
+     */
+    public PersonaAggiuntivaDAO createPersonaAggiuntivaDAO()
+    {
+<span class="fc" id="L58">        return new PersonaAggiuntivaDAO();</span>
+    }
+
+    /**
+     * Costruisce un oggetto PersonaPrenotazioneDAO.
+     * @return L'oggetto PersonaPrenotazioneDAO costruito.
+     */
+    public PersonaPrenotazioneDAO createPersonaPrenotazioneDAO()
+    {
+<span class="fc" id="L67">        return new PersonaPrenotazioneDAO();</span>
+    }
+
+    /**
+     * Costruisce un oggetto StatoDAO.
+     * @return L'oggetto StatoDAO costruito.
+     */
+    public StatoDAO createStatoDAO()
+    {
+<span class="fc" id="L76">        return new StatoDAO();</span>
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+<span class="nc" id="L85">        return Connect.getConnection();</span>
+    }
+
+    /**
+     * Inserisce una prenotazione stanza secondo i valori specificati.
+     * @param ksUtente Identificativo utente
+     * @param ksStanza Identificativo stanza
+     * @param dataInizio Data d'inizio
+     * @param dataFine Data di fine
+     * @param listExtra Lista di persone aggiuntive
+     * @return Prenotazione stanza inserita
+     * @throws StanzaNotFoundException La stanza della prenotazione non è stata trovata
+     * @throws ParseException Errore nella conversione delle date
+     * @throws PrenotazioneStanzaInsertException Errore nell'inserimento della prenotazione
+     * @throws PagamentoInAttesaException Esiste un'altra prenotazione in attesa di pagamento
+     * @throws PrenotazioneStanzaNotFoundException La prenotazione non è stata trovata
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public PrenotazioneStanza inserisciPrenotazione(int ksUtente, int ksStanza, String dataInizio, String dataFine, List&lt;PersonaAggiuntiva&gt; listExtra)
+            throws StanzaNotFoundException, ParseException, PagamentoInAttesaException, PrenotazioneStanzaNotFoundException, SQLException, PrenotazioneStanzaInsertException {
+
+        PrenotazioneStanza prenotazione;
+<span class="fc" id="L107">        Connection con = null;</span>
+        try {
+<span class="fc" id="L109">            con=getConnection();</span>
+<span class="fc" id="L110">            con.setAutoCommit(false);</span>
+
+<span class="fc" id="L112">            StanzaDAO stanzaDAO = createStanzaDAO();</span>
+<span class="fc" id="L113">            Stanza s = stanzaDAO.doSelectById(con, ksStanza);</span>
+<span class="fc" id="L114">            double costoNotte = s.getCostoNotte();</span>
+<span class="fc" id="L115">            double sconto = s.getSconto();</span>
+<span class="fc" id="L116">            Date inizio = it.hotel.Utility.Utilita.dataConverter(dataInizio);</span>
+<span class="fc" id="L117">            Date fine = it.hotel.Utility.Utilita.dataConverter(dataFine);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (!stanzaDAO.isDisponibile(con, ksStanza, inizio, fine)) {</span>
+<span class="fc" id="L119">                throw new PrenotazioneStanzaInsertException();</span>
+            }
+<span class="fc" id="L121">            int ksStato =  1;</span>
+            int idPrenotazione;
+            try {
+<span class="fc" id="L124">                PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L125">                idPrenotazione = prenotazioneStanzaDAO.doInsert(con, ksUtente, ksStato, ksStanza, inizio, fine, costoNotte, sconto);</span>
+<span class="fc" id="L126">            } catch (PrenotazioneStanzaInsertException e) {</span>
+<span class="fc" id="L127">                throw new PagamentoInAttesaException();</span>
+<span class="fc" id="L128">            }</span>
+<span class="fc" id="L129">            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L130">            prenotazione = prenotazioneStanzaDAO.doSelectById(con, idPrenotazione);</span>
+<span class="fc" id="L131">            int posti = s.getLettiMatrimoniali()*2 + s.getLettiSingoli();</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">            if (listExtra.size() + 1 != posti) {</span>
+<span class="fc" id="L133">                throw new PrenotazioneStanzaInsertException();</span>
+            }
+<span class="fc bfc" id="L135" title="All 2 branches covered.">            for (PersonaAggiuntiva p : listExtra) {</span>
+<span class="fc bfc" id="L136" title="All 6 branches covered.">                if (p.getCf().length()!=16 || p.getNome().trim().isEmpty() || p.getCognome().trim().isEmpty()) {</span>
+<span class="fc" id="L137">                    throw new PrenotazioneStanzaInsertException();</span>
+                }
+<span class="fc" id="L139">                PersonaAggiuntivaDAO personaAggiuntivaDAO = createPersonaAggiuntivaDAO();</span>
+<span class="fc" id="L140">                PersonaAggiuntiva persona = personaAggiuntivaDAO.doInsert(con, ksUtente, p.getCf(), p.getNome(), p.getCognome(), p.getDataNascita());</span>
+<span class="fc" id="L141">                int idPersona = persona.getIdPersona();</span>
+<span class="fc" id="L142">                PersonaPrenotazioneDAO personaPrenotazioneDAO = createPersonaPrenotazioneDAO();</span>
+<span class="fc" id="L143">                personaPrenotazioneDAO.doInsert(con, idPersona, prenotazione.getIdPrenotazioneStanza());</span>
+<span class="fc" id="L144">            }</span>
+
+<span class="fc" id="L146">            con.commit();</span>
+<span class="fc" id="L147">            con.setAutoCommit(true);</span>
+<span class="fc" id="L148">        } catch (SQLException e) {</span>
+<span class="fc" id="L149">            con.rollback();</span>
+<span class="fc" id="L150">            con.setAutoCommit(true);</span>
+<span class="fc" id="L151">            throw new RuntimeException();</span>
+<span class="fc" id="L152">        }</span>
+<span class="fc" id="L153">        return prenotazione;</span>
+
+    }
+
+    /**
+     * Recupera le prenotazioni stanza presenti nel database secondo i valori specificati.
+     * @param value Valore secondo il quale effettuare la ricerca
+     * @param type Tipo del valore
+     * @return Prenotazioni stanza trovate
+     */
+    public List&lt;PrenotazioneStanza&gt; selectBy(int value, int type) {
+        List&lt;PrenotazioneStanza&gt; prenotazioni;
+        Connection con;
+        try {
+<span class="fc" id="L167">            con = getConnection();</span>
+<span class="fc" id="L168">            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L169">            prenotazioni = prenotazioneStanzaDAO.doSelectBy(con, value, type);</span>
+<span class="fc" id="L170">        } catch (SQLException e) {</span>
+<span class="fc" id="L171">            throw new RuntimeException();</span>
+<span class="fc" id="L172">        }</span>
+<span class="fc" id="L173">        return prenotazioni;</span>
+    }
+
+    /**
+     * Recupera tutte le prenotazioni stanza presenti nel database.
+     * @return Lista contenente le prenotazioni stanza trovate
+     */
+    public List&lt;PrenotazioneStanza&gt; getAll() {
+        List&lt;PrenotazioneStanza&gt; prenotazioni;
+        Connection con;
+        try {
+<span class="fc" id="L184">            con = getConnection();</span>
+<span class="fc" id="L185">            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L186">            prenotazioni = prenotazioneStanzaDAO.doGetAll(con);</span>
+<span class="fc" id="L187">        } catch (SQLException e) {</span>
+<span class="fc" id="L188">            throw new RuntimeException();</span>
+<span class="fc" id="L189">        }</span>
+<span class="fc" id="L190">        return prenotazioni;</span>
+    }
+
+    /**
+     * Modifica lo stato della prenotazione stanza specificata.
+     * @param idPrenotazioneStanza Identificativo della prenotazione stanza
+     * @param stato Stato da inserire
+     * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza non è stata trovata
+     */
+    public void editStato(int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException {
+        Connection con;
+        try {
+<span class="fc" id="L202">            con = getConnection();</span>
+<span class="fc" id="L203">            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L204">            prenotazioneStanzaDAO.doChangeStato(con, idPrenotazioneStanza, stato);</span>
+<span class="fc" id="L205">        } catch (SQLException e) {</span>
+<span class="fc" id="L206">            throw new RuntimeException();</span>
+<span class="fc" id="L207">        }</span>
+<span class="fc" id="L208">    }</span>
+
+    /**
+     * Recupera una prenotazione stanza secondo il valore specificato.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @return La prenotazione stanza trovata
+     * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza cercata non è stata trovata
+     */
+    public PrenotazioneStanza getPrenotazioneById(int idPrenotazione) throws PrenotazioneStanzaNotFoundException {
+        PrenotazioneStanza prenotazione;
+        Connection con;
+        try {
+<span class="fc" id="L220">            con = getConnection();</span>
+<span class="fc" id="L221">            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L222">            prenotazione = prenotazioneStanzaDAO.doSelectById(con, idPrenotazione);</span>
+<span class="fc" id="L223">        } catch (SQLException e) {</span>
+<span class="fc" id="L224">            throw new RuntimeException();</span>
+<span class="fc" id="L225">        }</span>
+<span class="fc" id="L226">        return prenotazione;</span>
+    }
+
+    /**
+     * Informa se la prenotazione stanza specificata è rimborsabile.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @return Rimborsabilità della prenotazione
+     */
+    public boolean isRimborsabile(int idPrenotazione) throws SQLException {
+        boolean rimborsabile;
+<span class="fc" id="L236">        Connection con = null;</span>
+        try {
+<span class="fc" id="L238">            con = getConnection();</span>
+<span class="fc" id="L239">            con.setAutoCommit(false);</span>
+
+<span class="fc" id="L241">            StatoDAO statoDAO = createStatoDAO();</span>
+<span class="fc" id="L242">            Stato stato = statoDAO.doSelectByStato(con, &quot;CONFERMATA&quot;);</span>
+<span class="fc" id="L243">            int confermata = stato.getIdStato();</span>
+<span class="fc" id="L244">            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L245">            rimborsabile = prenotazioneStanzaDAO.isRimborsabile(con, idPrenotazione, confermata);</span>
+
+<span class="fc" id="L247">            con.commit();</span>
+<span class="fc" id="L248">            con.setAutoCommit(true);</span>
+<span class="fc" id="L249">        } catch (SQLException e) {</span>
+<span class="fc" id="L250">            con.rollback();</span>
+<span class="fc" id="L251">            con.setAutoCommit(true);</span>
+<span class="fc" id="L252">            throw new RuntimeException();</span>
+<span class="fc" id="L253">        } catch (StatoNotFoundException e) {</span>
+<span class="fc" id="L254">            con.rollback();</span>
+<span class="fc" id="L255">            con.setAutoCommit(true);</span>
+<span class="fc" id="L256">            throw new RuntimeException();</span>
+<span class="fc" id="L257">        }</span>
+<span class="fc" id="L258">        return rimborsabile;</span>
+    }
+
+    /**
+     * Inserisce nella prenotazione stanza specificata il Token Stripe relativo al pagamento effettuato.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @param tokenStripe Token da inserire nella prenotazione stanza
+     * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza specificata non è stata trovata
+     */
+    public void addTokenStripe(int idPrenotazione, String tokenStripe) throws PrenotazioneStanzaNotFoundException {
+        Connection con;
+        try {
+<span class="fc" id="L270">            con = getConnection();</span>
+<span class="fc" id="L271">            PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L272">            prenotazioneStanzaDAO.insertTokenStripe(con, idPrenotazione, tokenStripe);</span>
+<span class="fc" id="L273">        } catch (SQLException e) {</span>
+<span class="fc" id="L274">            throw new RuntimeException();</span>
+<span class="fc" id="L275">        }</span>
+<span class="fc" id="L276">    }</span>
+
+    /**
+     * Inserisce nella prenotazione stanza specificata un Token Qr Code alfanumerico generato casualmente.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @throws PrenotazioneStanzaNotFoundException La prenotazione stanza specificata non è stata trovata
+     */
+    public void generateQrCode(int idPrenotazione) throws PrenotazioneStanzaNotFoundException
+    {
+<span class="fc" id="L285">        final String AB = &quot;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;;</span>
+<span class="fc" id="L286">        SecureRandom rnd = new SecureRandom();</span>
+<span class="fc" id="L287">        int len=48;</span>
+<span class="fc" id="L288">        StringBuilder sb = new StringBuilder(len);</span>
+        boolean duplicate;
+        do {
+            Connection con;
+            try {
+<span class="fc" id="L293">                con = getConnection();</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">                for (int i = 0; i &lt; len; i++)</span>
+<span class="fc" id="L295">                    sb.append(AB.charAt(rnd.nextInt(AB.length())));</span>
+<span class="fc" id="L296">                PrenotazioneStanzaDAO prenotazioneStanzaDAO = createPrenotazioneStanzaDAO();</span>
+<span class="fc" id="L297">                prenotazioneStanzaDAO.doInsertTokenQrCode(con, idPrenotazione, sb.toString());</span>
+<span class="fc" id="L298">                duplicate = false;</span>
+<span class="nc" id="L299">            } catch (SQLIntegrityConstraintViolationException e) {</span>
+<span class="nc" id="L300">                duplicate = true;</span>
+<span class="fc" id="L301">            } catch (SQLException e) {</span>
+<span class="fc" id="L302">                throw new RuntimeException();</span>
+<span class="pc" id="L303">            }</span>
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">        } while (duplicate);</span>
+<span class="fc" id="L305">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

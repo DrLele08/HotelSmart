@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StanzaDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.stanza</a> &gt; <span class="el_source">StanzaDAO.java</span></div><h1>StanzaDAO.java</h1><pre class="source lang-java linenums">package it.hotel.model.stanza;
+
+import it.hotel.model.stanza.stanzaExceptions.*;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Fornisce l'accesso al database per {@link Stanza}.
+ */
+<span class="fc" id="L12">public class StanzaDAO {</span>
+
+    /**
+     * Inserisce nel database un oggetto Stanza secondo i valori specificati.
+     * @param con Connessione al database
+     * @param animaleDomestico Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public void doInsert(Connection con, boolean animaleDomestico, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
+                         double costoNotte, double sconto) throws SQLException {
+<span class="fc" id="L27">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L28">                (&quot;INSERT INTO Stanza (animaleDomestico, fumatore, lettiSingoli,&quot; +</span>
+                                &quot; lettiMatrimoniali, costoNotte, sconto) VALUES(?,?,?,?,?,?)&quot;,
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L31">        ps.setBoolean(1, animaleDomestico);</span>
+<span class="fc" id="L32">        ps.setBoolean(2, fumatore);</span>
+<span class="fc" id="L33">        ps.setInt(3, lettiSingoli);</span>
+<span class="fc" id="L34">        ps.setInt(4, lettiMatrimoniali);</span>
+<span class="fc" id="L35">        ps.setDouble(5, costoNotte);</span>
+<span class="fc" id="L36">        ps.setDouble(6, sconto);</span>
+<span class="fc" id="L37">        ps.executeUpdate();</span>
+<span class="fc" id="L38">    }</span>
+
+    /**
+     * Aggiorna un oggetto Stanza nel database secondo i valori specificati.
+     * @param con Connessione al database
+     * @param animaleDomestico Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public void doUpdate(Connection con, int idStanza, boolean animaleDomestico, boolean fumatore, int lettiSingoli,
+                         int lettiMatrimoniali, double costoNotte, double sconto) throws SQLException {
+<span class="fc" id="L53">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L54">                (&quot;UPDATE Stanza SET animaleDomestico=?, fumatore=?, lettiSingoli=?, lettiMatrimoniali=?, &quot; +</span>
+                                &quot;costoNotte=?, sconto=? WHERE idStanza=?&quot;,
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L57">        ps.setBoolean(1, animaleDomestico);</span>
+<span class="fc" id="L58">        ps.setBoolean(2, fumatore);</span>
+<span class="fc" id="L59">        ps.setInt(3, lettiSingoli);</span>
+<span class="fc" id="L60">        ps.setInt(4, lettiMatrimoniali);</span>
+<span class="fc" id="L61">        ps.setDouble(5, costoNotte);</span>
+<span class="fc" id="L62">        ps.setDouble(6, sconto);</span>
+<span class="fc" id="L63">        ps.setInt(7, idStanza);</span>
+<span class="fc" id="L64">        ps.executeUpdate();</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Recupera l'oggetto Stanza trovato nel database secondo il valore specificato.
+     * @param con Connessione al database
+     * @param idStanza Id che identifica la stanza cercata
+     * @return La stanza trovata nel database
+     * @throws StanzaNotFoundException La stanza cercata non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Stanza doSelectById(Connection con, int idStanza) throws StanzaNotFoundException, SQLException {
+        Stanza stanza;
+<span class="fc" id="L77">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L78">                (&quot;SELECT * FROM Stanza WHERE idStanza=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L80">        ps.setInt(1, idStanza);</span>
+<span class="fc" id="L81">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L83">            stanza = createStanza(rs);</span>
+        } else {
+<span class="fc" id="L85">            throw new StanzaNotFoundException();</span>
+        }
+<span class="fc" id="L87">        return stanza;</span>
+    }
+
+    /**
+     * Recupera tutti gli oggetti Stanza presenti nel database.
+     * @param con Connessione al database
+     * @return Le stanze presenti nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;Stanza&gt; getStanze(Connection con) throws SQLException {
+<span class="fc" id="L97">        ArrayList&lt;Stanza&gt; stanze = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L98">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L99">                (&quot;SELECT * FROM Stanza&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L101">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        while(rs.next()) {</span>
+<span class="fc" id="L103">            stanze.add(createStanza(rs));</span>
+        }
+<span class="fc" id="L105">        return stanze;</span>
+    }
+
+    /**
+     * Recupera gli oggetti Stanza presenti nel database che hanno uno sconto maggiore di ZERO.
+     * @param con Connessione al database
+     * @return Lista contenente le stanze con uno sconto maggiore di ZERO.
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;Stanza&gt; getOfferte(Connection con) throws SQLException {
+<span class="fc" id="L115">        ArrayList&lt;Stanza&gt; stanze = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L116">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L117">                (&quot;SELECT * FROM Stanza WHERE Stanza.sconto &gt; 0&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L119">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        while(rs.next()) {</span>
+<span class="fc" id="L121">            stanze.add(createStanza(rs));</span>
+        }
+<span class="fc" id="L123">        return stanze;</span>
+    }
+
+    /**
+     * Recupera il prezzo più basso e il prezzo più alto tra tutti gli oggetti Stanza presenti nel database.
+     * @param con Connessione al database
+     * @return Lista contenente il prezzo più basso e il prezzo più alto
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;Double&gt; doSelect_Min_And_Max_Prices(Connection con) throws SQLException {
+<span class="fc" id="L133">        ArrayList&lt;Double&gt; prezzi = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L134">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L135">                (&quot;SELECT MIN(costoNotte), MAX(costoNotte) FROM Stanza&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L137">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L139">            prezzi.add(rs.getDouble(1));</span>
+<span class="fc" id="L140">            prezzi.add(rs.getDouble(2));</span>
+        }
+<span class="fc" id="L142">        return prezzi;</span>
+    }
+
+    /**
+     * Informa se l'oggetto Stanza specificato è disponibile per una prenotazione nell'intervallo di tempo richiesto.
+     * @param con Connessione al database
+     * @param ksStanza Identificativo della stanza
+     * @param dataInizio Data d'inizio della prenotazione desiderata
+     * @param dataFine Data di fine della prenotazione desiderata
+     * @return Idoneità per prenotazione
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public boolean isDisponibile(Connection con, int ksStanza, Date dataInizio, Date dataFine) throws SQLException {
+<span class="fc" id="L155">        PreparedStatement ps = con.prepareStatement(&quot;SELECT idPrenotazioneStanza FROM PrenotazioneStanza WHERE &quot; +</span>
+                        &quot;ksStanza=? AND dataFine &gt;= ? AND dataInizio &lt;= ? AND ksStato NOT IN (SELECT idStato FROM Stato st WHERE &quot; +
+                        &quot;(st.stato = 'ANNULLATA') OR (st.stato = 'ARCHIVIATA') OR (st.stato = 'RIMBORSATA'))&quot;,
+                Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L159">        ps.setInt(1, ksStanza);</span>
+<span class="fc" id="L160">        ps.setDate(2, dataInizio);</span>
+<span class="fc" id="L161">        ps.setDate(3, dataFine);</span>
+<span class="fc" id="L162">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        return !rs.next();</span>
+    }
+
+    /**
+     * Recupera gli oggetti Stanza trovati nel database secondo i valori specificati.
+     * @param con Connessione al database
+     * @param animaleDomestico Permesso animali domestici
+     * @param fumatore Permesso fumatori
+     * @param numeroOspiti Numero di ospiti
+     * @param costoNotteMinimo Costo minimo per notte
+     * @param costoNotteMassimo Costo massimo per notte
+     * @param scontoMinimo Sconto minimo
+     * @param scontoMassimo Sconto massimo
+     * @param dataIn Data di entrata
+     * @param dataOut Data di uscita
+     * @return Le stanze trovate nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;Stanza&gt; doSearch(Connection con, Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
+                                 Double costoNotteMinimo, Double costoNotteMassimo,
+                                 Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) throws SQLException {
+
+<span class="fc" id="L185">        String query = getQuery(animaleDomestico, fumatore, numeroOspiti, costoNotteMinimo,</span>
+                costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
+
+<span class="fc" id="L188">        ArrayList&lt;Stanza&gt; stanze = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L189">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L190">                (&quot;SELECT * FROM Stanza s&quot; + query,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+
+<span class="fc" id="L193">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        while (rs.next()) {</span>
+<span class="fc" id="L195">            stanze.add(createStanza(rs));</span>
+        }
+<span class="fc" id="L197">        return stanze;</span>
+
+    }
+
+    public String getQuery(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti,
+                            Double costoNotteMinimo, Double costoNotteMassimo,
+                            Double scontoMinimo, Double scontoMassimo, Date dataIn, Date dataOut) {
+
+        String query;
+        boolean p1_AND_p2_AND_p3_Boolean, NOT_EXISTS_prenotazioneStanza_Boolean;
+
+<span class="fc" id="L208">        ArrayList&lt;String&gt; parametri = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L209">        animaleDomesticoStr(parametri, animaleDomestico);</span>
+<span class="fc" id="L210">        fumatoreStr(parametri, fumatore);</span>
+<span class="fc" id="L211">        numeroOspitiStr(parametri,numeroOspiti);</span>
+<span class="fc" id="L212">        costoNotteStr(parametri, costoNotteMinimo, costoNotteMassimo);</span>
+<span class="fc" id="L213">        scontoStr(parametri, scontoMinimo, scontoMassimo);</span>
+
+<span class="fc" id="L215">        String p1_AND_p2_AND_p3 = &quot;&quot;;</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (parametri.size() &gt; 0) {</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">            for (int i = 0; i &lt; parametri.size() - 1; i++) {</span>
+<span class="fc" id="L218">                p1_AND_p2_AND_p3 += parametri.get(i) + &quot; AND &quot;;</span>
+            }
+<span class="fc" id="L220">            p1_AND_p2_AND_p3 += parametri.get(parametri.size() - 1);</span>
+<span class="fc" id="L221">            p1_AND_p2_AND_p3_Boolean = true;</span>
+        } else {
+<span class="fc" id="L223">            p1_AND_p2_AND_p3_Boolean = false;</span>
+        }
+
+<span class="fc" id="L226">        String NOT_EXISTS_prenotazioneStanza = &quot;&quot;;</span>
+<span class="fc bfc" id="L227" title="All 4 branches covered.">        if ((dataIn != null) || (dataOut != null)) {</span>
+<span class="fc" id="L228">            NOT_EXISTS_prenotazioneStanza = data(&quot;NOT EXISTS &quot;, dataIn, dataOut);</span>
+<span class="fc" id="L229">            NOT_EXISTS_prenotazioneStanza_Boolean = true;</span>
+        } else {
+<span class="fc" id="L231">            NOT_EXISTS_prenotazioneStanza_Boolean = false;</span>
+        }
+
+<span class="pc bpc" id="L234" title="1 of 4 branches missed.">        if (p1_AND_p2_AND_p3_Boolean &amp;&amp; NOT_EXISTS_prenotazioneStanza_Boolean) {</span>
+<span class="fc" id="L235">            query = &quot; WHERE &quot; + p1_AND_p2_AND_p3 + &quot; AND &quot; + NOT_EXISTS_prenotazioneStanza;</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        } else if (p1_AND_p2_AND_p3_Boolean) {</span>
+<span class="nc" id="L237">            query = &quot; WHERE &quot; + p1_AND_p2_AND_p3;</span>
+        } else {
+<span class="fc" id="L239">            query = &quot; WHERE &quot;+ NOT_EXISTS_prenotazioneStanza;</span>
+        }
+
+<span class="fc" id="L242">        return query;</span>
+    }
+
+    public void animaleDomesticoStr(List&lt;String&gt; parametri, Boolean animaleDomestico) {
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        if (animaleDomestico != null) {</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">            if (animaleDomestico) {</span>
+<span class="fc" id="L248">                parametri.add(&quot;animaleDomestico = TRUE&quot;);</span>
+            } else {
+<span class="fc" id="L250">                parametri.add(&quot;animaleDomestico = FALSE&quot;);</span>
+            }
+        }
+<span class="fc" id="L253">    }</span>
+
+    public void fumatoreStr(List&lt;String&gt; parametri, Boolean fumatore) {
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        if (fumatore != null) {</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">            if (fumatore) {</span>
+<span class="fc" id="L258">                parametri.add(&quot;fumatore = TRUE&quot;);</span>
+            } else {
+<span class="fc" id="L260">                parametri.add(&quot;fumatore = FALSE&quot;);</span>
+            }
+        }
+<span class="fc" id="L263">    }</span>
+
+    public void numeroOspitiStr(List&lt;String&gt; parametri, Integer numeroOspiti) {
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        if (numeroOspiti != null) {</span>
+<span class="fc" id="L267">            parametri.add(&quot;lettiMatrimoniali*2 + lettiSingoli = &quot; + numeroOspiti);</span>
+        }
+<span class="fc" id="L269">    }</span>
+
+    public void costoNotteStr(List&lt;String&gt; parametri, Double costoNotteMinimo, Double costoNotteMassimo) {
+<span class="fc bfc" id="L272" title="All 4 branches covered.">        if ((costoNotteMinimo != null) &amp;&amp; (costoNotteMassimo != null)) {</span>
+<span class="fc" id="L273">            parametri.add(&quot;costoNotte &gt;= &quot; + costoNotteMinimo + &quot; AND &quot; +</span>
+                    &quot;costoNotte &lt;= &quot; + costoNotteMassimo);
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        } else if (costoNotteMinimo != null) {</span>
+<span class="fc" id="L276">            parametri.add(&quot;costoNotte &gt;= &quot; + costoNotteMinimo);</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">        } else if (costoNotteMassimo != null) {</span>
+<span class="fc" id="L278">            parametri.add(&quot;costoNotte &lt;= &quot; + costoNotteMassimo);</span>
+        }
+<span class="fc" id="L280">    }</span>
+
+    public void scontoStr(List&lt;String&gt; parametri, Double scontoMinimo, Double scontoMassimo) {
+<span class="fc bfc" id="L283" title="All 4 branches covered.">        if ((scontoMinimo != null) &amp;&amp; (scontoMassimo != null)) {</span>
+<span class="fc" id="L284">            parametri.add(&quot;sconto &gt;= &quot; + scontoMinimo + &quot; AND &quot; +</span>
+                    &quot;sconto &lt;= &quot; + scontoMassimo);
+<span class="fc bfc" id="L286" title="All 2 branches covered.">        } else if (scontoMinimo != null) {</span>
+<span class="fc" id="L287">            parametri.add(&quot;sconto &gt;= &quot; + scontoMinimo);</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        } else if (scontoMassimo != null) {</span>
+<span class="fc" id="L289">            parametri.add(&quot;sconto &lt;= &quot; + scontoMassimo);</span>
+        }
+<span class="fc" id="L291">    }</span>
+
+    public String data(String NOT_EXISTS_prenotazioneStanza, Date dataIn, Date dataOut) {
+<span class="fc" id="L294">        NOT_EXISTS_prenotazioneStanza += &quot;(SELECT idPrenotazioneStanza FROM PrenotazioneStanza rs WHERE (&quot;;</span>
+<span class="fc" id="L295">        NOT_EXISTS_prenotazioneStanza += &quot;rs.ksStanza = s.idStanza AND &quot;;</span>
+<span class="fc" id="L296">        String inizio = &quot;&quot;;</span>
+<span class="fc" id="L297">        String fine = &quot;&quot;;</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">        if (dataIn != null) {</span>
+<span class="fc" id="L299">            inizio += &quot;rs.dataFine &gt;= &quot; + &quot;\'&quot; + dataIn + &quot;\'&quot;;</span>
+        }
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        if (dataOut != null) {</span>
+<span class="fc" id="L302">            fine += &quot;rs.dataInizio &lt;= &quot; + &quot;\'&quot; + dataOut + &quot;\'&quot;;</span>
+        }
+
+<span class="fc bfc" id="L305" title="All 4 branches covered.">        if ((!inizio.equals(&quot;&quot;)) &amp;&amp; (!fine.equals(&quot;&quot;))) {</span>
+<span class="fc" id="L306">            NOT_EXISTS_prenotazioneStanza += inizio + &quot; AND &quot; + fine + &quot;)&quot;;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        } else if (inizio.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L308">            NOT_EXISTS_prenotazioneStanza += fine + &quot;)&quot;;</span>
+        } else {
+<span class="fc" id="L310">            NOT_EXISTS_prenotazioneStanza += inizio + &quot;)&quot;;</span>
+        }
+<span class="fc" id="L312">        String statoCheck = &quot; AND rs.ksStato NOT IN (SELECT idStato FROM Stato st WHERE (st.stato = \&quot;ANNULLATA\&quot;) OR (st.stato = \&quot;ARCHIVIATA\&quot;) OR (st.stato = \&quot;RIMBORSATA\&quot;)))&quot;;</span>
+<span class="fc" id="L313">        return NOT_EXISTS_prenotazioneStanza + statoCheck;</span>
+    }
+
+    private Stanza createStanza(ResultSet rs) throws SQLException {
+<span class="fc" id="L317">        return new Stanza(rs.getInt(1), rs.getBoolean(2), rs.getBoolean(3),</span>
+<span class="fc" id="L318">                rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

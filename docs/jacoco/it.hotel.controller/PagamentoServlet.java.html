@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PagamentoServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller</a> &gt; <span class="el_source">PagamentoServlet.java</span></div><h1>PagamentoServlet.java</h1><pre class="source lang-java linenums">package it.hotel.controller;
+
+import it.hotel.controller.services.PrenotazioneStanzaService;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
+import it.hotel.Utility.payment.PaymentAdapter;
+import it.hotel.Utility.payment.PaymentStripe;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+
+@WebServlet(name = &quot;PagamentoServlet&quot;, value = &quot;/PagamentoServlet&quot;)
+<span class="nc" id="L14">public class PagamentoServlet extends CheckServlet</span>
+{
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if(contieneParametro(request,&quot;idPreno&quot;))</span>
+        {
+            try
+            {
+<span class="nc" id="L23">                int idPreno=Integer.parseInt(request.getParameter(&quot;idPreno&quot;));</span>
+<span class="nc" id="L24">                PrenotazioneStanzaService prenoService=new PrenotazioneStanzaService();</span>
+<span class="nc" id="L25">                PrenotazioneStanza preno=prenoService.getPrenotazioneById(idPreno);</span>
+<span class="nc" id="L26">                String domain=request.getContextPath();</span>
+<span class="nc" id="L27">                String link=&quot;http://localhost:8080&quot;+domain+&quot;/confirmationPage.jsp?success=&quot;;</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">                if(preno.getKsStato()==1)</span>
+                {
+<span class="nc" id="L30">                    PaymentAdapter pay=new PaymentStripe();</span>
+<span class="nc" id="L31">                    String urlPay=pay.makePayment(preno,link);</span>
+<span class="nc" id="L32">                    response.sendRedirect(urlPay);</span>
+<span class="nc" id="L33">                }</span>
+                else
+                {
+<span class="nc" id="L36">                    response.sendRedirect(link+&quot;false&quot;);</span>
+                }
+            }
+<span class="nc" id="L39">            catch (Exception e)</span>
+            {
+<span class="nc" id="L41">                response.getOutputStream().print(e.toString());</span>
+<span class="nc" id="L42">            }</span>
+        }
+        else
+        {
+<span class="nc" id="L46">            response.sendRedirect(&quot;./&quot;);</span>
+        }
+<span class="nc" id="L48">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

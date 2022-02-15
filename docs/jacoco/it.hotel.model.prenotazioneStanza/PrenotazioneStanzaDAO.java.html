@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrenotazioneStanzaDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.prenotazioneStanza</a> &gt; <span class="el_source">PrenotazioneStanzaDAO.java</span></div><h1>PrenotazioneStanzaDAO.java</h1><pre class="source lang-java linenums">package it.hotel.model.prenotazioneStanza;
+
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.*;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Fornisce l'accesso al database per {@link PrenotazioneStanza}.
+ */
+<span class="fc" id="L12">public class PrenotazioneStanzaDAO {</span>
+
+    public final static int UTENTE = 0;
+    public final static int STANZA = 1;
+    public final static int STATO = 2;
+
+    /**
+     * Inserisce nel database e ritorna un oggetto PrenotazioneStanza secondo i valori specificati
+     * e con stato &quot;IN ATTESA DI PAGAMENTO&quot;.
+     * @param con Connessione al database
+     * @param ksUtente Utente che effettua la prenotazione
+     * @param ksStato Stato della prenotazione
+     * @param ksStanza Stanza prenotata
+     * @param dataInizio Data di entrata
+     * @param dataFine Data di uscita
+     * @param costoNotte Costo notte
+     * @param sconto Sconto costo notte
+     * @return L'oggetto inserito nel database
+     * @exception PrenotazioneStanzaInsertException Non è possibile effettuare l'inserimento nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public int doInsert(Connection con, int ksUtente, int ksStato, int ksStanza, Date dataInizio, Date dataFine, double costoNotte, double sconto)
+            throws PrenotazioneStanzaInsertException, SQLException, PrenotazioneStanzaNotFoundException {
+
+        //se l'utente non ha altre prenotazioni 'IN ATTESA DI PAGAMENTO', inserisco la nuova prenotazione con questo stato;
+<span class="fc" id="L37">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L38">                (&quot;INSERT INTO PrenotazioneStanza (ksUtente, ksStanza,&quot; +</span>
+                                &quot; ksStato, dataInizio, dataFine, prezzoFinale, tokenStripe, tokenQr,&quot; +
+                                &quot; commenti, valutazione) SELECT ?,?,?,?,?,(SELECT DATEDIFF(?,?)*(?-?)),?,?,?,? FROM dual &quot; +
+                                &quot;WHERE NOT EXISTS (SELECT * FROM PrenotazioneStanza WHERE ksUtente = ? AND &quot; +
+                                &quot;ksStato = ?)&quot;,
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L44">        ps.setInt(1, ksUtente);</span>
+<span class="fc" id="L45">        ps.setInt(2, ksStanza);</span>
+<span class="fc" id="L46">        ps.setInt(3, ksStato);</span>
+<span class="fc" id="L47">        ps.setDate(4, dataInizio);</span>
+<span class="fc" id="L48">        ps.setDate(5, dataFine);</span>
+<span class="fc" id="L49">        ps.setDate(6, dataFine);</span>
+<span class="fc" id="L50">        ps.setDate(7, dataInizio);</span>
+<span class="fc" id="L51">        ps.setDouble(8, costoNotte);</span>
+<span class="fc" id="L52">        ps.setDouble(9, sconto);</span>
+<span class="fc" id="L53">        ps.setString(10, null);</span>
+<span class="fc" id="L54">        ps.setString(11, null);</span>
+<span class="fc" id="L55">        ps.setString(12, null);</span>
+<span class="fc" id="L56">        ps.setInt(13, -1);</span>
+<span class="fc" id="L57">        ps.setInt(14, ksUtente);</span>
+<span class="fc" id="L58">        ps.setInt(15, ksStato);</span>
+<span class="fc" id="L59">        ps.executeUpdate();</span>
+<span class="fc" id="L60">        ResultSet rs = ps.getGeneratedKeys();</span>
+        int id;
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L63">            id = rs.getInt(1);</span>
+        } else {
+<span class="fc" id="L65">            throw new PrenotazioneStanzaInsertException();</span>
+        }
+<span class="fc" id="L67">        return id;</span>
+
+    }
+
+    /**
+     * Inserisce nell'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato il relativo Token Stripe.
+     * @param con Connessione al database
+     * @param idPrenotazioneStanza L'identificativo dell'oggetto da trovare nel database
+     * @param tokenStripe Il Token Stripe da inserire nell'oggetto
+     * @throws PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public void insertTokenStripe(Connection con, int idPrenotazioneStanza, String tokenStripe) throws PrenotazioneStanzaNotFoundException, SQLException {
+<span class="fc" id="L80">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L81">                (&quot;UPDATE PrenotazioneStanza SET tokenStripe=? WHERE idPrenotazioneStanza=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L83">        ps.setString(1, tokenStripe);</span>
+<span class="fc" id="L84">        ps.setInt(2, idPrenotazioneStanza);</span>
+
+<span class="fc" id="L86">        int rs = ps.executeUpdate();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (rs==0) {</span>
+<span class="fc" id="L88">            throw new PrenotazioneStanzaNotFoundException();</span>
+        }
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * Inserisce nell'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato il relativo Token Qr Code.
+     * @param con Connessione al database
+     * @param idPrenotazione L'identificativo dell'oggetto da trovare nel database
+     * @param tokenQr Il Token Qr Code da inserire nell'oggetto
+     * @throws PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public void doInsertTokenQrCode(Connection con, int idPrenotazione, String tokenQr) throws PrenotazioneStanzaNotFoundException, SQLException {
+<span class="fc" id="L101">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L102">                (&quot;UPDATE PrenotazioneStanza SET tokenQr=? WHERE idPrenotazioneStanza=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L104">        ps.setString(1, tokenQr);</span>
+<span class="fc" id="L105">        ps.setInt(2, idPrenotazione);</span>
+
+<span class="fc" id="L107">        int rs = ps.executeUpdate();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (rs==0) {</span>
+<span class="fc" id="L109">            throw new PrenotazioneStanzaNotFoundException();</span>
+        }
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Recupera l'oggetto PrenotazioneStanza trovato nel database secondo il valore specificato.
+     * @param con Connessione al database
+     * @param idPrenotazioneStanza L'identificativo dell'oggetto da recuperare dal database
+     * @return L'oggetto trovato nel database
+     * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public PrenotazioneStanza doSelectById(Connection con, int idPrenotazioneStanza)
+            throws PrenotazioneStanzaNotFoundException, SQLException {
+<span class="fc" id="L123">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L124">                (&quot;SELECT * FROM PrenotazioneStanza WHERE idPrenotazioneStanza=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L126">        ps.setInt(1, idPrenotazioneStanza);</span>
+<span class="fc" id="L127">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L129">            return createPrenotazioneStanza(rs);</span>
+        } else {
+<span class="fc" id="L131">            throw new PrenotazioneStanzaNotFoundException();</span>
+        }
+    }
+
+    /**
+     * Recupera gli oggetti PrenotazioneStanza trovati nel database secondo i valori specificati.
+     * @param con Connessione al database
+     * @param value Il valore identificativo degli oggetti da recuperare dal database
+     * @param type Il tipo del valore identificativo
+     * @return Gli oggetti trovati nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;PrenotazioneStanza&gt; doSelectBy(Connection con, int value, int type) throws SQLException {
+<span class="fc" id="L144">        ArrayList&lt;PrenotazioneStanza&gt; prenotazioniStanza = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L145">        String str = &quot;&quot;;</span>
+<span class="fc bfc" id="L146" title="All 4 branches covered.">        switch (type) {</span>
+            case UTENTE:
+<span class="fc" id="L148">                str = &quot;SELECT * FROM PrenotazioneStanza WHERE ksUtente=?&quot;;</span>
+<span class="fc" id="L149">                break;</span>
+            case STANZA:
+<span class="fc" id="L151">                str = &quot;SELECT * FROM PrenotazioneStanza WHERE ksStanza=?&quot;;</span>
+<span class="fc" id="L152">                break;</span>
+            case STATO:
+<span class="fc" id="L154">                str = &quot;SELECT * FROM PrenotazioneStanza WHERE ksStato=?&quot;;</span>
+<span class="fc" id="L155">                break;</span>
+<span class="fc" id="L156">            default: return prenotazioniStanza;</span>
+        }
+<span class="fc" id="L158">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L159">                (str, Statement.RETURN_GENERATED_KEYS);</span>
+<span class="fc" id="L160">        ps.setInt(1, value);</span>
+
+<span class="fc" id="L162">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        while (rs.next()) {</span>
+<span class="fc" id="L164">            prenotazioniStanza.add(createPrenotazioneStanza(rs));</span>
+        }
+<span class="fc" id="L166">        return prenotazioniStanza;</span>
+    }
+
+    /**
+     * Recupera tutti gli oggetti PrenotazioneStanza presenti nel database.
+     * @param con Connessione al database
+     * @return Le prenotazioni stanza presenti nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;PrenotazioneStanza&gt; doGetAll(Connection con) throws SQLException {
+<span class="fc" id="L176">        ArrayList&lt;PrenotazioneStanza&gt; prenotazioni = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L177">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L178">                (&quot;SELECT * FROM Prenotazionestanza&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+
+<span class="fc" id="L181">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        while (rs.next()) {</span>
+<span class="fc" id="L183">            prenotazioni.add(createPrenotazioneStanza(rs));</span>
+        }
+<span class="fc" id="L185">        return prenotazioni;</span>
+    }
+
+    /**
+     * Modifica lo stato dell'oggetto PrenotazioneStanza trovato nel database secondo i valori specificati.
+     * @param con Connessione al database
+     * @param idPrenotazioneStanza Identificativo della prenotazione stanza da modificare
+     * @param stato Stato da inserire nell'oggetto trovato
+     * @exception PrenotazioneStanzaNotFoundException L'oggetto non è presente nel database
+     * @throws RuntimeException Errore nella comunicazione con il database
+     */
+    public void doChangeStato(Connection con, int idPrenotazioneStanza, int stato) throws PrenotazioneStanzaNotFoundException, SQLException {
+<span class="fc" id="L197">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L198">                (&quot;UPDATE PrenotazioneStanza SET ksStato=? WHERE idPrenotazioneStanza=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L200">        ps.setInt(1, stato);</span>
+<span class="fc" id="L201">        ps.setInt(2, idPrenotazioneStanza);</span>
+<span class="fc" id="L202">        int n=ps.executeUpdate();</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (n==0) {</span>
+<span class="fc" id="L204">            throw new PrenotazioneStanzaNotFoundException();</span>
+        }
+<span class="fc" id="L206">    }</span>
+
+    /**
+     * Restituisce un informazione sulla rimborsabilità dell'oggetto PrenotazioneStanza specificato.
+     * @param con Connessione al database
+     * @param idPrenotazione Identificativo della prenotazione stanza cercata
+     * @param confermata Identificativo dello stato &quot;CONFERMATA&quot;
+     * @return Rimborsabilità della prenotazione
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public boolean isRimborsabile(Connection con, int idPrenotazione, int confermata) throws SQLException {
+<span class="fc" id="L217">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L218">                (&quot;SELECT count(*) FROM Prenotazionestanza WHERE idPrenotazioneStanza=? AND ksStato=? &quot; +</span>
+                                &quot;AND dataInizio &gt;= (CURDATE() + INTERVAL 14 DAY)&quot;,
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L221">        ps.setInt(1, idPrenotazione);</span>
+<span class="fc" id="L222">        ps.setInt(2, confermata);</span>
+<span class="fc" id="L223">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L224" title="All 4 branches covered.">        if (rs.next() &amp;&amp; rs.getInt(1)==1) {</span>
+<span class="fc" id="L225">            return true;</span>
+        }
+<span class="fc" id="L227">        return false;</span>
+    }
+
+    private PrenotazioneStanza createPrenotazioneStanza(ResultSet rs) throws SQLException {
+<span class="fc" id="L231">        return new PrenotazioneStanza(rs.getInt(1), rs.getInt(2), rs.getInt(3),</span>
+<span class="fc" id="L232">                rs.getInt(4), rs.getDate(5), rs.getDate(6), rs.getDouble(7), rs.getString(8),</span>
+<span class="fc" id="L233">                rs.getString(9), rs.getString(10), rs.getInt(11));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

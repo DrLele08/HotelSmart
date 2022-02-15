@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrenotazioneServizioDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.prenotazioneServizio</a> &gt; <span class="el_source">PrenotazioneServizioDAO.java</span></div><h1>PrenotazioneServizioDAO.java</h1><pre class="source lang-java linenums">package it.hotel.model.prenotazioneServizio;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Fornisce l'accesso al database per {@link PrenotazioneServizio}.
+ */
+<span class="fc" id="L10">public class PrenotazioneServizioDAO {</span>
+
+    /**
+     * Inserisce nel database e ritorno un oggetto PrenotazioneServizio secondo i valori specificati.
+     * @param con Connessione al database
+     * @param ksPrenotazioneStanza Identificativo della prenotazione stanza associata
+     * @param ksServizio Identificativo del servizio
+     * @param numPersone Numero delle persone
+     * @param dataPrenotazioneServizio Data della prenotazione del servizio
+     * @return L'oggetto inserito nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public PrenotazioneServizio doInsert(Connection con, int ksPrenotazioneStanza, int ksServizio, int numPersone, Date dataPrenotazioneServizio) throws SQLException {
+<span class="fc" id="L23">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L24">                (&quot;INSERT INTO PrenotazioneServizio (ksPrenotazioneStanza, ksServizio, numPersone, &quot; +</span>
+                                &quot;dataPrenotazioneServizio) VALUES(?,?,?,?)&quot;,
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L27">        ps.setInt(1, ksPrenotazioneStanza);</span>
+<span class="fc" id="L28">        ps.setInt(2, ksServizio);</span>
+<span class="fc" id="L29">        ps.setInt(3, numPersone);</span>
+<span class="fc" id="L30">        ps.setDate(4, dataPrenotazioneServizio);</span>
+<span class="fc" id="L31">        ps.executeUpdate();</span>
+        int id;
+<span class="fc" id="L33">        ResultSet rs = ps.getGeneratedKeys();</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L35">            id = rs.getInt(1);</span>
+        } else {
+<span class="fc" id="L37">            return null;</span>
+        }
+<span class="fc" id="L39">        return new PrenotazioneServizio(id, ksPrenotazioneStanza, ksServizio, numPersone, dataPrenotazioneServizio);</span>
+    }
+
+    /**
+     * Recupera gli oggetti PrenotazioneServizio presenti nel database secondo il valore specificato.
+     * @param con Connessione al database
+     * @param idUtente Identificativo dell'utente
+     * @return Prenotazioni servizio trovate nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;PrenotazioneServizio&gt; doSelectByUser(Connection con, int idUtente) throws SQLException {
+<span class="fc" id="L50">        ArrayList&lt;PrenotazioneServizio&gt; prenotazioni = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L52">                (&quot;SELECT pser.* FROM PrenotazioneServizio as pser, PrenotazioneStanza as psta WHERE &quot; +</span>
+                                &quot;pser.ksPrenotazioneStanza = psta.idPrenotazioneStanza &quot; +
+                                &quot;AND psta.ksUtente = ?&quot;,
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L56">        ps.setInt(1, idUtente);</span>
+<span class="fc" id="L57">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        while(rs.next()) {</span>
+<span class="fc" id="L59">            prenotazioni.add(createPrenotazioneServizio(rs));</span>
+        };
+<span class="fc" id="L61">        return prenotazioni;</span>
+    }
+
+    /**
+     * Elimina un oggetto PrenotazioneServizio specificato dal database.
+     * @param con Connessione al database
+     * @param idPrenotazione Identificativo della prenotazione da eliminare
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public void doDelete(Connection con, int idPrenotazione) throws SQLException {
+<span class="fc" id="L71">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L72">                (&quot;DELETE FROM PrenotazioneServizio WHERE idPrenotazioneServizio=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L74">        ps.setInt(1, idPrenotazione);</span>
+<span class="fc" id="L75">        ps.executeUpdate();</span>
+<span class="fc" id="L76">    }</span>
+
+    private PrenotazioneServizio createPrenotazioneServizio(ResultSet rs) throws SQLException {
+<span class="fc" id="L79">        return new PrenotazioneServizio(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

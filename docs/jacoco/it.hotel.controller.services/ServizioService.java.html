@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServizioService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.services</a> &gt; <span class="el_source">ServizioService.java</span></div><h1>ServizioService.java</h1><pre class="source lang-java linenums">package it.hotel.controller.services;
+
+import it.hotel.Utility.Connect;
+import it.hotel.model.servizio.Servizio;
+import it.hotel.model.servizio.ServizioDAO;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * Fornisce metodi di utilizzo del database per {@link Servizio}.
+ */
+public class ServizioService {
+
+    /**
+     * Costruisce un oggetto ServizioService.
+     */
+<span class="fc" id="L19">    public ServizioService() {}</span>
+
+    /**
+     * Costruisce un oggetto ServizioDAO.
+     * @return L'oggetto ServizioDAO costruito.
+     */
+    public ServizioDAO createDAO()
+    {
+<span class="fc" id="L27">        return new ServizioDAO();</span>
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+<span class="nc" id="L36">        return Connect.getConnection();</span>
+    }
+
+    /**
+     * Inserisce un servizio secondo i valori specificati.
+     * @param nome Nome
+     * @param descrizione Descrizione
+     * @param foto Percorso foto
+     * @param costo Costo
+     * @param limitePosti Posti disponibili
+     */
+    public void createServizio(String nome, String descrizione, String foto, double costo, int limitePosti) {
+        Connection con;
+        try {
+<span class="fc" id="L50">            con = getConnection();</span>
+<span class="fc" id="L51">            ServizioDAO dao = createDAO();</span>
+<span class="fc" id="L52">            dao.doInsert(con, nome, descrizione, foto, costo, limitePosti);</span>
+<span class="fc" id="L53">        } catch (SQLException e) {</span>
+<span class="fc" id="L54">            throw new RuntimeException();</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Aggiorna un servizio secondo i valori specificati.
+     * @param idServizio Identificativo
+     * @param nome Nome
+     * @param descrizione Descrizione
+     * @param foto Percorso foto
+     * @param costo Costo
+     * @param limitePosti Posti disponibili
+     */
+    public void updateServizio(int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) {
+        Connection con;
+        try {
+<span class="fc" id="L70">            con = getConnection();</span>
+<span class="fc" id="L71">            ServizioDAO dao = createDAO();</span>
+<span class="fc" id="L72">            dao.doUpdate(con, idServizio, nome, descrizione, foto, costo, limitePosti);</span>
+<span class="fc" id="L73">        } catch (SQLException e) {</span>
+<span class="fc" id="L74">            throw new RuntimeException();</span>
+<span class="fc" id="L75">        }</span>
+<span class="fc" id="L76">    }</span>
+
+    /**
+     * Recupera tutti i servizi presenti nel database.
+     * @return Lista contenente i servizi trovati
+     */
+    public List&lt;Servizio&gt; getAll() {
+        Connection con;
+        try {
+<span class="fc" id="L85">            con = getConnection();</span>
+<span class="fc" id="L86">            ServizioDAO dao = createDAO();</span>
+<span class="fc" id="L87">            return dao.getServizi(con);</span>
+<span class="fc" id="L88">        } catch (SQLException e) {</span>
+<span class="fc" id="L89">            throw new RuntimeException();</span>
+        }
+    }
+
+    /**
+     * Recupera un servizio dato un id.
+     * @param idServizio Identificativo del servizio.
+     * @return Il servizio trovato.
+     */
+    public Servizio getById(int idServizio) {
+        Connection con;
+        try {
+<span class="fc" id="L101">            con = getConnection();</span>
+<span class="fc" id="L102">            ServizioDAO dao = createDAO();</span>
+<span class="fc" id="L103">            return dao.doSelectById(con, idServizio);</span>
+<span class="fc" id="L104">        } catch (SQLException e) {</span>
+<span class="fc" id="L105">            throw new RuntimeException();</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

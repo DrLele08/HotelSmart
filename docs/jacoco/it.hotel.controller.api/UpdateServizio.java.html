@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateServizio.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.api</a> &gt; <span class="el_source">UpdateServizio.java</span></div><h1>UpdateServizio.java</h1><pre class="source lang-java linenums">package it.hotel.controller.api;
+
+import it.hotel.controller.CheckServlet;
+import it.hotel.controller.services.ServizioService;
+import it.hotel.controller.services.UtenteService;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
+import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(name = &quot;UpdateServizio&quot;, value = &quot;/api/UpdateServizio&quot;)
+<span class="fc" id="L17">public class UpdateServizio extends CheckServlet</span>
+{
+    /**
+     * Ritorna un utente service
+     * @see UtenteService
+     */
+    public UtenteService getUtenteService()
+    {
+<span class="fc" id="L25">        return new UtenteService();</span>
+    }
+
+    /**
+     * Ritorna servizio service
+     * @see ServizioService
+     */
+    public ServizioService getServizioService()
+    {
+<span class="fc" id="L34">        return new ServizioService();</span>
+    }
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc" id="L39">        JSONObject obj=new JSONObject();</span>
+<span class="fc bfc" id="L40" title="All 6 branches covered.">        if(contieneParametro(request,&quot;idUtente&quot;) &amp;&amp; contieneParametro(request,&quot;Token&quot;) &amp;&amp; contieneParametro(request,&quot;idServizio&quot;)</span>
+<span class="fc bfc" id="L41" title="All 4 branches covered.">                    &amp;&amp; contieneParametro(request,&quot;Nome&quot;) &amp;&amp; contieneParametro(request,&quot;Descrizione&quot;)</span>
+<span class="fc bfc" id="L42" title="All 4 branches covered.">                        &amp;&amp; contieneParametro(request,&quot;Prezzo&quot;) &amp;&amp; contieneParametro(request,&quot;Posti&quot;))</span>
+        {
+            try
+            {
+<span class="fc" id="L46">                int idUtente=Integer.parseInt(request.getParameter(&quot;idUtente&quot;));</span>
+<span class="fc" id="L47">                String token=request.getParameter(&quot;Token&quot;);</span>
+<span class="fc" id="L48">                UtenteService userService=getUtenteService();</span>
+<span class="fc" id="L49">                Utente user=userService.doLogin(idUtente,token);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">                if(user.getRuolo()==1)</span>
+                {
+<span class="fc" id="L52">                    int idServizio=Integer.parseInt(request.getParameter(&quot;idServizio&quot;));</span>
+<span class="fc" id="L53">                    String nome=request.getParameter(&quot;Nome&quot;);</span>
+<span class="fc" id="L54">                    String descrizione=request.getParameter(&quot;Descrizione&quot;);</span>
+<span class="fc" id="L55">                    String foto=&quot;Servizi/default.jpg&quot;;</span>
+<span class="fc" id="L56">                    double prezzo=Double.parseDouble(request.getParameter(&quot;Prezzo&quot;));</span>
+<span class="fc" id="L57">                    int posti=Integer.parseInt(request.getParameter(&quot;Posti&quot;));</span>
+<span class="fc" id="L58">                    ServizioService servizioService=getServizioService();</span>
+<span class="fc" id="L59">                    servizioService.updateServizio(idServizio,nome,descrizione,foto,prezzo,posti);</span>
+<span class="fc" id="L60">                    obj.put(&quot;Ris&quot;,1);</span>
+<span class="fc" id="L61">                    obj.put(&quot;Mess&quot;,&quot;Fatto&quot;);</span>
+<span class="fc" id="L62">                    response.getOutputStream().print(obj.toString());</span>
+<span class="fc" id="L63">                }</span>
+                else
+                {
+<span class="fc" id="L66">                    obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L67">                    obj.put(&quot;Mess&quot;,&quot;Non hai i permessi&quot;);</span>
+<span class="fc" id="L68">                    response.getOutputStream().print(obj.toString());</span>
+                }
+            }
+<span class="fc" id="L71">            catch(NumberFormatException e)</span>
+            {
+<span class="fc" id="L73">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L74">                obj.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri correttamente&quot;);</span>
+<span class="fc" id="L75">                response.getOutputStream().print(obj.toString());</span>
+            }
+<span class="fc" id="L77">            catch (UtenteNotFoundException e)</span>
+            {
+<span class="fc" id="L79">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L80">                obj.put(&quot;Mess&quot;,&quot;Utente inesistente&quot;);</span>
+<span class="fc" id="L81">                response.getOutputStream().print(obj.toString());</span>
+<span class="fc" id="L82">            }</span>
+        }
+        else
+        {
+<span class="fc" id="L86">            obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L87">            obj.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri&quot;);</span>
+<span class="fc" id="L88">            response.getOutputStream().print(obj.toString());</span>
+        }
+<span class="fc" id="L90">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

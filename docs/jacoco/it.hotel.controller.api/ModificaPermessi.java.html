@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModificaPermessi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.api</a> &gt; <span class="el_source">ModificaPermessi.java</span></div><h1>ModificaPermessi.java</h1><pre class="source lang-java linenums">package it.hotel.controller.api;
+
+import it.hotel.controller.CheckServlet;
+import it.hotel.controller.services.UtenteService;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
+import org.json.JSONObject;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+
+/**
+ * &lt;h1&gt;Modifica Anagrafica Utente&lt;/h1&gt;
+ * API per modificare i permessi di un utente
+ * @author Sais Raffaele
+ * @version 1.0
+ * @since 2022-01-28
+ */
+@WebServlet(name = &quot;ModificaPermessi&quot;, value = &quot;/api/ModificaPermessi&quot;)
+<span class="fc" id="L22">public class ModificaPermessi extends CheckServlet</span>
+{
+    public UtenteService getUtenteService()
+    {
+<span class="fc" id="L26">        return new UtenteService();</span>
+    }
+
+    /**
+     * Richiesta che riceve il nuovo ruolo dell'utente selezionato
+     * e un token per verificare che l'utente che ha generato la richiesta abbia i permessi
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc" id="L40">        JSONObject obj=new JSONObject();</span>
+<span class="fc bfc" id="L41" title="All 6 branches covered.">        if(contieneParametro(request,&quot;idUtente&quot;) &amp;&amp; contieneParametro(request,&quot;Token&quot;) &amp;&amp; contieneParametro(request,&quot;idUtenteCambio&quot;)</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                        &amp;&amp; contieneParametro(request,&quot;idRuolo&quot;))</span>
+        {
+            try
+            {
+<span class="fc" id="L46">                int idUtente=Integer.parseInt(request.getParameter(&quot;idUtente&quot;));</span>
+<span class="fc" id="L47">                String tokenAuth=request.getParameter(&quot;Token&quot;);</span>
+<span class="fc" id="L48">                int idUtenteCambio=Integer.parseInt(request.getParameter(&quot;idUtenteCambio&quot;));</span>
+<span class="fc" id="L49">                int newRuolo=Integer.parseInt(request.getParameter(&quot;idRuolo&quot;));</span>
+<span class="fc" id="L50">                UtenteService userService=getUtenteService();</span>
+<span class="fc" id="L51">                Utente user=userService.doLogin(idUtente,tokenAuth);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                if(user.getRuolo()==1)</span>
+                {
+<span class="fc" id="L54">                    userService.editRuoloById(idUtenteCambio,newRuolo);</span>
+<span class="fc" id="L55">                    obj.put(&quot;Ris&quot;,1);</span>
+<span class="fc" id="L56">                    obj.put(&quot;Mess&quot;,&quot;Fatto&quot;);</span>
+<span class="fc" id="L57">                    response.getOutputStream().print(obj.toString());</span>
+                }
+                else
+                {
+<span class="fc" id="L61">                    obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L62">                    obj.put(&quot;Mess&quot;,&quot;Non hai i permessi&quot;);</span>
+<span class="fc" id="L63">                    response.getOutputStream().print(obj.toString());</span>
+                }
+            }
+<span class="fc" id="L66">            catch(NumberFormatException e)</span>
+            {
+<span class="fc" id="L68">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L69">                obj.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri correttamente&quot;);</span>
+<span class="fc" id="L70">                response.getOutputStream().print(obj.toString());</span>
+            }
+<span class="fc" id="L72">            catch (UtenteNotFoundException e)</span>
+            {
+<span class="fc" id="L74">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L75">                obj.put(&quot;Mess&quot;,&quot;Non hai i permessi&quot;);</span>
+<span class="fc" id="L76">                response.getOutputStream().print(obj.toString());</span>
+<span class="fc" id="L77">            }</span>
+        }
+        else
+        {
+<span class="fc" id="L81">            obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L82">            obj.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri&quot;);</span>
+<span class="fc" id="L83">            response.getOutputStream().print(obj.toString());</span>
+        }
+<span class="fc" id="L85">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

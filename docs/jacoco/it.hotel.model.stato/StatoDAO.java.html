@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatoDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.stato</a> &gt; <span class="el_source">StatoDAO.java</span></div><h1>StatoDAO.java</h1><pre class="source lang-java linenums">package it.hotel.model.stato;
+
+import it.hotel.model.stato.statoExceptions.*;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Fornisce l'accesso al database per {@link Stato}.
+ */
+<span class="fc" id="L12">public class StatoDAO</span>
+{
+
+    /**
+     * Inserisce nel database l'oggetto Stato specificato.
+     * @param con Connessione al database
+     * @param stato Stato da inserire nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public void doInsert(Connection con, Stato stato) throws SQLException
+    {
+<span class="nc" id="L23">        PreparedStatement ps = con.prepareStatement</span>
+<span class="nc" id="L24">                (&quot;INSERT INTO Stato (stato) VALUES(?)&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="nc" id="L26">        ps.setString(1, stato.getStato());</span>
+<span class="nc" id="L27">        ps.executeUpdate();</span>
+<span class="nc" id="L28">    }</span>
+
+    /**
+     * Recupera l'oggetto Stato trovato nel database secondo la stringa specificata.
+     * @param con Connessione al database
+     * @param statoStr Stringa che identifica lo stato cercato
+     * @return Lo stato trovato nel database
+     * @throws StatoNotFoundException Lo stato specificato non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Stato doSelectByStato(Connection con, String statoStr) throws StatoNotFoundException, SQLException {
+<span class="fc" id="L39">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L40">                (&quot;SELECT * FROM Stato WHERE stato=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L42">        ps.setString(1, statoStr);</span>
+<span class="fc" id="L43">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L45">            return createStato(rs);</span>
+        } else {
+<span class="fc" id="L47">            throw new StatoNotFoundException();</span>
+        }
+    }
+
+
+    /**
+     * Recupera l'oggetto Stato trovato nel database secondo l'id specificato.
+     * @param con Connessione al database
+     * @param idStato Id che identifica lo stato cercato
+     * @return Lo stato trovato nel database
+     * @throws StatoNotFoundException Lo stato specificato non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Stato doSelectById(Connection con, int idStato) throws StatoNotFoundException, SQLException {
+        Stato stato;
+<span class="fc" id="L62">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L63">                (&quot;SELECT * FROM Stato WHERE idStato=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L65">        ps.setInt(1, idStato);</span>
+<span class="fc" id="L66">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L68">            stato = createStato(rs);</span>
+        } else {
+<span class="fc" id="L70">            throw new StatoNotFoundException();</span>
+        }
+<span class="fc" id="L72">        return stato;</span>
+    }
+
+    /**
+     * Recupera tutti gli oggetti Stato trovati nel database.
+     * @param con Connessione al database
+     * @return Gli stati trovati nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;Stato&gt; doGetAll(Connection con) throws SQLException
+    {
+<span class="fc" id="L83">        ArrayList&lt;Stato&gt; ruoli = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L84">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L85">                (&quot;SELECT * FROM Stato&quot;);</span>
+<span class="fc" id="L86">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        while (rs.next())</span>
+        {
+<span class="fc" id="L89">            ruoli.add(createStato(rs));</span>
+        }
+<span class="fc" id="L91">        return ruoli;</span>
+    }
+
+    public Stato createStato (ResultSet rs) throws SQLException {
+<span class="fc" id="L95">        return new Stato(rs.getInt(1), rs.getString(2));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ruolo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.ruolo</a> &gt; <span class="el_source">Ruolo.java</span></div><h1>Ruolo.java</h1><pre class="source lang-java linenums">package it.hotel.model.ruolo;
+
+import it.hotel.model.utente.Utente;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Rappresenta il Ruolo di un {@link Utente}.
+ */
+public class Ruolo {
+
+    private int idRuolo;
+    private String ruolo;
+
+    /**
+     * Costruisce un Ruolo con identificativo e ruolo specificati.
+     * @param idRuolo Identificativo
+     * @param ruolo Ruolo
+     */
+<span class="fc" id="L21">    public Ruolo(int idRuolo, String ruolo) {</span>
+<span class="fc" id="L22">        this.idRuolo = idRuolo;</span>
+<span class="fc" id="L23">        this.ruolo = ruolo;</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Restituisce l'identificativo dell'oggetto Ruolo.
+     * @return Identificativo
+     */
+    public int getIdRuolo() {
+<span class="fc" id="L31">        return idRuolo;</span>
+    }
+
+    /**
+     * Restituisce il ruolo che l'oggetto Ruolo rappresenta
+     * @return Ruolo
+     */
+    public String getRuolo() {
+<span class="fc" id="L39">        return ruolo;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

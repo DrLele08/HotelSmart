@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegistrazioneServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller</a> &gt; <span class="el_source">RegistrazioneServlet.java</span></div><h1>RegistrazioneServlet.java</h1><pre class="source lang-java linenums">package it.hotel.controller;
+
+import it.hotel.controller.services.UtenteService;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
+import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
+import org.json.JSONObject;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+
+
+@WebServlet(name = &quot;Registrazione&quot;, value = &quot;/Registrazione&quot;)
+<span class="fc" id="L18">public class RegistrazioneServlet extends CheckServlet</span>
+{
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if(canOpen(it.hotel.Utility.Utilita.CHECK_SIGNUP))</span>
+        {
+            RequestDispatcher rd;
+<span class="fc" id="L26">            HttpSession session = request.getSession(true);</span>
+<span class="fc" id="L27">            Utente u = (Utente) session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            if(u == null)</span>
+<span class="fc" id="L29">                rd=request.getRequestDispatcher(&quot;/WEB-INF/views/Registrazione.jsp&quot;);</span>
+            else
+<span class="fc" id="L31">                rd=request.getRequestDispatcher(&quot;index.jsp&quot;);</span>
+<span class="fc" id="L32">            rd.forward(request, response);</span>
+<span class="fc" id="L33">        }</span>
+        else
+        {
+<span class="fc" id="L36">            response.sendRedirect(&quot;./ServiceNA.html&quot;);</span>
+        }
+<span class="fc" id="L38">    }</span>
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="nc" id="L43">        String dataNascita = request.getParameter(&quot;textDataNascita&quot;);</span>
+<span class="nc" id="L44">        String nome = request.getParameter(&quot;textNome&quot;);</span>
+<span class="nc" id="L45">        String cognome = request.getParameter(&quot;textCognome&quot;);</span>
+<span class="nc" id="L46">        String codiceFiscale = request.getParameter(&quot;textCodiceFiscale&quot;);</span>
+<span class="nc" id="L47">        String indirizzoEmail = request.getParameter(&quot;textEmail&quot;);</span>
+<span class="nc" id="L48">        String password = request.getParameter(&quot;textPwd&quot;);</span>
+<span class="nc" id="L49">        JSONObject obj=new JSONObject();</span>
+<span class="nc" id="L50">        UtenteService service = new UtenteService();</span>
+        try
+        {
+<span class="nc" id="L53">            service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail, it.hotel.Utility.Utilita.dataConverter(dataNascita),password);</span>
+<span class="nc" id="L54">            obj.put(&quot;Ris&quot;,1);</span>
+<span class="nc" id="L55">            obj.put(&quot;Mess&quot;,&quot;Registrazione effettuata con successo&quot;);</span>
+<span class="nc" id="L56">            response.getOutputStream().print(obj.toString());</span>
+        }
+<span class="nc" id="L58">        catch (ParseException | SQLException e)</span>
+        {
+<span class="nc" id="L60">            obj.put(&quot;Ris&quot;,0);</span>
+<span class="nc" id="L61">            obj.put(&quot;Mess&quot;,&quot;Si è verificato un errore, riprovare piu' tardi o contattare l'assistenza&quot;);</span>
+<span class="nc" id="L62">            response.getOutputStream().print(obj.toString());</span>
+        }
+<span class="nc" id="L64">        catch (PasswordNotValidException e)</span>
+        {
+<span class="nc" id="L66">            obj.put(&quot;Ris&quot;,0);</span>
+<span class="nc" id="L67">            obj.put(&quot;Mess&quot;,&quot;La password non e' nel formato corretto&quot;);</span>
+<span class="nc" id="L68">            response.getOutputStream().print(obj.toString());</span>
+        }
+<span class="nc" id="L70">        catch (EmailAlreadyExistingException e)</span>
+        {
+<span class="nc" id="L72">            obj.put(&quot;Ris&quot;,0);</span>
+<span class="nc" id="L73">            obj.put(&quot;Mess&quot;,&quot;Email gia' esistente&quot;);</span>
+<span class="nc" id="L74">            response.getOutputStream().print(obj.toString());</span>
+<span class="nc" id="L75">        }</span>
+
+<span class="nc" id="L77">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

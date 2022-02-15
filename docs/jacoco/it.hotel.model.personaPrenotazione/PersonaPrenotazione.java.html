@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonaPrenotazione.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.personaPrenotazione</a> &gt; <span class="el_source">PersonaPrenotazione.java</span></div><h1>PersonaPrenotazione.java</h1><pre class="source lang-java linenums">package it.hotel.model.personaPrenotazione;
+
+/**
+ * Rappresenta una PersonaPrenotazione e fornisce metodi per il recupero dello stato.
+ */
+public class PersonaPrenotazione {
+
+    private int idPersonaPrenotazione;
+    private int idPersonaAggiuntiva;
+    private int idPrenotazioneStanza;
+
+    /**
+     * Costruisce una PersonaPrenotazione con i valori specificati.
+     * @param idPersonaPrenotazione Identificativo della PersonaPrenotazione
+     * @param idPersonaAggiuntiva Identificativo della PersonaAggiuntiva
+     * @param idPrenotazioneStanza Identificativo della PrenotazioneStanza
+     */
+<span class="nc" id="L18">    public PersonaPrenotazione(int idPersonaPrenotazione, int idPersonaAggiuntiva, int idPrenotazioneStanza) {</span>
+<span class="nc" id="L19">        this.idPersonaPrenotazione = idPersonaPrenotazione;</span>
+<span class="nc" id="L20">        this.idPersonaAggiuntiva = idPersonaAggiuntiva;</span>
+<span class="nc" id="L21">        this.idPrenotazioneStanza = idPrenotazioneStanza;</span>
+<span class="nc" id="L22">    }</span>
+
+    /**
+     * @return Identificativo della PersonaPrenotazione
+     */
+    public int getIdPersonaPrenotazione() {
+<span class="nc" id="L28">        return idPersonaPrenotazione;</span>
+    }
+
+    /**
+     * @return Identificativo della PersonaAggiuntiva
+     */
+    public int getIdPersonaAggiuntiva() {
+<span class="nc" id="L35">        return idPersonaAggiuntiva;</span>
+    }
+
+    /**
+     * @return Identificativo della PrenotazioneStanza
+     */
+    public int getIdPrenotazioneStanza() {
+<span class="nc" id="L42">        return idPrenotazioneStanza;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

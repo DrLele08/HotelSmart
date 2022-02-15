@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrenotazioneServizio.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.prenotazioneServizio</a> &gt; <span class="el_source">PrenotazioneServizio.java</span></div><h1>PrenotazioneServizio.java</h1><pre class="source lang-java linenums">package it.hotel.model.prenotazioneServizio;
+
+import java.sql.Date;
+
+/**
+ * Rappresenta una PrenotazioneServizio.
+ */
+public class PrenotazioneServizio {
+
+    private int idPrenotazioneServizio;
+    private int ksPrenotazioneStanza;
+    private int ksServizio;
+    private int numPersone;
+    private Date dataPrenotazioneServizio;
+
+    /**
+     * Costruisce una PrenotazioneServizio con i valori specificati.
+     * @param idPrenotazioneServizio Identificativo della prenotazione servizio
+     * @param ksPrenotazioneStanza Identificativo della prenotazione stanza associata
+     * @param ksServizio Identificativo del servizio
+     * @param numPersone Numero delle persone
+     * @param dataPrenotazioneServizio Data della prenotazione del servizio
+     */
+    public PrenotazioneServizio(int idPrenotazioneServizio, int ksPrenotazioneStanza,
+<span class="fc" id="L25">                                int ksServizio, int numPersone, Date dataPrenotazioneServizio) {</span>
+<span class="fc" id="L26">        this.idPrenotazioneServizio = idPrenotazioneServizio;</span>
+<span class="fc" id="L27">        this.ksPrenotazioneStanza = ksPrenotazioneStanza;</span>
+<span class="fc" id="L28">        this.ksServizio = ksServizio;</span>
+<span class="fc" id="L29">        this.numPersone = numPersone;</span>
+<span class="fc" id="L30">        this.dataPrenotazioneServizio = dataPrenotazioneServizio;</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Restituisce l'identificativo della prenotazione servizio.
+     * @return Identificativo della prenotazione servizio
+     */
+    public int getIdPrenotazioneServizio() {
+<span class="nc" id="L38">        return idPrenotazioneServizio;</span>
+    }
+
+    /**
+     * Restituisce l'identificativo della prenotazione stanza associata.
+     * @return Identificativo della prenotazione stanza
+     */
+<span class="nc" id="L45">    public int getKsPrenotazioneStanza() { return ksPrenotazioneStanza; }</span>
+
+    /**
+     * Restituisce l'identificativo del servizio.
+     * @return Identificativo del servizio
+     */
+<span class="nc" id="L51">    public int getKsServizio() { return ksServizio; }</span>
+
+    /**
+     * Restituisce il numero delle persone.
+     * @return Numero delle persone
+     */
+<span class="nc" id="L57">    public int getNumPersone() { return numPersone; }</span>
+
+    /**
+     * Restituisce la data della prenotazione del servizio.
+     * @return Data della prenotazione del servizio.
+     */
+<span class="nc" id="L63">    public Date getDataPrenotazioneServizio() { return dataPrenotazioneServizio; }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

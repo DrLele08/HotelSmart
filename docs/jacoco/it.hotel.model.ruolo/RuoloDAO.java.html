@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RuoloDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.ruolo</a> &gt; <span class="el_source">RuoloDAO.java</span></div><h1>RuoloDAO.java</h1><pre class="source lang-java linenums">package it.hotel.model.ruolo;
+
+import it.hotel.model.ruolo.ruoloExceptions.*;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Fornisce l'accesso al database per {@link Ruolo}.
+ */
+<span class="fc" id="L12">public class RuoloDAO {</span>
+
+    /**
+     * Inserisce nel database l'oggetto Ruolo specificato.
+     * @param con Connessione al database
+     * @param ruolo Ruolo da inserire nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public void doInsert(Connection con, Ruolo ruolo) throws SQLException {
+<span class="nc" id="L21">        PreparedStatement ps = con.prepareStatement</span>
+<span class="nc" id="L22">                (&quot;INSERT INTO Ruolo (ruolo) VALUES(?)&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="nc" id="L24">        ps.setString(1, ruolo.getRuolo());</span>
+<span class="nc" id="L25">        ps.executeUpdate();</span>
+<span class="nc" id="L26">    }</span>
+
+    /**
+     * Recupera l'oggetto Ruolo trovato nel database secondo il valore specificato.
+     * @param con Connessione al database
+     * @param ruoloStr Stringa che identifica il ruolo cercato
+     * @return Il ruolo trovato nel database
+     * @throws RuoloNotFoundException Il ruolo cercato non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Ruolo doSelectByRuolo(Connection con, String ruoloStr) throws RuoloNotFoundException, SQLException {
+<span class="fc" id="L37">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L38">                (&quot;SELECT * FROM Ruolo WHERE ruolo=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L40">        ps.setString(1, ruoloStr);</span>
+<span class="fc" id="L41">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L43">            return createRuolo(rs);</span>
+        } else {
+<span class="fc" id="L45">            throw new RuoloNotFoundException();</span>
+        }
+    }
+
+    /**
+     * Recupera l'oggetto Ruolo trovato nel database secondo il valore specificato.
+     * @param con Connessione al database
+     * @param idRuolo Id che identifica il ruolo cercato
+     * @return Il ruolo trovato nel database
+     * @throws RuoloNotFoundException Il ruolo cercato non è presente nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Ruolo doSelectById(Connection con, int idRuolo) throws RuoloNotFoundException, SQLException {
+        Ruolo ruolo;
+<span class="fc" id="L59">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L60">                (&quot;SELECT * FROM Ruolo WHERE idRuolo=?&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L62">        ps.setInt(1, idRuolo);</span>
+<span class="fc" id="L63">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L65">            ruolo = createRuolo(rs);</span>
+        } else {
+<span class="fc" id="L67">            throw new RuoloNotFoundException();</span>
+        }
+<span class="fc" id="L69">        return ruolo;</span>
+    }
+
+    /**
+     * Recupera tutti gli oggetti Ruolo presenti nel database.
+     * @param con Connessione al database
+     * @return I ruoli presenti nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public List&lt;Ruolo&gt; doGetAll(Connection con) throws SQLException {
+<span class="fc" id="L79">        ArrayList&lt;Ruolo&gt; ruoli = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L80">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L81">                (&quot;SELECT * FROM Ruolo&quot;,</span>
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L83">        ResultSet rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        while (rs.next()) {</span>
+<span class="fc" id="L85">            ruoli.add(createRuolo(rs));</span>
+        }
+<span class="fc" id="L87">        return ruoli;</span>
+    }
+
+    public Ruolo createRuolo(ResultSet rs) throws SQLException {
+<span class="fc" id="L91">        return new Ruolo(rs.getInt(1), rs.getString(2));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModificaPwd.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.api</a> &gt; <span class="el_source">ModificaPwd.java</span></div><h1>ModificaPwd.java</h1><pre class="source lang-java linenums">package it.hotel.controller.api;
+
+import it.hotel.controller.CheckServlet;
+import it.hotel.controller.services.UtenteService;
+import it.hotel.controller.exception.PermissionDeniedException;
+import it.hotel.model.utente.utenteExceptions.PasswordNotValidException;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
+import org.json.JSONObject;
+
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+import java.sql.SQLException;
+
+@WebServlet(name = &quot;ModificaPwd&quot;, value = &quot;/api/ModificaPwd&quot;)
+<span class="fc" id="L16">public class ModificaPwd extends CheckServlet</span>
+{
+    public UtenteService getUtenteService()
+    {
+<span class="fc" id="L20">        return new UtenteService();</span>
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+<span class="fc" id="L26">        JSONObject obj=new JSONObject();</span>
+<span class="fc bfc" id="L27" title="All 6 branches covered.">        if(contieneParametro(request,&quot;textIdUtente&quot;) &amp;&amp; contieneParametro(request,&quot;textToken&quot;) &amp;&amp; contieneParametro(request,&quot;textOldPwd&quot;)</span>
+<span class="fc bfc" id="L28" title="All 4 branches covered.">                                &amp;&amp; contieneParametro(request,&quot;textNewPwd&quot;) &amp;&amp; contieneParametro(request,&quot;textRepeatPwd&quot;))</span>
+        {
+            try
+            {
+<span class="fc" id="L32">                int idUtente=Integer.parseInt(request.getParameter(&quot;textIdUtente&quot;));</span>
+<span class="fc" id="L33">                String token=request.getParameter(&quot;textToken&quot;);</span>
+<span class="fc" id="L34">                String oldPwd=request.getParameter(&quot;textOldPwd&quot;);</span>
+<span class="fc" id="L35">                String newPwd=request.getParameter(&quot;textNewPwd&quot;);</span>
+<span class="fc" id="L36">                String repeatPwd=request.getParameter(&quot;textRepeatPwd&quot;);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">                if(newPwd.equals(repeatPwd))</span>
+                {
+<span class="fc" id="L39">                    UtenteService service=getUtenteService();</span>
+<span class="fc" id="L40">                    service.editPassword(idUtente,token,oldPwd,newPwd);</span>
+<span class="fc" id="L41">                    obj.put(&quot;Ris&quot;,1);</span>
+<span class="fc" id="L42">                    obj.put(&quot;Mess&quot;,&quot;Fatto&quot;);</span>
+<span class="fc" id="L43">                }</span>
+                else
+                {
+<span class="fc" id="L46">                    obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L47">                    obj.put(&quot;Mess&quot;,&quot;Le password non coincidono&quot;);</span>
+                }
+            }
+<span class="fc" id="L50">            catch(NumberFormatException e)</span>
+            {
+<span class="fc" id="L52">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L53">                obj.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri correttamente&quot;);</span>
+            }
+<span class="fc" id="L55">            catch (PasswordNotValidException e)</span>
+            {
+<span class="fc" id="L57">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L58">                obj.put(&quot;Mess&quot;,&quot;Password non valida&quot;);</span>
+            }
+<span class="fc" id="L60">            catch (UtenteNotFoundException e)</span>
+            {
+<span class="fc" id="L62">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L63">                obj.put(&quot;Mess&quot;,&quot;Utente non trovato&quot;);</span>
+            }
+<span class="fc" id="L65">            catch (PermissionDeniedException e)</span>
+            {
+<span class="fc" id="L67">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L68">                obj.put(&quot;Mess&quot;,&quot;Permessi non validi&quot;);</span>
+            }
+<span class="fc" id="L70">            catch (SQLException e)</span>
+            {
+<span class="fc" id="L72">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L73">                obj.put(&quot;Mess&quot;,&quot;Errore DB&quot;);</span>
+<span class="fc" id="L74">            }</span>
+        }
+        else
+        {
+<span class="fc" id="L78">            obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L79">            obj.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri&quot;);</span>
+        }
+<span class="fc" id="L81">        response.getOutputStream().print(obj.toString());</span>
+<span class="fc" id="L82">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

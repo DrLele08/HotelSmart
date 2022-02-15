@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PersonaAggiuntivaDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.personaAggiuntiva</a> &gt; <span class="el_source">PersonaAggiuntivaDAO.java</span></div><h1>PersonaAggiuntivaDAO.java</h1><pre class="source lang-java linenums">package it.hotel.model.personaAggiuntiva;
+
+import java.sql.*;
+
+/**
+ * Fornisce l'accesso al database per {@link PersonaAggiuntiva}.
+ */
+<span class="fc" id="L8">public class PersonaAggiuntivaDAO {</span>
+
+    /**
+     * Inserisce nel database e ritorna un oggetto {@link PersonaAggiuntiva} secondo i valori specificati.
+     * @param con Connessione al database
+     * @param ksUtente Identificativo dell'utente
+     * @param cf Codice fiscale
+     * @param nome Nome
+     * @param cognome Cognome
+     * @param dataNascita Data di nascita
+     * @return L'oggetto inserito nel database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public PersonaAggiuntiva doInsert(Connection con, int ksUtente, String cf, String nome, String cognome, Date dataNascita) throws SQLException {
+<span class="fc" id="L22">        PreparedStatement ps = con.prepareStatement</span>
+<span class="fc" id="L23">                (&quot;INSERT INTO PersonaAggiuntiva (ksUtente, cf, nome, cognome, dataNascita) &quot; +</span>
+                                &quot;VALUES(?,?,?,?,?)&quot;,
+                        Statement.RETURN_GENERATED_KEYS);
+<span class="fc" id="L26">        ps.setInt(1, ksUtente);</span>
+<span class="fc" id="L27">        ps.setString(2, cf);</span>
+<span class="fc" id="L28">        ps.setString(3, nome);</span>
+<span class="fc" id="L29">        ps.setString(4, cognome);</span>
+<span class="fc" id="L30">        ps.setDate(5, dataNascita);</span>
+<span class="fc" id="L31">        ps.executeUpdate();</span>
+<span class="fc" id="L32">        ResultSet rs = ps.getGeneratedKeys();</span>
+        int id;
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (rs.next()) {</span>
+<span class="fc" id="L35">            id = rs.getInt(1);</span>
+        } else {
+<span class="fc" id="L37">            return null;</span>
+        }
+<span class="fc" id="L39">        return new PersonaAggiuntiva(id, ksUtente, cf, nome, cognome, dataNascita);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HomeServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller</a> &gt; <span class="el_source">HomeServlet.java</span></div><h1>HomeServlet.java</h1><pre class="source lang-java linenums">package it.hotel.controller;
+
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * &lt;h1&gt;Home Page&lt;/h1&gt;
+ * Servlet che gestisce le pagine 'About Us' e 'Contattaci'
+ * @author Pierpaolo Cammardella
+ * @version 1.6
+ * @since 2022-01-25
+ */
+@WebServlet(name = &quot;Home&quot;, value = &quot;/home/*&quot;)
+<span class="fc" id="L20">public class HomeServlet extends HttpServlet</span>
+{
+    /**
+     * Richiesta che riceve il nome della pagina e la visualizza
+     * @param request Richiesta del cliente
+     * @param response Risposta visualizzare la pagina richiesta
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        String path = (request.getPathInfo() != null) ? request.getPathInfo() : &quot;/&quot;;</span>
+<span class="fc bfc" id="L33" title="All 3 branches covered.">        switch (path)</span>
+        {
+
+            case &quot;/aboutus&quot;:
+            {
+<span class="fc" id="L38">                String active_link = &quot;aboutus&quot;;</span>
+<span class="fc" id="L39">                request.setAttribute(&quot;active&quot;,active_link);</span>
+<span class="fc" id="L40">                RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/WEB-INF/views/AboutUs.jsp&quot;);</span>
+<span class="fc" id="L41">                dispatcher.forward(request,response);</span>
+<span class="fc" id="L42">                break;</span>
+            }
+
+            case &quot;/contattaci&quot;:
+            {
+<span class="fc" id="L47">                String active_link = &quot;contattaci&quot;;</span>
+<span class="fc" id="L48">                request.setAttribute(&quot;active&quot;,active_link);</span>
+<span class="fc" id="L49">                RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/WEB-INF/views/Contattaci.jsp&quot;);</span>
+<span class="fc" id="L50">                dispatcher.forward(request,response);</span>
+<span class="fc" id="L51">                break;</span>
+            }
+            default:
+            {
+<span class="fc" id="L55">                response.sendRedirect(request.getContextPath());</span>
+                break;
+            }
+        }
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

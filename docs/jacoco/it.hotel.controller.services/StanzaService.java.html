@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StanzaService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.services</a> &gt; <span class="el_source">StanzaService.java</span></div><h1>StanzaService.java</h1><pre class="source lang-java linenums">package it.hotel.controller.services;
+
+
+import it.hotel.Utility.Connect;
+import it.hotel.model.stanza.Stanza;
+import it.hotel.model.stanza.StanzaDAO;
+import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * Fornisce metodi di utilizzo del database per {@link Stanza}.
+ */
+public class StanzaService
+{
+
+    /**
+     * Costruisce un oggetto StanzaService.
+     */
+<span class="fc" id="L23">    public StanzaService() {}</span>
+
+    /**
+     * Costruisce un oggetto StanzaDAO.
+     * @return L'oggetto StanzaDAO costruito.
+     */
+    public StanzaDAO createDAO()
+    {
+<span class="fc" id="L31">        return new StanzaDAO();</span>
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+<span class="nc" id="L40">        return Connect.getConnection();</span>
+    }
+
+    /**
+     * Recupera tutte le stanze presenti nel database.
+     * @return Lista contenente le stanze trovate
+     */
+    public List&lt;Stanza&gt; getStanze() {
+<span class="fc" id="L48">        StanzaDAO dao = createDAO();</span>
+        List&lt;Stanza&gt; stanze;
+        Connection con;
+        try {
+<span class="fc" id="L52">            con = getConnection();</span>
+<span class="fc" id="L53">            stanze = dao.getStanze(con);</span>
+<span class="fc" id="L54">        } catch (SQLException e) {</span>
+<span class="fc" id="L55">            throw new RuntimeException();</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">        return stanze;</span>
+    }
+
+    /**
+     * Recupera tutte le stanze con sconto maggiore di ZERO.
+     * @return Lista contenente le stanze trovate
+     */
+    public List&lt;Stanza&gt; getOfferte() {
+<span class="fc" id="L65">        StanzaDAO dao = createDAO();</span>
+        List&lt;Stanza&gt; stanze;
+        Connection con;
+        try {
+<span class="fc" id="L69">            con = getConnection();</span>
+<span class="fc" id="L70">            stanze = dao.getOfferte(con);</span>
+<span class="fc" id="L71">        } catch (SQLException e) {</span>
+<span class="fc" id="L72">            throw new RuntimeException();</span>
+<span class="fc" id="L73">        }</span>
+<span class="fc" id="L74">        return stanze;</span>
+    }
+
+    /**
+     * Restituisce il più basso e il più alto tra i prezzi tra tutte le stanze.
+     * @return Lista contenente il prezzo più basso e il prezzo più alto
+     */
+    public List&lt;Double&gt; get_Min_And_Max_Prices() {
+<span class="fc" id="L82">        StanzaDAO dao = createDAO();</span>
+        List&lt;Double&gt; prezzi;
+        Connection con;
+        try {
+<span class="fc" id="L86">            con = getConnection();</span>
+<span class="fc" id="L87">            prezzi = dao.doSelect_Min_And_Max_Prices(con);</span>
+<span class="fc" id="L88">        } catch (SQLException e) {</span>
+<span class="fc" id="L89">            throw new RuntimeException();</span>
+<span class="fc" id="L90">        }</span>
+<span class="fc" id="L91">        return prezzi;</span>
+    }
+
+    /**
+     * Restituisce le stanze trovate secondo i valori specificati.
+     * @param animaleDomestico Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param numeroOspiti Numero di ospiti
+     * @param costoNotteMinimo Costo per notte minimo
+     * @param costoNotteMassimo Costo per notte massimo
+     * @param scontoMinimo Sconto applicabile minimo
+     * @param scontoMassimo Sconto applicabile massimo
+     * @param dataIn Data di ingresso
+     * @param dataOut Data di uscita
+     * @return Le stanze trovate
+     */
+    public List&lt;Stanza&gt; search(Boolean animaleDomestico, Boolean fumatore, Integer numeroOspiti, Double costoNotteMinimo, Double costoNotteMassimo,
+                               Double scontoMinimo, Double scontoMassimo, java.sql.Date dataIn, Date dataOut) {
+<span class="fc" id="L109">        StanzaDAO dao = createDAO();</span>
+        List&lt;Stanza&gt; stanze;
+        Connection con;
+        try {
+<span class="fc" id="L113">            con = getConnection();</span>
+<span class="fc" id="L114">            stanze = dao.doSearch(con, animaleDomestico, fumatore, numeroOspiti,</span>
+                    costoNotteMinimo, costoNotteMassimo, scontoMinimo, scontoMassimo, dataIn, dataOut);
+<span class="fc" id="L116">        } catch (SQLException e) {</span>
+<span class="fc" id="L117">            throw new RuntimeException();</span>
+<span class="fc" id="L118">        }</span>
+<span class="fc" id="L119">        return stanze;</span>
+    }
+
+    /**
+     * Restituisce la stanza trovata secondo l'identificativo specificato.
+     * @param stanzaId Identificativo della stanza
+     * @return Stanza trovata
+     * @throws StanzaNotFoundException Non è stata trovata la stanza cercata
+     */
+    public Stanza selectById(Integer stanzaId) throws StanzaNotFoundException
+    {
+<span class="fc" id="L130">        StanzaDAO dao = createDAO();</span>
+        Stanza stanza;
+        Connection con;
+        try {
+<span class="fc" id="L134">            con = getConnection();</span>
+<span class="fc" id="L135">            stanza = dao.doSelectById(con, stanzaId);</span>
+<span class="fc" id="L136">        } catch (SQLException e) {</span>
+<span class="fc" id="L137">            throw new RuntimeException();</span>
+<span class="fc" id="L138">        }</span>
+<span class="fc" id="L139">        return stanza;</span>
+    }
+
+    /**
+     * Inserisce una stanza secondo i valori specificati.
+     * @param animale Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
+     */
+    public void insertStanza(boolean animale, boolean fumatore, int lettiSingoli, int lettiMatrimoniali,
+                             double costoNotte, double sconto) {
+<span class="fc" id="L153">        StanzaDAO dao = createDAO();</span>
+        Connection con;
+        try {
+<span class="fc" id="L156">            con = getConnection();</span>
+<span class="fc" id="L157">            dao.doInsert(con, animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);</span>
+<span class="fc" id="L158">        } catch (SQLException e) {</span>
+<span class="fc" id="L159">            throw new RuntimeException();</span>
+<span class="fc" id="L160">        }</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Aggiorna una stanza secondo i valori specificati.
+     * @param animale Idoneità per animali domestici
+     * @param fumatore Idoneità per fumatori
+     * @param lettiSingoli Quantità letti singoli
+     * @param lettiMatrimoniali Quantità letti matrimoniali
+     * @param costoNotte Costo per notte
+     * @param sconto Sconto applicabile
+     */
+    public void updateStanza(int idStanza, boolean animale, boolean fumatore, int lettiSingoli,
+                             int lettiMatrimoniali, double costoNotte, double sconto) {
+<span class="fc" id="L174">        StanzaDAO dao = createDAO();</span>
+        Connection con;
+        try {
+<span class="fc" id="L177">            con = getConnection();</span>
+<span class="fc" id="L178">            dao.doUpdate(con, idStanza, animale, fumatore, lettiSingoli, lettiMatrimoniali, costoNotte, sconto);</span>
+<span class="fc" id="L179">        } catch (SQLException e) {</span>
+<span class="fc" id="L180">            throw new RuntimeException();</span>
+<span class="fc" id="L181">        }</span>
+<span class="fc" id="L182">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

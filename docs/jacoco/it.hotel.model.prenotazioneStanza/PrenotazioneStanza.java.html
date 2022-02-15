@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrenotazioneStanza.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.prenotazioneStanza</a> &gt; <span class="el_source">PrenotazioneStanza.java</span></div><h1>PrenotazioneStanza.java</h1><pre class="source lang-java linenums">package it.hotel.model.prenotazioneStanza;
+
+import it.hotel.model.stato.Stato;
+
+import java.io.Serializable;
+import java.sql.Date;
+
+/**
+ * Rappresenta una PrenotazioneStanza e fornisce metodi per il recupero dello {@link Stato}.
+ */
+public class PrenotazioneStanza implements Serializable
+{
+
+    private int idPrenotazioneStanza;
+    private int ksUtente;
+    private int ksStanza;
+    private int ksStato;
+    private Date dataInizio;
+    private Date dataFine;
+    private double prezzoFinale;
+    private String tokenStripe;
+    private String tokenQr;
+    private String commenti;
+    private int valutazione;
+
+    /**
+     * Costruisce una PrenotazioneStanza con i valori specificati.
+     * @param idPrenotazioneStanza Identificativo della prenotazione
+     * @param ksUtente Utente che effettua la prenotazione
+     * @param ksStanza Stanza prenotata
+     * @param ksStato Stato della prenotazione
+     * @param dataInizio Data di entrata
+     * @param dataFine Data di uscita
+     * @param prezzoFinale Prezzo finale
+     * @param tokenStripe Token di Stripe
+     * @param tokenQr Token del codice qr
+     * @param commenti Commenti
+     * @param valutazione Valutazione
+     */
+    public PrenotazioneStanza(int idPrenotazioneStanza, int ksUtente, int ksStanza, int ksStato,
+                Date dataInizio, Date dataFine, double prezzoFinale, String tokenStripe,
+<span class="fc" id="L42">                        String tokenQr, String commenti, int valutazione) {</span>
+<span class="fc" id="L43">        this.idPrenotazioneStanza = idPrenotazioneStanza;</span>
+<span class="fc" id="L44">        this.ksUtente = ksUtente;</span>
+<span class="fc" id="L45">        this.ksStanza = ksStanza;</span>
+<span class="fc" id="L46">        this.ksStato = ksStato;</span>
+<span class="fc" id="L47">        this.dataInizio = dataInizio;</span>
+<span class="fc" id="L48">        this.dataFine = dataFine;</span>
+<span class="fc" id="L49">        this.prezzoFinale = prezzoFinale;</span>
+<span class="fc" id="L50">        this.tokenStripe = tokenStripe;</span>
+<span class="fc" id="L51">        this.tokenQr = tokenQr;</span>
+<span class="fc" id="L52">        this.commenti = commenti;</span>
+<span class="fc" id="L53">        this.valutazione = valutazione;</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * @return Id della prenotazione
+     */
+    public int getIdPrenotazioneStanza() {
+<span class="fc" id="L60">        return idPrenotazioneStanza;</span>
+    }
+
+    /**
+     * @return Utente che effettua la prenotazione
+     */
+    public int getKsUtente() {
+<span class="nc" id="L67">        return ksUtente;</span>
+    }
+
+    /**
+     * @return Stanza prenotata
+     */
+    public int getKsStanza() {
+<span class="nc" id="L74">        return ksStanza;</span>
+    }
+
+    /**
+     * @return Stato della prenotazione
+     */
+    public int getKsStato() {
+<span class="fc" id="L81">        return ksStato;</span>
+    }
+
+    /**
+     * @return Data di entrata
+     */
+    public Date getDataInizio() {
+<span class="nc" id="L88">        return dataInizio;</span>
+    }
+
+    /**
+     * @return Data di uscita
+     */
+    public Date getDataFine() {
+<span class="nc" id="L95">        return dataFine;</span>
+    }
+
+    /**
+     * @return Prezzo finale
+     */
+    public double getPrezzoFinale() {
+<span class="nc" id="L102">        return prezzoFinale;</span>
+    }
+
+    /**
+     * @return Token di Stripe
+     */
+    public String getTokenStripe() {
+<span class="nc" id="L109">        return tokenStripe;</span>
+    }
+
+    /**
+     * @return Token del codice qr
+     */
+    public String getTokenQr() {
+<span class="nc" id="L116">        return tokenQr;</span>
+    }
+
+    /**
+     * @return Commenti
+     */
+    public String getCommenti() {
+<span class="nc" id="L123">        return commenti;</span>
+    }
+
+    /**
+     * @return Valutazione
+     */
+    public int getValutazione() {
+<span class="nc" id="L130">        return valutazione;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

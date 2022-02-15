@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Utilita.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.Utility</a> &gt; <span class="el_source">Utilita.java</span></div><h1>Utilita.java</h1><pre class="source lang-java linenums">package it.hotel.Utility;
+
+import it.hotel.model.ruolo.Ruolo;
+import it.hotel.model.stato.Stato;
+
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+/**
+ * &lt;h1&gt;Utility Generiche&lt;/h1&gt;
+ * Contiene tutte le informazioni generiche per offrire i servizi
+ * @author Sais Raffaele
+ * @version 1.9
+ * @since 2022-12-15
+ */
+<span class="nc" id="L19">public class Utilita</span>
+{
+    /**
+     * Pattern per la password degli utenti
+    */
+    public static final String PASSWORD_PATTERN =
+            &quot;^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&amp;()–[{}]:;',?/*~$^+=&lt;&gt;]).{8,20}$&quot;;
+    /**
+     * Lunghezza token autenticazione
+    */
+    public static final int lenghtAuth=64;
+    /**
+     * API Key di Stripe
+    */
+    public static final String stripeKey=&quot;sk_test_51KLDXkBGMwZsdNHVNexZB0QYRKoufGyY1XkvZqIvRUncWZIrTwuxFmWA2v9mfWkRHkrdzHmeQfFHsQGKHWu7SYvO00PAVrndqP&quot;;
+    /**
+     * Nome dell'attributo utente all'interno della sessione
+    */
+    public static final String SESSION_USER=&quot;idUsSe&quot;;
+    /**
+     * Nome del ID dell'utente per il cookie
+    */
+    public static final String COOKIE_ID=&quot;idUsCo&quot;;
+    /**
+     * Nome del tokenAuth dell'utente per il cookie
+    */
+    public static final String COOKIE_TOKEN=&quot;toUsCo&quot;;
+    /**
+     * Nome per controllare se il login è attivo
+     */
+    public static final String CHECK_LOGIN=&quot;ACTIVE_LOGIN&quot;;
+    /**
+     * Nome per controllare se il signup è attivo
+     */
+    public static final String CHECK_SIGNUP=&quot;ACTIVE_SIGNUP&quot;;
+    /**
+     * Nome per controllare se la ricerca è attiva
+     */
+    public static final String CHECK_SEARCH=&quot;ACTIVE_SEARCH&quot;;
+    /**
+     * Lista con i vari ruoli
+     */
+<span class="fc" id="L61">    public static List&lt;Ruolo&gt; listRuoli=new ArrayList&lt;&gt;();</span>
+    /**
+     * Lista con i vari stati
+     */
+<span class="fc" id="L65">    public static List&lt;Stato&gt; listStato=new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Controlla se è possibile accedere a quella funzione RunTime
+     * @param keyType Chiave DB per la relativa funzione
+     * @return Booleano per controllare se è attiva o meno
+     */
+    public static boolean isActive(String keyType)
+    {
+<span class="nc" id="L74">        return UtilityDAO.isActive(keyType);</span>
+    }
+
+    /**
+     * Ritorna una data dando una stringa come parametro
+     * @param dataStr Stringa in formato YYYY-mm-dd
+     * @return Data convertita
+     */
+    public static Date dataConverter(String dataStr) throws ParseException
+    {
+<span class="fc" id="L84">        SimpleDateFormat in = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+<span class="fc" id="L85">        java.util.Date dataUtil = in.parse(dataStr);</span>
+<span class="fc" id="L86">        return new Date(dataUtil.getTime());</span>
+    }
+
+    /**
+     * restituisce una data formattata in standard italiano
+     * @param date data non formattata YYYY-mm-dd
+     * @return date formattato
+     */
+    public static String convertDateToView(Date date)
+    {
+<span class="nc" id="L96">        final DateFormat formatter = new SimpleDateFormat(&quot;dd-MM-yyyy&quot;);</span>
+<span class="nc" id="L97">        return formatter.format(date);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

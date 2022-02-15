@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller</a> &gt; <span class="el_source">CheckServlet.java</span></div><h1>CheckServlet.java</h1><pre class="source lang-java linenums">package it.hotel.controller;
+
+import it.hotel.controller.services.UtenteService;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
+
+import javax.servlet.http.*;
+import java.util.Optional;
+/**
+ * &lt;h1&gt;Gestione Controlli Servlet&lt;/h1&gt;
+ * Classe astratta per effettuare controlli
+ * @author Sais Raffaele
+ * @version 1.3
+ * @since 2022-01-2
+ */
+<span class="fc" id="L16">public abstract class CheckServlet extends HttpServlet</span>
+{
+    public boolean canOpen(String name)
+    {
+<span class="nc" id="L20">        return it.hotel.Utility.Utilita.isActive(name);</span>
+    }
+
+    /**
+     * Controlla se il parametro indicato è presente nella richiesta
+     * @param request Richiesta del cliente
+     * @param nome Identificatore del valore della richiesta
+     * @see HttpServletRequest
+     * @see String
+     * @return Booleano per indicare se il valore è presente
+     */
+    public boolean contieneParametro(HttpServletRequest request,String nome)
+    {
+<span class="fc" id="L33">        return request.getParameterMap().containsKey(nome);</span>
+    }
+
+    public UtenteService getUtenteService()
+    {
+<span class="fc" id="L38">        return new UtenteService();</span>
+    }
+    /**
+     * Controlla se l'utente è presente in sessione o in cookie e lo restituisce
+     * @param request Richiesta del cliente
+     * @see HttpServletRequest
+     * @see Utente
+     * @see Cookie
+     * @see HttpSession
+     * @see Optional
+     * @return Utente loggato
+     */
+    public Optional&lt;Utente&gt; getUtente(HttpServletRequest request)
+    {
+<span class="fc" id="L52">        int idUtente=-1;</span>
+<span class="fc" id="L53">        String tokenAuth=&quot;&quot;;</span>
+<span class="fc" id="L54">        HttpSession session=request.getSession(true);</span>
+<span class="fc" id="L55">        Utente us=(Utente)session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if(us!=null)</span>
+        {
+<span class="fc" id="L58">            return Optional.of(us);</span>
+        }
+        else
+        {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if(request.getCookies()!=null)</span>
+            {
+<span class="fc" id="L64">                Cookie[] cookies=request.getCookies();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                for(Cookie c:cookies)</span>
+                {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">                    if(c.getName().equals(it.hotel.Utility.Utilita.COOKIE_ID))</span>
+                    {
+<span class="fc" id="L69">                        idUtente=Integer.parseInt(c.getValue());</span>
+                    }
+<span class="fc bfc" id="L71" title="All 2 branches covered.">                    if(c.getName().equals(it.hotel.Utility.Utilita.COOKIE_TOKEN))</span>
+                    {
+<span class="fc" id="L73">                        tokenAuth=c.getValue();</span>
+                    }
+                }
+            }
+        }
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if(idUtente!=-1)</span>
+        {
+            try
+            {
+<span class="fc" id="L82">                us=getUtenteService().doLogin(idUtente,tokenAuth);</span>
+<span class="fc" id="L83">                session.setAttribute(it.hotel.Utility.Utilita.SESSION_USER,us);</span>
+<span class="fc" id="L84">                return Optional.of(us);</span>
+            }
+<span class="fc" id="L86">            catch (UtenteNotFoundException e)</span>
+            {
+<span class="fc" id="L88">                return Optional.empty();</span>
+            }
+        }
+<span class="fc" id="L91">        return Optional.empty();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

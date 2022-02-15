@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Servizio.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.model.servizio</a> &gt; <span class="el_source">Servizio.java</span></div><h1>Servizio.java</h1><pre class="source lang-java linenums">package it.hotel.model.servizio;
+
+/**
+ * Rappresenta un Servizio.
+ */
+public class Servizio {
+
+    private int idServizio;
+    private String nome;
+    private String descrizione;
+    private String foto;
+    private double costo;
+    private int limitePosti;
+
+    /**
+     * Costruisce un Servizio con i valori specificati.
+     * @param idServizio Identificativo
+     * @param nome Nome
+     * @param descrizione Descrizione
+     * @param foto Percorso foto
+     * @param costo Costo
+     * @param limitePosti Posti disponibili
+     */
+<span class="fc" id="L24">    public Servizio(int idServizio, String nome, String descrizione, String foto, double costo, int limitePosti) {</span>
+<span class="fc" id="L25">        this.idServizio = idServizio;</span>
+<span class="fc" id="L26">        this.nome = nome;</span>
+<span class="fc" id="L27">        this.descrizione = descrizione;</span>
+<span class="fc" id="L28">        this.foto = foto;</span>
+<span class="fc" id="L29">        this.costo = costo;</span>
+<span class="fc" id="L30">        this.limitePosti = limitePosti;</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Restituisce l'identificativo del servizio
+     * @return Identificativo
+     */
+    public int getIdServizio() {
+<span class="nc" id="L38">        return idServizio;</span>
+    }
+
+    /**
+     * Restituisce il nome del servizio
+     * @return Nome
+     */
+    public String getNome() {
+<span class="nc" id="L46">        return nome;</span>
+    }
+
+    /**
+     * Restituisce la descrizione del servizio
+     * @return Descrizione
+     */
+    public String getDescrizione() {
+<span class="nc" id="L54">        return descrizione;</span>
+    }
+
+    /**
+     * Restituisce il percorso della foto
+     * @return Percorso foto
+     */
+    public String getFoto() {
+<span class="nc" id="L62">        return foto;</span>
+    }
+
+    /**
+     * Restituisce il costo
+     * @return Costo
+     */
+    public double getCosto() {
+<span class="nc" id="L70">        return costo;</span>
+    }
+
+    /**
+     * Restituisce il limite dei posti
+     * @return Posti disponibili
+     */
+    public int getLimitePosti() {
+<span class="nc" id="L78">        return limitePosti;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

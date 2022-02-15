@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckPayment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.api</a> &gt; <span class="el_source">CheckPayment.java</span></div><h1>CheckPayment.java</h1><pre class="source lang-java linenums">package it.hotel.controller.api;
+
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import it.hotel.Utility.Email;
+import it.hotel.Utility.payment.PaymentAdapter;
+import it.hotel.Utility.payment.PaymentStripe;
+import it.hotel.controller.CheckServlet;
+import it.hotel.controller.services.PrenotazioneStanzaService;
+import it.hotel.controller.services.UtenteService;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
+import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
+import org.json.JSONObject;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+/**
+ * &lt;h1&gt;Controllo del pagamento&lt;/h1&gt;
+ * API per verificare il pagamento di una prenotazione
+ * @author Sais Raffaele
+ * @version 1.3
+ * @since 2022-01-30
+ */
+@WebServlet(name = &quot;CheckPayment&quot;, value = &quot;/api/CheckPayment&quot;)
+<span class="fc" id="L30">public class CheckPayment extends CheckServlet</span>
+{
+    /**
+     * Metodo che ritorna un PaymentStripe
+     */
+    public PaymentStripe getPaymentStripe()
+    {
+<span class="fc" id="L37">        return new PaymentStripe();</span>
+    }
+    /**
+     * Ritorna il service della prenotazione stanza
+     * @see PrenotazioneStanzaService
+     */
+    public PrenotazioneStanzaService getPrenoStanzaService()
+    {
+<span class="fc" id="L45">        return new PrenotazioneStanzaService();</span>
+    }
+    /**
+     * Richiesta che riceve la prenotazione
+     * e controlla se il pagamento è stato effettuato
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc" id="L58">        JSONObject object=new JSONObject();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if(contieneParametro(request,&quot;idPreno&quot;))</span>
+        {
+            try
+            {
+<span class="fc" id="L63">                int idPreno=Integer.parseInt(request.getParameter(&quot;idPreno&quot;));</span>
+<span class="fc" id="L64">                PrenotazioneStanzaService stanzaService=getPrenoStanzaService();</span>
+<span class="fc" id="L65">                PrenotazioneStanza preno=stanzaService.getPrenotazioneById(idPreno);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">                if(preno.getKsStato()==1)</span>
+                {
+<span class="fc" id="L68">                    UtenteService utenteService=getUtenteService();</span>
+<span class="fc" id="L69">                    Utente user=utenteService.getUtenteByPrenotazioneStanza(idPreno);</span>
+<span class="fc" id="L70">                    String tokenStripe=preno.getTokenStripe();</span>
+<span class="fc" id="L71">                    PaymentAdapter adapter=getPaymentStripe();</span>
+<span class="fc" id="L72">                    boolean isPagato=adapter.isPagato(tokenStripe);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">                    if(isPagato)</span>
+                    {
+<span class="fc" id="L75">                        stanzaService.editStato(idPreno,2);</span>
+<span class="fc" id="L76">                        stanzaService.generateQrCode(idPreno);</span>
+<span class="fc" id="L77">                        String textHtml=&quot;Ciao &quot;+user.getNome()+&quot;&lt;br&gt;Il pagamento per la prenotazione #&quot;+preno.getIdPrenotazioneStanza()+&quot; è stato ricevuto con successo!&lt;br&gt;La aspettiamo, HotelSmart!&quot;;</span>
+<span class="fc" id="L78">                        Email.sendAsHtml(user.getEmail(),&quot;[HotelSmart] Pagamento confermato ordine #&quot;+preno.getIdPrenotazioneStanza(),textHtml);</span>
+<span class="fc" id="L79">                        object.put(&quot;Ris&quot;,1);</span>
+<span class="fc" id="L80">                        object.put(&quot;Mess&quot;,&quot;Fatto&quot;);</span>
+<span class="fc" id="L81">                        response.getOutputStream().print(object.toString());</span>
+<span class="fc" id="L82">                    }</span>
+                    else
+                    {
+<span class="fc" id="L85">                        String textHtml=&quot;Ciao &quot;+user.getNome()+&quot;&lt;br&gt;Il pagamento per la prenotazione #&lt;NUMERO&gt; non è stato ricevuto!&lt;br&gt;Puo contattarci 24/24 alla mail: info@hotelsmart.it, HotelSmart!&quot;;</span>
+<span class="fc" id="L86">                        Email.sendAsHtml(user.getEmail(),&quot;[HotelSmart] Errore pagamento ordine #&quot;+preno.getIdPrenotazioneStanza(),textHtml);</span>
+<span class="fc" id="L87">                        object.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L88">                        object.put(&quot;Mess&quot;,&quot;Errore durante il pagamento&quot;);</span>
+<span class="fc" id="L89">                        response.getOutputStream().print(object.toString());</span>
+                    }
+<span class="fc" id="L91">                }</span>
+                else
+                {
+<span class="fc" id="L94">                    object.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L95">                    object.put(&quot;Mess&quot;,&quot;Operazione non possibile&quot;);</span>
+<span class="fc" id="L96">                    response.getOutputStream().print(object.toString());</span>
+                }
+            }
+<span class="fc" id="L99">            catch(NumberFormatException e)</span>
+            {
+<span class="fc" id="L101">                object.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L102">                object.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri correttamente&quot;);</span>
+<span class="fc" id="L103">                response.getOutputStream().print(object.toString());</span>
+            }
+<span class="fc" id="L105">            catch (PrenotazioneStanzaNotFoundException e)</span>
+            {
+<span class="fc" id="L107">                object.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L108">                object.put(&quot;Mess&quot;,&quot;Prenotazione non trovata&quot;);</span>
+<span class="fc" id="L109">                response.getOutputStream().print(object.toString());</span>
+            }
+<span class="fc" id="L111">            catch (UtenteNotFoundException e)</span>
+            {
+<span class="fc" id="L113">                object.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L114">                object.put(&quot;Mess&quot;,&quot;Utente non trovato&quot;);</span>
+<span class="fc" id="L115">                response.getOutputStream().print(object.toString());</span>
+<span class="fc" id="L116">            }</span>
+        }
+        else
+        {
+<span class="fc" id="L120">            object.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L121">            object.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri&quot;);</span>
+<span class="fc" id="L122">            response.getOutputStream().print(object.toString());</span>
+        }
+<span class="fc" id="L124">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatoService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.services</a> &gt; <span class="el_source">StatoService.java</span></div><h1>StatoService.java</h1><pre class="source lang-java linenums">package it.hotel.controller.services;
+
+import it.hotel.Utility.Connect;
+import it.hotel.model.stato.Stato;
+import it.hotel.model.stato.StatoDAO;
+import it.hotel.model.stato.statoExceptions.StatoNotFoundException;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * Fornisce metodi di utilizzo del database per {@link Stato}.
+ */
+public class StatoService
+{
+
+    /**
+     * Costruisce un oggetto StatoService.
+     */
+<span class="fc" id="L21">    public StatoService() {}</span>
+
+    /**
+     * Costruisce un oggetto StatoDAO.
+     * @return L'oggetto StatoDAO costruito.
+     */
+    public StatoDAO createDAO()
+    {
+<span class="fc" id="L29">        return new StatoDAO();</span>
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+<span class="nc" id="L38">        return Connect.getConnection();</span>
+    }
+
+    /**
+     * Recupera tutti gli stati presenti nel database.
+     * @return Lista contenente gli stati trovati
+     */
+    public List&lt;Stato&gt; getAll()
+    {
+<span class="fc" id="L47">        StatoDAO dao=createDAO();</span>
+        List&lt;Stato&gt; stati;
+        Connection con;
+        try {
+<span class="fc" id="L51">            con = getConnection();</span>
+<span class="fc" id="L52">            stati = dao.doGetAll(con);</span>
+<span class="fc" id="L53">        } catch (SQLException e) {</span>
+<span class="fc" id="L54">            throw new RuntimeException();</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">        return stati;</span>
+    }
+
+    /**
+     * Recupera l'identificativo dello stato specificato.
+     * @param idStato Identificativo dello stato
+     * @return Stato
+     */
+    public String getById(int idStato)
+    {
+<span class="fc" id="L66">        StatoDAO dao = createDAO();</span>
+        String statoStr;
+        Connection con;
+        try {
+<span class="fc" id="L70">            con = getConnection();</span>
+<span class="fc" id="L71">            Stato stato = dao.doSelectById(con, idStato);</span>
+<span class="fc" id="L72">            statoStr = stato.getStato();</span>
+<span class="fc" id="L73">        } catch (SQLException | StatoNotFoundException e) {</span>
+<span class="fc" id="L74">            throw new RuntimeException();</span>
+<span class="fc" id="L75">        }</span>
+<span class="fc" id="L76">        return statoStr;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

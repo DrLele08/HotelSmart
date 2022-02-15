@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RuoloService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.services</a> &gt; <span class="el_source">RuoloService.java</span></div><h1>RuoloService.java</h1><pre class="source lang-java linenums">package it.hotel.controller.services;
+
+import it.hotel.Utility.Connect;
+import it.hotel.model.ruolo.Ruolo;
+import it.hotel.model.ruolo.RuoloDAO;
+import it.hotel.model.ruolo.ruoloExceptions.RuoloNotFoundException;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * Fornisce metodi di utilizzo del database per {@link Ruolo}.
+ */
+public class RuoloService {
+
+    /**
+     * Costruisce un oggetto RuoloService.
+     */
+<span class="fc" id="L20">    public RuoloService() { }</span>
+
+    /**
+     * Costruisce un oggetto RuoloDAO.
+     * @return L'oggetto RuoloDAO costruito.
+     */
+    public RuoloDAO createDAO()
+    {
+<span class="fc" id="L28">        return new RuoloDAO();</span>
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+<span class="nc" id="L37">        return Connect.getConnection();</span>
+    }
+
+    /**
+     * Recupera tutti i ruoli presenti nel database.
+     * @return Lista contenente i ruoli trovati
+     */
+    public List&lt;Ruolo&gt; getAll() {
+<span class="fc" id="L45">        RuoloDAO dao=createDAO();</span>
+        List&lt;Ruolo&gt; ruoli;
+        Connection con;
+        try {
+<span class="fc" id="L49">            con = getConnection();</span>
+<span class="fc" id="L50">            ruoli = dao.doGetAll(con);</span>
+<span class="fc" id="L51">        } catch (SQLException e) {</span>
+<span class="fc" id="L52">            throw new RuntimeException();</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        return ruoli;</span>
+    }
+
+    /**
+     * Recupera il ruolo secondo l'identificativo specificato.
+     * @param idRuolo Identificativo del ruolo
+     * @return Ruolo
+     */
+    public String getById(int idRuolo) {
+<span class="fc" id="L63">        RuoloDAO dao=createDAO();</span>
+        Ruolo ruolo;
+        String ruoloStr;
+        Connection con;
+        try {
+<span class="fc" id="L68">            con = getConnection();</span>
+<span class="fc" id="L69">            ruolo = dao.doSelectById(con, idRuolo);</span>
+<span class="fc" id="L70">            ruoloStr = ruolo.getRuolo();</span>
+<span class="fc" id="L71">        } catch (SQLException | RuoloNotFoundException e) {</span>
+<span class="fc" id="L72">            throw new RuntimeException();</span>
+<span class="fc" id="L73">        }</span>
+<span class="fc" id="L74">        return ruoloStr;</span>
+    }
+
+    /**
+     * Recupera l'identificativo del ruolo specificato.
+     * @param ruolo Ruolo
+     * @return Identificativo del ruolo
+     */
+    public int getByRuolo(String ruolo) {
+<span class="fc" id="L83">        RuoloDAO dao=createDAO();</span>
+        int idRuolo;
+        Connection con;
+        try {
+<span class="fc" id="L87">            con = getConnection();</span>
+<span class="fc" id="L88">            idRuolo = dao.doSelectByRuolo(con, ruolo).getIdRuolo();</span>
+<span class="fc" id="L89">        } catch (SQLException | RuoloNotFoundException e) {</span>
+<span class="fc" id="L90">            throw new RuntimeException();</span>
+<span class="fc" id="L91">        }</span>
+<span class="fc" id="L92">        return idRuolo;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

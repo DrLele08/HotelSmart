@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckPrenoSospesa.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.api</a> &gt; <span class="el_source">CheckPrenoSospesa.java</span></div><h1>CheckPrenoSospesa.java</h1><pre class="source lang-java linenums">package it.hotel.controller.api;
+
+import it.hotel.controller.CheckServlet;
+import it.hotel.controller.services.PrenotazioneStanzaService;
+import it.hotel.controller.services.UtenteService;
+import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
+import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
+import org.json.JSONObject;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.io.IOException;
+/**
+ * &lt;h1&gt;Controllo prenotazione in sospeso&lt;/h1&gt;
+ * API per verificare se il cliente ha gia una prenotazione in sospeso
+ * @author Sais Raffaele
+ * @version 1.0
+ * @since 2022-02-02
+ */
+@WebServlet(name = &quot;CheckPrenoSospesa&quot;, value = &quot;/api/CheckPrenoSospesa&quot;)
+<span class="fc" id="L22">public class CheckPrenoSospesa extends CheckServlet</span>
+{
+    /**
+     * Ritorna utente service
+     * @see UtenteService
+     */
+    public UtenteService getUtenteService()
+    {
+<span class="fc" id="L30">        return new UtenteService();</span>
+    }
+
+    /**
+     * Ritorna prenotazione utente service
+     * @see PrenotazioneStanzaService
+     */
+    public PrenotazioneStanzaService getPrenoService()
+    {
+<span class="fc" id="L39">        return new PrenotazioneStanzaService();</span>
+    }
+    /**
+     * Richiesta che riceve i dati del cliente
+     * e controlla se ha una prenotazione in sospeso
+     * @param request Richiesta del cliente
+     * @param response Risposta per inviare il JSON
+     * @see HttpServletRequest
+     * @see HttpServletResponse
+     */
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+<span class="fc" id="L52">        JSONObject obj=new JSONObject();</span>
+<span class="fc bfc" id="L53" title="All 4 branches covered.">        if(contieneParametro(request,&quot;idUtente&quot;) &amp;&amp; contieneParametro(request,&quot;token&quot;))</span>
+            try
+            {
+<span class="fc" id="L56">                int idUtente=Integer.parseInt(request.getParameter(&quot;idUtente&quot;));</span>
+<span class="fc" id="L57">                String token=request.getParameter(&quot;token&quot;);</span>
+<span class="fc" id="L58">                UtenteService utenteService=getUtenteService();</span>
+<span class="fc" id="L59">                utenteService.doLogin(idUtente,token);</span>
+<span class="fc" id="L60">                PrenotazioneStanzaService stanzaService=getPrenoService();</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                boolean hasPrenoInCorso=stanzaService.selectBy(idUtente, PrenotazioneStanzaDAO.UTENTE).stream().anyMatch(p-&gt;p.getKsStato()==1);</span>
+<span class="fc" id="L62">                obj.put(&quot;Ris&quot;,1);</span>
+<span class="fc" id="L63">                obj.put(&quot;InCorso&quot;,hasPrenoInCorso);</span>
+<span class="fc" id="L64">                response.getOutputStream().print(obj.toString());</span>
+            }
+<span class="fc" id="L66">            catch(NumberFormatException e)</span>
+            {
+<span class="fc" id="L68">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L69">                obj.put(&quot;Mess&quot;,&quot;Inserisci i dati correttamente&quot;);</span>
+<span class="fc" id="L70">                response.getOutputStream().print(obj.toString());</span>
+            }
+<span class="fc" id="L72">            catch (UtenteNotFoundException e)</span>
+            {
+<span class="fc" id="L74">                obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L75">                obj.put(&quot;Mess&quot;,&quot;Accesso negato&quot;);</span>
+<span class="fc" id="L76">                response.getOutputStream().print(obj.toString());</span>
+<span class="fc" id="L77">            }</span>
+        else
+        {
+<span class="fc" id="L80">            obj.put(&quot;Ris&quot;,0);</span>
+<span class="fc" id="L81">            obj.put(&quot;Mess&quot;,&quot;Inserisci tutti i parametri&quot;);</span>
+<span class="fc" id="L82">            response.getOutputStream().print(obj.toString());</span>
+        }
+<span class="fc" id="L84">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

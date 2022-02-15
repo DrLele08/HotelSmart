@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UtenteService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in HotelSmart Coverage Results</a> &gt; <a href="index.source.html" class="el_package">it.hotel.controller.services</a> &gt; <span class="el_source">UtenteService.java</span></div><h1>UtenteService.java</h1><pre class="source lang-java linenums">package it.hotel.controller.services;
+
+import it.hotel.Utility.Connect;
+import it.hotel.controller.exception.PermissionDeniedException;
+import it.hotel.model.utente.Utente;
+import it.hotel.model.utente.UtenteDAO;
+import it.hotel.model.utente.utenteExceptions.*;
+import org.apache.commons.lang3.RandomStringUtils;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.List;
+import java.util.regex.Pattern;
+
+/**
+ * Fornisce metodi di utilizzo del database per {@link Utente}.
+ */
+public class UtenteService
+{
+
+    /**
+     * Costruisce un oggetto UtenteService.
+     */
+<span class="fc" id="L26">    public UtenteService() {}</span>
+
+    /**
+     * Costruisce un oggetto UtenteDAO.
+     * @return L'oggetto UtenteDAO costruito.
+     */
+    public UtenteDAO createDAO()
+    {
+<span class="fc" id="L34">        return new UtenteDAO();</span>
+    }
+
+    /**
+     * Ottiene la connessione al database.
+     * @return Connessione al database
+     * @throws SQLException Errore nella comunicazione con il database
+     */
+    public Connection getConnection() throws SQLException {
+<span class="nc" id="L43">        return Connect.getConnection();</span>
+    }
+
+    /**
+     * Genera un Token di autenticazione.
+     * @param useLetters Uso di caratteri alfabetici
+     * @param useNumbers Uso di caratteri numerici
+     * @return Token di autenticazione
+     */
+    public String generateToken(boolean useLetters, boolean useNumbers) {
+<span class="fc" id="L53">        return RandomStringUtils.random(it.hotel.Utility.Utilita.lenghtAuth, useLetters, useNumbers);</span>
+    }
+
+    /**
+     * Restituisce un RuoloService.
+     * @return RuoloService
+     */
+    public RuoloService getRuoloService() {
+<span class="fc" id="L61">        return new RuoloService();</span>
+    }
+
+    /**
+     * Effettua il login dell'utente secondo indirizzo email e password specificati.
+     * @param email  Email inserita dall'utente
+     * @param pwd Password inserita dall'utente
+     * @return Utente trovato
+     * @throws  EmailNotFoundException L'email specificata non è stata trovata nel database
+     * @throws PasswordNotValidException La password specificata non è esatta
+     * @throws SQLException Errore nella comunicazione con il database
+     * @throws IllegalArgumentException Dati non validi
+     * @see Utente
+     */
+    public Utente doLogin(String email, String pwd) throws EmailNotFoundException, PasswordNotValidException, SQLException {
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        if(!(email.trim().isEmpty() || pwd.trim().isEmpty()))</span>
+        {
+<span class="fc" id="L78">            UtenteDAO dao=createDAO();</span>
+            Utente utente;
+<span class="fc" id="L80">            Connection con = null;</span>
+            try {
+<span class="fc" id="L82">                con = getConnection();</span>
+<span class="fc" id="L83">                con.setAutoCommit(false);</span>
+
+<span class="fc bfc" id="L85" title="All 2 branches covered.">                if (!dao.isEmailInDatabase(con, email)) {</span>
+<span class="fc" id="L86">                    throw new EmailNotFoundException();</span>
+                }
+<span class="fc" id="L88">                utente = dao.doAuthenticate(con, email, pwd);</span>
+
+<span class="fc" id="L90">                con.commit();</span>
+<span class="fc" id="L91">                con.setAutoCommit(true);</span>
+<span class="fc" id="L92">                return utente;</span>
+<span class="fc" id="L93">            } catch (SQLException e) {</span>
+<span class="fc" id="L94">                con.rollback();</span>
+<span class="fc" id="L95">                con.setAutoCommit(true);</span>
+<span class="fc" id="L96">                throw new RuntimeException();</span>
+            }
+        }
+        else
+<span class="fc" id="L100">            throw new IllegalArgumentException();</span>
+    }
+
+    /**
+     * Effettua il login dell'utente secondo identificativo e token specificati.
+     * @param idUtente Identificativo dell'utente
+     * @param tokenAuth Token dell'utente
+     * @return Utente trovato
+     * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     * @throws IllegalArgumentException Dati non validi
+     * @see Utente
+     */
+    public Utente doLogin(int idUtente,String tokenAuth) throws UtenteNotFoundException {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if(!tokenAuth.trim().isEmpty())</span>
+        {
+            Connection con;
+            try {
+<span class="fc" id="L117">                con = getConnection();</span>
+<span class="fc" id="L118">                UtenteDAO dao = createDAO();</span>
+<span class="fc" id="L119">                return dao.doAuthenticate(con, idUtente, tokenAuth);</span>
+<span class="fc" id="L120">            } catch (SQLException e) {</span>
+<span class="fc" id="L121">                throw new RuntimeException();</span>
+            }
+        }
+        else
+<span class="fc" id="L125">            throw new IllegalArgumentException();</span>
+    }
+
+    /**
+     * Effettua la registrazione di un nuovo utente secondo i valori specificati.
+     * @param cf Codice Fiscale utente
+     * @param nome Nome utente
+     * @param cognome Cognome utente
+     * @param email  Email utente
+     * @param data Data nascita utente
+     * @param pwd Password utente
+     * @return Utente registrato
+     * @throws EmailAlreadyExistingException L'email specificata è già presente nel database
+     * @throws PasswordNotValidException La password specificata non è valida
+     * @throws SQLException Errore nella comunicazione con il database
+     * @throws IllegalArgumentException Dati non validi
+     * @see Utente
+     */
+    public Utente doRegistrazione(String cf, String nome, String cognome, String email, Date data,String pwd) throws EmailAlreadyExistingException, PasswordNotValidException, SQLException {
+<span class="fc bfc" id="L144" title="All 10 branches covered.">        if(cf.length()==16 &amp;&amp; !nome.trim().isEmpty() &amp;&amp; !cognome.trim().isEmpty() &amp;&amp; !email.trim().isEmpty() &amp;&amp; !pwd.trim().isEmpty())</span>
+        {
+<span class="fc" id="L146">            UtenteDAO dao = createDAO();</span>
+            Utente utente;
+<span class="fc" id="L148">            Connection con = null;</span>
+            try
+            {
+<span class="fc" id="L151">                con = getConnection();</span>
+<span class="fc" id="L152">                con.setAutoCommit(false);</span>
+
+<span class="fc" id="L154">                Pattern pattern = Pattern.compile(it.hotel.Utility.Utilita.PASSWORD_PATTERN);</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">                if(pattern.matcher(pwd).matches())</span>
+                {
+<span class="fc" id="L157">                    boolean useLetters = true;</span>
+<span class="fc" id="L158">                    boolean useNumbers = false;</span>
+<span class="fc" id="L159">                    String generatedString = generateToken(useLetters, useNumbers);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                    if (dao.isEmailInDatabase(con, email)) {</span>
+<span class="fc" id="L161">                        throw new EmailAlreadyExistingException();</span>
+                    }
+<span class="fc" id="L163">                    utente = dao.doInsert(con,getRuoloService().getByRuolo(&quot;UTENTE&quot;),cf,nome,cognome,email,data,generatedString,pwd);</span>
+<span class="fc" id="L164">                }</span>
+                else
+                {
+<span class="fc" id="L167">                    throw new PasswordNotValidException();</span>
+                }
+
+<span class="fc" id="L170">                con.commit();</span>
+<span class="fc" id="L171">                con.setAutoCommit(true);</span>
+<span class="fc" id="L172">                return utente;</span>
+<span class="fc" id="L173">            } catch (SQLException e) {</span>
+<span class="fc" id="L174">                con.rollback();</span>
+<span class="fc" id="L175">                con.setAutoCommit(true);</span>
+<span class="fc" id="L176">                throw new RuntimeException(e);</span>
+            }
+        }
+        else
+<span class="fc" id="L180">            throw new IllegalArgumentException();</span>
+    }
+
+    /**
+     * Effettua la modifica della password di un utente con la nuova password specificata.
+     * @param idUtente Identificativo dell'utente
+     * @param token Token di autenticazione utente
+     * @param oldPwd Vecchia password dell'utente
+     * @param newPwd Nuova password utente
+     * @throws PasswordNotValidException La password specificata non è valida
+     * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     * @throws PermissionDeniedException Non si dispone dei privilegi necessari
+     * @throws SQLException Errore nella comunicazione con il database
+     * @throws IllegalArgumentException Dati non validi
+     */
+    public void editPassword(int idUtente,String token,String oldPwd,String newPwd)
+            throws PasswordNotValidException, UtenteNotFoundException, PermissionDeniedException, SQLException {
+<span class="fc" id="L197">        Pattern pattern = Pattern.compile(it.hotel.Utility.Utilita.PASSWORD_PATTERN);</span>
+<span class="fc bfc" id="L198" title="All 8 branches covered.">        if(!token.trim().isEmpty() &amp;&amp; !oldPwd.trim().isEmpty() &amp;&amp; !newPwd.trim().isEmpty() &amp;&amp; pattern.matcher(newPwd).matches())</span>
+        {
+<span class="fc" id="L200">            Connection con = null;</span>
+            try {
+<span class="fc" id="L202">                con = getConnection();</span>
+<span class="fc" id="L203">                con.setAutoCommit(false);</span>
+
+<span class="fc" id="L205">                UtenteDAO dao = createDAO();</span>
+<span class="fc" id="L206">                int tipoRuolo = dao.doGetRuolo(con, idUtente, token);</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">                if (tipoRuolo==-1)</span>
+                {
+<span class="fc" id="L209">                    throw new PermissionDeniedException();</span>
+                }
+
+<span class="fc bfc" id="L212" title="All 2 branches covered.">                if (dao.isPasswordValid(con, idUtente, oldPwd)) {</span>
+<span class="fc" id="L213">                    dao.doChangePassword(con, idUtente, newPwd);</span>
+                } else {
+<span class="fc" id="L215">                    throw new PasswordNotValidException();</span>
+                }
+
+<span class="fc" id="L218">                con.commit();</span>
+<span class="fc" id="L219">                con.setAutoCommit(true);</span>
+<span class="fc" id="L220">            } catch (SQLException e) {</span>
+<span class="fc" id="L221">                con.rollback();</span>
+<span class="fc" id="L222">                con.setAutoCommit(true);</span>
+<span class="fc" id="L223">                throw new RuntimeException();</span>
+<span class="fc" id="L224">            }</span>
+<span class="fc" id="L225">        }</span>
+        else
+<span class="fc" id="L227">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L228">    }</span>
+
+    /**
+     * Effettua la modifica dell'anagrafica di un utente secondo i valori specificati.
+     * @param nome Nome dell'utente
+     * @param tokenAuth Token di autenticazione dell'utente
+     * @param cognome Cognome dell'utente
+     * @param cf Codice Fiscale dell'utente
+     * @param dataNascitaStr Data di nascita dell'utente
+     * @param email Email dell'utente
+     * @throws EmailAlreadyExistingException L'email specificata è già presente nel database
+     * @throws ParseException La data di nascita non è in un formato comprensibile
+     * @throws SQLException Errore nella comunicazione con il database
+     * @throws IllegalArgumentException Dati non validi
+     */
+    public void editAnagrafica(int idUtente, String tokenAuth, String nome, String cognome, String cf, String dataNascitaStr, String email)
+            throws EmailAlreadyExistingException, ParseException, SQLException {
+<span class="fc bfc" id="L245" title="All 10 branches covered.">        if(cf.length()==16 &amp;&amp; !nome.trim().isEmpty() &amp;&amp; !cognome.trim().isEmpty() &amp;&amp; !tokenAuth.trim().isEmpty() &amp;&amp; !email.trim().isEmpty())</span>
+        {
+<span class="fc" id="L247">            Connection con = null;</span>
+            try {
+<span class="fc" id="L249">                con = getConnection();</span>
+<span class="fc" id="L250">                con.setAutoCommit(false);</span>
+
+<span class="fc" id="L252">                UtenteDAO dao = createDAO();</span>
+<span class="fc bfc" id="L253" title="All 4 branches covered.">                if (dao.isEmailInDatabase(con, email) &amp;&amp; !dao.isEmailOld(con, idUtente, email)) {</span>
+<span class="fc" id="L254">                    throw new EmailAlreadyExistingException();</span>
+                }
+<span class="fc" id="L256">                dao.doChangeAnagrafica(con, idUtente, tokenAuth, nome, cognome, cf, it.hotel.Utility.Utilita.dataConverter(dataNascitaStr), email);</span>
+
+<span class="fc" id="L258">                con.commit();</span>
+<span class="fc" id="L259">                con.setAutoCommit(true);</span>
+<span class="fc" id="L260">            } catch (SQLException e) {</span>
+<span class="fc" id="L261">                con.rollback();</span>
+<span class="nc" id="L262">                con.setAutoCommit(true);</span>
+<span class="fc" id="L263">            }</span>
+<span class="fc" id="L264">        }</span>
+        else
+<span class="fc" id="L266">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L267">    }</span>
+
+    /**
+     * Recupera l'utente che ha effettuato la prenotazione stanza specificata.
+     * @param idPrenotazione Identificativo della prenotazione stanza
+     * @return Utente trovato
+     * @throws UtenteNotFoundException L'utente cercato non è stato trovato
+     */
+    public Utente getUtenteByPrenotazioneStanza(int idPrenotazione) throws UtenteNotFoundException {
+        Connection con;
+        try {
+<span class="fc" id="L278">            con = getConnection();</span>
+<span class="fc" id="L279">            UtenteDAO dao = createDAO();</span>
+<span class="nc" id="L280">            return dao.doSelectByPrenotazioneStanza(con, idPrenotazione);</span>
+<span class="fc" id="L281">        } catch (SQLException e) {</span>
+<span class="fc" id="L282">            throw new RuntimeException();</span>
+        }
+    }
+
+    /**
+     * Recupera tutti gli utenti presenti nel database.
+     * @return Lista contenente gli utenti trovati
+     */
+    public List&lt;Utente&gt; getAll() {
+        Connection con;
+        try {
+<span class="fc" id="L293">            con = getConnection();</span>
+<span class="fc" id="L294">            UtenteDAO dao = createDAO();</span>
+<span class="fc" id="L295">            return dao.getUtenti(con);</span>
+<span class="fc" id="L296">        } catch (SQLException e) {</span>
+<span class="fc" id="L297">            throw new RuntimeException();</span>
+        }
+    }
+
+    /**
+     * Modifica il ruolo di un utente secondo i valori specificati.
+     * @param idUtente Identificativo dell'utente
+     * @param ruolo Ruolo da inserire
+     */
+    public void editRuoloById(int idUtente, int ruolo) {
+        Connection con;
+        try {
+<span class="fc" id="L309">            con = getConnection();</span>
+<span class="fc" id="L310">            UtenteDAO dao = createDAO();</span>
+<span class="fc" id="L311">            dao.doChangeRuolo(con, idUtente, ruolo);</span>
+<span class="fc" id="L312">        } catch (SQLException e) {</span>
+<span class="fc" id="L313">            throw new RuntimeException();</span>
+<span class="fc" id="L314">        }</span>
+<span class="fc" id="L315">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
