@@ -29,7 +29,7 @@ import java.util.Date;
 
 public class ServiziServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
@@ -37,7 +37,7 @@ public class ServiziServlet extends HttpServlet {
 
             case "/goservizi":
             {
-                ServizioService service = new ServizioService();
+                ServizioService service = getServizioService();
                 ArrayList<Servizio> servizi = (ArrayList<Servizio>) service.getAll();
 
                 PrenotazioneStanza result = getActiveReservation(request);
@@ -62,11 +62,15 @@ public class ServiziServlet extends HttpServlet {
         }
     }
 
+    public ServizioService getServizioService() {
+        return new ServizioService();
+    }
+
     public PrenotazioneStanza getActiveReservation(HttpServletRequest request){
 
-        HttpSession session = request.getSession();
+        HttpSession session = getSession(request);
         Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
-        PrenotazioneStanzaService service1 = new PrenotazioneStanzaService();
+        PrenotazioneStanzaService service1 = getPrenotazioneStanzaService();
         PrenotazioneStanza result = null;
 
         if(user != null){
@@ -83,7 +87,15 @@ public class ServiziServlet extends HttpServlet {
         return result;
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public HttpSession getSession(HttpServletRequest request) {
+        return request.getSession();
+    }
+
+    public PrenotazioneStanzaService getPrenotazioneStanzaService() {
+        return new PrenotazioneStanzaService();
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
@@ -93,7 +105,7 @@ public class ServiziServlet extends HttpServlet {
 
                 String temp = request.getParameter("servizioId");
                 int servizioId = Integer.parseInt(temp);
-                ServizioService service = new ServizioService();
+                ServizioService service = getServizioService();
                 Servizio s = service.getById(servizioId);
 
                 String active_link = "servizi";
@@ -120,7 +132,7 @@ public class ServiziServlet extends HttpServlet {
                     Date temp_data = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data"));
                     dataSql =  new java.sql.Date(temp_data.getTime());
 
-                    PrenotazioneServizioService service = new PrenotazioneServizioService();
+                    PrenotazioneServizioService service = getPrenotazioneServizioService();
 
                     service.createPrenotazione(linked_reservation.getIdPrenotazioneStanza(),servizioId,numero_ospiti,dataSql);
 
@@ -146,5 +158,9 @@ public class ServiziServlet extends HttpServlet {
                 break;
             }
         }
+    }
+
+    public PrenotazioneServizioService getPrenotazioneServizioService() {
+        return new PrenotazioneServizioService();
     }
 }
