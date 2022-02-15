@@ -25,14 +25,14 @@ import java.util.Random;
 
 public class RicercaServlet extends CheckServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        if(Utility.isActive(Utility.CHECK_SEARCH))
+        if(isSearchActive())
         {
             String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
             if ("/gosearch".equals(path)) {
-                StanzaService service = new StanzaService();
+                StanzaService service = getStanzaService();
                 ArrayList<Double> prezzi = (ArrayList<Double>) service.get_Min_And_Max_Prices();
                 ArrayList<Stanza> stanze_offerta = (ArrayList<Stanza>) service.getOfferte();
 
@@ -55,13 +55,15 @@ public class RicercaServlet extends CheckServlet {
         }
     }
 
-    public ArrayList<Double> getPrices()
-    {
-        StanzaService service = new StanzaService();
-        return (ArrayList<Double>) service.get_Min_And_Max_Prices();
+    public boolean isSearchActive() {
+        return Utility.isActive(Utility.CHECK_SEARCH);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public StanzaService getStanzaService() {
+        return new StanzaService();
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String path = (request.getPathInfo() != null) ? request.getPathInfo() : "/";
@@ -111,7 +113,7 @@ public class RicercaServlet extends CheckServlet {
                     return;
                 }
 
-                StanzaService service = new StanzaService();
+                StanzaService service = getStanzaService();
                 ArrayList<Stanza> stanze = (ArrayList<Stanza>) service.search(animale,fumatore, numero_ospiti,
                         prezzoMinimo,prezzoMassimo,null,null,dataArrivoSql,dataPartenzaSql);
 
@@ -137,7 +139,7 @@ public class RicercaServlet extends CheckServlet {
                 Integer stanzaId = Integer.parseInt(temp);
                 Integer num_persone = Integer.parseInt(temp1);
 
-                StanzaService service = new StanzaService();
+                StanzaService service = getStanzaService();
                 Stanza selected_stanza;
 
                 try {
