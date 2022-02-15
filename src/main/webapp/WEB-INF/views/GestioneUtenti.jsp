@@ -60,7 +60,7 @@
                 <td><%=s.getNome()%></td>
                 <td><%=s.getCognome()%></td>
                 <td><%=s.getCf()%></td>
-                <td><%=Utility.convertDateToView(s.getDataNascita())%></td>
+                <td><%=it.hotel.Utility.Utilita.convertDateToView(s.getDataNascita())%></td>
                 <td><%=s.getEmail()%></td>
                 <td><%=serviceRuolo.getById(s.getRuolo())%></td>
                 <td>

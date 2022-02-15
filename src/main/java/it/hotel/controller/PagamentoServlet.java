@@ -1,13 +1,9 @@
 package it.hotel.controller;
 
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
-import it.hotel.model.prenotazioneStanza.prenotazioneStanzaException.PrenotazioneStanzaNotFoundException;
+import it.hotel.Utility.payment.PaymentAdapter;
+import it.hotel.Utility.payment.PaymentStripe;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -31,26 +27,9 @@ public class PagamentoServlet extends CheckServlet
                 String link="http://localhost:8080"+domain+"/confirmationPage.jsp?success=";
                 if(preno.getKsStato()==1)
                 {
-                    Stripe.apiKey = Utility.stripeKey;
-                    Long price=((Double)preno.getPrezzoFinale()).longValue()*100;
-                    SessionCreateParams params =
-                            SessionCreateParams.builder()
-                                    .setMode(SessionCreateParams.Mode.PAYMENT)
-                                    .setSuccessUrl(link+"true&id="+preno.getIdPrenotazioneStanza())
-                                    .setCancelUrl(link+"false&id="+-1)
-                                    .addLineItem(
-                                            SessionCreateParams.LineItem.builder()
-                                                    .setQuantity(1L)
-                                                    .setCurrency("EUR")
-                                                    .setAmount(price)
-                                                    .setName("Pagamento prenotazione #"+preno.getIdPrenotazioneStanza())
-                                                    .build())
-                                    .build();
-                    Session session;
-                    session=Session.create(params);
-                    String idPagamento=session.getPaymentIntent();
-                    prenoService.addTokenStripe(idPreno,idPagamento);
-                    response.sendRedirect(session.getUrl());
+                    PaymentAdapter pay=new PaymentStripe();
+                    String urlPay=pay.makePayment(preno,link);
+                    response.sendRedirect(urlPay);
                 }
                 else
                 {

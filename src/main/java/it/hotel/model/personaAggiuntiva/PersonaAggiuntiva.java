@@ -1,7 +1,5 @@
 package it.hotel.model.personaAggiuntiva;
 
-import it.hotel.Utility.Utility;
-
 import java.sql.Date;
 import java.text.ParseException;
 
@@ -49,7 +47,7 @@ public class PersonaAggiuntiva {
         this.cf = cf;
         this.nome = nome;
         this.cognome = cognome;
-        this.dataNascita = Utility.dataConverter(dataNascita);
+        this.dataNascita = it.hotel.Utility.Utilita.dataConverter(dataNascita);
     }
 
     /**

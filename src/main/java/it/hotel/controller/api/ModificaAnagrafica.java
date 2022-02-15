@@ -1,6 +1,5 @@
 package it.hotel.controller.api;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
@@ -11,7 +10,6 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Optional;
 
 /**
  * <h1>Modifica Anagrafica Utente</h1>
@@ -59,9 +57,9 @@ public class ModificaAnagrafica extends CheckServlet
                 UtenteService service = getUtenteService();
                 service.editAnagrafica(idUtente, tokenAuth, textNome, textCognome, textCodiceFiscale, textDataNascita, textEmail);
                 HttpSession session=request.getSession(true);
-                Utente ul = (Utente)session.getAttribute(Utility.SESSION_USER);
-                Utente ut = new Utente(idUtente, ul.getRuolo(), textCodiceFiscale, textNome, textCognome,textEmail, Utility.dataConverter(textDataNascita),tokenAuth);
-                session.setAttribute(Utility.SESSION_USER,ut);
+                Utente ul = (Utente)session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
+                Utente ut = new Utente(idUtente, ul.getRuolo(), textCodiceFiscale, textNome, textCognome,textEmail, it.hotel.Utility.Utilita.dataConverter(textDataNascita),tokenAuth);
+                session.setAttribute(it.hotel.Utility.Utilita.SESSION_USER,ut);
                 obj.put("Ris",1);
                 obj.put("Mess","Fatto");
             }

@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailAlreadyExistingException;
@@ -21,11 +20,11 @@ public class RegistrazioneServlet extends CheckServlet
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        if(canOpen(Utility.CHECK_SIGNUP))
+        if(canOpen(it.hotel.Utility.Utilita.CHECK_SIGNUP))
         {
             RequestDispatcher rd;
             HttpSession session = request.getSession(true);
-            Utente u = (Utente) session.getAttribute(Utility.SESSION_USER);
+            Utente u = (Utente) session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
             if(u == null)
                 rd=request.getRequestDispatcher("/WEB-INF/views/Registrazione.jsp");
             else
@@ -51,7 +50,7 @@ public class RegistrazioneServlet extends CheckServlet
         UtenteService service = new UtenteService();
         try
         {
-            service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail,Utility.dataConverter(dataNascita),password);
+            service.doRegistrazione(codiceFiscale,nome,cognome,indirizzoEmail, it.hotel.Utility.Utilita.dataConverter(dataNascita),password);
             obj.put("Ris",1);
             obj.put("Mess","Registrazione effettuata con successo");
             response.getOutputStream().print(obj.toString());

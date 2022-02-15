@@ -1,7 +1,6 @@
 package it.hotel.controller.services;
 
 import it.hotel.Utility.Connect;
-import it.hotel.Utility.Utility;
 import it.hotel.controller.exception.PermissionDeniedException;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.UtenteDAO;
@@ -51,7 +50,7 @@ public class UtenteService
      * @return Token di autenticazione
      */
     public String generateToken(boolean useLetters, boolean useNumbers) {
-        return RandomStringUtils.random(Utility.lenghtAuth, useLetters, useNumbers);
+        return RandomStringUtils.random(it.hotel.Utility.Utilita.lenghtAuth, useLetters, useNumbers);
     }
 
     /**
@@ -152,7 +151,7 @@ public class UtenteService
                 con = getConnection();
                 con.setAutoCommit(false);
 
-                Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
+                Pattern pattern = Pattern.compile(it.hotel.Utility.Utilita.PASSWORD_PATTERN);
                 if(pattern.matcher(pwd).matches())
                 {
                     boolean useLetters = true;
@@ -195,7 +194,7 @@ public class UtenteService
      */
     public void editPassword(int idUtente,String token,String oldPwd,String newPwd)
             throws PasswordNotValidException, UtenteNotFoundException, PermissionDeniedException, SQLException {
-        Pattern pattern = Pattern.compile(Utility.PASSWORD_PATTERN);
+        Pattern pattern = Pattern.compile(it.hotel.Utility.Utilita.PASSWORD_PATTERN);
         if(!token.trim().isEmpty() && !oldPwd.trim().isEmpty() && !newPwd.trim().isEmpty() && pattern.matcher(newPwd).matches())
         {
             Connection con = null;
@@ -254,7 +253,7 @@ public class UtenteService
                 if (dao.isEmailInDatabase(con, email) && !dao.isEmailOld(con, idUtente, email)) {
                     throw new EmailAlreadyExistingException();
                 }
-                dao.doChangeAnagrafica(con, idUtente, tokenAuth, nome, cognome, cf, Utility.dataConverter(dataNascitaStr), email);
+                dao.doChangeAnagrafica(con, idUtente, tokenAuth, nome, cognome, cf, it.hotel.Utility.Utilita.dataConverter(dataNascitaStr), email);
 
                 con.commit();
                 con.setAutoCommit(true);

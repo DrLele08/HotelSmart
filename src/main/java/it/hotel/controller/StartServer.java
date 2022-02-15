@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.RuoloService;
 import it.hotel.controller.services.StatoService;
 import it.hotel.model.ruolo.Ruolo;
@@ -27,7 +26,7 @@ public class StartServer extends HttpServlet
     public void init() throws ServletException
     {
         super.init();
-        Utility.listRuoli=getAllRuoli();
-        Utility.listStato=getAllStato();
+        it.hotel.Utility.Utilita.listRuoli=getAllRuoli();
+        it.hotel.Utility.Utilita.listStato=getAllStato();
     }
 }

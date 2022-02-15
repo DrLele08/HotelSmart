@@ -55,7 +55,7 @@
 <%
     ArrayList<Servizio> servizi = (ArrayList<Servizio>) request.getAttribute("servizi");
     boolean has_active_reservation = (boolean) request.getAttribute("has_active_reservation");
-    Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
+    Utente user = (Utente) session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
 %>
 
 <div class="mt-3 mx-5 jumbotron" style="background-color: whitesmoke">

@@ -3,7 +3,7 @@
 --%>
 <%@ page import="it.hotel.model.prenotazioneStanza.PrenotazioneStanza" %>
 <%@ page import="it.hotel.model.utente.Utente" %>
-<%@ page import="it.hotel.Utility.Utility" %>
+<%@ page import="it.hotel.Utility.Utilita" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.time.LocalDateTime" %>
@@ -77,8 +77,8 @@
                     <td><%=serviceUtente.getUtenteByPrenotazioneStanza(p.getIdPrenotazioneStanza()).getNome()%></td>
                     <td><%=serviceUtente.getUtenteByPrenotazioneStanza(p.getIdPrenotazioneStanza()).getCognome()%></td>
                 <%}%>
-                <td><%=Utility.convertDateToView(p.getDataInizio())%></td>
-                <td><%=Utility.convertDateToView(p.getDataFine())%></td>
+                <td><%=it.hotel.Utility.Utilita.convertDateToView(p.getDataInizio())%></td>
+                <td><%=it.hotel.Utility.Utilita.convertDateToView(p.getDataFine())%></td>
                 <td><%=p.getPrezzoFinale()%></td>
                 <td><%=serviceStato.getById(p.getKsStato())%></td>
                 <td>

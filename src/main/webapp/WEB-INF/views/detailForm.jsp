@@ -57,7 +57,7 @@
     String dataArrivo = (String) request.getAttribute("dataArrivoString");
     String dataPartenza = (String) request.getAttribute("dataPartenzaString");
 
-    Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
+    Utente user = (Utente) session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
     Stanza selected_stanza = (Stanza) request.getAttribute("selected_stanza");
     Integer id_stanza = selected_stanza.getIdStanza();
 

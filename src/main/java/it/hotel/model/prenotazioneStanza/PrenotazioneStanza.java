@@ -1,15 +1,9 @@
 package it.hotel.model.prenotazioneStanza;
 
-import it.hotel.Utility.Utility;
-import it.hotel.controller.services.UtenteService;
 import it.hotel.model.stato.Stato;
-import it.hotel.model.utente.Utente;
-import it.hotel.model.utente.utenteExceptions.UtenteNotFoundException;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 /**
  * Rappresenta una PrenotazioneStanza e fornisce metodi per il recupero dello {@link Stato}.

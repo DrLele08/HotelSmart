@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.personaAggiuntiva.PersonaAggiuntiva;
@@ -33,7 +32,7 @@ public class PrenotazioneServlet extends CheckServlet
                 String dataStr=request.getParameter("dataNascita1");
                 String pwd=request.getParameter("pwdcliente");
                 UtenteService utenteService=new UtenteService();
-                user=utenteService.doRegistrazione(cf,nome,cognome,email, Utility.dataConverter(dataStr),pwd);
+                user=utenteService.doRegistrazione(cf,nome,cognome,email, it.hotel.Utility.Utilita.dataConverter(dataStr),pwd);
             }
             else
             {

@@ -1,7 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -28,10 +26,10 @@ public class LogoutServlet extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = getSession(request);
-        session.removeAttribute(Utility.SESSION_USER);
-        Cookie c1 = new Cookie(Utility.COOKIE_ID,"");
+        session.removeAttribute(it.hotel.Utility.Utilita.SESSION_USER);
+        Cookie c1 = new Cookie(it.hotel.Utility.Utilita.COOKIE_ID,"");
         c1.setMaxAge(0);
-        Cookie c2 = new Cookie(Utility.COOKIE_TOKEN,"");
+        Cookie c2 = new Cookie(it.hotel.Utility.Utilita.COOKIE_TOKEN,"");
         c2.setMaxAge(0);
         response.addCookie(c1);
         response.addCookie(c2);

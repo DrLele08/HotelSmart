@@ -1,25 +1,19 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.StanzaService;
 import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 @WebServlet(name = "Ricerca", value = "/ricerca/*")
 
@@ -56,7 +50,7 @@ public class RicercaServlet extends CheckServlet {
     }
 
     public boolean isSearchActive() {
-        return Utility.isActive(Utility.CHECK_SEARCH);
+        return it.hotel.Utility.Utilita.isActive(it.hotel.Utility.Utilita.CHECK_SEARCH);
     }
 
     public StanzaService getStanzaService() {
@@ -86,7 +80,6 @@ public class RicercaServlet extends CheckServlet {
                     numero_ospiti = Integer.parseInt(temp2);
 
                 }catch(NumberFormatException e){
-                    e.printStackTrace();
                     return;
                 }
 
@@ -109,7 +102,6 @@ public class RicercaServlet extends CheckServlet {
                     dataPartenzaSql =  new java.sql.Date(dataPartenza.getTime());
 
                 } catch (ParseException e) {
-                    e.printStackTrace();
                     return;
                 }
 
@@ -153,7 +145,7 @@ public class RicercaServlet extends CheckServlet {
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/detailForm.jsp");
                     dispatcher.forward(request,response);
                 } catch (StanzaNotFoundException e) {
-                    e.printStackTrace();
+                    return;
                 }
 
                 break;

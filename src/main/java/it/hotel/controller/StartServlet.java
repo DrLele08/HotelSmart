@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.model.utente.Utente;
 
 import javax.servlet.*;
@@ -20,7 +19,7 @@ public class StartServlet extends CheckServlet
         if(us.isPresent())
         {
             HttpSession session=request.getSession(true);
-            session.setAttribute(Utility.SESSION_USER,us.get());
+            session.setAttribute(it.hotel.Utility.Utilita.SESSION_USER,us.get());
         }
         requestDispatcher.forward(request,response);
     }

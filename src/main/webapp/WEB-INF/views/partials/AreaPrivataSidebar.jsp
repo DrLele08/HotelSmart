@@ -3,10 +3,10 @@
 --%>
 
 <%@ page import="it.hotel.model.utente.Utente" %>
-<%@ page import="it.hotel.Utility.Utility" %>
+<%@ page import="it.hotel.Utility.Utilita" %>
 <link rel="stylesheet" href="css/AreaPrivataSidebar.css">
 <%
-    Utente ut = (Utente) session.getAttribute(Utility.SESSION_USER);
+    Utente ut = (Utente) session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
     int tipoChiamata = (Integer) request.getAttribute("Tipo");
 %>
 

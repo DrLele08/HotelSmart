@@ -1,6 +1,5 @@
 package controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.ServiziServlet;
 import it.hotel.controller.services.PrenotazioneServizioService;
 import it.hotel.controller.services.PrenotazioneStanzaService;
@@ -178,7 +177,7 @@ public class ServiziServletTest extends Mockito
         when(controller.getSession(request)).thenReturn(session);
         Utente utente = new Utente(1,1,"asdfghjklasdfghj","nome","cognome","email",new Date(0),"token");
         Object o = utente;
-        when(session.getAttribute(Utility.SESSION_USER)).thenReturn(o);
+        when(session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER)).thenReturn(o);
         when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
         when(prenotazioneStanzaService.selectBy(1,0)).thenReturn(new ArrayList<>());
         controller.doPost(request,response);
@@ -198,7 +197,7 @@ public class ServiziServletTest extends Mockito
         when(controller.getSession(request)).thenReturn(session);
         Utente utente = new Utente(1,1,"asdfghjklasdfghj","nome","cognome","email",new Date(0),"token");
         Object o = utente;
-        when(session.getAttribute(Utility.SESSION_USER)).thenReturn(o);
+        when(session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER)).thenReturn(o);
         when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
         ArrayList<PrenotazioneStanza> lista = new ArrayList<>();
         lista.add(new PrenotazioneStanza(1,1,1,1,new Date(0),
@@ -221,7 +220,7 @@ public class ServiziServletTest extends Mockito
         when(controller.getSession(request)).thenReturn(session);
         Utente utente = new Utente(1,1,"asdfghjklasdfghj","nome","cognome","email",new Date(0),"token");
         Object o = utente;
-        when(session.getAttribute(Utility.SESSION_USER)).thenReturn(o);
+        when(session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER)).thenReturn(o);
         when(controller.getPrenotazioneStanzaService()).thenReturn(prenotazioneStanzaService);
         ArrayList<PrenotazioneStanza> lista = new ArrayList<>();
         lista.add(new PrenotazioneStanza(1,1,1,3,new Date(0),

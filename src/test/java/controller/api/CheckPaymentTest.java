@@ -1,6 +1,7 @@
 package controller.api;
 
 import com.stripe.model.PaymentIntent;
+import it.hotel.Utility.payment.PaymentStripe;
 import it.hotel.controller.api.CheckPayment;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.UtenteService;
@@ -26,7 +27,7 @@ public class CheckPaymentTest extends Mockito
     private HttpServletResponse response;
     private PrenotazioneStanzaService prenotazioneStanzaService;
     private PrenotazioneStanza prenotazioneStanza;
-    private PaymentIntent paymentIntent;
+    private PaymentStripe paymentStripe;
     private UtenteService utenteService;
     private Utente utente;
     private JSONObject object;
@@ -39,7 +40,7 @@ public class CheckPaymentTest extends Mockito
         response=mock(HttpServletResponse.class);
         prenotazioneStanzaService=mock(PrenotazioneStanzaService.class);
         prenotazioneStanza=mock(PrenotazioneStanza.class);
-        paymentIntent=mock(PaymentIntent.class);
+        paymentStripe=mock(PaymentStripe.class);
         utenteService=mock(UtenteService.class);
         utente=mock(Utente.class);
         object=new JSONObject();
@@ -114,10 +115,8 @@ public class CheckPaymentTest extends Mockito
         when(prenotazioneStanzaService.getPrenotazioneById(anyInt()))
                 .thenReturn(prenotazioneStanza);
         when(prenotazioneStanza.getKsStato()).thenReturn(1);
-        doReturn(paymentIntent).when(controller).getPaymentIntent(anyString());
         when(controller.getUtenteService()).thenReturn(utenteService);
         when(utenteService.getUtenteByPrenotazioneStanza(anyInt())).thenReturn(utente);
-        when(paymentIntent.getStatus()).thenReturn("error");
         when(utente.getNome()).thenReturn("Testing");
         when(utente.getEmail()).thenReturn("saisraffaele08@gmail.con");
         controller.doGet(request,response);
@@ -137,13 +136,13 @@ public class CheckPaymentTest extends Mockito
         when(prenotazioneStanzaService.getPrenotazioneById(anyInt()))
                 .thenReturn(prenotazioneStanza);
         when(prenotazioneStanza.getKsStato()).thenReturn(1);
-        doReturn(paymentIntent).when(controller).getPaymentIntent(anyString());
         when(controller.getUtenteService()).thenReturn(utenteService);
         when(utenteService.getUtenteByPrenotazioneStanza(anyInt())).thenReturn(mock(Utente.class));
         when(utenteService.getUtenteByPrenotazioneStanza(anyInt())).thenReturn(utente);
-        when(paymentIntent.getStatus()).thenReturn("succeeded");
         when(utente.getNome()).thenReturn("Testing");
         when(utente.getEmail()).thenReturn("saisraffaele08@gmail.con");
+        when(controller.getPaymentStripe()).thenReturn(paymentStripe);
+        when(paymentStripe.isPagato(anyString())).thenReturn(true);
         controller.doGet(request,response);
         object.put("Ris",1);
         object.put("Mess","Fatto");
@@ -161,16 +160,14 @@ public class CheckPaymentTest extends Mockito
         when(prenotazioneStanzaService.getPrenotazioneById(anyInt()))
                 .thenReturn(prenotazioneStanza);
         when(prenotazioneStanza.getKsStato()).thenReturn(1);
-        doReturn(paymentIntent).when(controller).getPaymentIntent(anyString());
         when(controller.getUtenteService()).thenReturn(utenteService);
         when(utenteService.getUtenteByPrenotazioneStanza(anyInt())).thenReturn(mock(Utente.class));
         when(utenteService.getUtenteByPrenotazioneStanza(anyInt())).thenThrow(new UtenteNotFoundException());
-        when(paymentIntent.getStatus()).thenReturn("succeeded");
         when(utente.getNome()).thenReturn("Testing");
         when(utente.getEmail()).thenReturn("saisraffaele08@gmail.con");
         controller.doGet(request,response);
         object.put("Ris",0);
-        object.put("Mess","Pagamento non trovato");
+        object.put("Mess","Utente non trovato");
         Mockito.verify(mockOutput).print(object.toString());
     }
 

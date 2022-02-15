@@ -1,11 +1,8 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.PrenotazioneServizioService;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.ServizioService;
-import it.hotel.controller.services.StanzaService;
-import it.hotel.model.prenotazioneServizio.PrenotazioneServizioDAO;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanza;
 import it.hotel.model.prenotazioneStanza.PrenotazioneStanzaDAO;
 import it.hotel.model.servizio.Servizio;
@@ -19,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +65,7 @@ public class ServiziServlet extends HttpServlet {
     public PrenotazioneStanza getActiveReservation(HttpServletRequest request){
 
         HttpSession session = getSession(request);
-        Utente user = (Utente) session.getAttribute(Utility.SESSION_USER);
+        Utente user = (Utente) session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
         PrenotazioneStanzaService service1 = getPrenotazioneStanzaService();
         PrenotazioneStanza result = null;
 
@@ -137,7 +133,6 @@ public class ServiziServlet extends HttpServlet {
                     service.createPrenotazione(linked_reservation.getIdPrenotazioneStanza(),servizioId,numero_ospiti,dataSql);
 
                 } catch (ParseException e) {
-                    e.printStackTrace();
                     request.setAttribute("success",success);
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ServizioConfirmation.jsp");
                     dispatcher.forward(request,response);

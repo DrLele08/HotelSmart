@@ -1,6 +1,5 @@
 package it.hotel.controller;
 
-import it.hotel.Utility.Utility;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.utente.Utente;
 import it.hotel.model.utente.utenteExceptions.EmailNotFoundException;
@@ -34,17 +33,17 @@ public class LoginServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        if(Utility.isActive(Utility.CHECK_LOGIN))
+        if(it.hotel.Utility.Utilita.isActive(it.hotel.Utility.Utilita.CHECK_LOGIN))
         {
             RequestDispatcher rd;
             int idUtente=-1;
             String tokenAuth="";
             HttpSession session=request.getSession();
-            Utente us=(Utente)session.getAttribute(Utility.SESSION_USER);
+            Utente us=(Utente)session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
             if(us!=null)
             {
                 rd=request.getRequestDispatcher("index.jsp");
-                request.setAttribute(Utility.SESSION_USER,us);
+                request.setAttribute(it.hotel.Utility.Utilita.SESSION_USER,us);
                 rd.forward(request, response);
             }
             else
@@ -52,11 +51,11 @@ public class LoginServlet extends HttpServlet
                 Cookie[] cookies=request.getCookies();
                 for(Cookie c:cookies)
                 {
-                    if(c.getName().equals(Utility.COOKIE_ID))
+                    if(c.getName().equals(it.hotel.Utility.Utilita.COOKIE_ID))
                     {
                         idUtente=Integer.parseInt(c.getValue());
                     }
-                    if(c.getName().equals(Utility.COOKIE_TOKEN))
+                    if(c.getName().equals(it.hotel.Utility.Utilita.COOKIE_TOKEN))
                     {
                         tokenAuth=c.getValue();
                     }
@@ -68,8 +67,8 @@ public class LoginServlet extends HttpServlet
                 {
                     us=new UtenteService().doLogin(idUtente,tokenAuth);
                     rd=request.getRequestDispatcher("index.jsp");
-                    request.setAttribute(Utility.SESSION_USER,us);
-                    session.setAttribute(Utility.SESSION_USER,us);
+                    request.setAttribute(it.hotel.Utility.Utilita.SESSION_USER,us);
+                    session.setAttribute(it.hotel.Utility.Utilita.SESSION_USER,us);
                     rd.forward(request, response);
                 }
                 catch (UtenteNotFoundException e)
@@ -110,14 +109,14 @@ public class LoginServlet extends HttpServlet
         {
             user = service.doLogin(email,pwd);
             HttpSession session=request.getSession();
-            session.setAttribute(Utility.SESSION_USER,user);
+            session.setAttribute(it.hotel.Utility.Utilita.SESSION_USER,user);
             obj.put("Ris",1);
             obj.put("Mess","Login effettuato con successo");
             response.getOutputStream().print(obj.toString());
             if(ricordami)
             {
-                Cookie c1 = new Cookie(Utility.COOKIE_ID,user.getIdUtente()+"");
-                Cookie c2 = new Cookie(Utility.COOKIE_TOKEN,user.getTokenAuth());
+                Cookie c1 = new Cookie(it.hotel.Utility.Utilita.COOKIE_ID,user.getIdUtente()+"");
+                Cookie c2 = new Cookie(it.hotel.Utility.Utilita.COOKIE_TOKEN,user.getTokenAuth());
                 response.addCookie(c1);
                 response.addCookie(c2);
             }

@@ -1,8 +1,5 @@
 package it.hotel.model.utente;
 
-import it.hotel.Utility.Utility;
-import it.hotel.model.ruolo.Ruolo;
-
 import java.sql.Date;
 
 /**

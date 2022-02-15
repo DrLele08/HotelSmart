@@ -1,7 +1,6 @@
 package it.hotel.controller.services;
 
 import it.hotel.Utility.Connect;
-import it.hotel.Utility.Utility;
 import it.hotel.controller.exception.PagamentoInAttesaException;
 import it.hotel.model.personaAggiuntiva.PersonaAggiuntiva;
 import it.hotel.model.personaAggiuntiva.PersonaAggiuntivaDAO;
@@ -114,8 +113,8 @@ public class PrenotazioneStanzaService {
             Stanza s = stanzaDAO.doSelectById(con, ksStanza);
             double costoNotte = s.getCostoNotte();
             double sconto = s.getSconto();
-            Date inizio = Utility.dataConverter(dataInizio);
-            Date fine = Utility.dataConverter(dataFine);
+            Date inizio = it.hotel.Utility.Utilita.dataConverter(dataInizio);
+            Date fine = it.hotel.Utility.Utilita.dataConverter(dataFine);
             if (!stanzaDAO.isDisponibile(con, ksStanza, inizio, fine)) {
                 throw new PrenotazioneStanzaInsertException();
             }

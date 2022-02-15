@@ -4,7 +4,8 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import it.hotel.Utility.Email;
-import it.hotel.Utility.Utility;
+import it.hotel.Utility.payment.PaymentAdapter;
+import it.hotel.Utility.payment.PaymentStripe;
 import it.hotel.controller.CheckServlet;
 import it.hotel.controller.services.PrenotazioneStanzaService;
 import it.hotel.controller.services.UtenteService;
@@ -29,28 +30,19 @@ import java.io.IOException;
 public class CheckPayment extends CheckServlet
 {
     /**
+     * Metodo che ritorna un PaymentStripe
+     */
+    public PaymentStripe getPaymentStripe()
+    {
+        return new PaymentStripe();
+    }
+    /**
      * Ritorna il service della prenotazione stanza
      * @see PrenotazioneStanzaService
      */
     public PrenotazioneStanzaService getPrenoStanzaService()
     {
         return new PrenotazioneStanzaService();
-    }
-    /**
-     * Ritorna il payment intent di un pagamento
-     * @see PaymentIntent
-     */
-    public PaymentIntent getPaymentIntent(String stripeToken) throws StripeException
-    {
-        return PaymentIntent.retrieve(stripeToken);
-    }
-    /**
-     * Ritorna uno user service
-     * @see UtenteService
-     */
-    public UtenteService getUtenteService()
-    {
-        return new UtenteService();
     }
     /**
      * Richiesta che riceve la prenotazione
@@ -73,12 +65,12 @@ public class CheckPayment extends CheckServlet
                 PrenotazioneStanza preno=stanzaService.getPrenotazioneById(idPreno);
                 if(preno.getKsStato()==1)
                 {
-                    String tokenStripe=preno.getTokenStripe();
-                    Stripe.apiKey = Utility.stripeKey;
-                    PaymentIntent paymentIntent=getPaymentIntent(tokenStripe);
                     UtenteService utenteService=getUtenteService();
                     Utente user=utenteService.getUtenteByPrenotazioneStanza(idPreno);
-                    if(paymentIntent.getStatus().equals("succeeded"))
+                    String tokenStripe=preno.getTokenStripe();
+                    PaymentAdapter adapter=getPaymentStripe();
+                    boolean isPagato=adapter.isPagato(tokenStripe);
+                    if(isPagato)
                     {
                         stanzaService.editStato(idPreno,2);
                         stanzaService.generateQrCode(idPreno);
@@ -116,10 +108,10 @@ public class CheckPayment extends CheckServlet
                 object.put("Mess","Prenotazione non trovata");
                 response.getOutputStream().print(object.toString());
             }
-            catch (StripeException|UtenteNotFoundException e)
+            catch (UtenteNotFoundException e)
             {
                 object.put("Ris",0);
-                object.put("Mess","Pagamento non trovato");
+                object.put("Mess","Utente non trovato");
                 response.getOutputStream().print(object.toString());
             }
         }

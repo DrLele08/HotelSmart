@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.9
  * @since 2022-12-15
  */
-public class Utility
+public class Utilita
 {
     /**
      * Pattern per la password degli utenti

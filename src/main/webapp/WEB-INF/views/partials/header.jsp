@@ -1,5 +1,5 @@
 <%@ page import="it.hotel.model.utente.Utente" %>
-<%@ page import="it.hotel.Utility.Utility" %>
+<%@ page import="it.hotel.Utility.Utilita" %>
 
 <nav class="navbar sticky-top navbar-dark navbar-expand" style="background-color: #02172d;">
 
@@ -36,7 +36,7 @@
     <input type="hidden" name="headercheck" id="headercheck" value="<%=temp%>">
 
     <%
-        Utente u = (Utente) session.getAttribute(Utility.SESSION_USER);
+        Utente u = (Utente) session.getAttribute(it.hotel.Utility.Utilita.SESSION_USER);
     %>
     <span class="nav-item dropdown">
         <a class="nav-link dropdownIcon btn btn-info dropdown-toggle" data-toggle="dropdown">
