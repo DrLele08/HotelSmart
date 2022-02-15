@@ -78,6 +78,19 @@ public class CheckServletTest extends Mockito
     }
 
     @Test
+    public void testCookieUtenteNotFoundException() throws Exception {
+        when(request.getSession(true)).thenReturn(session);
+        when(controller.getUtenteService()).thenReturn(utenteService);
+        when(utenteService.doLogin(anyInt(),anyString())).thenThrow(new UtenteNotFoundException());
+        when(session.getAttribute(Utility.SESSION_USER)).thenReturn(null);
+        Cookie c[] = new Cookie[2];
+        c[0] = new Cookie(Utility.COOKIE_ID, "1");
+        c[1] = new Cookie(Utility.COOKIE_TOKEN, "value");
+        when(request.getCookies()).thenReturn(c);
+        Assert.assertNotNull(controller.getUtente(request));
+    }
+
+    @Test
     public void testCookieNumberFormatException() {
         when(request.getSession(true)).thenReturn(session);
         when(session.getAttribute(Utility.SESSION_USER)).thenReturn(null);

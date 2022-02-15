@@ -1,10 +1,11 @@
-package controller.api;
+package controller;
 
 import it.hotel.controller.RicercaServlet;
 import it.hotel.controller.services.StanzaService;
 import it.hotel.controller.services.UtenteService;
 import it.hotel.model.stanza.Stanza;
 import it.hotel.model.stanza.stanzaExceptions.StanzaNotFoundException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -75,6 +76,11 @@ public class RicercaServletTest extends Mockito {
     public void testDoGetSearchDisabled() throws Exception {
         doReturn(false).when(controller).isSearchActive();
         controller.doGet(request, response);
+    }
+
+    @Test
+    public void testGetStanzaService()  {
+        Assert.assertNotNull(controller.getStanzaService());
     }
 
     @Test

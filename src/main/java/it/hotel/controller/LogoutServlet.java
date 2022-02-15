@@ -25,9 +25,9 @@ public class LogoutServlet extends HttpServlet
      * @see HttpServletResponse
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        HttpSession session = request.getSession(true);
+        HttpSession session = getSession(request);
         session.removeAttribute(Utility.SESSION_USER);
         Cookie c1 = new Cookie(Utility.COOKIE_ID,"");
         c1.setMaxAge(0);
@@ -36,5 +36,9 @@ public class LogoutServlet extends HttpServlet
         response.addCookie(c1);
         response.addCookie(c2);
         response.sendRedirect("./");
+    }
+
+    public HttpSession getSession(HttpServletRequest request) {
+        return request.getSession(true);
     }
 }
