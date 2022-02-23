@@ -85,7 +85,7 @@ Vedi i [problemi correnti](https://trello.com/b/dggFDzTL/ingegneria-del-software
 <!-- CONTACT -->
 ## Contatti
 - Raffaele Sais - [@DrLele08](https://twitter.com/drlele08) - saisraffaele08@gmail.com<br>
-- Giovanni De Pierro<br>
+- Giovanni De Pierro - giovanni.depierro50@gmail.com<br>
 - Alessandro d'Esposito - alessandro6296@gmail.com<br>
 - Pierpaolo Cammardella<br>
 
